@@ -1,24 +1,24 @@
 # Site settings
-title: Hux Blog
-SEOTitle: 黄玄的博客 | Hux Blog
+title: Zy Blog
+SEOTitle: 赵宇的博客 | Zy Blog
 header-img: img/home-bg.jpg
-email: huxpro@gmail.com
-description: "这里是 @Hux黄玄 的个人博客，与你一起发现更大的世界 | 要做一个有 swag 的程序员"
-keyword: "黄玄, Hux黄玄, Hux, 鬼栈, huxpro, @huxpro, 黄玄的博客, Hux Blog, 博客, 个人网站, 互联网, Web, JavaScript, React, React Native, 前端, 设计"
-url: "https://huangxuan.me" # your host, for absolute URL
-baseurl: "" # for example, '/blog' if your blog hosted on 'host/blog'
+email: your-email@example.com # 替换为你的实际邮箱
+description: "这里是赵宇的个人博客，记录技术成长、生活思考与学习笔记，与你一起探索技术与生活的边界"
+keyword: "赵宇, Zy, 赵宇的博客, Zy Blog, 博客, 个人网站, 技术分享, 学习笔记, 前端, 编程, 开发"
+url: "https://fuoins.github.io" # 你的博客域名（无需修改，保持 GitHub Pages 地址）
+baseurl: "" # 若博客部署在子目录则填写（如 '/blog'），此处默认无需修改
 
 # Publish posts or collection documents with a future date.
 future: true
 
 # SNS settings
 RSS: false
-weibo_username: huxpro
-zhihu_username: huxpro
-github_username: huxpro
-twitter_username: huxpro
-#facebook_username:  huxpro
-#linkedin_username:  firstname-lastname-idxxxx
+weibo_username: # 可选：填写你的微博用户名（无则留空）
+zhihu_username: # 可选：填写你的知乎用户名（无则留空）
+github_username: fuoins # 你的 GitHub 用户名（已默认填充）
+twitter_username: # 可选：填写你的 Twitter 用户名（无则留空）
+#facebook_username: # 可选：填写你的 Facebook 用户名（无则留空）
+#linkedin_username: # 可选：填写你的 LinkedIn 用户名（无则留空）
 
 # Build settings
 # from 2016, 'pygments' is unsupported on GitHub Pages. Use 'rouge' for highlighting instead.
@@ -32,11 +32,10 @@ exclude:
     "Gruntfile.js",
     "package.json",
     "README.md",
-    "README.zh.md",
   ]
 anchorjs: true # if you want to customize anchor. check out line:181 of `post.html`
 # If you have timezone issue (e.g. #68) in China, uncomment to use this:
-#timezone: CN
+timezone: CN # 中国时区（已启用，避免时间显示异常）
 
 # Gems
 # from PR#40, to support local preview for Jekyll 3.0
@@ -58,45 +57,35 @@ kramdown:
       line_numbers: true
       start_line: 1
 
-# Disqus settings
-disqus_username: hux
+# Disqus settings（评论功能，无需则可留空）
+disqus_username: # 可选：填写你的 Disqus 用户名（无则留空，关闭评论）
 
-# Netease settings
+# Netease settings（网易云评论，无需则保持关闭）
 netease_comment: false
 
-# Analytics settings
-# Baidu Analytics
-# ba_track_id: [your track id]
+# Analytics settings（统计功能，按需配置）
+# Baidu Analytics（百度统计）
+# ba_track_id: [your baidu track id] # 可选：填写百度统计跟踪ID（无则留空）
 
-# Google Analytics
-ga_track_id: "UA-49627206-1" # Format: UA-xxxxxx-xx
-ga_domain: huangxuan.me
+# Google Analytics（谷歌统计）
+ga_track_id: "" # 可选：填写谷歌统计跟踪ID（格式 UA-xxxxxx-xx，无则留空）
+ga_domain: fuoins.github.io # 谷歌统计关联域名（与博客域名一致）
 
-# Sidebar settings
-sidebar: true # whether or not using Sidebar.
-sidebar-about-description: "要做一个有 swag 的程序员 <br> React Team @ Meta"
-sidebar-avatar: https://github.com/Huxpro.png # use absolute URL, seeing it's used in both `/` and `/about/`
+# Sidebar settings（侧边栏配置）
+sidebar: true # 是否显示侧边栏（保持开启）
+sidebar-about-description: "热爱技术，乐于分享 <br> 持续学习，稳步成长" # 个人简介（可自定义修改）
+sidebar-avatar: # 可选：填写头像绝对路径（如 https://github.com/fuoins.png，无则留空）
 
-# Featured Tags
-featured-tags: true # whether or not using Feature-Tags
-featured-condition-size: 1 # A tag will be featured if the size of it is more than this condition value
+# Featured Tags（精选标签功能）
+featured-tags: true # 是否启用精选标签
+featured-condition-size: 1 # 标签下文章数超过此数值则显示为精选标签
 
-# Progressive Web Apps
+# Progressive Web Apps（渐进式Web应用）
 chrome-tab-theme-color: "#000000"
 service-worker: true
 
-# MathJax rendering for layout:page (e.g. post preview)
+# MathJax rendering for layout:page (e.g. post preview)（数学公式渲染，无需则保持关闭）
 page-mathjax: false
 
-# Friends
-friends:
-  [
-    { title: "乱序（Midare）", href: "http://mida.re/" },
-    { title: "Ebn Zhang", href: "https://ebnbin.dev/" },
-    { title: "Kun Qian", href: "http://kunq.me" },
-    { title: "Sherry Woo", href: "https://sherrywoo.me/" },
-    { title: "SmdCn", href: "http://blog.smdcn.net" },
-    { title: "JiyinYiyong", href: "http://tiye.me/" },
-    { title: "DHong Say", href: "http://dhong.co" },
-    { title: "尹峰以为", href: "http://ingf.github.io/" },
-  ]
+# Friends（友链，已按需求删除原列表，无需则保持空数组）
+friends: []
