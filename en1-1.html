@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>英语选择题练习（4套题）</title>
+    <style>
+        body { font-family: 微软雅黑, sans-serif; max-width: 900px; margin: 20px auto; padding: 0 20px; }
+        .quiz-set { margin: 30px 0; padding: 20px; border: 1px solid #eee; border-radius: 8px; background: #f9f9f9; }
+        .quiz-title { font-size: 18px; color: #333; border-bottom: 2px solid #4CAF50; padding-bottom: 10px; margin-bottom: 20px; }
+        .question-item { margin: 15px 0; padding: 10px; background: #fff; border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .question-text { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .option { margin: 6px 0; padding: 5px; cursor: pointer; border-radius: 3px; transition: background 0.2s; }
+        .option:hover { background: #f0f7ff; }
+        .option.correct { color: #27ae60; font-weight: bold; }
+        .option.incorrect { color: #e74c3c; }
+        button { padding: 10px 25px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        button:hover { background: #1976D2; }
+    </style>
+</head>
+<body>
+    <h1>英语选择题练习（共4套题）</h1>
+    <!-- 第一套题：答案b a b d c -->
+    <div class="quiz-set">
+        <div class="quiz-title">第一套题</div>
+        <div id="quiz1" class="question-container"></div>
+        <button onclick="showAns('quiz1')">显示正确答案</button>
+    </div>
+    <!-- 第二套题：答案a d a c b -->
+    <div class="quiz-set">
+        <div class="quiz-title">第二套题</div>
+        <div id="quiz2" class="question-container"></div>
+        <button onclick="showAns('quiz2')">显示正确答案</button>
+    </div>
+    <!-- 第三套题：答案c a b c d -->
+    <div class="quiz-set">
+        <div class="quiz-title">第三套题</div>
+        <div id="quiz3" class="question-container"></div>
+        <button onclick="showAns('quiz3')">显示正确答案</button>
+    </div>
+    <!-- 第四套题：答案b d b d a -->
+    <div class="quiz-set">
+        <div class="quiz-title">第四套题</div>
+        <div id="quiz4" class="question-container"></div>
+        <button onclick="showAns('quiz4')">显示正确答案</button>
+    </div>
+
+    <script>
+        // 1. 定义所有题目和答案（A=0、B=1、C=2、D=3）
+        const allQuizzes = {
+            quiz1: [
+                {q:"What has the author come to realise since entering university?", o:["He needs a crash course on financial terms.", "He is very much lacking in financial literacy.", "It requires consistent education to be financially independent.", "It is unrealistic to give all Australian youth a financial education."], ans:1},
+                {q:"How did the author feel in today’s money world?", o:["Badly equipped to survive.", "Ignorant of financial literature.", "Barely capable of moving ahead.", "Overwhelmed by the resources online."], ans:0},
+                {q:"What did the author realise after talking to his friends?", o:["They were as keen as he was on financial matters.", "The schooling system was to blame for his trouble.", "High schoolers knew nothing about the modern financial world.", "Financial courses were as unpopular as compulsory English classes."], ans:1},
+                {q:"What is the author’s idea of a financial education course?", o:["It should foresee students’ needs after graduation.", "It should provide students with some basic knowledge.", "It should be taught the same way as English is taught.", "It should be integrated into high school education."], ans:3},
+                {q:"What would financial literacy do to young people?", o:["Allow them to enter adulthood with financial security.", "Enable them to look after themselves without worrying about money.", "Render them confident and secure in terms of money management.", "Help them become familiar with the world of money."], ans:2}
+            ],
+            quiz2: [
+                {q:"What do people believe chocolates can do?", o:["Cheer them up instantly.", "Create happy calories.", "Conceal emotional distress.", "Relieve them of heart trouble."], ans:0},
+                {q:"What was scientists’ recent assertion about chocolates?", o:["They could become a rare treat in the near future.", "They could calm people down a bit in times of crisis.", "They could prevent people from getting heartbroken.", "They could become unavailable in less than 30 years."], ans:3},
+                {q:"What would happen if the cacao farms were shifted to cooler mountainous areas?", o:["The natural habitat of wildlife there would be ruined.", "The cacao farmers would have a tough time to adapt.", "The rainforests would be shrinking dramatically.", "The quality of cocoa beans would suffer greatly."], ans:0},
+                {q:"What do we learn about the cacao farms in the crisis of global warming?", o:["They try to seek help from gene-editing scientists.", "They decide to move to cooler mountainous areas.", "They have suffered a lot due to a decrease in produce.", "They have benefited by raising prices of cocoa beans."], ans:2},
+                {q:"What are scientists trying to do in the University of California’s new bio-sciences building?", o:["Build rows of refrigerated greenhouses for research on cacao seedlings.", "Gene-edit cacao seedlings for them to withstand a drier, warmer climate.", "Produce chocolates with the latest gene-editing technology.", "Transplant the genes of tougher plants to cacao seedlings."], ans:1}
+            ],
+            quiz3: [
+                {q:"What does the author want to emphasise in the first paragraph?", o:["The year 2020 was a big turning point in human history.", "Economic growth benefits people little in the long run.", "It is unwise to weaken the human connection to nature.", "It is harmful to mankind to use human-made materials."], ans:2},
+                {q:"What did researchers find about popular culture?", o:["It is increasingly detached from the natural world.", "It is filled with all kinds of video game characters.", "It is especially appealing to the taste of teenagers.", "It is still impacted by the hit songs of the 1950s."], ans:0},
+                {q:"What does the author propose people do?", o:["Take measures to ensure sustainable food development.", "Reconnect with nature through the right to grow.", "Stand by the parliament in fighting social diseases.", "Cover public spaces with fruit trees and vegetable plants."], ans:1},
+                {q:"What do we learn from the passage about vegetable planting?", o:["It all started in 1649 in Southern England.", "It is protected by U.S. government regulations.", "It has long been used to increase food supply and improve urban landscape.", "It has been popularised worldwide with the increasing influence of social media."], ans:2},
+                {q:"What can publicly accessible fruit and vegetable gardens do apart from their practical functions?", o:["Raise people’s environmental awareness.", "Add to the great variety of plant species.", "Act as the first defence against natural disasters.", "Enhance people’s community spirit."], ans:3}
+            ],
+            quiz4: [
+                {q:"What does the passage say about the engineering profession in the United States?", o:["It has seen a change in attitude towards women engineers since 1979.", "It witnessed a significant increase in women engineers in the 1970s.", "It has experienced the gradual weakening of male dominance.", "It boasted the largest number of engineering majors in 2000."], ans:1},
+                {q:"What does one survey taker say was her greatest challenge?", o:["Not to feel superior to less qualified male engineers.", "Not to take seriously all the messages she was getting.", "Not to think highly of her qualifications when promoted or given a pay raise.", "Not to lose self-confidence though constantly discouraged or unfairly treated."], ans:3},
+                {q:"How do women engineers frequently feel according to the two civil engineers?", o:["Disqualified on many levels.", "Excluded from the group.", "Overworked by their organizations.", "Looked down upon by male colleagues."], ans:1},
+                {q:"What probably makes young women engineers more accepted nowadays?", o:["Their success in gaining an equal footing.", "Their ability to balance work and family.", "The change in their responsibilities.", "The increase in their number."], ans:3},
+                {q:"What can we conclude about many female engineers from the statement of a mechanical engineer?", o:["They take great pride in their chosen career.", "They have reaped the benefits of being flexible.", "They enjoy doing engineering to the best degree.", "They have proved capable of doing almost anything."], ans:0}
+            ]
+        };
+
+        // 2. 打乱数组函数（简单可靠）
+        function shuffle(arr) {
+            for(let i=arr.length-1; i>0; i--) {
+                const j = Math.floor(Math.random() * (i+1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // 3. 初始化显示所有题目
+        for(let quizId in allQuizzes) {
+            const container = document.getElementById(quizId);
+            const quiz = allQuizzes[quizId];
+            // 打乱题目顺序
+            const shuffledQs = shuffle([...quiz]);
+            
+            shuffledQs.forEach((item, qIdx) => {
+                // 创建题目容器
+                const qDiv = document.createElement('div');
+                qDiv.className = 'question-item';
+                qDiv.setAttribute('data-ans', item.ans); // 存正确答案
+                
+                // 题目文本
+                const qText = document.createElement('div');
+                qText.className = 'question-text';
+                qText.textContent = item.q;
+                qDiv.appendChild(qText);
+                
+                // 打乱选项顺序
+                const shuffledOps = shuffle([...item.o]);
+                shuffledOps.forEach((op, oIdx) => {
+                    const opDiv = document.createElement('div');
+                    opDiv.className = 'option';
+                    opDiv.textContent = op;
+                    // 存选项原始索引（用于匹配答案）
+                    opDiv.setAttribute('data-orig', item.o.indexOf(op));
+                    qDiv.appendChild(opDiv);
+                });
+                
+                container.appendChild(qDiv);
+            });
+        }
+
+        // 4. 显示正确答案函数
+        function showAns(quizId) {
+            const container = document.getElementById(quizId);
+            const questions = container.querySelectorAll('.question-item');
+            
+            questions.forEach(q => {
+                const correctAns = parseInt(q.getAttribute('data-ans'));
+                const options = q.querySelectorAll('.option');
+                
+                options.forEach(op => {
+                    const origIdx = parseInt(op.getAttribute('data-orig'));
+                    if(origIdx === correctAns) {
+                        op.className = 'option correct';
+                    } else {
+                        op.className = 'option incorrect';
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>
