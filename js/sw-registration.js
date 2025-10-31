@@ -46,12 +46,15 @@ if(navigator.serviceWorker){
     const data = e.data
     
     if(data.command == "UPDATE_FOUND"){
-      console.log("UPDATE_FOUND_BY_SW", data);
-      createSnackbar({
-        message: "Content updated.",
-        actionText:"refresh",
-        action: function(e){location.reload()}
-      })
-    }
-  }
+  console.log("UPDATE_FOUND_BY_SW", data);
+  // 打印更新日志后，直接触发页面自动刷新
+  location.reload();
+  // 若想先提示再自动刷新（提升用户体验），可保留提示并添加延迟刷新逻辑：
+  // createSnackbar({
+  //   message: "Content updated, refreshing automatically...",
+  //   duration: 2000 // 提示显示2秒后自动刷新
+  // });
+  // setTimeout(() => location.reload(), 2000);
+}
+
 }
