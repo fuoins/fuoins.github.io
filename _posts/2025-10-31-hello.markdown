@@ -9,6 +9,9 @@ tags:
     
 ---
 
+- [英语单词练习1](https://fuoins.github.io/en1.html)
+- [英语四级24-12-1/2阅读1](https://fuoins.github.io/en1-1.html)
+
 hello
 # sb
 ## 123
