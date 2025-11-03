@@ -1,4 +1,3 @@
----
 layout:       post
 title:        "first md 瞎几把写一个md"
 author:       "Zy"
@@ -11,6 +10,8 @@ tags:
 
 - [英语单词练习1](https://fuoins.github.io/en1.html)
 - [英语四级24-12-1/2阅读1](https://fuoins.github.io/en1-1.html)
+- [数学公式练习](https://fuoins.github.io/maths.html)
+
 
 hello
 # sb
