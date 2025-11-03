@@ -1,0 +1,160 @@
+以下是补充旋转体体积（Vₓ/Vᵧ）、曲率k + 自适应布局的最终版本：
+ 
+html  
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公式背诵手册（填空版）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", sans-serif;
+        }
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .card h2 {
+            color: #e63946;
+            border-bottom: 2px solid #e63946;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .card ul {
+            list-style: none;
+        }
+        .card li {
+            line-height: 2.2;
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 泰勒公式 -->
+        <div class="card">
+            <h2>泰勒公式</h2>
+            <ul>
+                <li>$$e^x = \quad \rule{200px}{2px}$$</li>
+                <li>$$\sin x = \quad \rule{200px}{2px}$$</li>
+                <li>$$\cos x = \quad \rule{200px}{2px}$$</li>
+                <li>$$\ln(1+x) = \quad \rule{200px}{2px}$$</li>
+                <li>$$\frac{1}{1-x} = \quad \rule{200px}{2px}$$</li>
+                <li>$$\frac{1}{1+x} = \quad \rule{200px}{2px}$$</li>
+                <li>$$(1+x)^\alpha = \quad \rule{200px}{2px}$$</li>
+                <li>$$\tan x = \quad \rule{200px}{2px}$$</li>
+                <li>$$\arcsin x = \quad \rule{200px}{2px}$$</li>
+                <li>$$\arctan x = \quad \rule{200px}{2px}$$</li>
+            </ul>
+        </div>
+
+        <!-- 常用不等式 -->
+        <div class="card">
+            <h2>常用不等式</h2>
+            <ul>
+                <li>$$|a \pm b| \leq \quad \rule{200px}{2px}$$</li>
+                <li>$$\quad \rule{50px}{2px} \leq \frac{a+b}{2} \leq \quad \rule{100px}{2px}$$</li>
+                <li>$$\quad \rule{50px}{2px} \leq \frac{a+b+c}{3} \leq \quad \rule{100px}{2px}$$</li>
+                <li>$$\quad \rule{50px}{2px} < x < \quad \rule{100px}{2px}$$</li>
+                <li>$$e^x \geq \quad \rule{100px}{2px}$$</li>
+                <li>$$\ln(1+x) < \quad \rule{100px}{2px}$$</li>
+            </ul>
+        </div>
+
+        <!-- 等差数列 -->
+        <div class="card">
+            <h2>等差数列</h2>
+            <ul>
+                <li>通项公式 \( a_n = \quad \rule{200px}{2px} \)</li>
+                <li>前n项和 \( S_n = \quad \rule{200px}{2px} \)</li>
+            </ul>
+        </div>
+
+        <!-- 等比数列 -->
+        <div class="card">
+            <h2>等比数列</h2>
+            <ul>
+                <li>通项公式 \( a_n = \quad \rule{200px}{2px} \)</li>
+                <li>前n项和 \( S_n = \quad \rule{200px}{2px} \)</li>
+            </ul>
+        </div>
+
+        <!-- 常见前n项和 -->
+        <div class="card">
+            <h2>常见前n项和</h2>
+            <ul>
+                <li>$$\sum_{k=1}^n k = \quad \rule{200px}{2px}$$</li>
+                <li>$$\sum_{k=1}^n k^2 = \quad \rule{200px}{2px}$$</li>
+                <li>$$\sum_{k=1}^n \frac{1}{k(k+1)} = \quad \rule{200px}{2px}$$</li>
+            </ul>
+        </div>
+
+        <!-- 基本积分公式 -->
+        <div class="card">
+            <h2>基本积分公式</h2>
+            <ul>
+                <li>$$\int \frac{1}{x} dx = \quad \rule{200px}{2px}$$</li>
+                <li>$$\int \tan x dx = \quad \rule{200px}{2px}$$</li>
+                <li>$$\int \cot x dx = \quad \rule{200px}{2px}$$</li>
+                <li>$$\int \sec x dx = \quad \rule{200px}{2px}$$</li>
+                <li>$$\int \csc x dx = \quad \rule{200px}{2px}$$</li>
+                <li>$$\int \sec^2 x dx = \quad \rule{200px}{2px}$$</li>
+                <li>$$\int \csc^2 x dx = \quad \rule{200px}{2px}$$</li>
+                <li>$$\int \sec x \tan x dx = \quad \rule{200px}{2px}$$</li>
+                <li>$$\int \csc x \cot x dx = \quad \rule{200px}{2px}$$</li>
+                <li>$$\int \frac{1}{1+x^2} dx = \quad \rule{200px}{2px}$$</li>
+                <li>$$\int \frac{1}{\sqrt{1-x^2}} dx = \quad \rule{200px}{2px}$$</li>
+                <li>$$\int \frac{1}{\sqrt{x^2+a^2}} dx = \quad \rule{200px}{2px}$$</li>
+                <li>$$\int \sqrt{a^2-x^2} dx = \quad \rule{200px}{2px}$$</li>
+            </ul>
+        </div>
+
+        <!-- 重要积分公式 -->
+        <div class="card">
+            <h2>重要积分公式</h2>
+            <ul>
+                <li>$$\int_0^\pi \sin^n x dx = \quad \rule{200px}{2px}$$</li>
+                <li>$$\int_0^{2\pi} \cos^n x dx = \quad \rule{200px}{2px}$$</li>
+                <li>$$\int_0^\pi x f(\sin x) dx = \quad \rule{200px}{2px}$$</li>
+            </ul>
+        </div>
+
+        <!-- 旋转体体积 -->
+        <div class="card">
+            <h2>旋转体体积</h2>
+            <ul>
+                <li>绕x轴旋转：$$V_x = \quad \rule{200px}{2px}$$</li>
+                <li>绕y轴旋转：$$V_y = \quad \rule{200px}{2px}$$</li>
+            </ul>
+        </div>
+
+        <!-- 曲率 -->
+        <div class="card">
+            <h2>曲率</h2>
+            <ul>
+                <li>直角坐标曲线的曲率：$$k = \quad \rule{200px}{2px}$$</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
