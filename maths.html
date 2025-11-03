@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -14,34 +13,39 @@
         }
         body {
             background-color: #f5f5f5;
-            padding: 20px;
+            padding: 15px;
         }
         .container {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1fr;
+            gap: 15px;
         }
         .card {
             background: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         .card h2 {
             color: #e63946;
             border-bottom: 2px solid #e63946;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            font-size: 18px;
         }
         .card ul {
             list-style: none;
         }
         .card li {
-            line-height: 2.2;
-            font-size: 16px;
+            line-height: 2.5;
+            font-size: 15px;
             color: #333;
+            padding: 2px 0;
+        }
+        mjx-container {
+            font-size: 14px !important;
         }
     </style>
 </head>
@@ -51,16 +55,26 @@
         <div class="card">
             <h2>泰勒公式</h2>
             <ul>
-                <li>$$e^x = \quad \rule{200px}{2px}$$</li>
-                <li>$$\sin x = \quad \rule{200px}{2px}$$</li>
-                <li>$$\cos x = \quad \rule{200px}{2px}$$</li>
-                <li>$$\ln(1+x) = \quad \rule{200px}{2px}$$</li>
-                <li>$$\frac{1}{1-x} = \quad \rule{200px}{2px}$$</li>
-                <li>$$\frac{1}{1+x} = \quad \rule{200px}{2px}$$</li>
-                <li>$$(1+x)^\alpha = \quad \rule{200px}{2px}$$</li>
-                <li>$$\tan x = \quad \rule{200px}{2px}$$</li>
-                <li>$$\arcsin x = \quad \rule{200px}{2px}$$</li>
-                <li>$$\arctan x = \quad \rule{200px}{2px}$$</li>
+                <li>$$e^x = \quad \rule{250px}{2px}$$</li>
+                <li>$$\sin x = \quad \rule{250px}{2px}$$</li>
+                <li>$$\cos x = \quad \rule{250px}{2px}$$</li>
+                <li>$$\ln(1+x) = \quad \rule{250px}{2px}$$</li>
+                <li>$$\frac{1}{1-x} = \quad \rule{250px}{2px}$$</li>
+                <li>$$\frac{1}{1+x} = \quad \rule{250px}{2px}$$</li>
+                <li>$$(1+x)^\alpha = \quad \rule{250px}{2px}$$</li>
+                <li>$$\tan x = \quad \rule{250px}{2px}$$</li>
+                <li>$$\arcsin x = \quad \rule{250px}{2px}$$</li>
+                <li>$$\arctan x = \quad \rule{250px}{2px}$$</li>
+            </ul>
+        </div>
+
+        <!-- 中值定理 -->
+        <div class="card">
+            <h2>中值定理</h2>
+            <ul>
+                <li>罗尔定理：若\( f(x) \)满足\(\begin{cases} [a,b]\text{连续} \\ (a,b)\text{可导} \\ f(a)=f(b) \end{cases}\)，则\(\exists \xi \in (a,b)\)，使$$\quad \rule{250px}{2px}$$</li>
+                <li>拉格朗日中值定理：若\( f(x) \)满足\(\begin{cases} [a,b]\text{连续} \\ (a,b)\text{可导} \end{cases}\)，则\(\exists \xi \in (a,b)\)，使$$f(b)-f(a) = \quad \rule{250px}{2px}$$</li>
+                <li>柯西中值定理：若\( f(x),g(x) \)满足\(\begin{cases} [a,b]\text{连续} \\ (a,b)\text{可导且}g'(x)\neq0 \end{cases}\)，则\(\exists \xi \in (a,b)\)，使$$\frac{f(b)-f(a)}{g(b)-g(a)} = \quad \rule{250px}{2px}$$</li>
             </ul>
         </div>
 
@@ -68,12 +82,22 @@
         <div class="card">
             <h2>常用不等式</h2>
             <ul>
-                <li>$$|a \pm b| \leq \quad \rule{200px}{2px}$$</li>
-                <li>$$\quad \rule{50px}{2px} \leq \frac{a+b}{2} \leq \quad \rule{100px}{2px}$$</li>
-                <li>$$\quad \rule{50px}{2px} \leq \frac{a+b+c}{3} \leq \quad \rule{100px}{2px}$$</li>
-                <li>$$\quad \rule{50px}{2px} < x < \quad \rule{100px}{2px}$$</li>
-                <li>$$e^x \geq \quad \rule{100px}{2px}$$</li>
-                <li>$$\ln(1+x) < \quad \rule{100px}{2px}$$</li>
+                <li>$$|a \pm b| \leq \quad \rule{250px}{2px}$$</li>
+                <li>$$\quad \rule{80px}{2px} \leq \frac{a+b}{2} \leq \quad \rule{150px}{2px}$$</li>
+                <li>$$\quad \rule{80px}{2px} \leq \frac{a+b+c}{3} \leq \quad \rule{150px}{2px}$$</li>
+                <li>$$\quad \rule{80px}{2px} < x < \quad \rule{150px}{2px}$$</li>
+                <li>$$e^x \geq \quad \rule{180px}{2px}$$</li>
+                <li>$$\ln(1+x) < \quad \rule{180px}{2px}$$</li>
+                <!-- 多元均值不等式 -->
+                <li>$$a_1+a_2+\dots+a_n \geq \quad \rule{220px}{2px} \ (a_i \geq 0)$$</li>
+                <!-- 柯西不等式 -->
+                <li>$$(a^2+b^2)(c^2+d^2) \geq \quad \rule{220px}{2px}$$</li>
+                <!-- 权方和不等式（形式1） -->
+                <li>$$\frac{a^2}{x} + \frac{b^2}{y} \geq \quad \rule{200px}{2px} \ (a,b \geq 0; x,y > 0)$$</li>
+                <!-- 权方和不等式（形式2） -->
+                <li>$$\frac{a_1^2}{b_1} + \frac{a_2^2}{b_2} + \dots + \frac{a_n^2}{b_n} \geq \quad \rule{200px}{2px} \ (a_i \geq 0; b_i > 0)$$</li>
+                <!-- 权方和不等式（形式3） -->
+                <li>$$\frac{a_1^{m+1}}{b_1^m} + \frac{a_2^{m+1}}{b_2^m} + \dots + \frac{a_n^{m+1}}{b_n^m} \geq \quad \rule{200px}{2px} \ (a_i \geq 0; b_i > 0; m > 0)$$</li>
             </ul>
         </div>
 
@@ -81,8 +105,8 @@
         <div class="card">
             <h2>等差数列</h2>
             <ul>
-                <li>通项公式 \( a_n = \quad \rule{200px}{2px} \)</li>
-                <li>前n项和 \( S_n = \quad \rule{200px}{2px} \)</li>
+                <li>通项公式 \( a_n = \quad \rule{250px}{2px} \)</li>
+                <li>前n项和 \( S_n = \quad \rule{250px}{2px} \)</li>
             </ul>
         </div>
 
@@ -90,8 +114,8 @@
         <div class="card">
             <h2>等比数列</h2>
             <ul>
-                <li>通项公式 \( a_n = \quad \rule{200px}{2px} \)</li>
-                <li>前n项和 \( S_n = \quad \rule{200px}{2px} \)</li>
+                <li>通项公式 \( a_n = \quad \rule{250px}{2px} \)</li>
+                <li>前n项和 \( S_n = \quad \rule{250px}{2px} \)</li>
             </ul>
         </div>
 
@@ -99,9 +123,9 @@
         <div class="card">
             <h2>常见前n项和</h2>
             <ul>
-                <li>$$\sum_{k=1}^n k = \quad \rule{200px}{2px}$$</li>
-                <li>$$\sum_{k=1}^n k^2 = \quad \rule{200px}{2px}$$</li>
-                <li>$$\sum_{k=1}^n \frac{1}{k(k+1)} = \quad \rule{200px}{2px}$$</li>
+                <li>$$\sum_{k=1}^n k = \quad \rule{250px}{2px}$$</li>
+                <li>$$\sum_{k=1}^n k^2 = \quad \rule{250px}{2px}$$</li>
+                <li>$$\sum_{k=1}^n \frac{1}{k(k+1)} = \quad \rule{250px}{2px}$$</li>
             </ul>
         </div>
 
@@ -109,19 +133,19 @@
         <div class="card">
             <h2>基本积分公式</h2>
             <ul>
-                <li>$$\int \frac{1}{x} dx = \quad \rule{200px}{2px}$$</li>
-                <li>$$\int \tan x dx = \quad \rule{200px}{2px}$$</li>
-                <li>$$\int \cot x dx = \quad \rule{200px}{2px}$$</li>
-                <li>$$\int \sec x dx = \quad \rule{200px}{2px}$$</li>
-                <li>$$\int \csc x dx = \quad \rule{200px}{2px}$$</li>
-                <li>$$\int \sec^2 x dx = \quad \rule{200px}{2px}$$</li>
-                <li>$$\int \csc^2 x dx = \quad \rule{200px}{2px}$$</li>
-                <li>$$\int \sec x \tan x dx = \quad \rule{200px}{2px}$$</li>
-                <li>$$\int \csc x \cot x dx = \quad \rule{200px}{2px}$$</li>
-                <li>$$\int \frac{1}{1+x^2} dx = \quad \rule{200px}{2px}$$</li>
-                <li>$$\int \frac{1}{\sqrt{1-x^2}} dx = \quad \rule{200px}{2px}$$</li>
-                <li>$$\int \frac{1}{\sqrt{x^2+a^2}} dx = \quad \rule{200px}{2px}$$</li>
-                <li>$$\int \sqrt{a^2-x^2} dx = \quad \rule{200px}{2px}$$</li>
+                <li>$$\int \frac{1}{x} dx = \quad \rule{250px}{2px}$$</li>
+                <li>$$\int \tan x dx = \quad \rule{250px}{2px}$$</li>
+                <li>$$\int \cot x dx = \quad \rule{250px}{2px}$$</li>
+                <li>$$\int \sec x dx = \quad \rule{250px}{2px}$$</li>
+                <li>$$\int \csc x dx = \quad \rule{250px}{2px}$$</li>
+                <li>$$\int \sec^2 x dx = \quad \rule{250px}{2px}$$</li>
+                <li>$$\int \csc^2 x dx = \quad \rule{250px}{2px}$$</li>
+                <li>$$\int \sec x \tan x dx = \quad \rule{250px}{2px}$$</li>
+                <li>$$\int \csc x \cot x dx = \quad \rule{250px}{2px}$$</li>
+                <li>$$\int \frac{1}{1+x^2} dx = \quad \rule{250px}{2px}$$</li>
+                <li>$$\int \frac{1}{\sqrt{1-x^2}} dx = \quad \rule{250px}{2px}$$</li>
+                <li>$$\int \frac{1}{\sqrt{x^2+a^2}} dx = \quad \rule{250px}{2px}$$</li>
+                <li>$$\int \sqrt{a^2-x^2} dx = \quad \rule{250px}{2px}$$</li>
             </ul>
         </div>
 
@@ -129,9 +153,9 @@
         <div class="card">
             <h2>重要积分公式</h2>
             <ul>
-                <li>$$\int_0^\pi \sin^n x dx = \quad \rule{200px}{2px}$$</li>
-                <li>$$\int_0^{2\pi} \cos^n x dx = \quad \rule{200px}{2px}$$</li>
-                <li>$$\int_0^\pi x f(\sin x) dx = \quad \rule{200px}{2px}$$</li>
+                <li>$$\int_0^\pi \sin^n x dx = \quad \rule{250px}{2px}$$</li>
+                <li>$$\int_0^{2\pi} \cos^n x dx = \quad \rule{250px}{2px}$$</li>
+                <li>$$\int_0^\pi x f(\sin x) dx = \quad \rule{250px}{2px}$$</li>
             </ul>
         </div>
 
@@ -139,8 +163,8 @@
         <div class="card">
             <h2>旋转体体积</h2>
             <ul>
-                <li>绕x轴旋转：$$V_x = \quad \rule{200px}{2px}$$</li>
-                <li>绕y轴旋转：$$V_y = \quad \rule{200px}{2px}$$</li>
+                <li>绕x轴旋转：$$V_x = \quad \rule{250px}{2px}$$</li>
+                <li>绕y轴旋转：$$V_y = \quad \rule{250px}{2px}$$</li>
             </ul>
         </div>
 
@@ -148,7 +172,26 @@
         <div class="card">
             <h2>曲率</h2>
             <ul>
-                <li>直角坐标曲线的曲率：$$k = \quad \rule{200px}{2px}$$</li>
+                <li>直角坐标曲线的曲率：$$k = \quad \rule{250px}{2px}$$</li>
+            </ul>
+        </div>
+
+        <!-- 微分方程 -->
+        <div class="card">
+            <h2>微分方程（一阶）</h2>
+            <ul>
+                <li>可分离变量方程 \( \frac{dy}{dx} = f(x)g(y) \)：解法为$$\quad \rule{250px}{2px}$$</li>
+                <li>一阶线性微分方程 \( \frac{dy}{dx} + P(x)y = Q(x) \)：通解为$$y = \quad \rule{250px}{2px}$$</li>
+            </ul>
+        </div>
+
+        <!-- 线性代数 -->
+        <div class="card">
+            <h2>线性代数（基础）</h2>
+            <ul>
+                <li>二阶行列式 \( \begin{vmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{vmatrix} = \quad \rule{250px}{2px} \)</li>
+                <li>矩阵乘法：若\( A=(a_{ij})_{m \times n}, B=(b_{ij})_{n \times p} \)，则\( AB = \quad \rule{250px}{2px} \)</li>
+                <li>逆矩阵定义：若\( AB=BA=E \)，则\( B = \quad \rule{250px}{2px} \)</li>
             </ul>
         </div>
     </div>
