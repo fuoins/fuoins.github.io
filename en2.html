@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>词汇练习：中文→英文</title>
+    <style>
+        body { font-family: 微软雅黑, sans-serif; max-width: 800px; margin: 20px auto; padding: 0 20px; }
+        .vocab-item { margin: 15px 0; padding: 10px; border-bottom: 1px dashed #ccc; }
+        input { padding: 5px; width: 200px; margin-left: 10px; }
+        button { padding: 8px 20px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #45a049; }
+        .answer { color: #2196F3; font-weight: bold; margin-left: 10px; display: none; }
+    </style>
+</head>
+<body>
+    <h1>词汇练习：根据中文写英文</h1>
+    <div id="vocab-container">
+        <!-- 动态生成打乱的词汇题 -->
+    </div>
+    <br>
+    <button onclick="showAnswers()">显示答案</button>
+
+    <script>
+        // 词汇列表（中文:英文）
+        const vocabList = {
+            "文明": "civilization",
+            "遵守，奉行（宗教或习俗）": "observe",
+            "对……产生影响": "have an influence on",
+            "方面": "aspect",
+            "碧玉；翡翠": "jade",
+            "珍稀的；贵重的": "precious",
+            "土生土长的；当地的": "native",
+            "缅甸（东南亚国家）": "Myanmar",
+            "美德": "virtue",
+            "孔子（551—479 B.C.，春秋末期思想家）": "Confucius",
+            "忠诚；忠实；忠贞": "loyalty",
+            "真诚；真挚": "sincerity",
+            "（书写、印刷或计算机上的）字，字体，符号": "character",
+            "显示；反映": "reflect",
+            "品德；品性": "quality",
+            "（某种观念或特征的）代表，标志物": "symbol",
+            "诚实；正直": "integrity",
+            "坚决；坚定": "resolution",
+            "谦虚；谦逊": "modesty",
+            "植根于；来源于": "be rooted in",
+            "后代；后裔": "descendant",
+            "追溯": "trace sth. back to",
+            "黄帝（传说中中原各族的共同祖先）": "Yellow Emperor",
+            "祖先；祖宗": "ancestor",
+            "财富": "fortune",
+            "长袍；袍服": "robe"
+        };
+
+        // 打乱词汇顺序
+        const shuffledKeys = Object.keys(vocabList).sort(() => Math.random() - 0.5);
+
+        // 生成题目
+        const container = document.getElementById('vocab-container');
+        shuffledKeys.forEach((chinese, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'vocab-item';
+            itemDiv.innerHTML = `
+                <span>${index + 1}. ${chinese}</span>
+                <input type="text" placeholder="请输入英文">
+                <span class="answer" data-answer="${vocabList[chinese]}"></span>
+            `;
+            container.appendChild(itemDiv);
+        });
+
+        // 显示答案
+        function showAnswers() {
+            const answers = document.querySelectorAll('.answer');
+            answers.forEach(ans => {
+                ans.textContent = ans.getAttribute('data-answer');
+                ans.style.display = 'inline';
+            });
+        }
+    </script>
+</body>
+</html>
