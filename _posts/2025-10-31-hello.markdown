@@ -1,12 +1,13 @@
 ---
 layout:       post
 title:        "first md 瞎几把写一个md"
+subtitle: "首个md"
 author:       "Zy"
 header-style: text
 #### header-img: "img/a.jpg" 
 catalog:      true
 tags:
-    
+  - 练习   
 ---
 
 - [英语单词练习1](https://fuoins.github.io/en1.html)
