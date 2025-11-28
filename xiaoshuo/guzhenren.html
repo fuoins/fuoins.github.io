@@ -408,6 +408,13 @@
             color: #666;
             font-size: 0.9em;
         }
+        /* 章节信息 */
+        .chapter-info2 {
+            text-align: center;
+            
+            color: #666;
+            font-size: 0.9em;
+        }
         
         /* 移动端适配 */
         @media (max-width: 768px) {
@@ -564,32 +571,65 @@
         <div class="overlay" id="overlay"></div>
 
         <!-- 阅读区 -->
-        <div class="reader" id="readerArea">
-            <div class="reader-loading">
-                <i class="fas fa-book-open" style="font-size: 48px; margin-bottom: 20px; color: #cbd5e0;"></i>
-                <p>正在加载小说...</p>
-            </div>
-            <div id="chapterContainer" style="display: none;">
-                <div class="chapter-info" id="chapterInfo"></div>
-                <div class="novel-content" id="novelContent"></div>
-            </div>
-        </div>
-
-        <!-- 侧边栏开关按钮 -->
-        <button class="toggle-btn" id="toggleBtn" title="打开目录">
-            <i class="fas fa-bars"></i>
-        </button>
-
-        <!-- 章节导航按钮 -->
-        <div class="chapter-nav">
-            <button class="nav-btn" id="prevChapter" title="上一章"><i class="fas fa-chevron-up"></i></button>
-            <button class="nav-btn" id="nextChapter" title="下一章"><i class="fas fa-chevron-down"></i></button>
-        </div>
+<div class="reader" id="readerArea">
+    <div class="reader-loading">
+        <i class="fas fa-book-open" style="font-size: 48px; margin-bottom: 20px; color: #cbd5e0;"></i>
+        <p>正在加载小说...</p>
     </div>
+    <div id="chapterContainer" style="display: none; max-width: 800px; margin: 0 auto;">
+        <!-- 章节信息与导航按钮容器 -->
+        <div style="position: relative; margin-bottom: 20px; padding: 0 50px;">
+            <!-- 章节信息 -->
+            <div class="chapter-info" id="chapterInfo" style="text-align: center;">
+                <!-- 章节标题会在这里显示 -->
+            </div>
+        
+            <!-- 上一章按钮（左侧） -->
+            <button class="nav-btn" id="prevChapter" title="上一章" style="position: absolute; left: 150px; top: 50%; transform: translateY(-50%); z-index: 10;">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div></div> 
+            <!-- 下一章按钮（右侧） -->
+            <button class="nav-btn" id="nextChapter" title="下一章" style="position: absolute; right: 150px; top: 50%; transform: translateY(-50%); z-index: 10;">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        
+        
+        <div class="novel-content" id="novelContent">
+            
+        </div>
+        <div class="chapter-info2" style="text-align: center; position: relative; padding: 0 50px; margin-top: 20px;">
+            <!-- 上一章按钮（左侧） -->
+            <button class="nav-btn" id="prevChapter2" title="上一章" style="position: absolute; left: 150px; top: 50%; transform: translateY(-50%); z-index: 10;">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            
+            进度
+            
+            <!-- 下一章按钮（右侧） -->
+            <button class="nav-btn" id="nextChapter2" title="下一章" style="position: absolute; right: 150px; top: 50%; transform: translateY(-50%); z-index: 10;">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    
+
+
+ 
+
+
+
+ 
+    </div>
+</div>
+      <!-- 侧边栏开关按钮 -->
+      <button class="toggle-btn" id="toggleBtn" title="打开目录">
+        <i class="fas fa-bars"></i>
+    </button>  
 
     <script>
         const NOVEL_FILE = "123.txt";
-        
+        const progressPercentage = (index / chapters.length * 100).toFixed(2);
         // 元素获取
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
@@ -604,8 +644,11 @@
         const fontDefault = document.getElementById('fontDefault');
         const fontLarger = document.getElementById('fontLarger');
         const prevChapter = document.getElementById('prevChapter');
+        const prevChapter2 = document.getElementById('prevChapter2');
         const nextChapter = document.getElementById('nextChapter');
+        const nextChapter2 = document.getElementById('nextChapter2');
         const chapterInfo = document.getElementById('chapterInfo');
+        
         const chapterContainer = document.getElementById('chapterContainer');
         const tocSearch = document.getElementById('tocSearch');
         const matchCount = document.getElementById('matchCount');
@@ -662,6 +705,7 @@
                 }
             }, 300);
         };
+        
         
         // 初始化侧边栏开关
         function initSidebarToggle() {
@@ -732,7 +776,7 @@
                 }
             }, 100);
         }
-        
+        document.getElementById('progressDisplay').textContent = `${progressPercentage}%`;
         // 添加高亮闪烁动画
         const style = document.createElement('style');
         style.textContent = `
@@ -918,6 +962,18 @@
                     showChapter(currentChapterIndex + 1);
                 }
             });
+            // 章节导航
+            prevChapter2.addEventListener('click', () => {
+                if (currentChapterIndex > 0) {
+                    showChapter(currentChapterIndex - 1);
+                }
+            });
+            
+            nextChapter2.addEventListener('click', () => {
+                if (currentChapterIndex < chapters.length - 1) {
+                    showChapter(currentChapterIndex + 1);
+                }
+            });
             
             // 点击阅读区关闭侧边栏
             readerArea.addEventListener('click', (e) => {
@@ -930,26 +986,68 @@
                     toggleBtn.title = '打开目录';
                 }
             });
+        // 整合后的键盘导航：左右滚动页面，上下切换章节
+document.addEventListener('keydown', (e) => {
+    const reader = document.getElementById('readerArea');
+    const content = document.getElementById('novelContent');
             
-            // 键盘导航
-            document.addEventListener('keydown', (e) => {
-                // 上箭头或左箭头 - 上一章
-                if ((e.key === 'ArrowUp' || e.key === 'ArrowLeft') && currentChapterIndex > 0) {
-                    showChapter(currentChapterIndex - 1);
-                }
-                // 下箭头或右箭头 - 下一章
-                if ((e.key === 'ArrowDown' || e.key === 'ArrowRight') && currentChapterIndex < chapters.length - 1) {
+            // 3. 左右箭头：控制当前章节内页面滚动或章节切换
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault(); // 阻止默认滚动行为
+
+        const lineHeight = parseFloat(window.getComputedStyle(content).lineHeight);
+        const keepHeight = lineHeight * 0.5; // 保留 2 行高度
+        const viewportHeight = reader.clientHeight;
+        const contentHeight = content.scrollHeight;
+        const currentScrollTop = reader.scrollTop;
+
+        // 判断是否已滚动到内容底部（考虑 1px 误差）
+        // 当视口底部与内容底部的距离小于等于要保留的高度时，视为已到底部
+        const isAtBottom = (contentHeight - (currentScrollTop + viewportHeight)) <= keepHeight + 1;
+        
+        // 判断是否已滚动到内容顶部
+        const isAtTop = currentScrollTop <= 1;
+
+        // 右箭头 - 下一页或下一章
+        if (e.key === 'ArrowRight') {
+            // 如果已到底部，并且不是最后一章，则切换到下一章
+            if (isAtBottom) {
+                if (currentChapterIndex < chapters.length - 1) {
                     showChapter(currentChapterIndex + 1);
                 }
-                // ESC键关闭侧边栏
-                if (e.key === 'Escape' && sidebar.classList.contains('show')) {
-                    sidebar.classList.remove('show');
-                    overlay.classList.remove('show');
-                    toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
-                    toggleBtn.title = '打开目录';
-                }
-            });
+                // 如果是最后一章，则不做任何操作（或可提示）
+            } else {
+                // 否则，正常向下滚动一页
+                const scrollStep = viewportHeight - keepHeight;
+                reader.scrollBy({ top: scrollStep, behavior: 'smooth' });
+            }
         }
+        // 左箭头 - 上一页或上一章
+        else if (e.key === 'ArrowLeft') {
+            // 如果已到顶部，并且不是第一章，则切换到上一章
+            if (isAtTop) {
+                if (currentChapterIndex > 0) {
+                    showChapter(currentChapterIndex - 1);
+                }
+                // 如果是第一章，则不做任何操作（或可提示）
+            } else {
+                // 否则，正常向上滚动一页
+                const scrollStep = viewportHeight - keepHeight;
+                reader.scrollBy({ top: -scrollStep, behavior: 'smooth' });
+            }
+        }
+    }
+    
+    // 4. 上下箭头：控制章节切换
+    if (e.key === 'ArrowUp' && currentChapterIndex > 0) {
+        showChapter(currentChapterIndex - 1);
+    }
+    if (e.key === 'ArrowDown' && currentChapterIndex < chapters.length - 1) {
+        showChapter(currentChapterIndex + 1);
+    }
+});
+}
+        
         
         // 加载小说内容
         function loadNovel(filePath) {
@@ -1088,6 +1186,9 @@
             // 更新导航按钮状态
             prevChapter.disabled = index === 0;
             nextChapter.disabled = index === chapters.length - 1;
+            // 更新导航按钮状态
+            prevChapter2.disabled = index === 0;
+            nextChapter2.disabled = index === chapters.length - 1;
             
             // 滚动到顶部
             readerArea.scrollTop = 0;
