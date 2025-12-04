@@ -11,6 +11,8 @@
         button { padding: 6px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
         .show-single-btn { background: #4CAF50; color: white; }
         .show-single-btn:hover { background: #45a049; }
+        .show-all-btn { background: #2196F3; color: white; margin-right: 10px; }
+        .show-all-btn:hover { background: #1976D2; }
         .reset-btn { background: #f44336; color: white; }
         .reset-btn:hover { background: #d32f2f; }
         .answer { margin-left: 10px; font-weight: bold; color: #2196F3; display: none; }
@@ -23,6 +25,7 @@
         <!-- 动态生成打乱的词汇题 -->
     </div>
     <div class="btn-group">
+        <button class="show-all-btn" onclick="showAllAnswers()">全部显示答案</button>
         <button class="reset-btn" onclick="resetExercise()">重新排序/重置答案</button>
     </div>
 
@@ -116,12 +119,11 @@
             shuffledKeys.forEach((chinese, index) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'vocab-item';
-                // 每个词汇右侧添加独立"显示答案"按钮
                 itemDiv.innerHTML = `
                     <span>${index + 1}.</span>
                     <span class="chinese">${chinese}</span>
                     <button class="show-single-btn" onclick="showSingleAnswer(this, '${vocabList[chinese].toLowerCase()}')">显示答案</button>
-                    <span class="answer"></span>
+                    <span class="answer" data-answer="${vocabList[chinese].toLowerCase()}"></span>
                 `;
                 container.appendChild(itemDiv);
             });
@@ -132,11 +134,27 @@
             const answerElem = btn.nextElementSibling;
             answerElem.textContent = correctAnswer;
             answerElem.style.display = 'inline';
-            btn.disabled = true; // 防止重复点击
-            btn.style.opacity = '0.6'; // 视觉反馈
+            btn.disabled = true;
+            btn.style.opacity = '0.6';
         }
 
-        // 重置练习（重新排序+隐藏所有答案）
+        // 显示所有词汇的答案
+        function showAllAnswers() {
+            const answerElems = document.querySelectorAll('.answer');
+            const singleBtns = document.querySelectorAll('.show-single-btn');
+            
+            answerElems.forEach(elem => {
+                elem.textContent = elem.getAttribute('data-answer');
+                elem.style.display = 'inline';
+            });
+            
+            singleBtns.forEach(btn => {
+                btn.disabled = true;
+                btn.style.opacity = '0.6';
+            });
+        }
+
+        // 重置练习（重新排序+隐藏所有答案+启用按钮）
         function resetExercise() {
             initExercise();
         }
