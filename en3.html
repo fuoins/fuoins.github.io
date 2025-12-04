@@ -5,39 +5,30 @@
     <title>词汇练习：中文→英文</title>
     <style>
         body { font-family: 微软雅黑, sans-serif; max-width: 800px; margin: 20px auto; padding: 0 20px; }
-        .vocab-item { margin: 15px 0; padding: 10px; border-bottom: 1px dashed #ccc; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .vocab-item span:first-child { flex: 0 0 60px; text-align: right; }
-        .vocab-item .chinese { flex: 1; min-width: 200px; }
-        input { padding: 5px; width: 220px; flex: 0 0 220px; }
-        button { padding: 8px 20px; border: none; border-radius: 4px; cursor: pointer; margin: 0 5px; }
-        .check-btn { background: #2196F3; color: white; }
-        .check-btn:hover { background: #1976D2; }
-        .show-ans-btn { background: #4CAF50; color: white; }
-        .show-ans-btn:hover { background: #45a049; }
+        .vocab-item { margin: 15px 0; padding: 10px; border-bottom: 1px dashed #ccc; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .vocab-item span:first-child { flex: 0 0 60px; text-align: right; font-weight: 500; }
+        .vocab-item .chinese { flex: 1; min-width: 200px; font-size: 16px; }
+        button { padding: 6px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .show-single-btn { background: #4CAF50; color: white; }
+        .show-single-btn:hover { background: #45a049; }
         .reset-btn { background: #f44336; color: white; }
         .reset-btn:hover { background: #d32f2f; }
-        .answer { margin-left: 10px; font-weight: bold; display: none; }
-        .correct { color: #4CAF50; }
-        .incorrect { color: #f44336; }
-        .wrong-mark { color: #ff9800; margin-left: 5px; display: none; }
-        .btn-group { margin: 20px 0; }
+        .answer { margin-left: 10px; font-weight: bold; color: #2196F3; display: none; }
+        .btn-group { margin: 20px 0; text-align: center; }
     </style>
 </head>
 <body>
-    <h1>词汇练习：根据中文写英文</h1>
+    <h1>词汇练习：中文→英文（查看答案模式）</h1>
     <div id="vocab-container">
         <!-- 动态生成打乱的词汇题 -->
     </div>
     <div class="btn-group">
-        <button class="check-btn" onclick="checkAnswers()">校验答案</button>
-        <button class="show-ans-btn" onclick="showAnswers()">显示答案</button>
-        <button class="reset-btn" onclick="resetExercise()">重新练习</button>
+        <button class="reset-btn" onclick="resetExercise()">重新排序/重置答案</button>
     </div>
 
     <script>
-        // 仅保留单词的词汇列表（已删除所有词组/短语）
+        // 词汇列表（保持原数据）
         const vocabList = {
-            // 第一组图片词汇
             "真诚；真挚": "sincerity",
             "（书写、印刷或计算机上的）字，字体，符号": "character",
             "显示；反映": "reflect",
@@ -50,7 +41,6 @@
             "祖先；祖宗": "ancestor",
             "财富": "fortune",
             "长袍；袍服": "robe",
-            // 第二组图片词汇
             "杰作；名作；代表作": "masterpiece",
             "西班牙的；西班牙人的；西班牙语的": "Spanish",
             "（图片或照片的）前景": "foreground",
@@ -75,7 +65,6 @@
             "原则；原理；基本的观念": "principle",
             "车库；停车房": "garage",
             "排印；版面设计": "typography",
-            // 第三组图片词汇
             "会议": "conference",
             "住所；寓所": "quarters",
             "建筑师": "architect",
@@ -96,7 +85,6 @@
             "给（某人）当家庭教师；指导": "tutor",
             "智慧；才智": "wisdom",
             "有深刻了解的；富有洞察力的": "insightful",
-            // 第四组图片词汇
             "科幻小说": "science fiction",
             "礼貌；礼仪": "manners",
             "渴望；热切": "eagerness",
@@ -119,57 +107,36 @@
             "实际的；真实的": "actual"
         };
 
-        // 初始化练习
+        // 初始化练习（生成词汇项和独立按钮）
         function initExercise() {
             const container = document.getElementById('vocab-container');
-            container.innerHTML = ''; // 清空容器
+            container.innerHTML = '';
             const shuffledKeys = Object.keys(vocabList).sort(() => Math.random() - 0.5);
             
             shuffledKeys.forEach((chinese, index) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'vocab-item';
+                // 每个词汇右侧添加独立"显示答案"按钮
                 itemDiv.innerHTML = `
                     <span>${index + 1}.</span>
                     <span class="chinese">${chinese}</span>
-                    <input type="text" placeholder="请输入英文" class="user-input">
-                    <span class="answer" data-answer="${vocabList[chinese].toLowerCase()}"></span>
-                    <span class="wrong-mark" style="display: none;">⚠️ 答案错误</span>
+                    <button class="show-single-btn" onclick="showSingleAnswer(this, '${vocabList[chinese].toLowerCase()}')">显示答案</button>
+                    <span class="answer"></span>
                 `;
                 container.appendChild(itemDiv);
             });
         }
 
-        // 校验答案（忽略大小写）
-        function checkAnswers() {
-            const inputs = document.querySelectorAll('.user-input');
-            const answers = document.querySelectorAll('.answer');
-            const wrongMarks = document.querySelectorAll('.wrong-mark');
-            
-            inputs.forEach((input, index) => {
-                const userAnswer = input.value.trim().toLowerCase();
-                const correctAnswer = answers[index].getAttribute('data-answer');
-                const isCorrect = userAnswer === correctAnswer;
-                
-                answers[index].style.display = 'inline';
-                answers[index].textContent = correctAnswer;
-                answers[index].className = isCorrect ? 'answer correct' : 'answer incorrect';
-                wrongMarks[index].style.display = isCorrect ? 'none' : 'inline';
-                input.disabled = true;
-            });
+        // 显示单个词汇的答案
+        function showSingleAnswer(btn, correctAnswer) {
+            const answerElem = btn.nextElementSibling;
+            answerElem.textContent = correctAnswer;
+            answerElem.style.display = 'inline';
+            btn.disabled = true; // 防止重复点击
+            btn.style.opacity = '0.6'; // 视觉反馈
         }
 
-        // 显示所有答案
-        function showAnswers() {
-            const answers = document.querySelectorAll('.answer');
-            answers.forEach(ans => {
-                ans.textContent = ans.getAttribute('data-answer');
-                ans.style.display = 'inline';
-                ans.className = 'answer correct';
-            });
-            document.querySelectorAll('.user-input').forEach(input => input.disabled = true);
-        }
-
-        // 重置练习
+        // 重置练习（重新排序+隐藏所有答案）
         function resetExercise() {
             initExercise();
         }
