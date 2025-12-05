@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="renderer" content="webkit" />
+    <meta name="screen-orientation" content="portrait" />
+    <meta name="x5-orientation" content="portrait" />
+    <title>渤海大学 - 特色活动与校园展览</title>
+    <link rel="stylesheet" type="text/css" href="css/slippry.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+
+<body class="neibody">
+
+    <div class="top">
+        <div class="w1200">
+            <ul>
+                <li>
+                    <a href="index.html">网站首页 </a>
+                </li>
+                <li>
+                    <a href="details.html">渤大学术讲坛<b></b></a>
+                </li>
+                <li>
+                    <a href="case.html">学科成果 </a>
+                </li>
+                <li>
+                    <a href="serviceprice.html">特色活动</a>
+                </li>
+                <li>
+                    <a href="news.html">历史沿革</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="neibanenr">
+        <img src="img/zgbanner.jpg" alt="渤海大学特色活动banner" />
+    </div>
+
+    <div class="pricepage">
+        <div class="neitit">
+
+            <b class="b1"></b>
+            <h3>
+                <span>渤海大学 </span><b>ACTIVITIES</b><b style="padding-right: 5px;">特色</b><span>活动与展览</span>
+            </h3>
+            <br>
+        </div>
+        <div class="w1200">
+            <ul>
+                <li>
+                    <a href="">
+                        <figure><img src="img/jg1.jpg" /></figure>
+                        <figcaption>
+                            <h3>大学生科技文化节</h3>
+                            <strong><b>活动地点：渤海大学体育场、实验楼</b></strong>
+                            <span>点击查看详情</span>
+                            <p>活动时间：每年5月-6月【年度常设】面向全校师生，含科技竞赛、成果展示、科普讲座等板块</p>
+                        </figcaption>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <figure><img src="img/jg2.jpg" /></figure>
+                        <figcaption>
+                            <h3>校园文化艺术节</h3>
+                            <strong><b>活动地点：渤海大学礼堂、大学生活动中心</b></strong>
+                            <span>点击查看详情</span>
+                            <p>活动时间：每年10月-11月【年度常设】涵盖文艺汇演、书画摄影展、非遗进校园等内容</p>
+                        </figcaption>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <figure><img src="img/jg3.jpg" /></figure>
+                        <figcaption>
+                            <h3>年度科研成果展暨学术论坛</h3>
+                            <strong><b>活动地点：渤海大学图书馆报告厅、展览厅</b></strong>
+                            <span>点击查看详情</span>
+                            <p>活动时间：每年12月【年度常设】展示国家级/省部级课题成果，邀请行业专家交流研讨</p>
+                        </figcaption>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <figure><img src="img/jg4.jpg" /></figure>
+                        <figcaption>
+                            <h3>"书香渤大"读书月系列活动</h3>
+                            <strong><b>活动地点：渤海大学图书馆</b></strong>
+                            <span>点击查看详情</span>
+                            <p>活动时间：每年4月【年度常设】含名家讲座、读书分享会、典籍特展等，面向师生及市民开放</p>
+                        </figcaption>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <figure><img src="img/jg5.jpg" /></figure>
+                        <figcaption>
+                            <h3>毕业生就业双选会（春/秋）</h3>
+                            <strong><b>活动地点：渤海大学体育馆</b></strong>
+                            <span>点击查看详情</span>
+                            <p>活动时间：每年3月、11月【年度常设】邀请省内外300+企业参会，提供就业岗位超10000个</p>
+                        </figcaption>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/flexslider-min.js"></script>
+    <script src="js/SuperSlide.2.1.3.js"></script>
+    <script src="js/slippry.min.js"></script>
+    <script src="js/more.js"></script>
+
+    <script>
+        var thumbs = jQuery('#thumbnails').slippry({
+              
+            slippryWrapper: '<div class="slippry_box thumbnails" />',
+              
+            transition: 'horizontal',
+            pager: false,
+            auto: false,
+            onSlideBefore: function(el, index_old, index_new) {
+                jQuery('.thumbs a img').removeClass('active');
+                jQuery('img', jQuery('.thumbs a')[index_new]).addClass('active');
+            }
+        });
+
+        jQuery('.thumbs a').click(function() {
+            thumbs.goToSlide($(this).data('slide'));
+            return false;
+        });
+    </script>
+
+</body>
+
+</html>
