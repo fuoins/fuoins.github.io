@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="renderer" content="webkit" />
+    <meta name="screen-orientation" content="portrait" />
+    <meta name="x5-orientation" content="portrait" />
+    <title>渤海大学</title>
+    <link rel="stylesheet" type="text/css" href="css/slippry.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <style>
+        .jq {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #0066cc;
+        }
+                  #thumbnails {
+            display: block;
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+        }
+        #thumbnails li {
+            display: none;
+        }
+        #thumbnails li:first-child {
+            display: block;
+        }
+        #thumbnails img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+                  .thumbs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .thumbs li {
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        .thumbs li.active {
+            opacity: 1;
+            border: 2px solid #0066cc;
+        }
+        .thumbs img {
+            width: 120px;
+            height: 80px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body class="body">
+
+    <div class="top">
+        <div class="w1200">
+            <ul>
+                <li>
+                    <a href="index.html">网站首页 </a>
+                </li>
+                <li>
+                    <a href="details.html">渤大学术讲坛<b></b></a>
+                </li>
+                <li>
+                    <a href="case.html">学科成果 </a>
+                </li>
+                <li>
+                    <a href="serviceprice.html">特色活动</a>
+                </li>
+                <li>
+                    <a href="news.html">历史沿革</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="clearfix banner">
+        <div class="flexslider ">
+            <ul class="slides">
+                <li>
+                    <img src="img/banner1.jpg" width="100%" height="auto" alt="渤海大学校门" />
+                </li>
+                <li>
+                    <img src="img/banner2.jpg" width="100%" height="auto" alt="渤海大学图书馆" />
+                </li>
+                <li>
+                    <img src="img/banner3.jpg" width="100%" height="auto" alt="渤海大学明湖广场" />
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="index-sec1">
+        <div class="w1200">
+            <div class="tit">
+                <p class="jq">校园四季风光</p>
+            </div>
+            <ul class="clearfix">
+                <li>
+                    <figure><img src="img/立春.jpg" /></figure>
+                    <p>春满校园</p>
+                </li>
+                <li>
+                    <figure><img src="img/惊蛰.jpg" /></figure>
+                    <p>夏日葱郁</p>
+                </li>
+                <li>
+                    <figure><img src="img/清明.jpg" /></figure>
+                    <p>金秋硕果</p>
+                </li>
+                <li>
+                    <figure><img src="img/大暑.jpg" /></figure>
+                    <p>冬日雪景</p>
+                </li>
+                <li>
+                    <figure><img src="img/白露.jpg" /></figure>
+                    <p>明湖晨景</p>
+                </li>
+                <li>
+                    <figure><img src="img/霜降.jpg" /></figure>
+                    <p>生态校园</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="index-sec2">
+        <div class="tit">
+            <p class="jq">优势学科展示</p>
+        </div>
+        <div class="box">
+            <div class="htmleaf-content">
+                <!-- 大图展示区 -->
+                <ul id="thumbnails">
+                    <li id="edu-img"><img src="img/清明上河图.jpg" alt="教育学"></li>
+                    <li id="chinese-img"><img src="img/平复帖.jpg" alt="中国语言文学"></li>
+                    <li id="math-img"><img src="img/李白草书上阳台帖.jpg" alt="数学"></li>
+                    <li id="cs-img"><img src="img/千里江山图.jpg" alt="计算机科学与技术"></li>
+                    <li id="food-img"><img src="img/韩熙载夜宴图.jpg" alt="食品科学与工程"></li>
+                    <li id="biz-img"><img src="img/王献之行书中秋帖卷.jpg" alt="工商管理"></li>
+                </ul>
+                <!-- 缩略图选择区，第一个默认添加active类 -->
+                <div class="thumb-box">
+                    <ul class="thumbs">
+                        <li data-target="edu-img" class="active">
+                            <img src="img/清明上河图.jpg" alt="教育学">
+                            <p>教育学</p>
+                        </li>
+                        <li data-target="chinese-img">
+                            <img src="img/平复帖.jpg" alt="中国语言文学">
+                            <p>中国语言文学</p>
+                        </li>
+                        <li data-target="math-img">
+                            <img src="img/李白草书上阳台帖.jpg" alt="数学">
+                            <p>数学</p>
+                        </li>
+                        <li data-target="cs-img">
+                            <img src="img/千里江山图.jpg" alt="计算机科学与技术">
+                            <p>计算机科学与技术</p>
+                        </li>
+                        <li data-target="food-img">
+                            <img src="img/韩熙载夜宴图.jpg" alt="食品科学与工程">
+                            <p>食品科学与工程</p>
+                        </li>
+                        <li data-target="biz-img">
+                            <img src="img/王献之行书中秋帖卷.jpg" alt="工商管理">
+                            <p>工商管理</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="index-sec4">
+        <div class="tit">
+            <p class="jq">校园标志性建筑</p>
+        </div>
+        <div class="box">
+            <ul>
+                <li>
+                    <strong>01</strong>
+                    <h3>图书馆</h3>
+                    <p>Library</p>
+                </li>
+                <li>
+                    <strong>02</strong>
+                    <h3>教学主楼</h3>
+                    <p>Main Teaching Building</p>
+                </li>
+                <li>
+                    <strong>03</strong>
+                    <h3>明湖广场</h3>
+                    <p>Minghu Square</p>
+                </li>
+                <li>
+                    <strong>04</strong>
+                    <h3>体育馆</h3>
+                    <p>Gymnasium</p>
+                </li>
+                <li>
+                    <strong>05</strong>
+                    <h3>实验楼</h3>
+                    <p>Experimental Building</p>
+                </li>
+                <li>
+                    <strong>06</strong>
+                    <h3>大学生活动中心</h3>
+                    <p>University Student Activity Center</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/flexslider-min.js"></script>
+    <script src="js/SuperSlide.2.1.3.js"></script>
+    <script src="js/slippry.min.js"></script>
+    <script src="js/more.js"></script>
+    <script>
+        $(function() {
+              
+            $('#thumbnails li:first-child').show();
+            
+              
+            $('.thumbs li').click(function() {
+                  
+                $('.thumbs li').removeClass('active');
+                $('#thumbnails li').hide();
+                
+                  
+                $(this).addClass('active');
+                const targetId = $(this).data('target');
+                $(`#${targetId}`).show();
+            });
+
+              
+            $('.flexslider').flexslider({
+                animation: "slide",
+                slideshowSpeed: 5000,
+                animationSpeed: 600,
+                pauseOnAction: false
+            });
+        });
+    </script>
+
+</body>
+
+</html>
