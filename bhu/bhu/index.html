@@ -21,7 +21,7 @@
             font-weight: 700;
             color: #0066cc;
         }
-                  #thumbnails {
+        #thumbnails {
             display: block;
             position: relative;
             width: 100%;
@@ -30,16 +30,23 @@
         }
         #thumbnails li {
             display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.5s ease;
         }
-        #thumbnails li:first-child {
+        #thumbnails li.active {
             display: block;
+            opacity: 1;
         }
         #thumbnails img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-                  .thumbs {
+        .thumbs {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
@@ -50,6 +57,7 @@
             cursor: pointer;
             opacity: 0.7;
             transition: all 0.3s ease;
+            list-style: none;
         }
         .thumbs li.active {
             opacity: 1;
@@ -60,11 +68,71 @@
             height: 80px;
             object-fit: cover;
         }
+        .flexslider {
+            position: relative;
+            width: 80%; 
+            height: 300px; 
+            margin: 0 auto; 
+            overflow: hidden;
+            border-radius: 8px; 
+        }
+        .slides {
+            display: flex;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            transition: transform 0.5s ease;
+            height: 100%;
+        }
+        .slides li {
+            flex: 0 0 100%;
+            height: 100%;
+        }
+        .slides img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+        }
+        .slider-pagination {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+        .pagination-item {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0066cc;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .pagination-item.active {
+            background-color: #0066cc;
+            color: white;
+            transform: scale(1.1);
+        }
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
     </style>
 </head>
 
 <body class="body">
-
     <div class="top">
         <div class="w1200">
             <ul>
@@ -86,19 +154,25 @@
             </ul>
         </div>
     </div>
+    
     <div class="clearfix banner">
-        <div class="flexslider ">
+        <div class="flexslider">
             <ul class="slides">
                 <li>
-                    <img src="img/banner1.jpg" width="100%" height="auto" alt="渤海大学校门" />
+                    <img src="img/banner1.jpg" alt="渤海大学校门" />
                 </li>
                 <li>
-                    <img src="img/banner2.jpg" width="100%" height="auto" alt="渤海大学图书馆" />
+                    <img src="img/banner2.jpg" alt="渤海大学图书馆" />
                 </li>
                 <li>
-                    <img src="img/banner3.jpg" width="100%" height="auto" alt="渤海大学明湖广场" />
+                    <img src="img/banner3.jpg" alt="渤海大学明湖广场" />
                 </li>
             </ul>
+            <div class="slider-pagination">
+                <div class="pagination-item active" data-index="0">1</div>
+                <div class="pagination-item" data-index="1">2</div>
+                <div class="pagination-item" data-index="2">3</div>
+            </div>
         </div>
     </div>
 
@@ -142,16 +216,14 @@
         </div>
         <div class="box">
             <div class="htmleaf-content">
-                <!-- 大图展示区 -->
                 <ul id="thumbnails">
-                    <li id="edu-img"><img src="img/清明上河图.jpg" alt="教育学"></li>
+                    <li id="edu-img" class="active"><img src="img/清明上河图.jpg" alt="教育学"></li>
                     <li id="chinese-img"><img src="img/平复帖.jpg" alt="中国语言文学"></li>
                     <li id="math-img"><img src="img/李白草书上阳台帖.jpg" alt="数学"></li>
                     <li id="cs-img"><img src="img/千里江山图.jpg" alt="计算机科学与技术"></li>
                     <li id="food-img"><img src="img/韩熙载夜宴图.jpg" alt="食品科学与工程"></li>
                     <li id="biz-img"><img src="img/王献之行书中秋帖卷.jpg" alt="工商管理"></li>
                 </ul>
-                <!-- 缩略图选择区，第一个默认添加active类 -->
                 <div class="thumb-box">
                     <ul class="thumbs">
                         <li data-target="edu-img" class="active">
@@ -224,38 +296,75 @@
         </div>
     </div>
 
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/flexslider-min.js"></script>
-    <script src="js/SuperSlide.2.1.3.js"></script>
-    <script src="js/slippry.min.js"></script>
-    <script src="js/more.js"></script>
     <script>
-        $(function() {
-              
-            $('#thumbnails li:first-child').show();
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelector('.slides');
+            const slideItems = document.querySelectorAll('.slides li');
+            const paginationItems = document.querySelectorAll('.pagination-item');
+            const slideCount = slideItems.length;
+            let currentSlide = 0;
+            let slideInterval;
             
-              
-            $('.thumbs li').click(function() {
-                  
-                $('.thumbs li').removeClass('active');
-                $('#thumbnails li').hide();
+            function updateSlidePosition() {
+                slides.style.transform = `translateX(-${currentSlide * 100}%)`;
                 
-                  
-                $(this).addClass('active');
-                const targetId = $(this).data('target');
-                $(`#${targetId}`).show();
+                paginationItems.forEach((item, index) => {
+                    if (index === currentSlide) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            }
+            
+            function goToSlide(index) {
+                currentSlide = index;
+                updateSlidePosition();
+                resetSlideInterval();
+            }
+            
+            function startSlideShow() {
+                slideInterval = setInterval(() => {
+                    currentSlide = (currentSlide + 1) % slideCount;
+                    updateSlidePosition();
+                }, 3000); 
+            }
+            
+            function resetSlideInterval() {
+                clearInterval(slideInterval);
+                startSlideShow();
+            }
+            
+            paginationItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    goToSlide(index);
+                });
             });
-
-              
-            $('.flexslider').flexslider({
-                animation: "slide",
-                slideshowSpeed: 5000,
-                animationSpeed: 600,
-                pauseOnAction: false
+            
+            if (slideCount > 0) {
+                startSlideShow();
+            }
+            
+            const thumbItems = document.querySelectorAll('.thumbs li');
+            const mainImageItems = document.querySelectorAll('#thumbnails li');
+            
+            thumbItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    thumbItems.forEach(thumb => thumb.classList.remove('active'));
+                    mainImageItems.forEach(img => img.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    
+                    const targetId = this.getAttribute('data-target');
+                    const targetImage = document.getElementById(targetId);
+                    if (targetImage) {
+                        targetImage.classList.add('active');
+                    }
+                });
             });
         });
     </script>
-
 </body>
 
 </html>
