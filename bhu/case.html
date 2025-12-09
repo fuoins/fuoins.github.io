@@ -22,6 +22,46 @@
             background: url(img/wwbanner.png);
             background-size: 100% 100%;
         }
+        .teacher-link::before {
+    content: "🔗";
+    margin-right: 5px;
+}
+        /* 教师名字链接样式 */
+        .teacher-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #f0f5ff;
+            border: 1px solid #2e6bdc;
+            border-radius: 6px;
+            color: #2e6bdc;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+        
+        .teacher-link:hover {
+            background-color: #2e6bdc;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(46, 107, 220, 0.3);
+        }
+        
+        .teacher-link:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(46, 107, 220, 0.2);
+        }
+        
+        /* 适配移动端 */
+        @media (max-width: 768px) {
+            .teacher-link {
+                padding: 6px 12px;
+                font-size: 14px;
+                width: 100%;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 
@@ -37,10 +77,10 @@
                     <a href="details.html">渤大学术讲坛<b></b></a>
                 </li>
                 <li>
-                    <a href="case.html">学科成果 </a>
+                    <a href="case.html">教学名师</a>
                 </li>
                 <li>
-                    <a href="serviceprice.html">特色活动</a>
+                    <a href="serviceprice.html">学科成果</a>
                 </li>
                 <li>
                     <a href="news.html">历史沿革</a>
@@ -72,7 +112,9 @@
                         <img src="img/ww1.jpg" />
                     </figure>
                     <figcaption>
-                        <h3>郭艳东教授（2022年度辽宁省教学名师）</h3>
+                        <h3>
+                            <a href="https://jwc.bhu.edu.cn/engine2/general/4167584/detail?engineInstanceId=657261&typeId=2987601&pageId=85848&websiteId=63219&currentBranch=0" class="teacher-link" target="_blank">郭艳东教授（2022年度辽宁省教学名师）</a>
+                        </h3>
                     </figcaption>
                 </li>
                 <!-- 2. 白凤翎教授 -->
@@ -84,7 +126,9 @@
                         <img src="img/ww2.jpg" />
                     </figure>
                     <figcaption>
-                        <h3>白凤翎教授（2022年度辽宁省教学名师）</h3>
+                        <h3>
+                            <a href="https://jwc.bhu.edu.cn/engine2/general/4167583/detail?engineInstanceId=657261&typeId=2987601&pageId=85848&websiteId=63219&currentBranch=0" class="teacher-link" target="_blank">白凤翎教授（2022年度辽宁省教学名师）</a>
+                        </h3>
                     </figcaption>
                 </li>
                 <!-- 3. 刘芳教授 -->
@@ -96,7 +140,9 @@
                         <img src="img/ww3.jpg" />
                     </figure>
                     <figcaption>
-                        <h3>刘芳教授（教师教育领域教学名师）</h3>
+                        <h3>
+                            <a href="https://jwc.bhu.edu.cn/engine2/general/4167585/detail?engineInstanceId=657261&typeId=2987601&pageId=85848&websiteId=63219&currentBranch=0" class="teacher-link" target="_blank">刘芳教授（教师教育领域教学名师）</a>
+                        </h3>
                     </figcaption>
                 </li>
                 <!-- 4. 任骏原教授 -->
@@ -108,7 +154,9 @@
                         <img src="img/ww4.jpg" />
                     </figure>
                     <figcaption>
-                        <h3>任骏原教授（2013年度辽宁省教学名师）</h3>
+                        <h3>
+                            <a href="https://jwc.bhu.edu.cn/engine2/general/4158628/detail?engineInstanceId=657261&typeId=2987601&pageId=85848&websiteId=63219&currentBranch=0" class="teacher-link" target="_blank">任骏原教授（2013年度辽宁省教学名师）</a>
+                        </h3>
                     </figcaption>
                 </li>
                 <!-- 5. 李春杰教授 -->
@@ -120,7 +168,9 @@
                         <img src="img/ww5.jpg" />
                     </figure>
                     <figcaption>
-                        <h3>李春杰教授（2015年度辽宁省教学名师）</h3>
+                        <h3>
+                            <a href="https://jwc.bhu.edu.cn/engine2/general/4158627/detail?engineInstanceId=657261&typeId=2987601&pageId=85848&websiteId=63219&currentBranch=0" class="teacher-link" target="_blank">李春杰教授（2015年度辽宁省教学名师）</a>
+                        </h3>
                     </figcaption>
                 </li>
                 <!-- 6. 张满林教授 -->
@@ -132,7 +182,9 @@
                         <img src="img/ww6.jpg" />
                     </figure>
                     <figcaption>
-                        <h3>张满林教授（2019年度辽宁省教学名师）</h3>
+                        <h3>
+                            <a href="https://jwc.bhu.edu.cn/engine2/general/4144386/detail?engineInstanceId=657261&typeId=2987601&pageId=85848&websiteId=63219&currentBranch=0" class="teacher-link" target="_blank">张满林教授（2019年度辽宁省教学名师）</a>
+                        </h3>
                     </figcaption>
                 </li>
                 <!-- 7. 程迎新教授 -->
@@ -144,7 +196,9 @@
                         <img src="img/ww7.jpg" />
                     </figure>
                     <figcaption>
-                        <h3>程迎新教授（2016年度辽宁省教学名师）</h3>
+                        <h3>
+                            <a href="https://jwc.bhu.edu.cn/engine2/general/4144385/detail?engineInstanceId=657261&typeId=2987601&pageId=85848&websiteId=63219&currentBranch=0" class="teacher-link" target="_blank">程迎新教授（2016年度辽宁省教学名师）</a>
+                        </h3>
                     </figcaption>
                 </li>
                 <!-- 8. 郑淑媛教授 -->
@@ -156,7 +210,9 @@
                         <img src="img/ww8.jpg" />
                     </figure>
                     <figcaption>
-                        <h3>郑淑媛教授（2017年度辽宁省教学名师）</h3>
+                        <h3>
+                            <a href="https://jwc.bhu.edu.cn/engine2/general/4144384/detail?engineInstanceId=657261&typeId=2987601&pageId=85848&websiteId=63219&currentBranch=0" class="teacher-link" target="_blank">郑淑媛教授（2017年度辽宁省教学名师）</a>
+                        </h3>
                     </figcaption>
                 </li>
             </ul>
@@ -168,12 +224,9 @@
         </div>
     </div>
 
-   
     <script>
         var thumbs = jQuery('#thumbnails').slippry({
-              
             slippryWrapper: '<div class="slippry_box thumbnails" />',
-              
             transition: 'horizontal',
             pager: false,
             auto: false,
@@ -186,6 +239,17 @@
         jQuery('.thumbs a').click(function() {
             thumbs.goToSlide($(this).data('slide'));
             return false;
+        });
+        
+        // 可选：添加链接点击的提示效果
+        document.querySelectorAll('.teacher-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // 如果链接地址为空，可以添加提示
+                if (this.href === window.location.href || this.href.endsWith('#')) {
+                    e.preventDefault();
+                    alert(`即将跳转到${this.textContent}的详细页面`);
+                }
+            });
         });
     </script>
 

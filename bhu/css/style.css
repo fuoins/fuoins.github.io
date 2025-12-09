@@ -915,7 +915,7 @@ input:focus {
 
 .pricepage figcaption span {
     display: block;
-    background: #fff;
+    background: rgb(153, 153, 153);
     height: 40px;
     line-height: 40px;
     text-align: center;
