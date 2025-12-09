@@ -82,17 +82,19 @@
 
                 </div>
                 <div class="fenpian">
-                    <p><a href="https://kjc.bhu.edu.cn/engine2/general/4177370/detail?engineInstanceId=657514&pageId=85787&typeId=" target="_blank">
-                        
+                    <p><a href="https://kjc.bhu.edu.cn/engine2/general/4177370/detail?engineInstanceId=657514&pageId=85787&typeId="
+                            target="_blank">
+
                             <span>上一篇:</span>
                             <strong>“渤大学术讲堂”2025年第十八讲蒋建伟教授作学术报告</strong>
-                        
-                    </a></p>
+
+                        </a></p>
                     <p>
                         <span>下一篇:</span><strong>没有了</strong>
                     </p>
                 </div>
-                <a href="http://kjc.bhu.edu.cn/engine2/general/4177466/detail?engineInstanceId=657514&typeId=&pageId=85787&websiteId=63149&currentBranch=0&isMobile=1" class="backlist" target="_blank">查看学校官网原文报道</a>
+                <a href="http://kjc.bhu.edu.cn/engine2/general/4177466/detail?engineInstanceId=657514&typeId=&pageId=85787&websiteId=63149&currentBranch=0&isMobile=1"
+                    class="backlist" target="_blank">查看学校官网原文报道</a>
 
             </div>
         </div>
@@ -102,19 +104,19 @@
 
     <script>
         var thumbs = jQuery('#thumbnails').slippry({
-              
+
             slippryWrapper: '<div class="slippry_box thumbnails" />',
-              
+
             transition: 'horizontal',
             pager: false,
             auto: false,
-            onSlideBefore: function(el, index_old, index_new) {
+            onSlideBefore: function (el, index_old, index_new) {
                 jQuery('.thumbs a img').removeClass('active');
                 jQuery('img', jQuery('.thumbs a')[index_new]).addClass('active');
             }
         });
 
-        jQuery('.thumbs a').click(function() {
+        jQuery('.thumbs a').click(function () {
             thumbs.goToSlide($(this).data('slide'));
             return false;
         });

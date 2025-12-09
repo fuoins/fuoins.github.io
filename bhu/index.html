@@ -21,6 +21,7 @@
             font-weight: 700;
             color: #0066cc;
         }
+
         #thumbnails {
             display: block;
             position: relative;
@@ -28,6 +29,7 @@
             height: 400px;
             overflow: hidden;
         }
+
         #thumbnails li {
             display: none;
             position: absolute;
@@ -37,15 +39,18 @@
             height: 100%;
             transition: opacity 0.5s ease;
         }
+
         #thumbnails li.active {
             display: block;
             opacity: 1;
         }
+
         #thumbnails img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
+
         .thumbs {
             display: flex;
             flex-wrap: wrap;
@@ -53,29 +58,34 @@
             justify-content: center;
             margin-top: 20px;
         }
+
         .thumbs li {
             cursor: pointer;
             opacity: 0.7;
             transition: all 0.3s ease;
             list-style: none;
         }
+
         .thumbs li.active {
             opacity: 1;
             border: 2px solid #0066cc;
         }
+
         .thumbs img {
             width: 120px;
             height: 80px;
             object-fit: cover;
         }
+
         .flexslider {
             position: relative;
-            width: 80%; 
-            height: 700px; 
-            margin: 0 auto; 
+            width: 80%;
+            height: 700px;
+            margin: 0 auto;
             overflow: hidden;
-            border-radius: 8px; 
+            border-radius: 8px;
         }
+
         .slides {
             display: flex;
             padding: 0;
@@ -84,44 +94,55 @@
             transition: transform 0.5s ease;
             height: 100%;
         }
+
         .slides li {
             flex: 0 0 100%;
             height: 100%;
         }
+
         .slides img {
             width: 100%;
             height: 100%;
-            object-fit: cover; 
+            object-fit: cover;
         }
+
         .slider-pagination {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 15px;
-    z-index: 10;
-}
-.pagination-item {
-    width: 30px; /* 线条宽度 */
-    height: 4px; /* 线条高度 */
-    border-radius: 2px; /* 圆角线条 */
-    background-color: rgba(255, 255, 255, 0.6);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    /* 隐藏数字 */
-    font-size: 0;
-    color: transparent;
-}
-.pagination-item.active {
-    background-color: #0066cc;
-    width: 40px; /* 选中时变长 */
-    box-shadow: 0 0 6px rgba(0, 102, 204, 0.4);
-}
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .pagination-item {
+            width: 30px;
+            /* 线条宽度 */
+            height: 4px;
+            /* 线条高度 */
+            border-radius: 2px;
+            /* 圆角线条 */
+            background-color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            /* 隐藏数字 */
+            font-size: 0;
+            color: transparent;
+        }
+
+        .pagination-item.active {
+            background-color: #0066cc;
+            width: 40px;
+            /* 选中时变长 */
+            box-shadow: 0 0 6px rgba(0, 102, 204, 0.4);
+        }
+
         ul {
             margin: 0;
             padding: 0;
         }
+
         .clearfix::after {
             content: "";
             display: table;
@@ -152,18 +173,18 @@
             </ul>
         </div>
     </div>
-    
+
     <div class="clearfix banner">
         <div class="flexslider">
             <ul class="slides">
                 <li>
-                    <img src="img/banner1.png" alt="渤海大学校门" />
+                    <img src="img/20210520100624289W.jpeg" alt="渤海大学" />
                 </li>
                 <li>
-                    <img src="img/banner2.png" alt="渤海大学图书馆" />
+                    <img src="img/banner1.png" alt="渤海大学" />
                 </li>
                 <li>
-                    <img src="img/banner3.png" alt="渤海大学明湖广场" />
+                    <img src="img/20210520100625280V.jpeg" alt="渤海大学" />
                 </li>
             </ul>
             <div class="slider-pagination">
@@ -181,27 +202,27 @@
             </div>
             <ul class="clearfix">
                 <li>
-                    <figure><img src="img/立春.jpg" /></figure>
+                    <figure><img src="img/iii1.jpg" /></figure>
                     <p>春满校园</p>
                 </li>
                 <li>
-                    <figure><img src="img/惊蛰.jpg" /></figure>
+                    <figure><img src="img/iii2.jpg" /></figure>
                     <p>夏日葱郁</p>
                 </li>
                 <li>
-                    <figure><img src="img/清明.jpg" /></figure>
+                    <figure><img src="img/iii3.jpg" /></figure>
                     <p>金秋硕果</p>
                 </li>
                 <li>
-                    <figure><img src="img/大暑.jpg" /></figure>
+                    <figure><img src="img/iii4.jpg" /></figure>
                     <p>冬日雪景</p>
                 </li>
                 <li>
-                    <figure><img src="img/白露.jpg" /></figure>
+                    <figure><img src="img/iii5.jpg" /></figure>
                     <p>明湖晨景</p>
                 </li>
                 <li>
-                    <figure><img src="img/霜降.jpg" /></figure>
+                    <figure><img src="img/iii6.jpg" /></figure>
                     <p>生态校园</p>
                 </li>
             </ul>
@@ -210,43 +231,43 @@
 
     <div class="index-sec2">
         <div class="tit">
-            <p class="jq">优势学科展示</p>
+            <p class="jq">渤海大学</p>
         </div>
         <div class="box">
             <div class="htmleaf-content">
                 <ul id="thumbnails">
-                    <li id="edu-img" class="active"><img src="img/清明上河图.jpg" alt="教育学"></li>
-                    <li id="chinese-img"><img src="img/平复帖.jpg" alt="中国语言文学"></li>
-                    <li id="math-img"><img src="img/李白草书上阳台帖.jpg" alt="数学"></li>
-                    <li id="cs-img"><img src="img/千里江山图.jpg" alt="计算机科学与技术"></li>
-                    <li id="food-img"><img src="img/韩熙载夜宴图.jpg" alt="食品科学与工程"></li>
-                    <li id="biz-img"><img src="img/王献之行书中秋帖卷.jpg" alt="工商管理"></li>
+                    <li id="edu-img" class="active"><img src="img/20210519151119143T.jpeg" alt="春之韵"></li>
+                    <li id="chinese-img"><img src="img/20210519151515553J.jpeg" alt="夏之盛"></li>
+                    <li id="math-img"><img src="img/20210520100421663e.jpeg" alt="秋之实"></li>
+                    <li id="cs-img"><img src="img/20210520100515351h.jpeg" alt="冬之赞"></li>
+                    <li id="food-img"><img src="img/20210520100627741o.jpeg" alt="人文之情"></li>
+                    <li id="biz-img"><img src="img/20210520100628456h.jpeg" alt="建筑之美"></li>
                 </ul>
                 <div class="thumb-box">
                     <ul class="thumbs">
                         <li data-target="edu-img" class="active">
-                            <img src="img/清明上河图.jpg" alt="教育学">
-                            <p>教育学</p>
+                            <img src="img/20210519151119143T.jpeg" alt="春之韵">
+                            <p>春之韵</p>
                         </li>
                         <li data-target="chinese-img">
-                            <img src="img/平复帖.jpg" alt="中国语言文学">
-                            <p>中国语言文学</p>
+                            <img src="img/20210519151515553J.jpeg" alt="夏之盛">
+                            <p>夏之盛</p>
                         </li>
                         <li data-target="math-img">
-                            <img src="img/李白草书上阳台帖.jpg" alt="数学">
-                            <p>数学</p>
+                            <img src="img/20210520100421663e.jpeg" alt="秋之实">
+                            <p>秋之实</p>
                         </li>
                         <li data-target="cs-img">
-                            <img src="img/千里江山图.jpg" alt="计算机科学与技术">
-                            <p>计算机科学与技术</p>
+                            <img src="img/20210520100515351h.jpeg" alt="冬之赞">
+                            <p>冬之赞</p>
                         </li>
                         <li data-target="food-img">
-                            <img src="img/韩熙载夜宴图.jpg" alt="食品科学与工程">
-                            <p>食品科学与工程</p>
+                            <img src="img/20210520100627741o.jpeg" alt="人文之情">
+                            <p>人文之情</p>
                         </li>
                         <li data-target="biz-img">
-                            <img src="img/王献之行书中秋帖卷.jpg" alt="工商管理">
-                            <p>工商管理</p>
+                            <img src="img/20210520100628456h.jpeg" alt="建筑之美">
+                            <p>建筑之美</p>
                         </li>
                     </ul>
                 </div>
@@ -295,17 +316,17 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const slides = document.querySelector('.slides');
             const slideItems = document.querySelectorAll('.slides li');
             const paginationItems = document.querySelectorAll('.pagination-item');
             const slideCount = slideItems.length;
             let currentSlide = 0;
             let slideInterval;
-            
+
             function updateSlidePosition() {
                 slides.style.transform = `translateX(-${currentSlide * 100}%)`;
-                
+
                 paginationItems.forEach((item, index) => {
                     if (index === currentSlide) {
                         item.classList.add('active');
@@ -314,46 +335,46 @@
                     }
                 });
             }
-            
+
             function goToSlide(index) {
                 currentSlide = index;
                 updateSlidePosition();
                 resetSlideInterval();
             }
-            
+
             function startSlideShow() {
                 slideInterval = setInterval(() => {
                     currentSlide = (currentSlide + 1) % slideCount;
                     updateSlidePosition();
-                }, 3000); 
+                }, 3000);
             }
-            
+
             function resetSlideInterval() {
                 clearInterval(slideInterval);
                 startSlideShow();
             }
-            
+
             paginationItems.forEach(item => {
-                item.addEventListener('click', function() {
+                item.addEventListener('click', function () {
                     const index = parseInt(this.getAttribute('data-index'));
                     goToSlide(index);
                 });
             });
-            
+
             if (slideCount > 0) {
                 startSlideShow();
             }
-            
+
             const thumbItems = document.querySelectorAll('.thumbs li');
             const mainImageItems = document.querySelectorAll('#thumbnails li');
-            
+
             thumbItems.forEach(item => {
-                item.addEventListener('click', function() {
+                item.addEventListener('click', function () {
                     thumbItems.forEach(thumb => thumb.classList.remove('active'));
                     mainImageItems.forEach(img => img.classList.remove('active'));
-                    
+
                     this.classList.add('active');
-                    
+
                     const targetId = this.getAttribute('data-target');
                     const targetImage = document.getElementById(targetId);
                     if (targetImage) {
