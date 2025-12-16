@@ -1,7 +1,7 @@
-=@charset "utf-8";
+@charset "utf-8";
 body,
 html {
-    min-width: 320px;
+    min-width: 1200px;
 }
 
 * {
@@ -497,12 +497,12 @@ input:focus {
 }
 
 .w1200 {
-    width: 100%;
+    width: 1200px;
     margin: 0 auto;
 }
 
 .w6666 {
-    width: 100%;
+    width: 1200px;
     margin: 0 auto;
 }
 
