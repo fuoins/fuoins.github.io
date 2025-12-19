@@ -5,18 +5,20 @@ subtitle:     "首个md"
 author:       "Zy"
 header-style: text
 #### header-img: "img/a.png" 
+header-img: "img/1000217243.jpg" 
 catalog:      true
 tags:
   - 练习   
 ---
 
-- [英语单词练习1](https://fuoins.github.io/en1.html)
-- [英语四级24-12-1/2阅读1](https://fuoins.github.io/en1-1.html)
-- [数学公式练习](https://fuoins.github.io/maths.html)
-- [渤海大学网页](https://fuoins.github.io/bhu)
-用的cloudflare pages 部署bundle exec jekyll build --trace _config.yml加的一年缓存
-- [英语选词填空练习](https://fuoins.github.io/study/en4.html)
-- [英语听力练习](https://fuoins.github.io/study/en5.html)
+- [英语单词练习1](https://zy520.de5.net/en1.html)
+- [英语四级24-12-1/2阅读1](https://zy520.de5.net/en1-1.html)
+- [数学公式练习](https://zy520.de5.net/maths.html)
+- [渤海大学网页](https://zy520.de5.net/bhu)
+- [英语选词填空练习](https://zy520.de5.net/study/en4.html)
+- [英语听力练习](https://zy520.de5.net/study/en5.html)
+
+> 部署说明：使用 Cloudflare Pages 部署，通过 `bundle exec jekyll build --trace` 构建，在 `_config.yml` 中配置了图片1年缓存有效期。
 
 hello
 # sb
