@@ -1,10 +1,10 @@
 ---
 layout:       post
 title:        "first md 瞎几把写一个md"
-subtitle: "首个md"
+subtitle:     "首个md"
 author:       "Zy"
 header-style: text
-#### header-img: "img/a.jpg" 
+#### header-img: "img/a.png" 
 catalog:      true
 tags:
   - 练习   
@@ -13,8 +13,9 @@ tags:
 - [英语单词练习1](https://fuoins.github.io/en1.html)
 - [英语四级24-12-1/2阅读1](https://fuoins.github.io/en1-1.html)
 - [数学公式练习](https://fuoins.github.io/maths.html)
-
-
+- [渤海大学网页](https://fuoins.github.io/bhu)
+- [英语选词填空练习](https://fuoins.github.io/study/en4.html)
+- [英语听力练习](https://fuoins.github.io/study/en5.html)
 
 hello
 # sb
