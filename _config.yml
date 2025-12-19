@@ -89,3 +89,21 @@ page-mathjax: false
 
 # Friends（友链，已按需求删除原列表，无需则保持空数组）
 friends: []
+
+# 新增：自定义静态文件 Cache-Control 响应头（解决 Cloudflare 缓存验证延迟问题）
+headers:
+  - path: "/*.jpg"
+    values:
+      Cache-Control: "public, max-age=31536000, immutable"
+  - path: "/*.png"
+    values:
+      Cache-Control: "public, max-age=31536000, immutable"
+  - path: "/*.webp"
+    values:
+      Cache-Control: "public, max-age=31536000, immutable"
+  - path: "/*.gif"
+    values:
+      Cache-Control: "public, max-age=31536000, immutable"
+  - path: "/img/*"
+    values:
+      Cache-Control: "public, max-age=31536000, immutable"
