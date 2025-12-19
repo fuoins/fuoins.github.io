@@ -14,6 +14,7 @@ tags:
 - [英语四级24-12-1/2阅读1](https://fuoins.github.io/en1-1.html)
 - [数学公式练习](https://fuoins.github.io/maths.html)
 - [渤海大学网页](https://fuoins.github.io/bhu)
+用的cloudflare pages 部署bundle exec jekyll build --trace _config.yml加的一年缓存
 - [英语选词填空练习](https://fuoins.github.io/study/en4.html)
 - [英语听力练习](https://fuoins.github.io/study/en5.html)
 
