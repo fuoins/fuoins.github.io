@@ -83,9 +83,8 @@ featured-condition-size: 0 # 标签下文章数超过此数值则显示为精选
 # Progressive Web Apps（渐进式Web应用）
 chrome-tab-theme-color: "#000000"
 service-worker: true
-
-# MathJax rendering for layout:page (e.g. post preview)（数学公式渲染，无需则保持关闭）
-page-mathjax: false
+# MathJax rendering for layout:page (e.g. post preview)
+page-mathjax: true
 
 # Friends（友链，已按需求删除原列表，无需则保持空数组）
 friends:
