@@ -41,19 +41,42 @@
     <link rel="shortcut icon" href="{{ site.baseurl }}/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+    <link rel="stylesheet" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="{{ "/css/bootstrap.min.css" | prepend: site.baseurl }}">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ "/css/hux-blog.min.css" | prepend: site.baseurl }}">
-    <!-- 新增自定义CSS引入 -->
-    <link rel="stylesheet" href="{{ "/css/custom.css" | prepend: site.baseurl }}">
 
     <!-- Custom Fonts -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
         type="text/css">
+
+    <!-- 内嵌公式换行样式：最高优先级，强制生效 -->
+    <style>
+        /* 覆盖MathJax默认样式，强制公式容器换行 */
+        mjx-container,
+        mjx-container > svg,
+        mjx-container > svg > g {
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: auto !important;
+            white-space: normal !important;
+            display: block !important;
+        }
+        /* 块级公式间距优化 */
+        mjx-container[display="block"] {
+            margin: 1em 0 !important;
+            padding: 0.2em 0 !important;
+        }
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            mjx-container {
+                font-size: 80% !important;
+            }
+        }
+    </style>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
