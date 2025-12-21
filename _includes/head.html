@@ -73,20 +73,34 @@
     <!-- 延迟加载 MathJax，解决渲染冲突 -->
 <script>
 window.onload = function() {
+    // 1. 先配置 MathJax 全局参数（必须在脚本加载前定义）
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true,
+            packages: {'[+]': ['noerrors']} // 容错：公式错误时不影响页面
+        },
+        svg: {
+            fontCache: 'global'
+        },
+        startup: {
+            pageReady: function() {
+                // 2. 页面加载完成后主动渲染公式
+                return MathJax.startup.defaultPageReady().then(function() {
+                    console.log('MathJax 公式渲染完成');
+                });
+            }
+        }
+    };
+
+    // 3. 再加载 MathJax 核心脚本
     var script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
     script.async = true;
-    script.onload = function() {
-        MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']],
-                processEscapes: true  // 允许转义字符，避免冲突
-            },
-            svg: {
-                fontCache: 'global'
-            }
-        };
+    // 加载失败容错
+    script.onerror = function() {
+        console.error('MathJax 加载失败，请检查网络或 CDN 地址');
     };
     document.head.appendChild(script);
 };
