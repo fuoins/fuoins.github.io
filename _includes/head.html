@@ -54,41 +54,45 @@
         type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <!-- ga & ba script hoook -->
+    <!-- ga & ba script hook -->
     <script></script>
 
     <!-- Google AdSense -->
     <script data-ad-client="ca-pub-6487568398225121" async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-    <!-- MathJax 3.x 配置：支持LaTeX公式+溢出自动换行 -->
+    <!-- MathJax 3.x 配置：使用 CHTML 输出器，支持真正的自动换行 -->
     <script>
         window.MathJax = {
             tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']],
-                tags: 'ams'
+                inlineMath: [['\( ', ' \)'], ['\\(', '\\)']],
+                displayMath: [['\[ ', ' \]'], ['\\[', '\\]']],
+                tags: 'ams',
+                packages: {'[+]': ['noerrors', 'noundefined']}  // 可选，防止错误显示
             },
-            svg: {
-                scale: 0.9,
-                displayOverflow: 'linebreak',
-                inlineMathDisplay: 'style'
+            chtml: {
+                scale: 0.95,                    // 稍小一点，适应手机
+                displayOverflow: 'overflow',    // 溢出时处理
+                mtextInheritFont: true
             },
-            // 核心配置：全局换行规则，基于容器宽度
-            linebreak: {
-                width: 'container',  // 替换 100%，适配文章容器
-                linebreaks: true     // 强制开启自动换行
-            },
-            startup: {
-                pageReady: () => MathJax.startup.defaultPageReady()
+            options: {
+                renderActions: {
+                    // 启用自动换行
+                    addLineBreaks: [MathJax.startup ? 100 : 0, '', '', function (doc) {
+                        doc.data.lineBreaks = true;
+                    }]
+                }
             }
         };
     </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+    <!-- 加载 CHTML 版本（自动换行效果最好） -->
+    <script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 </head>
