@@ -85,7 +85,7 @@ chrome-tab-theme-color: "#000000"
 service-worker: true
 
 # MathJax rendering for layout:page (e.g. post preview)（数学公式渲染，无需则保持关闭）
-page-mathjax: true
+page-mathjax: false
 
 # Friends（友链，已按需求删除原列表，无需则保持空数组）
 friends:
