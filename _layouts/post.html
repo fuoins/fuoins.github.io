@@ -25,7 +25,7 @@ layout: default
                     {% include multilingual-sel.html %}
                 {% endif %}
 
-				{{ content }}
+                                {{ content }}
 
                 <hr style="visibility: hidden;">
                 <ul class="pager">
@@ -95,6 +95,11 @@ layout: default
         </div>
     </div>
 </article>
+
+<!-- add support for mathjax by voleking-->
+{% if page.mathjax %}
+  {% include mathjax_support.html %}
+{% endif %}
 
 {% if site.netease_comment %}
 <!-- 网易云跟帖JS代码 start -->
