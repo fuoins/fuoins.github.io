@@ -55,31 +55,41 @@
 
     <!-- 修复公式样式：区分行内/块级 -->
     <style>
-        /* 行内公式：保持与文字同行，不破坏布局 */
-        mjx-container[display="inline"] {
-            display: inline-block !important;
-            vertical-align: middle !important;
-            width: auto !important;
-            overflow: visible !important;
-        }
-        /* 块级公式：支持换行和横向滚动，不影响整体布局 */
+    /* 行内公式：优先级高于Bootstrap，保持与文字同行 */
+    mjx-container[display="inline"] {
+        display: inline !important;
+        vertical-align: baseline !important;
+        width: auto !important;
+        overflow: visible !important;
+        max-width: none !important;
+        box-sizing: content-box !important; /* 抵消Bootstrap的box-sizing */
+    }
+    /* 块级公式：仅处理长公式换行，不影响其他布局 */
+    mjx-container[display="block"] {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        margin: 1em 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+    /* 抵消Bootstrap对公式内部元素的影响 */
+    mjx-container > svg,
+    mjx-container > svg > g {
+        max-width: none !important;
+        width: auto !important;
+        height: auto !important;
+    }
+    /* 移动端适配 */
+    @media (max-width: 768px) {
         mjx-container[display="block"] {
-            display: block !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            overflow-x: auto !important;
-            overflow-y: hidden !important; /* 禁止上下滑动 */
-            margin: 1em 0 !important;
-            padding: 0.2em 0 !important;
-            -webkit-overflow-scrolling: touch;
+            font-size: 85% !important;
         }
-        /* 移动端块级公式字体适配 */
-        @media (max-width: 768px) {
-            mjx-container[display="block"] {
-                font-size: 85% !important;
-            }
-        }
-    </style>
+    }
+</style>
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
