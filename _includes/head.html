@@ -64,45 +64,31 @@
     <script></script>
 
     <!-- Google AdSense -->
-    <script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [['\( ', ' \)'], ['\\(', '\\)']],
-      displayMath: [['\[ ', ' \]'], ['\\[', '\\]']],
-      tags: 'ams',
-      // 添加自定义宏
-      macros: {
-        // 强制换行宏（在需要的地方手动插入 \\ 或 \break）
-        // 但更推荐下面这个自动处理长公式的宏
-        longeq: ['\\begin{aligned}#1\\end{aligned}', 1]
-      }
-    },
-    svg: {
-      scale: 0.9,
-      // displayOverflow: 'linebreak' 在 3.x 中效果有限，可删除
-    },
-    options: {
-      renderActions: {
-        // 可选：让很长的公式自动尝试换行
-        findScript: [10, doc => {
-          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
-            const display = !!node.type.match(/; *mode=display/);
-            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-            const text = document.createElement('span');
-            text.appendChild(node);
-            node.replaceWith(text);
-            math.start = {node: text, delim: '', n: 0};
-            math.end = {node: text, delim: '', n: 0};
-            doc.math.push(math);
-          }
-        }, '', false],
-      }
-    }
-  };
-</script>
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-<!-- 加载完整 tex-mml-chtml 或 tex-svg -->
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-<!-- 或者保持你原来的 tex-svg -->
-<!-- <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script> -->
+    <!-- MathJax 3.x 配置：支持LaTeX公式+溢出自动换行 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                tags: 'ams'
+            },
+            svg: {
+                scale: 0.9,
+                displayOverflow: 'linebreak',
+                inlineMathDisplay: 'style'
+            },
+            // 核心配置：全局换行规则，基于容器宽度
+            linebreak: {
+                width: 'container',  // 替换 100%，适配文章容器
+                linebreaks: true     // 强制开启自动换行
+            },
+            startup: {
+                pageReady: () => MathJax.startup.defaultPageReady()
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </head>
