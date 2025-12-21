@@ -88,7 +88,14 @@ service-worker: true
 page-mathjax: true
 
 # Friends（友链，已按需求删除原列表，无需则保持空数组）
-friends: []
+friends:
+  [
+    { title: "ZYBlog(支持微信)", href: "https://fuoins.github.io/" },
+    { title: "ZYBlog(加载图片快CDN加速)", href: "https://zy520.de5.net/" },
+    { title: "待部署zy666.de5.net", href: "https://zy666.de5.net/" },
+    { title: "待部署zysb.de5.net", href: "https://zysb.de5.net/" },
+  ]
+
 
 # 新增：自定义静态文件 Cache-Control 响应头（解决 Cloudflare 缓存验证延迟问题）
 headers:
