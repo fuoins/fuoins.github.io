@@ -53,62 +53,29 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
         type="text/css">
 
-    <!-- 修复公式样式：区分行内/块级 -->
+    <!-- 终极公式样式：仅保留必要配置，不干扰文字排版 -->
     <style>
-    /* 1. 行内公式：彻底抵消所有全局样式干扰，强制与文字同行 */
-    mjx-container[display="inline"] {
-        display: inline !important;
-        vertical-align: baseline !important;
-        width: auto !important;
-        height: auto !important;
-        overflow: visible !important;
-        max-width: none !important;
-        max-height: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        box-sizing: content-box !important;
-        font-size: inherit !important;
-        line-height: inherit !important;
-    }
-
-    /* 2. 块级公式：仅处理长公式横向滚动，不影响布局 */
-    mjx-container[display="block"] {
-        display: block !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
-        margin: 1em 0 !important;
-        padding: 0 !important;
-        box-sizing: border-box !important;
-        font-size: inherit !important;
-        line-height: inherit !important;
-    }
-
-    /* 3. 抵消 Hux 主题的 MathJax 样式 */
-    .MathJax_SVG_Display {
-        overflow: visible !important;
-        margin: 0 !important;
-    }
-
-    /* 4. 公式内部元素：防止被压缩或变形 */
-    mjx-container > svg,
-    mjx-container > svg > g,
-    .MathJax_SVG_Display svg {
-        max-width: none !important;
-        width: auto !important;
-        height: auto !important;
-        display: inline !important;
-    }
-
-    /* 5. 移动端适配：避免字体过大导致溢出 */
-    @media (max-width: 768px) {
-        mjx-container[display="block"] {
-            font-size: 85% !important;
+        /* 让公式容器继承文字流样式 */
+        mjx-container {
+            display: inline !important;
+            vertical-align: baseline !important;
+            width: auto !important;
+            max-width: 100% !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+            white-space: normal !important;
         }
-    }
-</style>
-
+        /* 块级公式单独处理，保持换行 */
+        mjx-container[display="block"] {
+            display: block !important;
+            margin: 1em 0 !important;
+        }
+        /* 抵消主题冲突样式 */
+        .MathJax_SVG_Display {
+            overflow: visible !important;
+            white-space: normal !important;
+        }
+    </style>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -124,21 +91,24 @@
     <script data-ad-client="ca-pub-6487568398225121" async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-    <!-- MathJax 3.x 配置：支持LaTeX公式 -->
+    <!-- MathJax 3.x 终极配置：强制公式自动换行 -->
     <script>
         window.MathJax = {
             tex: {
                 inlineMath: [['$', '$'], ['\\(', '\\)']],
                 displayMath: [['$$', '$$'], ['\\[', '\\]']],
-                tags: 'ams'
+                tags: 'ams',
+                overflowWrap: 'break-word' // 核心：让公式像文字一样自动换行
             },
             svg: {
                 scale: 0.9,
-                displayOverflow: 'linebreak'
+                displayOverflow: 'break-word',
+                inlineMathDisplay: 'inline' // 行内公式强制 inline 显示
             },
             linebreak: {
                 width: 'container',
-                linebreaks: true
+                linebreaks: true,
+                override: true // 强制覆盖所有样式
             },
             startup: {
                 pageReady: () => MathJax.startup.defaultPageReady()
