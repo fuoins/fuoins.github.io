@@ -78,7 +78,7 @@ sidebar-avatar: # 可选：填写头像绝对路径（如 https://github.com/fuo
 
 # Featured Tags（精选标签功能）
 featured-tags: true # 是否启用精选标签
-featured-condition-size: 1 # 标签下文章数超过此数值则显示为精选标签
+featured-condition-size: 0 # 标签下文章数超过此数值则显示为精选标签
 
 # Progressive Web Apps（渐进式Web应用）
 chrome-tab-theme-color: "#000000"
