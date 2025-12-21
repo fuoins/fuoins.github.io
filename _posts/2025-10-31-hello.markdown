@@ -1,27 +1,33 @@
 ---
 layout:       post
-title:        "first md 瞎几把写一个md"
-subtitle:     "首个md"
+title:        "第一个md"
+subtitle:     "记录html和部署此站的历程"
 author:       "Zy"
 header-style: text
-#### header-img: "img/a.png" 
-header-img: "img/1000217243.jpg" 
+header-img:   "img/1000217243.jpg" 
 catalog:      true
 tags:
   - 练习   
 ---
 
-- [英语单词练习1](https://zy520.de5.net/en1.html)
-- [英语四级24-12-1/2阅读1](https://zy520.de5.net/en1-1.html)
+### 学习资料链接
+- [英语单词练习1](https://zy520.de5.net/study/en1.html)
+- [英语四级24-12-1/2阅读1](https://zy520.de5.net/study/en1-1.html)
 - [数学公式练习](https://zy520.de5.net/maths.html)
-- [渤海大学网页](https://zy520.de5.net/bhu)
 - [英语选词填空练习](https://zy520.de5.net/study/en4.html)
 - [英语听力练习](https://zy520.de5.net/study/en5.html)
 
-> 部署说明：使用 Cloudflare Pages 部署，通过 `bundle exec jekyll build --trace` 构建，在 `_config.yml` 中配置了图片1年缓存有效期。
+### 部署说明
+使用 Cloudflare Pages 部署，通过 `bundle exec jekyll build --trace` 构建。
+在 `_config.yml` 中配置了图片1年缓存有效期，有效解决了图片加载慢的问题。
+
+- **fuoins.github.io**：支持微信打开访问
+- **zy520.de5.net**：图片加载速度更快，适合浏览含大量图片的网页
 
 hello
-# sb
-## 123
-#### 1234
+
+# 一级标题示例
+## 二级标题示例
+### 四级标题调整为三级标题示例
+
 * 666
