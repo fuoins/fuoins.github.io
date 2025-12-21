@@ -64,27 +64,45 @@
     <script></script>
 
     <!-- Google AdSense -->
-    <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['\( ',' \)'], ["\\(","\\)"] ],
-      displayMath: [ ['\[ ',' \]'], ["\\[","\\]"] ],
-      processEscapes: true
+    <script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\( ', ' \)'], ['\\(', '\\)']],
+      displayMath: [['\[ ', ' \]'], ['\\[', '\\]']],
+      tags: 'ams',
+      // 添加自定义宏
+      macros: {
+        // 强制换行宏（在需要的地方手动插入 \\ 或 \break）
+        // 但更推荐下面这个自动处理长公式的宏
+        longeq: ['\\begin{aligned}#1\\end{aligned}', 1]
+      }
     },
-    "HTML-CSS": {
-      linebreaks: { automatic: true },
-      scale: 90
+    svg: {
+      scale: 0.9,
+      // displayOverflow: 'linebreak' 在 3.x 中效果有限，可删除
     },
-    SVG: {
-      linebreaks: { automatic: true },
-      scale: 90
-    },
-    CommonHTML: {
-      linebreaks: { automatic: true }
+    options: {
+      renderActions: {
+        // 可选：让很长的公式自动尝试换行
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/);
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+            const text = document.createElement('span');
+            text.appendChild(node);
+            node.replaceWith(text);
+            math.start = {node: text, delim: '', n: 0};
+            math.end = {node: text, delim: '', n: 0};
+            doc.math.push(math);
+          }
+        }, '', false],
+      }
     }
-  });
+  };
 </script>
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_CHTML">
-</script>
+
+<!-- 加载完整 tex-mml-chtml 或 tex-svg -->
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- 或者保持你原来的 tex-svg -->
+<!-- <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script> -->
 </head>
