@@ -66,53 +66,53 @@
     <script data-ad-client="ca-pub-6487568398225121" async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-    <!-- MathJax 3.x 配置：使用 CHTML 输出器，支持自动换行 -->
-    <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['\( ', ' \)'], ['\\(', '\\)']],
-                displayMath: [['\[ ', ' \]'], ['\\[', '\\]']],
-                tags: 'ams',
-                packages: { '[+]': ['noerrors', 'noundefined'] }
-            },
-            chtml: {
-                scale: 0.95,                    // 稍小一点，适应移动端
-                mtextInheritFont: true,
-                displayAlign: 'left'            // 左对齐，有助于换行
-            },
-            // 启用自动换行
-            options: {
-                renderActions: {
-                    addLineBreaks: [100, '', '', function (doc) {
-                        doc.data.lineBreaks = true;
-                    }]
-                }
-            }
-        };
-    </script>
-
-    <!-- 加载 CHTML 版本（支持长公式自动换行） -->
-    <script id="MathJax-script" async
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-    <!-- 额外 CSS：强制 MathJax 公式不溢出并支持换行 -->
-    <style>
-        mjx-container {
-            overflow: hidden !important;
-            max-width: 100% !important;
-            display: block !important;
-            margin: 1em 0 !important;
+    <!-- MathJax 3.x 配置：切换到 CHTML 输出器，支持长公式自动换行 -->
+<script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['\( ', ' \)'], ['\\(', '\\)']],
+            displayMath: [['\[ ', ' \]'], ['\\[', '\\]']],
+            tags: 'ams',
+            packages: {'[+]': ['noerrors', 'noundefined']}  // 防止错误显示
+        },
+        chtml: {
+            scale: 0.92,              // 稍小一点，适配窄容器（如手机）
+            displayAlign: 'left',     // 左对齐，便于换行
+            displayIndent: '0em'
+        },
+        options: {
+            // 启用 MathJax 内置换行机制
+            enableLineBreaks: true
         }
+    };
+</script>
 
-        mjx-container > mjx-math {
-            white-space: normal !important;
-            overflow-wrap: break-word !important;
-            word-break: break-all !important; /* 极端长公式强制断词 */
-        }
+<!-- 加载 CHTML 版本（自动换行支持最好） -->
+<script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-        /* 针对 display 公式 */
-        mjx-container[display="true"] {
-            text-align: left !important;
-        }
-    </style>
+<!-- 强制浏览器换行（关键！解决 CSS 冲突） -->
+<style>
+    /* MathJax 容器 */
+    mjx-container {
+        display: block !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;  /* 备用：允许水平滚动 */
+        margin: 1em auto !important;
+    }
+
+    mjx-container[display="true"] mjx-math,
+    mjx-container mjx-math {
+        white-space: normal !important;
+        overflow-wrap: break-word !important;
+        word-break: break-all !important;  /* 强制断长词/公式 */
+        text-align: left !important;
+    }
+
+    /* 兼容你的博客容器（常见类名） */
+    .post-content, .article-post, .content, article {
+        overflow: hidden !important;
+        word-wrap: break-word !important;
+    }
+</style>
 </head>
