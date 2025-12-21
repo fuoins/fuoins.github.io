@@ -70,19 +70,24 @@
     <script data-ad-client="ca-pub-6487568398225121" async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-    <!-- MathJax 公式渲染配置 - 新增部分 -->
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>
+    <!-- 延迟加载 MathJax，解决渲染冲突 -->
+<script>
+window.onload = function() {
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+    script.async = true;
+    script.onload = function() {
         MathJax = {
             tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']], // 行内公式用 $ 包裹
-                displayMath: [['$$', '$$'], ['\\[', '\\]']] // 块级公式用 $$ 包裹
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true  // 允许转义字符，避免冲突
             },
-            startup: {
-                pageReady: function () {
-                    return MathJax.startup.defaultPageReady();
-                }
+            svg: {
+                fontCache: 'global'
             }
         };
-    </script>
-</head>
+    };
+    document.head.appendChild(script);
+};
+</script>
