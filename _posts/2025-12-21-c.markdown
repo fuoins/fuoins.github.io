@@ -1,0 +1,189 @@
+layout:       post
+title:        "C语言核心基础笔记解析"
+subtitle:     "C语言"
+author:       "Zy"
+header-style: text
+catalog:      true
+tags:
+ 
+- C语言
+- 编程笔记
+ 
+ 
+ 
+C语言核心基础笔记解析
+ 
+本文对C语言变量、常量、输入输出、数组、字符串及指针的核心知识点进行拆解，内容简洁且突出重点。
+ 
+一、变量名命名规则
+ 
+- 合法字符：字母、数字、下划线
+- 首字符要求：必须为字母或下划线
+- 注意：区分大小写，不可与关键字重名
+ 
+二、符号常量（宏定义）
+ 
+- 语法：```c
+#define 宏名 常量值
+ 
+plaintext  
+  示例（易错写法）：
+  ```c
+#define PI 3+2
+ 
+ 
+- 特性：预处理阶段文本替换，无类型检查
+- 避坑：表达式宏需加括号（推荐写法）
+ 
+#define PI (3+2)
+ 
+plaintext  
+
+## 三、进制输出格式符
+- `%d` - 十进制整数输出
+- `%o` - 八进制整数输出
+- `%x` - 十六进制整数输出
+示例代码：
+```c
+#include <stdio.h>
+int main() {
+  int num = 10;
+  printf("十进制：%d\n", num);
+  printf("八进制：%o\n", num);
+  printf("十六进制：%x\n", num);
+  return 0;
+}
+ 
+ 
+四、浮点型常量（科学计数法）
+ 
+- 格式： 数字e/E整数 （如 1e3=10³ 、 189e-6=0.000189 ）
+- 规则： e 前必须有数字，后必须是整数
+- 默认类型： double ，加 f 为 float （如 3.14f ）
+- 浮点数对齐： %5.2f 右对齐， %-5.2f 左对齐
+示例代码：
+ 
+#include <stdio.h>
+int main() {
+float f = 3.14f;
+double d = 1e3;
+printf("右对齐：%5.2f\n", f);
+printf("左对齐：%-5.2f\n", f);
+printf("科学计数法：%e\n", d);
+return 0;
+}
+ 
+plaintext  
+
+## 五、字符型常量
+- 表示：单引号包裹单个字符（如`'a'`、`'A'`）
+- ASCII码关键值：`'0'=48`、`'A'=65`、`'a'=97`
+- 转换：大写转小写加32（`'A'+32='a'`）
+示例代码：
+```c
+#include <stdio.h>
+int main() {
+  char ch = 'A';
+  printf("大写转小写：%c\n", ch + 32);
+  printf("'A'的ASCII码：%d\n", ch);
+  return 0;
+}
+ 
+ 
+六、字符串常量
+ 
+- 表示：双引号包裹（如 "abc" ）
+- 存储：末尾自动加 '\0' 作为结束标志（ "abc" 占4字节）
+- 区别： "a" 是字符串（2字节）， 'a' 是字符（1字节）
+ 
+七、输入输出与缓冲区
+ 
+1. 缓冲区清理：
+c  
+fflush(stdin);  // 部分编译器不支持
+while(getchar()!='\n');  // 通用替代方案
+ 
+2.  %d 与 %c 坑： scanf 后 %c 会读取缓冲区换行符，需加空格
+c  
+scanf(" %c", &ch);  // 空格跳过空白字符
+ 
+ 
+八、 sizeof 运算符
+ 
+- 性质：编译期运算符，非函数
+- 用途：计算数据类型/变量/数组的字节数
+- 示例代码：
+ 
+#include <stdio.h>
+int main() {
+int arr[10] = {0};
+printf("int占字节数：%zu\n", sizeof(int));
+printf("数组总字节数：%zu\n", sizeof(arr));
+return 0;
+}
+ 
+plaintext  
+
+## 九、数组的定义与使用
+- 初始化：`int a[10]={0};` 全部元素置0
+- 越界访问：`a[10]=11`（`int a[10]`）会导致内存错误
+- 函数传参：传首元素地址，无法传递数组长度
+示例代码：
+```c
+#include <stdio.h>
+void printArr(int arr[], int len) {
+  for(int i=0; i<len; i++) {
+      printf("%d ", arr[i]);
+  }
+}
+int main() {
+  int a[10] = {0};
+  printArr(a, 10);
+  return 0;
+}
+ 
+ 
+十、字符串处理函数（需 <string.h> ）
+ 
+-  strlen(s)  - 求字符串有效长度（不含 '\0' ）
+-  strcat(a,b)  - 拼接b到a末尾
+-  strcpy(a,b)  - 把b复制到a
+-  strcmp(a,b)  - 比较字符串，相等返回0
+示例代码：
+ 
+#include <stdio.h>
+#include <string.h>
+int main() {
+char str1[20] = "Hello";
+char str2[] = " World";
+strcat(str1, str2);
+printf("拼接后：%s\n", str1);
+printf("长度：%zu\n", strlen(str1));
+return 0;
+}
+ 
+plaintext  
+
+## 十一、指针与内存管理
+1.  地址操作：`&`取地址，`*`解引用
+2.  动态内存
+  - 分配：
+    ```c
+#include <stdlib.h>
+char *p=(char*)malloc(4);
+    ```
+  - 释放：`free(p);`（堆区内存手动释放，栈区自动释放）
+3.  函数返回指针：不可返回局部变量指针（会成野指针）
+  错误示例：
+  ```c
+#include <stdio.h>
+int* getNum() {
+  int num = 10;
+  return &num;  // 局部变量num出函数后销毁
+}
+int main() {
+  int *p = getNum();
+  printf("%d", *p);  // 野指针，结果未定义
+  return 0;
+}
+  ```
