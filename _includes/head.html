@@ -15,7 +15,7 @@
     <meta property="og:type" content="article">
     <meta property="og:description" content="{{ page.excerpt | strip_html | truncate:200 }}">
     {% if page.date %}
-    <meta property="article:published_time" content="{{ page.date | date: " %Y-%m-%dT%H:%M:%SZ" }}">
+    <meta property="article:published_time" content="{{ page.date | date: "%Y-%m-%dT%H:%M:%SZ" }}">
     {% endif %}
     {% if page.author %}
     <meta property="article:author" content="{{ page.author }}">
@@ -44,55 +44,52 @@
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
 
     <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="{{ " /css/bootstrap.min.css" | prepend: site.baseurl }}">
+    <link rel="stylesheet" href="{{ "/css/bootstrap.min.css" | prepend: site.baseurl }}">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ " /css/hux-blog.min.css" | prepend: site.baseurl }}">
+    <link rel="stylesheet" href="{{ "/css/hux-blog.min.css" | prepend: site.baseurl }}">
+    <!-- 新增自定义CSS引入 -->
+    <link rel="stylesheet" href="{{ "/css/custom.css" | prepend: site.baseurl }}">
 
     <!-- Custom Fonts -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
         type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <!-- ga & ba script hook -->
+    <!-- ga & ba script hoook -->
     <script></script>
 
     <!-- Google AdSense -->
     <script data-ad-client="ca-pub-6487568398225121" async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-    <!-- MathJax 3.x 配置：使用 CHTML 输出器，支持真正的自动换行 -->
+    <!-- MathJax 3.x 配置：支持LaTeX公式+溢出自动换行 -->
     <script>
         window.MathJax = {
             tex: {
-                inlineMath: [['\( ', ' \)'], ['\\(', '\\)']],
-                displayMath: [['\[ ', ' \]'], ['\\[', '\\]']],
-                tags: 'ams',
-                packages: {'[+]': ['noerrors', 'noundefined']}  // 可选，防止错误显示
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                tags: 'ams'
             },
-            chtml: {
-                scale: 0.95,                    // 稍小一点，适应手机
-                displayOverflow: 'overflow',    // 溢出时处理
-                mtextInheritFont: true
+            svg: {
+                scale: 0.9,
+                displayOverflow: 'linebreak',
+                inlineMathDisplay: 'style'
             },
-            options: {
-                renderActions: {
-                    // 启用自动换行
-                    addLineBreaks: [MathJax.startup ? 100 : 0, '', '', function (doc) {
-                        doc.data.lineBreaks = true;
-                    }]
-                }
+            linebreak: {
+                width: 'container',
+                linebreaks: true
+            },
+            startup: {
+                pageReady: () => MathJax.startup.defaultPageReady()
             }
         };
     </script>
-
-    <!-- 加载 CHTML 版本（自动换行效果最好） -->
-    <script id="MathJax-script" async
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </head>
