@@ -78,10 +78,12 @@
             svg: {
                 scale: 0.9,
                 displayOverflow: 'linebreak',
-                inlineMathDisplay: 'style',
-                linebreak: {
-                    width: '100%'
-                }
+                inlineMathDisplay: 'style'
+            },
+            // 核心配置：全局换行规则，基于容器宽度
+            linebreak: {
+                width: 'container',  // 替换 100%，适配文章容器
+                linebreaks: true     // 强制开启自动换行
             },
             startup: {
                 pageReady: () => MathJax.startup.defaultPageReady()
