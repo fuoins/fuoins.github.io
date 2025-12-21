@@ -65,26 +65,16 @@
 
     <!-- ga & ba script hoook -->
     <script></script>
-<!-- MathJax 配置：开启自动换行 + 适配移动端 -->
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-<script>
-  MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$', '$$'], ['\\[', '\\]']]
-    },
-    chtml: {
-      // 允许公式超出容器时自动换行
-      displayOverflow: 'linebreak'
-    },
-    options: {
-      // 全局开启自动换行
-      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
-    }
-  };
-</script>
 
     <!-- Google AdSense -->
     <script data-ad-client="ca-pub-6487568398225121" async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<style>
+.MathJax nobr {
+  white-space: normal !important;
+  white-space-collapse: collapse !important;
+  text-wrap: wrap !important;
+}
+</style>
+
 </head>
