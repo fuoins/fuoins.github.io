@@ -64,31 +64,27 @@
     <script></script>
 
     <!-- Google AdSense -->
-    <script data-ad-client="ca-pub-6487568398225121" async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-    <!-- MathJax 3.x 配置：支持LaTeX公式+溢出自动换行 -->
-    <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']],
-                tags: 'ams'
-            },
-            svg: {
-                scale: 0.9,
-                displayOverflow: 'linebreak',
-                inlineMathDisplay: 'style'
-            },
-            // 核心配置：全局换行规则，基于容器宽度
-            linebreak: {
-                width: 'container',  // 替换 100%，适配文章容器
-                linebreaks: true     // 强制开启自动换行
-            },
-            startup: {
-                pageReady: () => MathJax.startup.defaultPageReady()
-            }
-        };
-    </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['\( ',' \)'], ["\\(","\\)"] ],
+      displayMath: [ ['\[ ',' \]'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    "HTML-CSS": {
+      linebreaks: { automatic: true },
+      scale: 90
+    },
+    SVG: {
+      linebreaks: { automatic: true },
+      scale: 90
+    },
+    CommonHTML: {
+      linebreaks: { automatic: true }
+    }
+  });
+</script>
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_CHTML">
+</script>
 </head>
