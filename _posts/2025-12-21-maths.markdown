@@ -12,82 +12,82 @@ tags:
 # 数学核心知识点解析
 ## 一、代数运算与不等式
 ### （一）运算方法
-被除式÷除式：竖式乘法
-消去因式：多项式长除法
+- 被除式÷除式：竖式乘法
+- 消去因式：多项式长除法
 
 ### （二）基本公式
 1. 根式与幂
-   $\sqrt{a^2}=|a|$
-   $a^{b^c}=a^{c^b}$
-   $(a^b)^c=a^{bc}$
+   - $\sqrt{a^2}=|a|$
+   - $a^{b^c}=a^{c^b}$
+   - $(a^b)^c=a^{bc}$
 
 2. 绝对值不等式
-   $||a|-|b|| \leq |a+b| \leq |a|+|b|$
-   $|a-b| \leq |a|+|b|$
+   - $||a|-|b|| \leq |a+b| \leq |a|+|b|$
+   - $|a-b| \leq |a|+|b|$
 
 3. 均值不等式
-   $x_1+x_2+x_3+x_4 \geq n\sqrt[n]{x_1x_2x_3x_4} \quad (x_i>0)$
+   - $x_1+x_2+x_3+x_4 \geq n\sqrt[n]{x_1x_2x_3x_4} \quad (x_i>0)$
 
 4. 柯西不等式
-   $(a^2+b^2)(c^2+d^2) \geq (ac+bd)^2$
-   $(a_1^2+…+a_n^2)(b_1^2+…+b_n^2) \geq (a_1b_1+…+a_nb_n)^2$
+   - $(a^2+b^2)(c^2+d^2) \geq (ac+bd)^2$
+   - $(a_1^2+…+a_n^2)(b_1^2+…+b_n^2) \geq (a_1b_1+…+a_nb_n)^2$
 
 5. 分式不等式
-   分式不等式1：
+   - 分式不等式1：
      $\frac{a_1^2}{b_1}+…+\frac{a_n^2}{b_n} \geq \frac{(a_1+…+a_n)^2}{b_1+…+b_n}$
      满足条件：$\frac{a_1}{b_1}=…=\frac{a_n}{b_n}$
-   分式不等式2：
+   - 分式不等式2：
      $\frac{a_1^{m+1}}{b_1^m}+…+\frac{a_n^{m+1}}{b_n^m} \geq \frac{(a_1+…+a_n)^{m+1}}{(b_1+…+b_n)^m} \quad (m>0)$
 
 ### （三）对数与数列
 1. 对数换底公式
-   $\log_a b = \frac{\log_c b}{\log_c a}$
+   - $\log_a b = \frac{\log_c b}{\log_c a}$
 
 2. 等比数列
-   通项公式：$a_n=a_1q^{n-1}$
-   前$n$项和公式：$S_n=\frac{a_1(1-q^n)}{1-q}$
+   - 通项公式：$a_n=a_1q^{n-1}$
+   - 前$n$项和公式：$S_n=\frac{a_1(1-q^n)}{1-q}$
 
 ### （四）三角恒等变换
 1. 和差角公式速记
-   $s\pm = sc \pm cs$
-   $c\pm = cc \mp ss$
-   $t\pm t = \frac{t\pm t}{1\mp tt}$
+   - $s\pm = sc \pm cs$
+   - $c\pm = cc \mp ss$
+   - $t\pm t = \frac{t\pm t}{1\mp tt}$
 
 2. 和差化积公式
-   $\sin\alpha+\sin\beta = 2\sin\frac{\alpha+\beta}{2}\cos\frac{\alpha-\beta}{2}$
-   $\sin\alpha-\sin\beta = 2\cos\frac{\alpha+\beta}{2}\sin\frac{\alpha-\beta}{2}$
-   $\cos\alpha+\cos\beta = 2\cos\frac{\alpha+\beta}{2}\cos\frac{\alpha-\beta}{2}$
-   $\cos\alpha-\cos\beta = -2\sin\frac{\alpha+\beta}{2}\sin\frac{\alpha-\beta}{2}$
+   - $\sin\alpha+\sin\beta = 2\sin\frac{\alpha+\beta}{2}\cos\frac{\alpha-\beta}{2}$
+   - $\sin\alpha-\sin\beta = 2\cos\frac{\alpha+\beta}{2}\sin\frac{\alpha-\beta}{2}$
+   - $\cos\alpha+\cos\beta = 2\cos\frac{\alpha+\beta}{2}\cos\frac{\alpha-\beta}{2}$
+   - $\cos\alpha-\cos\beta = -2\sin\frac{\alpha+\beta}{2}\sin\frac{\alpha-\beta}{2}$
 
 3. 积化和差公式
-   $\sin\alpha\cos\beta = \frac{1}{2}[\sin(\alpha+\beta)+\sin(\alpha-\beta)]$
-   $\cos\alpha\sin\beta = \frac{1}{2}[\sin(\alpha+\beta)-\sin(\alpha-\beta)]$
-   $\cos\alpha\cos\beta = \frac{1}{2}[\cos(\alpha+\beta)+\cos(\alpha-\beta)]$
-   $\sin\alpha\sin\beta = -\frac{1}{2}[\cos(\alpha+\beta)-\cos(\alpha-\beta)]$
+   - $\sin\alpha\cos\beta = \frac{1}{2}[\sin(\alpha+\beta)+\sin(\alpha-\beta)]$
+   - $\cos\alpha\sin\beta = \frac{1}{2}[\sin(\alpha+\beta)-\sin(\alpha-\beta)]$
+   - $\cos\alpha\cos\beta = \frac{1}{2}[\cos(\alpha+\beta)+\cos(\alpha-\beta)]$
+   - $\sin\alpha\sin\beta = -\frac{1}{2}[\cos(\alpha+\beta)-\cos(\alpha-\beta)]$
 
 4. 三角基本恒等式（补充）
-   $\tan^2x + 1 = \sec^2x$
-   $\cot^2x + 1 = \csc^2x$
-   半角/降幂公式：
-   $\sin^2x = \frac{1-\cos2x}{2}$
-   $\cos^2x = \frac{1+\cos2x}{2}$
-   万能公式（令$u = \tan\frac{x}{2}$）：
-   $\sin x = \frac{2u}{1+u^2}$
-   $\cos x = \frac{1-u^2}{1+u^2}$
-   $\tan x = \frac{2u}{1-u^2}$
-   辅助角公式：
-   $a\sin x + b\cos x = \sqrt{a^2+b^2}\sin(x+\varphi)$
-   其中$\sin\varphi = \frac{b}{\sqrt{a^2+b^2}}$，$\cos\varphi = \frac{a}{\sqrt{a^2+b^2}}$，$\tan\varphi = \frac{b}{a}$
+   - $\tan^2x + 1 = \sec^2x$
+   - $\cot^2x + 1 = \csc^2x$
+   - 半角/降幂公式：
+     $\sin^2x = \frac{1-\cos2x}{2}$
+     $\cos^2x = \frac{1+\cos2x}{2}$
+   - 万能公式（令$u = \tan\frac{x}{2}$）：
+     $\sin x = \frac{2u}{1+u^2}$
+     $\cos x = \frac{1-u^2}{1+u^2}$
+     $\tan x = \frac{2u}{1-u^2}$
+   - 辅助角公式：
+     $a\sin x + b\cos x = \sqrt{a^2+b^2}\sin(x+\varphi)$
+     其中$\sin\varphi = \frac{b}{\sqrt{a^2+b^2}}$，$\cos\varphi = \frac{a}{\sqrt{a^2+b^2}}$，$\tan\varphi = \frac{b}{a}$
 
 5. 反三角函数恒等式
-   $\arcsin x + \arccos x = \frac{\pi}{2} \quad x\in[-1,1]$
-   $\arctan x + \text{arccot}x = \frac{\pi}{2} \quad x\in\mathbb{R}$
+   - $\arcsin x + \arccos x = \frac{\pi}{2} \quad x\in[-1,1]$
+   - $\arctan x + \text{arccot}x = \frac{\pi}{2} \quad x\in\mathbb{R}$
 
 ## 二、函数性质
 ### （一）奇偶性
 1. 核心结论
-   $f(x)+f(-x)$ 是偶函数
-   $f(x)-f(-x)$ 是奇函数
+   - $f(x)+f(-x)$ 是偶函数
+   - $f(x)-f(-x)$ 是奇函数
 
 2. 典型奇偶函数及导函数
    1. $f(x)=\ln(x+\sqrt{x^2+1})$（奇），$f'(x)=\frac{1}{\sqrt{x^2+1}}$
@@ -95,75 +95,75 @@ tags:
    3. $f(x)=\frac{e^x+e^{-x}}{2}$（偶），$f'(x)=\frac{e^x-e^{-x}}{2}$
 
 3. 运算与特性
-   奇偶相乘：奇×偶=奇，奇×奇=偶，偶×偶=偶
-   复合函数：全奇则奇，遇偶则偶
-   单调性：复合函数同增异减
-   导函数奇偶性：奇偶函数$n$阶导奇偶交替
-   原函数：奇函数原函数为偶函数，偶函数原函数不一定为奇
+   - 奇偶相乘：奇×偶=奇，奇×奇=偶，偶×偶=偶
+   - 复合函数：全奇则奇，遇偶则偶
+   - 单调性：复合函数同增异减
+   - 导函数奇偶性：奇偶函数$n$阶导奇偶交替
+   - 原函数：奇函数原函数为偶函数，偶函数原函数不一定为奇
 
 ### （二）对称性与有界性
 1. 关于$x=a$对称
-   $f(x)=f(2a-x)$
-   $f(a-x)=f(a+x)$
+   - $f(x)=f(2a-x)$
+   - $f(a-x)=f(a+x)$
 
 2. 有界性
-   $|f(x)|<M$（$M$为常数），则$f(x)$有界
+   - $|f(x)|<M$（$M$为常数），则$f(x)$有界
 
 ## 三、泰勒公式（麦克劳林展开）
-$\sin x = x - \frac{x^3}{6} + o(x^3)$
-$\cos x = 1 - \frac{x^2}{2} + \frac{x^4}{24} + o(x^4)$
-$\arcsin x = x + \frac{x^3}{6} + o(x^3)$
-$\tan x = x + \frac{x^3}{3} + o(x^3)$
-$\arctan x = x - \frac{x^3}{3} + o(x^3)$
-$\ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} + o(x^3)$
-$e^x = 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + o(x^3)$
-$(1+x)^\alpha = 1 + \alpha x + \frac{\alpha(\alpha-1)}{2}x^2 + o(x^2)$
+- $\sin x = x - \frac{x^3}{6} + o(x^3)$
+- $\cos x = 1 - \frac{x^2}{2} + \frac{x^4}{24} + o(x^4)$
+- $\arcsin x = x + \frac{x^3}{6} + o(x^3)$
+- $\tan x = x + \frac{x^3}{3} + o(x^3)$
+- $\arctan x = x - \frac{x^3}{3} + o(x^3)$
+- $\ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} + o(x^3)$
+- $e^x = 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + o(x^3)$
+- $(1+x)^\alpha = 1 + \alpha x + \frac{\alpha(\alpha-1)}{2}x^2 + o(x^2)$
 
 ### 等价无穷小（$x \to 0$）
-$\arctan x \sim \sin x \sim x \sim \arcsin x \sim \tan x$
+- $\arctan x \sim \sin x \sim x \sim \arcsin x \sim \tan x$
 
 ## 四、极限相关
 ### （一）方程根判定
-两根之间一点$m$：$a·f(m)<0$
+- 两根之间一点$m$：$a·f(m)<0$
 
 ### （二）数列极限单调性
-$\ln n^a < n^a < a^n < n! < n^n$
+- $\ln n^a < n^a < a^n < n! < n^n$
 
 ### （三）极限保号性
-$\lim f > 0 \Rightarrow f > 0$
-$\lim f < 0 \Rightarrow f < 0$
-$f \geq 0 \Rightarrow \lim f \geq 0$
-$f \leq 0 \Rightarrow \lim f \leq 0$
+- $\lim f > 0 \Rightarrow f > 0$
+- $\lim f < 0 \Rightarrow f < 0$
+- $f \geq 0 \Rightarrow \lim f \geq 0$
+- $f \leq 0 \Rightarrow \lim f \leq 0$
 
 ### （四）极限定义（$\epsilon-\delta$）
-$\forall \epsilon>0, \exists \delta>0$，当$0<|x-x_0|<\delta$时，$|f(x)-A|<\epsilon$，则$\lim\limits_{x \to x_0}f(x)=A$
+$\forall \epsilon>0, \exists \delta>0$，当$0<<<|x-x_0|<\delta$时，$|f(x)-A|<\epsilon$，则$\lim\limits_{x \to x_0}f(x)=A$
 
 ### （五）常见极限
-$\lim\limits_{x \to 0} \frac{1}{x}\sin\frac{1}{x}$ 不存在
+- $\lim\limits_{x \to 0} \frac{1}{x}\sin\frac{1}{x}$ 不存在
 
 ### （六）极限存在充要条件
 左极限$\lim\limits_{x \to x_0^-}f(x)$ 和 右极限$\lim\limits_{x \to x_0^+}f(x)$都存在且相等，即$\lim\limits_{x \to x_0^-}f(x)=\lim\limits_{x \to x_0^+}f(x)=A$，此时$\lim\limits_{x \to x_0}f(x)=A$，否则极限不存在
 
 ## 五、极坐标曲线
 ### （一）圆的极坐标方程
-圆心在极点，半径$a$：$r = a$
-圆心在$(a,0)$，半径$a$：$r = 2a\cos\theta$
+- 圆心在极点，半径$a$：$r = a$
+- 圆心在$(a,0)$，半径$a$：$r = 2a\cos\theta$
 
 ### （二）经典曲线
 1. 心形线（$a>0$）：$r = a(1-\cos\theta)$
 2. 阿基米德螺线（$a>0, \theta\geq0$）：$r = a\theta$
 3. 双纽线：
-   $r^2 = a^2\sin2\theta$
-   $r^2 = a^2\cos2\theta$
+   - $r^2 = a^2\sin2\theta$
+   - $r^2 = a^2\cos2\theta$
 
 ## 六、常见参数方程
 ### （一）圆
-直角坐标方程：$(x-a)^2+(y-b)^2=r^2$
-参数方程（参数为$t$）：$\begin{cases}x = a + r\cos t \\ y = b + r\sin t\end{cases}$
+- 直角坐标方程：$(x-a)^2+(y-b)^2=r^2$
+- 参数方程（参数为$t$）：$\begin{cases}x = a + r\cos t \\ y = b + r\sin t\end{cases}$
 
 ### （二）星形线
-直角坐标方程：$x^{\frac{2}{3}}+y^{\frac{2}{3}}=a^{\frac{2}{3}}$
-参数方程（参数为$t$）：$\begin{cases}x = a\cos^3t \\ y = a\sin^3t\end{cases}$
+- 直角坐标方程：$x^{\frac{2}{3}}+y^{\frac{2}{3}}=a^{\frac{2}{3}}$
+- 参数方程（参数为$t$）：$\begin{cases}x = a\cos^3t \\ y = a\sin^3t\end{cases}$
 
 ### （三）摆线
-参数方程（参数为$t$）：$\begin{cases}x = a(t-\sin t) \\ y = a(1-\cos t)\end{cases}$
+- 参数方程（参数为$t$）：$\begin{cases}x = a(t-\sin t) \\ y = a(1-\cos t)\end{cases}$
