@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="{{ site.baseurl }}/img/favicon.ico">
 
     <!-- Canonical URL -->
-    <link rel="stylesheet" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+    <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="{{ "/css/bootstrap.min.css" | prepend: site.baseurl }}">
@@ -53,27 +53,30 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
         type="text/css">
 
-    <!-- 内嵌公式换行样式：最高优先级，强制生效 -->
+    <!-- 修复公式样式：区分行内/块级 -->
     <style>
-        /* 覆盖MathJax默认样式，强制公式容器换行 */
-        mjx-container,
-        mjx-container > svg,
-        mjx-container > svg > g {
+        /* 行内公式：保持与文字同行，不破坏布局 */
+        mjx-container[display="inline"] {
+            display: inline-block !important;
+            vertical-align: middle !important;
+            width: auto !important;
+            overflow: visible !important;
+        }
+        /* 块级公式：支持换行和横向滚动，不影响整体布局 */
+        mjx-container[display="block"] {
+            display: block !important;
             width: 100% !important;
             max-width: 100% !important;
             overflow-x: auto !important;
-            white-space: normal !important;
-            display: block !important;
-        }
-        /* 块级公式间距优化 */
-        mjx-container[display="block"] {
+            overflow-y: hidden !important; /* 禁止上下滑动 */
             margin: 1em 0 !important;
             padding: 0.2em 0 !important;
+            -webkit-overflow-scrolling: touch;
         }
-        /* 移动端适配 */
+        /* 移动端块级公式字体适配 */
         @media (max-width: 768px) {
-            mjx-container {
-                font-size: 80% !important;
+            mjx-container[display="block"] {
+                font-size: 85% !important;
             }
         }
     </style>
@@ -92,7 +95,7 @@
     <script data-ad-client="ca-pub-6487568398225121" async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-    <!-- MathJax 3.x 配置：支持LaTeX公式+溢出自动换行 -->
+    <!-- MathJax 3.x 配置：支持LaTeX公式 -->
     <script>
         window.MathJax = {
             tex: {
@@ -102,8 +105,7 @@
             },
             svg: {
                 scale: 0.9,
-                displayOverflow: 'linebreak',
-                inlineMathDisplay: 'style'
+                displayOverflow: 'linebreak'
             },
             linebreak: {
                 width: 'container',
