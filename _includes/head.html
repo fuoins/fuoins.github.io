@@ -50,10 +50,14 @@
     <link rel="stylesheet" href="{{ " /css/hux-blog.min.css" | prepend: site.baseurl }}">
 
     <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
         type="text/css">
 
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -65,54 +69,4 @@
     <!-- Google AdSense -->
     <script data-ad-client="ca-pub-6487568398225121" async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-    <!-- MathJax 3.x 配置：切换到 CHTML 输出器，支持长公式自动换行 -->
-<script>
-    window.MathJax = {
-        tex: {
-            inlineMath: [['\( ', ' \)'], ['\\(', '\\)']],
-            displayMath: [['\[ ', ' \]'], ['\\[', '\\]']],
-            tags: 'ams',
-            packages: {'[+]': ['noerrors', 'noundefined']}  // 防止错误显示
-        },
-        chtml: {
-            scale: 0.92,              // 稍小一点，适配窄容器（如手机）
-            displayAlign: 'left',     // 左对齐，便于换行
-            displayIndent: '0em'
-        },
-        options: {
-            // 启用 MathJax 内置换行机制
-            enableLineBreaks: true
-        }
-    };
-</script>
-
-<!-- 加载 CHTML 版本（自动换行支持最好） -->
-<script id="MathJax-script" async
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-<!-- 强制浏览器换行（关键！解决 CSS 冲突） -->
-<style>
-    /* MathJax 容器 */
-    mjx-container {
-        display: block !important;
-        max-width: 100% !important;
-        overflow-x: auto !important;  /* 备用：允许水平滚动 */
-        margin: 1em auto !important;
-    }
-
-    mjx-container[display="true"] mjx-math,
-    mjx-container mjx-math {
-        white-space: normal !important;
-        overflow-wrap: break-word !important;
-        word-break: break-all !important;  /* 强制断长词/公式 */
-        text-align: left !important;
-    }
-
-    /* 兼容你的博客容器（常见类名） */
-    .post-content, .article-post, .content, article {
-        overflow: hidden !important;
-        word-wrap: break-word !important;
-    }
-</style>
 </head>
