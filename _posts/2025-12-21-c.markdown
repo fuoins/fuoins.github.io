@@ -1,3 +1,4 @@
+---
 layout:       post
 title:        "C语言核心基础笔记解析"
 subtitle:     "C语言"
