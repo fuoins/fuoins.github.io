@@ -9,29 +9,81 @@ layout: default
 <!-- Post Header -->
 {% include intro-header.html type='post' %}
 
-<!-- 新增：MathJax 公式自动换行的CSS样式 -->
+<!-- 修复移动端问题的核心CSS：新增移动端适配 + 强化公式响应式 -->
 <style>
-    /* 解决MathJax公式自动换行的核心样式 */
-    /* 块级公式（$$...$$）容器：支持自动换行/水平滚动 */
-    mjx-container[jax="SVG"][display="true"] {
-        display: block !important;
-        overflow-x: auto; /* 超出时显示水平滚动，也可改为overflow-x: visible配合white-space: pre-wrap实现纯换行 */
-        white-space: pre-wrap; /* 公式内容自动换行 */
-        word-break: break-all; /* 强制换行适配长公式 */
-        max-width: 100%; /* 不超出post-container的宽度 */
-        margin: 1em 0; /* 公式上下间距，提升可读性 */
-    }
-
-    /* 行内公式（$...$）容器：跟随文字自然换行 */
-    mjx-container[jax="SVG"][display="false"] {
-        white-space: normal;
-        vertical-align: middle; /* 行内公式与文字垂直居中对齐 */
-    }
-
-    /* 确保post-container的内容不会被公式撑破 */
+    /* 基础样式：确保post-container在所有设备上的基础表现 */
     .post-container {
         word-wrap: break-word;
         white-space: normal;
+        width: 100% !important; /* 强制占满父容器宽度，覆盖异常的宽度限制 */
+        max-width: 100% !important; /* 防止容器被压缩 */
+        box-sizing: border-box !important; /* 确保内边距不影响宽度计算 */
+        padding: 0 15px !important; /* 统一内边距，替代原有只在大屏设置的padding */
+        margin: 0 auto !important; /* 居中，清除多余偏移 */
+    }
+
+    /* 大屏设备的样式（保留原有需求，768px以上） */
+    @media (min-width: 768px) {
+        .post-container {
+            padding-right: 5% !important;
+            padding-left: 0 !important;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .post-container, .sidebar-container {
+            padding-right: 5% !important;
+        }
+    }
+
+    /* ========== MathJax公式响应式修复：重点针对移动端 ========== */
+    /* 1. 块级公式（$$...$$）：移动端支持水平滚动 + 自动换行 */
+    mjx-container[jax="SVG"][display="true"] {
+        display: block !important;
+        overflow-x: auto !important; /* 移动端优先水平滚动，保证公式完整性 */
+        overflow-y: hidden !important;
+        white-space: pre-wrap !important; /* 辅助自动换行 */
+        word-break: break-all !important;
+        max-width: 100% !important; /* 强制不超出post-container */
+        width: 100% !important; /* 占满容器 */
+        margin: 1em 0 !important;
+        padding: 0 !important; /* 清除公式容器的多余内边距 */
+    }
+
+    /* 2. 行内公式（$...$）：移动端跟随文字换行，垂直居中 */
+    mjx-container[jax="SVG"][display="false"] {
+        white-space: normal !important;
+        vertical-align: middle !important;
+        max-width: 100% !important; /* 不超出行宽 */
+    }
+
+    /* 3. 移动端公式额外优化：缩小公式字体，适配小屏（可选，根据需要调整） */
+    @media (max-width: 767px) {
+        mjx-container {
+            font-size: 0.9em !important; /* 移动端公式字体缩小10%，可调整 */
+        }
+    }
+
+    /* ========== 修复Bootstrap栅格移动端偏移问题 ========== */
+    /* 移动端清除列的偏移和浮动，确保占满宽度 */
+    @media (max-width: 767px) {
+        .col-lg-offset-2, .col-md-offset-1 {
+            margin-left: 0 !important; /* 清除移动端的列偏移 */
+        }
+        .col-lg-8, .col-md-10 {
+            width: 100% !important; /* 移动端列占满宽度 */
+            float: none !important; /* 清除浮动，避免布局错乱 */
+        }
+    }
+
+    /* 保留原有anchorjs样式 */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
     }
 </style>
 
@@ -44,6 +96,7 @@ layout: default
             <div class="
                 col-lg-8 col-lg-offset-2
                 col-md-10 col-md-offset-1
+                col-sm-12 col-xs-12  <!-- 新增：移动端占满12列 -->
                 post-container">
 
                 <!-- Multi-Lingual -->
@@ -93,7 +146,7 @@ layout: default
         {% unless page.no-catalog %}
             <div class="
                 col-lg-2 col-lg-offset-0
-                visible-lg-block
+                visible-lg-block  <!-- 仅大屏显示目录，移动端隐藏，避免占宽度 -->
                 sidebar-container
                 catalog-container">
                 <div class="side-catalog">
@@ -110,6 +163,7 @@ layout: default
             <div class="
                 col-lg-8 col-lg-offset-2
                 col-md-10 col-md-offset-1
+                col-sm-12 col-xs-12  <!-- 新增：移动端占满12列 -->
                 sidebar-container">
 
                 <!-- Featured Tags -->
@@ -181,38 +235,30 @@ layout: default
         anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
     })
 </script>
-<style>
-    /* place left on bigger screen */
-    @media all and (min-width: 800px) {
-        .anchorjs-link{
-            position: absolute;
-            left: -0.75em;
-            font-size: 1.1em;
-            margin-top : -0.1em;
-        }
-    }
-</style>
 {% endif %}
 
-<!-- 优化后的MathJax配置（包含自动换行相关配置） -->
+<!-- 优化后的MathJax配置：强化移动端渲染 -->
 <script>
     MathJax = {
         tex: {
-            inlineMath: [['$', '$'], ['\\(', '\\)']], // 行内公式分隔符
-            displayMath: [['$$', '$$'], ['\\[', '\\]']], // 块级公式分隔符，补充配置
-            processEscapes: true, // 允许使用\$表示普通的$符号，避免冲突
-            equationNumbers: { autoNumber: 'AMS' } // 可选：公式自动编号，可根据需要关闭
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true,
+            equationNumbers: { autoNumber: 'AMS' }
         },
         svg: {
             fontCache: 'global',
-            displayOverflow: 'wrap' // 关键：块级公式超出时自动换行（MathJax 3.x特性）
+            displayOverflow: 'wrap',
+            scale: 1, // 基础缩放比例，移动端通过CSS调整
+            minScale: 0.8 // 公式最小缩放比例，避免过小
         },
         startup: {
             pageReady: function() {
                 return MathJax.startup.defaultPageReady().then(function() {
-                    // 确保公式渲染后适配容器宽度
+                    // 窗口大小变化时重新渲染公式，适配移动端旋转屏幕
                     window.addEventListener('resize', function() {
-                        MathJax.typeset();
+                        MathJax.typesetClear(); // 先清除原有渲染
+                        MathJax.typeset(); // 重新渲染
                     });
                 });
             }
