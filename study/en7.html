@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>英语选择题练习（6套题）</title>
+    <style>
+        body { font-family: 微软雅黑, sans-serif; max-width: 900px; margin: 20px auto; padding: 0 20px; }
+        .quiz-set { margin: 30px 0; padding: 20px; border: 1px solid #eee; border-radius: 8px; background: #f9f9f9; }
+        .quiz-title { font-size: 18px; color: #333; border-bottom: 2px solid #4CAF50; padding-bottom: 10px; margin-bottom: 20px; }
+        .question-item { margin: 15px 0; padding: 10px; background: #fff; border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .question-text { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .option { margin: 6px 0; padding: 5px; cursor: pointer; border-radius: 3px; transition: background 0.2s; }
+        .option:hover { background: #f0f7ff; }
+        .option.correct { color: #27ae60; font-weight: bold; }
+        .option.incorrect { color: #e74c3c; }
+        button { padding: 10px 25px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        button:hover { background: #1976D2; }
+    </style>
+</head>
+<body>
+    <h1>英语选择题练习（共6套题）</h1>
+    <!-- 第一套题：答案dacbc -->
+    <div class="quiz-set">
+        <div class="quiz-title">第一套题（熊猫相关）</div>
+        <div id="quiz1" class="question-container"></div>
+        <button onclick="showAns('quiz1')">显示正确答案</button>
+    </div>
+    <!-- 第二套题：答案acbdb -->
+    <div class="quiz-set">
+        <div class="quiz-title">第二套题（天赋与毅力）</div>
+        <div id="quiz2" class="question-container"></div>
+        <button onclick="showAns('quiz2')">显示正确答案</button>
+    </div>
+    <!-- 第三套题：答案adbdc -->
+    <div class="quiz-set">
+        <div class="quiz-title">第三套题（着装影响）</div>
+        <div id="quiz3" class="question-container"></div>
+        <button onclick="showAns('quiz3')">显示正确答案</button>
+    </div>
+    <!-- 第四套题：答案adcba -->
+    <div class="quiz-set">
+        <div class="quiz-title">第四套题（古典音乐与歌剧）</div>
+        <div id="quiz4" class="question-container"></div>
+        <button onclick="showAns('quiz4')">显示正确答案</button>
+    </div>
+    <!-- 第五套题：答案bcdac -->
+    <div class="quiz-set">
+        <div class="quiz-title">第五套题（美国社会与外在美）</div>
+        <div id="quiz5" class="question-container"></div>
+        <button onclick="showAns('quiz5')">显示正确答案</button>
+    </div>
+    <!-- 第六套题：答案cabda -->
+    <div class="quiz-set">
+        <div class="quiz-title">第六套题（植物基肉类）</div>
+        <div id="quiz6" class="question-container"></div>
+        <button onclick="showAns('quiz6')">显示正确答案</button>
+    </div>
+
+    <script>
+        // 1. 定义所有题目和答案（A=0、B=1、C=2、D=3）
+        const allQuizzes = {
+            quiz1: [
+                {
+                    q: "What do we learn from new research about pandas?",
+                    o: [
+                        "They are losing habitat due to the building of roads and houses.",
+                        "They have stopped seeking new mates for reproduction.",
+                        "They may not adapt to the fragmentation of their habitat.",
+                        "They may cease to exist as a result of enjoying too good a life."
+                    ],
+                    ans: 3
+                },
+                {
+                    q: "What can we conclude from the new research by scientists at Michigan State University?",
+                    o: [
+                        "Environmentalists' long-time belief regarding panda conservation may be misleading.",
+                        "Housing development near pandas' homes may threaten their survival.",
+                        "Pandas' natural habitats are becoming less suitable for reproduction.",
+                        "The increased panda population is attributed to the fragmentation of their habitat."
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "What is the experts' conclusion regarding pandas?",
+                    o: [
+                        "It is urgent to provide an ideal habitat for them to thrive.",
+                        "It is very important to preserve their genetic diversity.",
+                        "Their chances of finding new mates have a lot to do with their habitat.",
+                        "Their environment for survival has been continuously worsening."
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "What can we infer from the passage about the Goldilocks principle?",
+                    o: [
+                        "It needs to be confirmed by more studies on pandas.",
+                        "It applies to the preservation of pandas too.",
+                        "It has implications for future panda research.",
+                        "It can be used to locate the right spot for pandas."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "What can the new findings do according to Professor Sillero?",
+                    o: [
+                        "Help discover new ways for the conservation of pandas.",
+                        "Help remove pandas from the list of endangered species.",
+                        "Shed light on the conservation of most large meat-eating animals.",
+                        "Show the complexity of interactions between humans and animals."
+                    ],
+                    ans: 2
+                }
+            ],
+            quiz2: [
+                {
+                    q: "What does the passage say about people born with natural talents?",
+                    o: [
+                        "They seem to outdo others without hard work.",
+                        "They appear to know all the secrets to success.",
+                        "They feel it only too logical to succeed.",
+                        "They are bound to excel effortlessly."
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "What does Duckworth say about talent?",
+                    o: [
+                        "It is a new concept much too overrated.",
+                        "It proves necessary for big achievements.",
+                        "It plays a lesser role in one's success.",
+                        "It is a guarantee for real success in life."
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "What does the passage say about people thinking of attaining success?",
+                    o: [
+                        "They are puzzled how to present their best to the employer.",
+                        "They are burdened by their expectation of perfection.",
+                        "They will try hard to land a job that fits their skills best.",
+                        "They will find themselves lacking in all the skills they need."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "How does the author think grit can be helpful to us?",
+                    o: [
+                        "It allows us to know what we are good at.",
+                        "It opens our eyes to new opportunities.",
+                        "It focuses our attention on what we do.",
+                        "It lets us reconsider the goals to achieve."
+                    ],
+                    ans: 3
+                },
+                {
+                    q: "What message does Duckworth try to convey in her book Grit?",
+                    o: [
+                        "We should perfect ourselves to ensure success.",
+                        "We should stay persistent even in face of failures.",
+                        "We can never master a skill without constant practice.",
+                        "We can never expect to reach our goals without passion."
+                    ],
+                    ans: 1
+                }
+            ],
+            quiz3: [
+                {
+                    q: "What does science suggest the right dress may do?",
+                    o: [
+                        "Add to our advantage in work and life.",
+                        "Enable us to look a lot more attractive.",
+                        "Help us to enjoy a fuller personal life.",
+                        "Provide extra energy for what we do."
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "Why does science say the clothes one wears may affect their interaction with others?",
+                    o: [
+                        "Clothes usually represent one's social and economic status.",
+                        "Clothes largely determine one's likability by people around.",
+                        "Different types of clothing markedly reflect different personalities.",
+                        "Different types of clothing convey different messages symbolically."
+                    ],
+                    ans: 3
+                },
+                {
+                    q: "How do the clothes we wear sway our evaluation of ourselves?",
+                    o: [
+                        "By exerting an effect on our power of judgment.",
+                        "By impacting how we feel about ourselves.",
+                        "By affecting what we take as the basis for assessment.",
+                        "By influencing our interpretation of symbolic messages."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Why does the author say tailored jackets are associated with being 'dressed for success'?",
+                    o: [
+                        "They are necessary for formal business dealings.",
+                        "They may help people concentrate on their business.",
+                        "They are vital to keeping a dominant position in business transactions.",
+                        "They may enable people to have the right mentality for doing business."
+                    ],
+                    ans: 3
+                },
+                {
+                    q: "What are people advised to do when they want to socialize?",
+                    o: [
+                        "Focus on clothing.",
+                        "Wear a good suit.",
+                        "Dress casually.",
+                        "Look unusual."
+                    ],
+                    ans: 2
+                }
+            ],
+            quiz4: [
+                {
+                    q: "What does the author think of classical music and opera in today's world?",
+                    o: [
+                        "They still make their presence felt.",
+                        "They have given way to electronic music.",
+                        "They will not fade away from the public eye.",
+                        "They are no longer relevant to teenagers' lives."
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "What do we learn about much of the popular music currently produced?",
+                    o: [
+                        "It can be difficult for many classical music fans to appreciate.",
+                        "It can be seen as an indicator of refinement on classical music.",
+                        "It caters to society's taste in music in a more subtle way than classical music.",
+                        "It contains elements similar to those in some masterpieces of classical music."
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "Why does the author mention the invention of the rock opera?",
+                    o: [
+                        "To illustrate how to tell a story using music.",
+                        "To present the simplest definition of opera.",
+                        "To show the relevance of opera and classical music.",
+                        "To justify the necessity of using orchestras in opera."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Why are classical music pieces still used as background music in modern movies?",
+                    o: [
+                        "There are few types of music for movie producers to choose from.",
+                        "They are considered to be the most expressive type of music.",
+                        "They are well received by movie fans from all over the world.",
+                        "They are essential for movies to become the world's greatest hits."
+                    ],
+                    ans: 3
+                },
+                {
+                    q: "What do we learn about our modern music?",
+                    o: [
+                        "It could not have come into being without classical music and opera as its foundation.",
+                        "It cannot outcompete classical music and opera in its impact on our current society.",
+                        "It will not enjoy as much popularity as classical music and opera among music fans.",
+                        "It might not be able to rival classical music and opera in importance for centuries to come."
+                    ],
+                    ans: 0
+                }
+            ],
+            quiz5: [
+                {
+                    q: "What do we learn about American society from the first paragraph?",
+                    o: [
+                        "It sees lots of personal income wasted on beauty products.",
+                        "It considers one's physical appearance very important.",
+                        "It places a high value on the physical fitness of stars.",
+                        "It expects every individual to look their very best."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "What happens when people strive to look better?",
+                    o: [
+                        "They have to get prepared for resentment and bitter court battles.",
+                        "They are better able to gain attention, love, and personal connection.",
+                        "They may neglect to cultivate the inner qualities that matter more.",
+                        "They feel much of their precious time, energy and resources is wasted."
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "What does the author say about outer beauty?",
+                    o: [
+                        "It may be inherited or cultivated.",
+                        "It may lead to bad as well as good habits.",
+                        "It may create connection or isolation.",
+                        "It may do as much harm as good."
+                    ],
+                    ans: 3
+                },
+                {
+                    q: "What brings about spiritual connection?",
+                    o: [
+                        "Meeting of minds.",
+                        "Attraction at first sight.",
+                        "Physical chemistry.",
+                        "Frequent interaction."
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "What happens when we take the path toward cultivating inner beauty?",
+                    o: [
+                        "We may find a route toward other people's souls.",
+                        "We may be appreciated more by people around us.",
+                        "We will meet people who value us for who we are.",
+                        "We will be discouraged from revealing our true selves."
+                    ],
+                    ans: 2
+                }
+            ],
+            quiz6: [
+                {
+                    q: "What can we expect of plant-based meats?",
+                    o: [
+                        "An increasing interest in their analyses.",
+                        "An enormous effort in their promotion.",
+                        "A huge boost in their consumption.",
+                        "A noticeable surge in their varieties."
+                    ],
+                    ans: 2
+                },
+                {
+                    q: "What do we learn about consumers buying Beyond Burger and Impossible Foods products?",
+                    o: [
+                        "They are mostly non-vegetarians.",
+                        "They are mostly animal-rights advocates.",
+                        "Most of them refrain from eating meat for health reasons.",
+                        "Most of them eat meatless meat to protect the environment."
+                    ],
+                    ans: 0
+                },
+                {
+                    q: "What can we conclude about Impossible Foods' products from Joan Solman's remark?",
+                    o: [
+                        "They more often appeal to meat-eaters.",
+                        "They very much resemble animal meat.",
+                        "Some have become its signature dishes.",
+                        "Most of them are sold as true fake meat."
+                    ],
+                    ans: 1
+                },
+                {
+                    q: "Why can the habit of eating a plant-based diet lead to better health?",
+                    o: [
+                        "It frees people from any known link to cancer.",
+                        "It provides all the nutrients for staying healthy.",
+                        "It helps maintain normal blood pressure and blood sugar.",
+                        "It reduces various health risks posed by meat consumption."
+                    ],
+                    ans: 3
+                },
+                {
+                    q: "What does the author recommend we eat at the end of the passage?",
+                    o: [
+                        "Naturally produced foods.",
+                        "Processed protein substitutes.",
+                        "Red meats like traditional beef.",
+                        "New generations of alternate meat."
+                    ],
+                    ans: 0
+                }
+            ]
+        };
+
+        // 2. 打乱数组函数（简单可靠）
+        function shuffle(arr) {
+            for(let i=arr.length-1; i>0; i--) {
+                const j = Math.floor(Math.random() * (i+1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // 3. 初始化显示所有题目
+        for(let quizId in allQuizzes) {
+            const container = document.getElementById(quizId);
+            const quiz = allQuizzes[quizId];
+            // 打乱题目顺序
+            const shuffledQs = shuffle([...quiz]);
+            
+            shuffledQs.forEach((item, qIdx) => {
+                // 创建题目容器
+                const qDiv = document.createElement('div');
+                qDiv.className = 'question-item';
+                qDiv.setAttribute('data-ans', item.ans); // 存正确答案
+                
+                // 题目文本
+                const qText = document.createElement('div');
+                qText.className = 'question-text';
+                qText.textContent = item.q;
+                qDiv.appendChild(qText);
+                
+                // 打乱选项顺序
+                const shuffledOps = shuffle([...item.o]);
+                shuffledOps.forEach((op, oIdx) => {
+                    const opDiv = document.createElement('div');
+                    opDiv.className = 'option';
+                    opDiv.textContent = op;
+                    // 存选项原始索引（用于匹配答案）
+                    opDiv.setAttribute('data-orig', item.o.indexOf(op));
+                    qDiv.appendChild(opDiv);
+                });
+                
+                container.appendChild(qDiv);
+            });
+        }
+
+        // 4. 显示正确答案函数
+        function showAns(quizId) {
+            const container = document.getElementById(quizId);
+            const questions = container.querySelectorAll('.question-item');
+            
+            questions.forEach(q => {
+                const correctAns = parseInt(q.getAttribute('data-ans'));
+                const options = q.querySelectorAll('.option');
+                
+                options.forEach(op => {
+                    const origIdx = parseInt(op.getAttribute('data-orig'));
+                    if(origIdx === correctAns) {
+                        op.className = 'option correct';
+                    } else {
+                        op.className = 'option incorrect';
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>
