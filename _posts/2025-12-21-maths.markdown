@@ -36,9 +36,7 @@ tags:
 5. 分式不等式
    - 分式不等式1：
      $\frac{a_1^2}{b_1}+…+\frac{a_n^2}{b_n} \geq \frac{(a_1+…+a_n)^2}{b_1+…+b_n}$
-     满足条件：$\frac{a_1}{b_1}=…=\frac{a_n}{b_n}$
-   - 分式不等式2：
-     $\frac{a_1^{m+1}}{b_1^m}+…+\frac{a_n^{m+1}}{b_n^m} \geq \frac{(a_1+…+a_n)^{m+1}}{(b_1+…+b_n)^m} \quad (m>0)$
+     满足条件：$\frac{a_1}{b_1}=…=\frac{a_n}{b_n}\frac{a_1^{m+1}}{b_1^m}+…+\frac{a_n^{m+1}}{b_n^m} \geq \frac{(a_1+…+a_n)^{m+1}}{(b_1+…+b_n)^m} \quad (m>0)$
 
 ### （三）对数与数列
 1. 对数换底公式
