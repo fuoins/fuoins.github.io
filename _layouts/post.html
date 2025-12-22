@@ -9,6 +9,32 @@ layout: default
 <!-- Post Header -->
 {% include intro-header.html type='post' %}
 
+<!-- 新增：MathJax 公式自动换行的CSS样式 -->
+<style>
+    /* 解决MathJax公式自动换行的核心样式 */
+    /* 块级公式（$$...$$）容器：支持自动换行/水平滚动 */
+    mjx-container[jax="SVG"][display="true"] {
+        display: block !important;
+        overflow-x: auto; /* 超出时显示水平滚动，也可改为overflow-x: visible配合white-space: pre-wrap实现纯换行 */
+        white-space: pre-wrap; /* 公式内容自动换行 */
+        word-break: break-all; /* 强制换行适配长公式 */
+        max-width: 100%; /* 不超出post-container的宽度 */
+        margin: 1em 0; /* 公式上下间距，提升可读性 */
+    }
+
+    /* 行内公式（$...$）容器：跟随文字自然换行 */
+    mjx-container[jax="SVG"][display="false"] {
+        white-space: normal;
+        vertical-align: middle; /* 行内公式与文字垂直居中对齐 */
+    }
+
+    /* 确保post-container的内容不会被公式撑破 */
+    .post-container {
+        word-wrap: break-word;
+        white-space: normal;
+    }
+</style>
+
 <!-- Post Content -->
 <article>
     <div class="container">
@@ -168,6 +194,31 @@ layout: default
 </style>
 {% endif %}
 
-
-
-
+<!-- 优化后的MathJax配置（包含自动换行相关配置） -->
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']], // 行内公式分隔符
+            displayMath: [['$$', '$$'], ['\\[', '\\]']], // 块级公式分隔符，补充配置
+            processEscapes: true, // 允许使用\$表示普通的$符号，避免冲突
+            equationNumbers: { autoNumber: 'AMS' } // 可选：公式自动编号，可根据需要关闭
+        },
+        svg: {
+            fontCache: 'global',
+            displayOverflow: 'wrap' // 关键：块级公式超出时自动换行（MathJax 3.x特性）
+        },
+        startup: {
+            pageReady: function() {
+                return MathJax.startup.defaultPageReady().then(function() {
+                    // 确保公式渲染后适配容器宽度
+                    window.addEventListener('resize', function() {
+                        MathJax.typeset();
+                    });
+                });
+            }
+        }
+    };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
