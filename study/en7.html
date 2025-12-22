@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>英语选择题练习（6套题）</title>
+    <title>英语选择题练习（6套题）题目顺序不变 选项变</title>
     <style>
         body { font-family: 微软雅黑, sans-serif; max-width: 900px; margin: 20px auto; padding: 0 20px; }
         .quiz-set { margin: 30px 0; padding: 20px; border: 1px solid #eee; border-radius: 8px; background: #f9f9f9; }
@@ -373,7 +373,7 @@
             ]
         };
 
-        // 2. 打乱数组函数（简单可靠）
+        // 2. 打乱数组函数（仅打乱选项）
         function shuffle(arr) {
             for(let i=arr.length-1; i>0; i--) {
                 const j = Math.floor(Math.random() * (i+1));
@@ -382,14 +382,13 @@
             return arr;
         }
 
-        // 3. 初始化显示所有题目
+        // 3. 初始化显示所有题目（保留题目顺序，仅打乱选项）
         for(let quizId in allQuizzes) {
             const container = document.getElementById(quizId);
             const quiz = allQuizzes[quizId];
-            // 打乱题目顺序
-            const shuffledQs = shuffle([...quiz]);
             
-            shuffledQs.forEach((item, qIdx) => {
+            // 不打乱题目顺序，直接遍历
+            quiz.forEach((item, qIdx) => {
                 // 创建题目容器
                 const qDiv = document.createElement('div');
                 qDiv.className = 'question-item';
