@@ -96,25 +96,19 @@ layout: default
     </div>
 </article>
 
-<!-- 替换原有 mathjax 引入逻辑，和 page 模板保持一致 -->
-{% if site.page-mathjax %}
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    TeX: {
-      equationNumbers: {
-        autoNumber: "AMS"
+<script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
       }
-    },
-    tex2jax: {
-      inlineMath: [ ['$','$'] ],
-      displayMath: [ ['$$','$$'] ],
-      processEscapes: true,
-    }
-  });
-</script>
-<script type="text/javascript"
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-{% endif %}
+    };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
 
 {% if site.netease_comment %}
 <!-- 网易云跟帖JS代码 start -->
@@ -189,25 +183,4 @@ layout: default
 
 
 
-<style>
-    /* 核心：取消MathJax的强制不换行，允许自动换行 */
-    .MathJax,
-    .MathJax nobr,
-    .MJXp-math {
-      white-space: normal !important; /* 允许换行 */
-      white-space-collapse: collapse !important; /* 合并空白符 */
-      text-wrap: wrap !important; /* 强制文本换行 */
-      word-break: break-all !important; /* 允许任意位置断行（针对长公式） */
-    }
-    
-    /* 调整MathJax的显示方式，适配换行 */
-    .MathJax_Display {
-      width: 100% !important; /* 占满容器宽度 */
-      overflow-wrap: break-word !important; /* 长内容换行 */
-    }
-    
-    /* 移除行内块的布局限制，让公式随文本流换行 */
-    .MJXp-math {
-      display: inline !important;
-    }
-    </style>
+
