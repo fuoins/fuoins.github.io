@@ -35,7 +35,7 @@ exclude:
   ]
 anchorjs: true # if you want to customize anchor. check out line:181 of `post.html`
 # If you have timezone issue (e.g. #68) in China, uncomment to use this:
-timezone: CN # 中国时区（已启用，避免时间显示异常）
+timezone: Asia/Shanghai
 
 # Gems
 # from PR#40, to support local preview for Jekyll 3.0
@@ -56,6 +56,7 @@ kramdown:
     block:
       line_numbers: true
       start_line: 1
+
 
 # Disqus settings（评论功能，无需则可留空）
 disqus_username: # 可选：填写你的 Disqus 用户名（无则留空，关闭评论）
