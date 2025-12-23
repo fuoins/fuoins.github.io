@@ -1637,13 +1637,33 @@ img::-moz-selection {
   color: #ddd;
 }
 
-/* MathJax 样式 */
-.MathJax_SVG_Display {
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-}
+
 
 /* 禁止滚动 */
 .no-scroll {
   overflow-y: hidden;
+}
+/* 解决 MathJax 公式移动端不换行问题 */
+.mathjax {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+/* 兼容行内公式 */
+mjx-container {
+  overflow-x: auto;
+  max-width: 100%!important;
+}
+
+/* 针对移动端的强制适配 */
+@media (max-width: 768px) {
+  mjx-math {
+    font-size: 90%!important; /* 可选：缩小公式字号提升适配性 */
+  }
+  .post-container mjx-container {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
