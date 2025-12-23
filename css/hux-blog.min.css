@@ -734,6 +734,7 @@ pre.highlight {
   padding: 14px;
 }
 .highlighter-rouge .highlight td.rouge-gutter {
+.highlighter-rouge .highlight td.rouge-gutter {
   width: 56px;
 }
 .highlighter-rouge .highlight .lineno {
@@ -881,6 +882,7 @@ small.img-hint {
 }
 br+small.img-hint {
   margin-top: -40px;
+}
 }
 img.shadow {
   box-shadow: rgba(0,0,0,.258824) 0 2px 5px 0;
@@ -1637,33 +1639,17 @@ img::-moz-selection {
   color: #ddd;
 }
 
-
+/* MathJax 样式 - 修复长公式换行问题 */
+.MathJax_SVG_Display {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: normal !important;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
 
 /* 禁止滚动 */
 .no-scroll {
   overflow-y: hidden;
-}
-/* 解决 MathJax 公式移动端不换行问题 */
-.mathjax {
-  display: block;
-  overflow-x: auto;
-  white-space: nowrap;
-  max-width: 100%;
-}
-
-/* 兼容行内公式 */
-mjx-container {
-  overflow-x: auto;
-  max-width: 100%!important;
-}
-
-/* 针对移动端的强制适配 */
-@media (max-width: 768px) {
-  mjx-math {
-    font-size: 90%!important; /* 可选：缩小公式字号提升适配性 */
-  }
-  .post-container mjx-container {
-    padding-left: 0;
-    padding-right: 0;
-  }
 }
