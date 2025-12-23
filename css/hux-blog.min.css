@@ -734,7 +734,6 @@ pre.highlight {
   padding: 14px;
 }
 .highlighter-rouge .highlight td.rouge-gutter {
-.highlighter-rouge .highlight td.rouge-gutter {
   width: 56px;
 }
 .highlighter-rouge .highlight .lineno {
@@ -882,7 +881,6 @@ small.img-hint {
 }
 br+small.img-hint {
   margin-top: -40px;
-}
 }
 img.shadow {
   box-shadow: rgba(0,0,0,.258824) 0 2px 5px 0;
@@ -1639,14 +1637,10 @@ img::-moz-selection {
   color: #ddd;
 }
 
-/* MathJax 样式 - 修复长公式换行问题 */
+/* MathJax 样式 */
 .MathJax_SVG_Display {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-  white-space: normal !important;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-width: 100%;
 }
 
 /* 禁止滚动 */
