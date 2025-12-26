@@ -1,23 +1,15 @@
-<script>
-// MathJax 3.x 配置（新增溢出自动换行）
-window.MathJax = {
-  tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']], // 保留原有 $ 分隔符
-    displayMath: [['$$', '$$'], ['\\[', '\\]']],
-    tags: 'ams' // 保留公式编号功能
-  },
-  svg: {
-    scale: 0.9, // 保留原有 90% 缩放比例
-    displayOverflow: 'linebreak', // 块级公式溢出自动换行
-    inlineMathDisplay: 'style', // 行内公式继承容器样式（支持换行）
-    linebreak: {
-      width: '100%' // 换行触发宽度：适应容器100%宽度（不溢出）
-    }
-  },
-  startup: {
-    pageReady: () => MathJax.startup.defaultPageReady()
-  }
-};
-</script>
-<!-- 加载 3.x CDN 资源（保持不变） -->
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <script type="text/x-mathjax-config">
+        // v2专属配置，直接开启自动换行，无任何兼容问题
+        MathJax.Hub.Config({
+            showMathMenu: false, // 关闭多余菜单，减少加载负担
+            messageStyle: "none", // 关闭报错提示，页面更干净
+            "HTML-CSS": {
+                linebreaks: { automatic: true, width: "92%" }, // 核心自动换行
+                scale: 105 // 字号放大5%，手机看更清晰
+            },
+            SVG: { linebreaks: { automatic: true, width: "92%" } },
+            displayAlign: "left" // 公式左对齐，适配手机阅读习惯
+        });
+    </script>
+    <!-- v2 官方稳定CDN，加载快，无失效风险 -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
