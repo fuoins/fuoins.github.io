@@ -170,18 +170,31 @@ layout: default
 </style>
 {% endif %}
     <script type="text/x-mathjax-config">
-        // v2专属配置，直接开启自动换行，无任何兼容问题
-        MathJax.Hub.Config({
-            showMathMenu: false, // 关闭多余菜单，减少加载负担
-            messageStyle: "none", // 关闭报错提示，页面更干净
-            "HTML-CSS": {
-                linebreaks: { automatic: true, width: "92%" }, // 核心自动换行
-                scale: 105 // 字号放大5%，手机看更清晰
-            },
-            SVG: { linebreaks: { automatic: true, width: "92%" } },
-            displayAlign: "left" // 公式左对齐，适配手机阅读习惯
-        });
-    </script>
-    <!-- v2 官方稳定CDN，加载快，无失效风险 -->
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
+  MathJax.Hub.Config({
+    // 保留原有核心配置
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    },
+    // 新增+替换你的优化配置（适配手机、自动换行、精简界面）
+    showMathMenu: false, // 关闭多余菜单，减少加载负担
+    messageStyle: "none", // 关闭报错提示，页面更干净
+    "HTML-CSS": {
+      linebreaks: { automatic: true, width: "92%" }, // 核心自动换行
+      scale: 105 // 字号放大5%，手机看更清晰
+    },
+    SVG: {
+      linebreaks: { automatic: true, width: "92%" }, // SVG模式自动换行
+      scale: 105 // 覆盖原有90缩放，统一适配手机字号
+    },
+    displayAlign: "left" // 公式左对齐，适配手机阅读习惯
+  });
+</script>
+<!-- 替换为v2官方稳定CDN，加载快无失效风险，沿用原config格式保证兼容 -->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
