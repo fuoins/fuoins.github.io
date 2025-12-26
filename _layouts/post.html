@@ -170,27 +170,3 @@ layout: default
 </style>
 {% endif %}
 
-<!-- 优化后的MathJax配置（包含自动换行相关配置） -->
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
-        TeX: {equationNumbers: {autoNumber: ["AMS"], useLabelIds: true}, extensions: ["AMSmath.js", "AMSsymbols.js", "extpfeil.js"]},
-        "HTML-CSS": {noReflows: false, availableFonts: ["tex"], styles: {".MathJax_Display": {margin: "1em 0em 0.7em;", display: "inline-block!important;"}}},
-        "CommonHTML": {noReflows: false, availableFonts: ["tex"], styles: {".MJXc-display": {margin: "1em 0em 0.7em;", display: "inline-block!important;"}}},
-        "SVG": {noReflows: false, availableFonts: ["tex"], styles: {".MathJax_SVG_Display": {margin: "1em 0em 0.7em;", display: "inline-block!important;"}}}
-    });
-    MathJax.Hub.Queue(function() {
-        document.querySelectorAll('span[id^="MathJax-Element"]').forEach(function(e) {
-            parentWidth = e.parentNode.offsetWidth;
-            if (e.parentNode.className.endsWith('isplay')) {
-                parentWidth = e.parentNode.parentNode.offsetWidth;
-            }
-            if (e.offsetWidth > parentWidth) {
-                e.style.fontSize = parentWidth * 100 / e.offsetWidth + '%';
-            }
-        });
-    });
-</script>
-<script type="text/javascript" id="MathJax-script" async
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
-</script>
