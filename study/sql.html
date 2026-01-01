@@ -67,7 +67,7 @@ th { background-color: #f2f2f2; }
     </div>
 
     <script>
-        //  所有单选题原始数据（题干+选项内容+原始正确答案字母），ABCD固定，仅打乱选项内容
+        //  所有单选题原始数据（题干+选项内容+原始正确答案字母）
         const allQuestions = [
             {
                 stem: '( )是长期存储在计算机内的、有组织的、可共享的数据集合。',
@@ -241,12 +241,12 @@ th { background-color: #f2f2f2; }
             },
             {
                 stem: '通过（ ）实现参照完整性规则的。',
-                options: ['PRIMARY KEY子句', 'FORGEIGN KEY子句', 'NOT NULL', 'CHECK子句'],
+                options: ['PRIMARY KEY子句', 'FOREIGN KEY子句', 'NOT NULL', 'CHECK子句'],
                 answer: 'B'
             },
             {
                 stem: '在SQL中，建立索引用( )。',
-                options: ['CREATE SCHMA命令', 'CREATE TABLE命令', 'CREATE VIEW命令', 'CREATE INDEX命令'],
+                options: ['CREATE SCHEMA命令', 'CREATE TABLE命令', 'CREATE VIEW命令', 'CREATE INDEX命令'],
                 answer: 'D'
             },
             {
@@ -486,103 +486,96 @@ th { background-color: #f2f2f2; }
             }
         ];
 
-        // 随机打乱数组 工具函数（仅打乱选项内容）
-        function shuffleArr(arr) {
-            return arr.sort(() => Math.random() - 0.5);
+        // 随机打乱选项内容（深拷贝打乱，避免原数组污染）
+        function shuffleOptions(options) {
+            const copy = [...options];
+            return copy.sort(() => Math.random() - 0.5);
         }
-        // 选项字母固定为A/B/C/D，不打乱
-        const fixedOptionLetters = ['A', 'B', 'C', 'D'];
-        // 每5题一组拆分数组
-        function splitQuestions(arr, groupSize = 5) {
+        // 选项字母固定A/B/C/D，永不改变
+        const fixedLetters = ['A', 'B', 'C', 'D'];
+        // 每5题分组
+        function splitIntoGroups(arr, size = 5) {
             const groups = [];
-            for (let i = 0; i < arr.length; i += groupSize) {
-                groups.push(arr.slice(i, i + groupSize));
+            for (let i = 0; i < arr.length; i += size) {
+                groups.push(arr.slice(i, i + size));
             }
             return groups;
         }
 
-        // 初始化页面：题目乱序+每5题一组+选项内容乱序（字母固定）+答案动态匹配
-        function initQuestions() {
-            const questionContainer = document.getElementById('random-questions');
-            // 1. 全局打乱所有题目顺序
-            const randomAllQuestions = shuffleArr([...allQuestions]);
-            // 2. 按每5题拆分分组
-            const questionGroups = splitQuestions(randomAllQuestions);
-            
-            // 3. 遍历每组渲染：题目+固定字母+乱序选项 + 本组按钮 + 本组答案框
-            questionGroups.forEach((group, groupIndex) => {
+        // 核心初始化：一题一乱序+同一乱序集生成题目+答案，精准匹配
+        function initQuiz() {
+            const container = document.getElementById('random-questions');
+            // 1. 全局打乱题目顺序
+            const shuffledQuestions = [...allQuestions].sort(() => Math.random() - 0.5);
+            const questionGroups = splitIntoGroups(shuffledQuestions);
+
+            // 2. 遍历每组渲染
+            questionGroups.forEach((group, groupIdx) => {
                 const groupWrap = document.createElement('div');
-                groupWrap.className = 'question-group-item';
                 const ol = document.createElement('ol');
+                //  存储本组题的「题号-正确答案」，避免二次乱序
+                const groupAnswers = [];
 
-                group.forEach((item, idxInGroup) => {
+                group.forEach((q, idxInGroup) => {
+                    const globalNum = groupIdx * 5 + idxInGroup + 1;
                     const li = document.createElement('li');
-                    // 仅打乱选项内容，字母固定A/B/C/D
-                    const randomOptions = shuffleArr([...item.options]);
-                    // 动态匹配答案：找到原始正确选项在乱序后数组的位置，对应固定字母
-                    const originRightOption = item.options[fixedOptionLetters.findIndex(l => l === item.answer)];
-                    const currentRightIdx = randomOptions.findIndex(opt => opt === originRightOption);
-                    const currentRightLetter = fixedOptionLetters[currentRightIdx];
-                    li.dataset.answer = currentRightLetter; // 存储当前题最终正确字母
+                    //  单个题目独立乱序选项，且只乱序1次
+                    const shuffledOpt = shuffleOptions(q.options);
+                    //  找原始正确选项：先通过原始字母找原始选项内容
+                    const originRightOpt = q.options[fixedLetters.findIndex(l => l === q.answer)];
+                    //  找乱序后该选项对应的固定字母，就是最终正确答案
+                    const finalRightLetter = fixedLetters[shuffledOpt.findIndex(opt => opt === originRightOpt)];
+                    
+                    //  存入本组答案，后续直接渲染，不重复计算
+                    groupAnswers.push({ num: globalNum, ans: finalRightLetter });
 
-                    // 拼接：固定A/B/C/D + 乱序选项内容
-                    let optionHtml = '';
-                    randomOptions.forEach((opt, optIdx) => {
-                        optionHtml += `${fixedOptionLetters[optIdx]}. ${opt}<br>`;
+                    //  拼接题目+固定字母+乱序选项
+                    let optHtml = '';
+                    shuffledOpt.forEach((opt, optIdx) => {
+                        optHtml += `${fixedLetters[optIdx]}. ${opt}<br>`;
                     });
-                    // 全局连续题号
-                    const globalIdx = groupIndex * 5 + idxInGroup + 1;
-                    li.innerHTML = `${globalIdx}. ${item.stem}<br>${optionHtml}`;
+                    li.innerHTML = `${globalNum}. ${q.stem}<br>${optHtml}`;
                     ol.appendChild(li);
                 });
+
                 groupWrap.appendChild(ol);
 
-                // 4. 本组专属答案按钮
-                const answerBtn = document.createElement('button');
-                answerBtn.className = 'answer-btn';
-                const startNum = groupIndex * 5 + 1;
-                const endNum = Math.min((groupIndex + 1) * 5, allQuestions.length);
-                answerBtn.textContent = `显示第${startNum}-${endNum}题答案`;
-                groupWrap.appendChild(answerBtn);
+                // 3. 本组答案按钮
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn';
+                const start = groupIdx *5 +1;
+                const end = Math.min((groupIdx+1)*5, allQuestions.length);
+                btn.textContent = `显示第${start}-${end}题答案`;
+                groupWrap.appendChild(btn);
 
-                // 5. 本组专属答案框
+                // 4. 本组答案框
                 const answerBox = document.createElement('div');
                 answerBox.className = 'answer-box';
-                answerBox.id = `answer-box-${groupIndex}`;
-                const answerTitle = document.createElement('h4');
-                answerTitle.textContent = `第${startNum}-${endNum}题 答案`;
-                answerBox.appendChild(answerTitle);
-                const answerList = document.createElement('div');
-                answerList.className = 'answer-list';
-
-                // 生成本组正确答案（动态匹配后的固定字母）
-                group.forEach((item, idxInGroup) => {
-                    const globalIdx = groupIndex * 5 + idxInGroup + 1;
-                    const randomOptions = shuffleArr([...item.options]);
-                    const originRightOption = item.options[fixedOptionLetters.findIndex(l => l === item.answer)];
-                    const currentRightIdx = randomOptions.findIndex(opt => opt === originRightOption);
-                    const currentRightLetter = fixedOptionLetters[currentRightIdx];
-                    
-                    const answerItem = document.createElement('div');
-                    answerItem.className = 'answer-item';
-                    answerItem.textContent = `${globalIdx}题：${currentRightLetter}`;
-                    answerList.appendChild(answerItem);
+                answerBox.id = `ans-box-${groupIdx}`;
+                const boxTitle = document.createElement('h4');
+                boxTitle.textContent = `第${start}-${end}题 正确答案`;
+                answerBox.appendChild(boxTitle);
+                const ansList = document.createElement('div');
+                groupAnswers.forEach(item => {
+                    const ansItem = document.createElement('div');
+                    ansItem.className = 'answer-item';
+                    ansItem.textContent = `${item.num}题：${item.ans}`;
+                    ansList.appendChild(ansItem);
                 });
-                answerBox.appendChild(answerList);
+                answerBox.appendChild(ansList);
                 groupWrap.appendChild(answerBox);
 
-                // 6. 按钮点击事件：显示本组答案+禁用按钮
-                answerBtn.addEventListener('click', () => {
-                    document.getElementById(`answer-box-${groupIndex}`).style.display = 'block';
-                    answerBtn.disabled = true;
+                // 5. 按钮点击事件
+                btn.addEventListener('click', () => {
+                    document.getElementById(`ans-box-${groupIdx}`).style.display = 'block';
+                    btn.disabled = true;
                 });
 
-                questionContainer.appendChild(groupWrap);
+                container.appendChild(groupWrap);
             });
         }
 
-        // 页面加载完成执行初始化
-        window.onload = initQuestions;
+        window.onload = initQuiz;
     </script>
 
 
