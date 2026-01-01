@@ -8,19 +8,13 @@ body { font-family: "Microsoft YaHei", sans-serif; line-height: 1.6; margin: 0; 
 .container { max-width: 1200px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
 h1 { text-align: center; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 30px; }
 h2 { color: #3498db; margin-top: 40px; border-left: 4px solid #3498db; padding-left: 10px; }
-h3 { color: #2c3e50; margin-top: 30px; }
 .question-group { margin-bottom: 30px; }
-.single-choice, .fill-blank, .essay, .sql-operation, .comprehensive { margin-left: 20px; }
-.single-choice li, .fill-blank li, .essay li { margin-bottom: 15px; padding: 10px; border-radius: 4px; }
+.single-choice li { margin-bottom: 15px; padding: 10px; border-radius: 4px; }
 table { border-collapse: collapse; width: 80%; margin: 20px auto; }
 th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
 th { background-color: #f2f2f2; }
 .sql-code { background-color: #f8f8f8; padding: 15px; border-radius: 4px; margin: 10px 0; font-family: "Consolas", monospace; }
-.note { color: #7f8c8d; font-style: italic; }
-.underline { text-decoration: underline; }
-.wave-underline { text-decoration: wavy underline; }
-/* 新增主码、外码专属样式，适配你的标签 */
-.underline-main { text-decoration: underline; font-weight: 600; color: #2c3e50; }
+.underline-main { text-decoration: underline; font-weight: 500; color: #2c3e50; }
 .underline-foreign { text-decoration: wavy underline; font-weight: 500; color: #e74c3c; }
 
 /* 答案按钮样式 */
@@ -31,7 +25,7 @@ th { background-color: #f2f2f2; }
     padding: 8px 16px;
     border-radius: 4px;
     cursor: pointer;
-    margin: 15px 0 10px 20px;
+    margin: 15px 0 30px 20px;
     font-size: 14px;
 }
 .answer-btn:hover {
@@ -41,10 +35,7 @@ th { background-color: #f2f2f2; }
     background-color: #95a5a6;
     cursor: not-allowed;
 }
-.question-block {
-    margin-bottom: 40px;
-}
-/* 答案框样式 */
+/* 答案框样式（分段显示） */
 .answer-box {
     width: 90%;
     margin: 0 0 30px 20px;
@@ -52,534 +43,548 @@ th { background-color: #f2f2f2; }
     border: 2px solid #3498db;
     border-radius: 8px;
     background-color: #f0f8ff;
+    display: none;
 }
 .answer-box h4 {
     margin: 0 0 10px 0;
     color: #2c3e50;
     font-size: 16px;
 }
-.answer-list {
-    columns: 2; /* 双列显示，更整洁 */
-    column-gap: 20px;
-}
 .answer-item {
     margin: 5px 0;
     font-size: 14px;
     color: #333;
 }
-               
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>《数据库原理及应用》复习题</h1>
-
-        <!-- 一、单项选择题 -->
+        <h1>数据库原理及应用复习题</h1>
         <h2>一、单项选择题</h2>
-        
-        <!-- 第1-10题 -->
         <div class="question-block">
-            <div class="question-group single-choice">
-                <ol start="1">
-                    <li data-answer="B">( )是长期存储在计算机内的、有组织的、可共享的数据集合。<br>
-                        A. 数据模式　　B. 数据库　　C. 数据库管理系统　D. 数据结构
-                    </li>
-                    <li data-answer="C">数据管理的三个阶段中，由应用程序管理数据的阶段是（ ）。<br>
-                        A.数据库系统阶段　B.人工管理阶段、文件系统阶段和数据库系统阶段<br>
-                        C.人工管理阶段和文件系统阶段　　D.只有人工管理阶段
-                    </li>
-                    <li data-answer="D">下列哪一个不是层次模型的优点（ ）。<br>
-                        A. 数据结构比较简单　　　　B. 数据库查询效率高　　<br>
-                        C. 提供了良好的完整性支持　D.结构严密，层次命令趋于程序化
-                    </li>
-                    <li data-answer="D">数据库的特点有：较高的程序与数据独立性、方便的用户接口和（ ）。<br>
-                        A.程序结构化　　B.程序标准化　　C.数据模块化　　D.数据结构化
-                    </li>
-                    <li data-answer="D">在数据库的三级模式结构中，外模式有( )。<br>
-                        A．1个　　B．2个　　C．3个　　D．任意多个
-                    </li>
-                    <li data-answer="D">在数据库的三级模式结构中，（ ）是数据物理结构和存储方式的描述，是数据在数据库内部的表示方式。<br>
-                        A.外模式　　B.模式　　C.用户模式　　D. 内模式
-                    </li>
-                    <li data-answer="C">模式的逻辑子集通常称为（　　）<br>
-                        A．存储模式　　　　B．内模式　　C．外模式　　　　D．模式
-                    </li>
-                    <li data-answer="D">三级模式间存在两种映像，它们是( )。<br>
-                        A.内模式与子模式之间，模式与内模式之间<br>
-                        B.子模式与内模式之间，外模式与内模式之间<br>
-                        C.子模式与外模式之间，模式与内模式之间<br>
-                        D.模式与内模式之间，模式与外模式之间
-                    </li>
-                    <li data-answer="C">数据库的三级模式结构之间存在着两级映像，使得数据库系统具有较高的（ ）<br>
-                        A.事务并发性　　B.数据可靠性　　C.数据独立性　　D.数据重用性
-                    </li>
-                    <li data-answer="C">在关系数据库中，当关系的型改变时，用户程序可以不变，这是( )。<br>
-                        A. 数据的存储独立性　　　　　　B. 数据的位置独立性<br>
-                        C. 数据的逻辑独立性　　　　　　D. 数据的物理独立性
-                    </li>
-                </ol>
-            </div>
-            <button class="answer-btn" data-group="1">显示答案</button>
+            <div class="question-group single-choice" id="random-questions"></div>
         </div>
-        
-        <!-- 第11-20题 -->
-        <div class="question-block">
-            <div class="question-group single-choice">
-                <ol start="11">
-                    <li data-answer="B">在关系模型中，关系的“基数”是指( )。<br>
-                        A.属性个数　　B.元组个数　　C.关系个数　　D.列数
-                    </li>
-                    <li data-answer="C">关系代数运算是以（ ）为基础的运算 。<br>
-                        A. 关系运算 B. 谓词演算 C. 集合运算 D. 代数运算
-                    </li>
-                    <li data-answer="C">下面对于关系的叙述中，哪个是不正确的？( )<br>
-                        A. 关系中的每个属性是不可分解的　B. 在关系中元组的顺序是无关紧要的<br>
-                        C. 任意的一个二维表都是一个关系　D. 每一个关系只有一种记录类型
-                    </li>
-                    <li data-answer="A">进行自然联接运算的两个关系必须具有（ ）<br>
-                        A．公共属性　　B．相同关系名　　C．相同属性个数　　D．相同关键字
-                    </li>
-                    <li data-answer="D">关系模型中，一个关系只有一个（ ） 。<br>
-                        A.候选键　　B. 外键 C. 超键 D. 主键
-                    </li>
-                    <li data-answer="B">关系数据库管理系统应能实现的专门关系运算包括( )<br>
-                        A. 排序、索引、统计　　B. 选择、投影、连接<br>
-                        C. 关联、更新、排序　　D. 显示、打印、制表
-                    </li>
-                    <li data-answer="C">在关系代数的专门关系运算中，从表中选出满足某种条件的元组的操作称为（ ）。<br>
-                        A．投影　　B．连接　　　　C．选择　　　　　D．扫描
-                    </li>
-                    <li data-answer="D">在关系代数的操作中，哪一种操作会自动去掉重复列？( )<br>
-                        A．选择　　B．投影　　C．连接　　D．自然连接
-                    </li>
-                    <li data-answer="B">设关系R与S具有相同的目数，且对应的属性取自相同的域。集合{t | t∈R∧t∈S}表示的是( )。<br>
-                        A. R∪S　B. R∩S　C. R－S　D. R×S
-                    </li>
-                    <li data-answer="D">设关系R和S具有相同的元数，且对应的属性取自相同的域。集合{t | t∈R∧t∈S}表示的是( )。<br>
-                        A. R∪S　　B. R－S　　C. R×S　　D. R∩S
-                    </li>
-                </ol>
-            </div>
-            <button class="answer-btn" data-group="2">显示答案</button>
-        </div>
-        
-        <!-- 第21-30题 -->
-        <div class="question-block">
-            <div class="question-group single-choice">
-                <ol start="21">
-                    <li data-answer="A">设关系R和S具有相同的元数，且对应的属性取自相同的域。集合{t | t∈R∨t∈S}表示的是( )。<br>
-                        A. R∪S　　　　B. R－S　　C. R×S　　　　D. R∩S
-                    </li>
-                    <li data-answer="B">已知关系R 和S，则R∩S 等价于（ ）<br>
-                        A.（R-S）-S　　B.S-（S-R）　　C.（S-R）-R　　D.S-（R-S）
-                    </li>
-                    <li data-answer="A">关系R和S如下表，R－S的结果是( )<br>
-                        <table>
-                            <tr><th colspan="3">R</th></tr>
-                            <tr><td>A</td><td>B</td><td>C</td></tr>
-                            <tr><td>1</td><td>2</td><td>3</td></tr>
-                            <tr><td>4</td><td>5</td><td>6</td></tr>
-                            <tr><td>7</td><td>8</td><td>9</td></tr>
-                        </table>
-                        <table>
-                            <tr><th colspan="3">S</th></tr>
-                            <tr><td>A</td><td>B</td><td>C</td></tr>
-                            <tr><td>4</td><td>5</td><td>6</td></tr>
-                            <tr><td>6</td><td>2</td><td>4</td></tr>
-                            <tr><td>9</td><td>8</td><td>7</td></tr>
-                        </table>
-                        <br>
-                        A. <table><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>7</td><td>8</td><td>9</td></tr></table><br>
-                        B. <table><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>7</td><td>8</td><td>9</td></tr><tr><td>6</td><td>2</td><td>4</td></tr></table><br>
-                        C. <table><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>9</td><td>9</td><td>9</td></tr></table><br>
-                        D. <table><tr><td>C</td><td>A</td><td>B</td></tr><tr><td>6</td><td>2</td><td>4</td></tr><tr><td>9</td><td>8</td><td>7</td></tr></table>
-                    </li>
-                    <li data-answer="B">谓词OUT JOIN实现表的（ ）运算。<br>
-                        A. 内连接　　B. 外连接　　C. 合并连接　　D. 自然连接
-                    </li>
-                    <li data-answer="A">关系R，S和T如下。关系T是由关系R和S经过哪种操作得到的？（ ）<br>
-                        <table>
-                            <tr><th colspan="3">R</th></tr>
-                            <tr><td>A</td><td>B</td><td>C</td></tr>
-                            <tr><td>1</td><td>2</td><td>3</td></tr>
-                            <tr><td>4</td><td>1</td><td>6</td></tr>
-                            <tr><td>3</td><td>2</td><td>4</td></tr>
-                        </table>
-                        <table>
-                            <tr><th colspan="3">S</th></tr>
-                            <tr><td>B</td><td>D</td><td>E</td></tr>
-                            <tr><td>2</td><td>1</td><td>3</td></tr>
-                            <tr><td>1</td><td>7</td><td>3</td></tr>
-                            <tr><td>2</td><td>7</td><td>1</td></tr>
-                        </table>
-                        <table>
-                            <tr><th colspan="5">T</th></tr>
-                            <tr><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td></tr>
-                            <tr><td>1</td><td>2</td><td>3</td><td>1</td><td>3</td></tr>
-                            <tr><td>1</td><td>2</td><td>3</td><td>7</td><td>1</td></tr>
-                            <tr><td>4</td><td>1</td><td>6</td><td>7</td><td>3</td></tr>
-                            <tr><td>3</td><td>2</td><td>4</td><td>1</td><td>3</td></tr>
-                            <tr><td>3</td><td>2</td><td>4</td><td>7</td><td>1</td></tr>
-                        </table>
-                        <br>
-                        A、R∞S　　B、R－S　　　C、R×S　　　　D、R∪S
-                    </li>
-                    <li data-answer="D">已知关系R、S和T如图所示，下列运算结果为关系T的是（　　）。<br>
-                        <table>
-                            <tr><th colspan="2">R</th></tr>
-                            <tr><td>A</td><td>B</td></tr>
-                            <tr><td>a1</td><td>b1</td></tr>
-                            <tr><td>a1</td><td>b2</td></tr>
-                            <tr><td>a2</td><td>b2</td></tr>
-                        </table>
-                        <table>
-                            <tr><th colspan="2">S</th></tr>
-                            <tr><td>A</td><td>D</td></tr>
-                            <tr><td>a1</td><td>d1</td></tr>
-                            <tr><td>a2</td><td>d2</td></tr>
-                        </table>
-                        <table>
-                            <tr><th colspan="4">T</th></tr>
-                            <tr><td>R.A</td><td>R.B</td><td>S.A</td><td>S.D</td></tr>
-                            <tr><td>a1</td><td>b1</td><td>a1</td><td>d1</td></tr>
-                            <tr><td>a1</td><td>b2</td><td>a1</td><td>d1</td></tr>
-                            <tr><td>a2</td><td>b2</td><td>a2</td><td>d2</td></tr>
-                        </table>
-                        <br>
-                        A. R×S　　B. R∞S　　C. R∩S　　D.σ<sub>R.A=S.A</sub>(R×S)
-                    </li>
-                    <li data-answer="C">设关系S（A, C），与SQL语句：SELECT DISTINCT C FROM S WHERE A>10等价的关系代数表达式是（ ）。<br>
-                        A、∏<sub>C</sub>(S)　　B、σ<sub>A>10</sub>（S）　C、∏<sub>C</sub> (σ<sub>A>10</sub>（S）)　　D、σ<sub>A>10</sub>（∏<sub>C</sub>(S)）
-                    </li>
-                    <li data-answer="C">有一个关系：学生（学号，姓名，性别），规定学号的值域是8个数字组成的字符串，这一规则属于（ ）。<br>
-                        A.实体完整性约束　　　　B.参照完整性约束　　<br>
-                        C.用户自定义完整性约束　　D.关键字完整性约束
-                    </li>
-                    <li data-answer="C">下面哪一项不属于关系的三类完整性约束？（　　）<br>
-                        A、实体完整性　B、参照完整性　C、结构完整性　D、用户定义的完整性
-                    </li>
-                    <li data-answer="B">外码必须为空值或等于被参照表中某个元组的主码。这是（ ）。<br>
-                        A．实体完整性规则　　　　B．参照完整性规则<br>
-                        C．用户自定义完整性规则　D．域完整性规则
-                    </li>
-                </ol>
-            </div>
-            <button class="answer-btn" data-group="3">显示答案</button>
-        </div>
-        
-        <!-- 第31-40题 -->
-        <div class="question-block">
-            <div class="question-group single-choice">
-                <ol start="31">
-                    <li data-answer="C">有关系R(A,B,C) 主码=A ； 关系S(D,A) 主码=D，外码=A，参照于R的属性A。关系R和S的元组如图所示。指出关系中违反关系完整性规则的元组是( )。<br>
-                        <table>
-                            <tr><th colspan="2">S</th></tr>
-                            <tr><td>D</td><td>A</td></tr>
-                            <tr><td>d1</td><td>a2</td></tr>
-                            <tr><td>d2</td><td>Null</td></tr>
-                            <tr><td>d3</td><td>a3</td></tr>
-                            <tr><td>d4</td><td>a1</td></tr>
-                        </table>
-                        <table>
-                            <tr><th colspan="3">R</th></tr>
-                            <tr><td>A</td><td>B</td><td>C</td></tr>
-                            <tr><td>a1</td><td>b2</td><td>3</td></tr>
-                            <tr><td>a2</td><td>b1</td><td>3</td></tr>
-                            <tr><td>a4</td><td>b2</td><td>5</td></tr>
-                        </table>
-                        <br>
-                        A、(d1,a2)　　B、(d2,Null)　　C、(d3,a3)　　　　D、(d4,a1)
-                    </li>
-                    <li data-answer="C">已知关系R和S如图所示，属性A为R的主码、S的外码，属性C为S的主码。S中违反参照完整性约束的元组是( )。<br>
-                        <table>
-                            <tr><th colspan="2">R</th></tr>
-                            <tr><td>A</td><td>B</td></tr>
-                            <tr><td>a1</td><td>b1</td></tr>
-                            <tr><td>a2</td><td>b5</td></tr>
-                        </table>
-                        <table>
-                            <tr><th colspan="3">S</th></tr>
-                            <tr><td>C</td><td>D</td><td>A</td></tr>
-                            <tr><td>c1</td><td>d1</td><td>a1</td></tr>
-                            <tr><td>c2</td><td>d4</td><td>null</td></tr>
-                            <tr><td>c3</td><td>d1</td><td>a3</td></tr>
-                            <tr><td>c4</td><td>d3</td><td>a2</td></tr>
-                        </table>
-                        <br>
-                        A.｛c1, d1, a1｝　B.｛c2, d4, null｝　C.｛c3, d1, a3｝ D.｛c4, d3, a2｝
-                    </li>
-                    <li data-answer="B">设有供应商关系S和零件关系P如下图所示。它们的主码分别是“供应商号”和“零件号”，零件关系P的属性“供应商号”是它的外码，属性颜色只能取值(红，白，兰)。(这里假定DBMS不支持“级联修改”功能)。若要删除关系S中的行，删除行的值分别列出如下，哪个（些）可以被删除？（ ）<br>
-                        <table>
-                            <tr><th colspan="3">供应商关系S</th></tr>
-                            <tr><td>供应商号</td><td>供应商名</td><td>所在城市</td></tr>
-                            <tr><td>B01</td><td>红星</td><td>北京</td></tr>
-                            <tr><td>S10</td><td>宇宙</td><td>上海</td></tr>
-                            <tr><td>T20</td><td>黎明</td><td>天津</td></tr>
-                            <tr><td>Z01</td><td>立新</td><td>重庆</td></tr>
-                        </table>
-                        <table>
-                            <tr><th colspan="3">零件关系P</th></tr>
-                            <tr><td>零件号</td><td>颜色</td><td>供应商号</td></tr>
-                            <tr><td>010</td><td>红</td><td>B01</td></tr>
-                            <tr><td>201</td><td>兰</td><td>T20</td></tr>
-                            <tr><td>312</td><td>白</td><td>S10</td></tr>
-                        </table>
-                        <br>
-                        Ⅰ. ('S10’,'宇宙’,'上海’)　　II.('Z01','立新','重庆')<br>
-                        A. 只有I　　　B. 只有II　　　C.都可以　　　D. 都不可以
-                    </li>
-                    <li data-answer="C">在创建SQL基本表C、列值为空值（NULL），则说明这一列：（ ）。<br>
-                        A、值为 0　　B、值为空格　　C、值是未知的　　D、值是非法的
-                    </li>
-                    <li data-answer="B">通过（ ）实现参照完整性规则的。<br>
-                        A. PRIMARY KEY子句　B. FORGEIGN KEY子句<br>
-                        C. NOT NULL　　　　D. CHECK子句
-                    </li>
-                    <li data-answer="D">在SQL中，建立索引用( )。<br>
-                        A. CREATE SCHMA命令　　B. CREATE TABLE命令<br>
-                        C. CREATE VIEW命令　　D. CREATE INDEX命令
-                    </li>
-                    <li data-answer="A">数据库的操纵功能不包括下列哪个 ( )。<br>
-                        A.定义表结构　　B. 查询表数据　　C. 修改表数据　D. 插入表数据
-                    </li>
-                    <li data-answer="C">列值为空值（NULL），则说明这一列：（ ）。<br>
-                        A、值为 0　　B、值为空格　　C、值是未知的　　D、值是非法的
-                    </li>
-                    <li data-answer="D">在SQL语言中，子查询是（ ） 。<br>
-                        A. 返回单表中数据子集的查询语言　B. 选取多表中字段子集的查询语句<br>
-                        C. 选取单表中字段子集的查询语　D. 嵌入到另一个查询语句之中的查询语句
-                    </li>
-                    <li data-answer="A">在SQL语言中可以使用的通配符有（ ）<br>
-                        A. % 和 _　　B. * 和 ?　　C. % 和 *　D. ? 和 %
-                    </li>
-                </ol>
-            </div>
-            <button class="answer-btn" data-group="4">显示答案</button>
-        </div>
-        
-        <!-- 第41-50题 -->
-        <div class="question-block">
-            <div class="question-group single-choice">
-                <ol start="41">
-                    <li data-answer="A">在SQL中，通配符%代表（　　）<br>
-                        A．任意长度（长度可以为0）的字符串　　B．任意单个字符<br>
-                        C．百分号　　　　　　　　　　　　　　D．长度不能为0的字符串
-                    </li>
-                    <li data-answer="D">设有一个关系S（SNO, SNAME），如果要找出倒数第三个字母为A，并且至少包含4个字母的SNAME，则查询条件子句应写成：WHERE SNAME LIKE ( )。<br>
-                        A、 ‘_ A _ %’　　B、 ‘_ % A _ _’　　<br>
-                        C、 ‘_ A _ _’　　D、 ‘_ _ A _ %’
-                    </li>
-                    <li data-answer="A">在SQL查询语句中，用来统计一列中值的个数，使用的聚集函数名称是（ ）。<br>
-                        A. COUNT　　B. AVG　C. SUM　　　D. MAX
-                    </li>
-                    <li data-answer="C">若要撤销数据库中已经存在的表Student，可以使用（ ）。<br>
-                        A. DELETE TABLE Student B. DELETE Student 　　<br>
-                        C. DROP TABLE Student　　 D. DROP Student
-                    </li>
-                    <li data-answer="A">以下关于视图的描述中，错误的是( )。<br>
-                        A．可以对任何视图进行任意的修改操作<br>
-                        B．视图能够简化用户的操作<br>
-                        C．视图能够对数据提供安全保护作用<br>
-                        D．视图对重构数据库提供了一定程度的独立性
-                    </li>
-                    <li data-answer="B">所谓视图，是指（ ）。<br>
-                        A. 数据库中独立存在的表，每个视图对应一个存储文件<br>
-                        B. 从一个或几个基本表或视图中导出的表，视图是一个虚表<br>
-                        C. 建立在数据库文件上的索引文件，一个视图可以带多个索引文件<br>
-                        D. 存储在数据库中的可视化数据图形
-                    </li>
-                    <li data-answer="C">在数据库系统中，视图可以提供数据的（　　　）<br>
-                        A.完整性　　　B.并发性　　　C.安全性　　　D.可恢复性
-                    </li>
-                    <li data-answer="B">在数据库系统中，对存取权限的定义称为（ ）。<br>
-                        A. 命令　　　　B. 授权　　　　C. 定义　　　　D. 审计
-                    </li>
-                    <li data-answer="B">将数据库对象的操作权限授予用户，属于安全控制机制中的( )。<br>
-                        A．用户标识与鉴别　　B．自主存取控制<br>
-                        C．强制存取控制　D．审计
-                    </li>
-                    <li data-answer="D">以下（ ）不属于实现数据库系统安全性的主要技术和方法。<br>
-                        A. 存取控制技术　B. 视图技术　C. 审计技术　D. 出入机房登记和加防盗门
-                    </li>
-                </ol>
-            </div>
-            <button class="answer-btn" data-group="5">显示答案</button>
-        </div>
-        
-        <!-- 第51-60题 -->
-        <div class="question-block">
-            <div class="question-group single-choice">
-                <ol start="51">
-                    <li data-answer="C">若以选课（学号，课号，成绩）表达“某学生选修某课程获得了某个成绩。”则在（ ）的情况下，成绩不完全依赖于学号。<br>
-                        A. 一个学生只能选修一门课　B. 一门课程只能被一个学生选修<br>
-                        C.一个学生可以选修多门课　D.一门课程可以被多个学生选修
-                    </li>
-                    <li data-answer="B">在数据库设计中，将E-R图转换成关系数据模型的过程属于（ ）。<br>
-                        A. 需求分析阶段　B. 逻辑设计阶段　C. 概念设计阶段　D. 物理设计阶段
-                    </li>
-                    <li data-answer="D">若关系模式R的所有候选码均为单个属性，则R最高一定可以达到（　　）。<br>
-                        A. 1NF　　　　B. 4NF　　C. 3NF　　　D. 2NF
-                    </li>
-                    <li data-answer="A">关系模式规范化的最起码的要求是达到第一范式，即满足( )。<br>
-                        A. 每个分量必须是不可分解的　B. 主码属性唯一标识关系中的元组<br>
-                        C. 关系中的元组不可重复　　　D. 每个非码属性都完全依赖于码
-                    </li>
-                    <li data-answer="A">关系模式设计理论主要解决的问题是（ ）<br>
-                        A.插入异常、删除异常和数据冗余　　B.提高查询速度<br>
-                        C.减少数据操作的复杂性　　　　　D.保证数据的安全性和完整性
-                    </li>
-                    <li data-answer="B">关系模式分解的无损连接和保持函数依赖两个特性之间的联系是( )。<br>
-                        A. 前者成立蕴涵后者成立　　　　　B. 没有必然的联系<br>
-                        C. 同时成立或者同时不成立　　　　D. 后者成立蕴涵前者成立
-                    </li>
-                    <li data-answer="A">关系模式中各级范式之间的关系为（ ）。<br>
-                        A. 3NF⊇2NF⊇1NF　　　　　　B. 3NF⊇1NF⊇2NF<br>
-                        C. 1NF⊇2NF⊇3NF　　　　　　D. 2NF⊇1NF⊇3NF
-                    </li>
-                    <li data-answer="A">在关系数据库中，从关系规范化的意义看，如果关系R中的非主属性对码有部分函数依赖，那么R至多是（ ）<br>
-                        A．1NF　　　B．2NF　　　C．3NF　　　　D．BCNF
-                    </li>
-                    <li data-answer="D">从3NF到BCNF，消除了关系模式的( )。<br>
-                        A. 非主属性对码的部分函数依赖　　B. 非主属性对码的传递函数依赖<br>
-                        C. 非主属性对码的部分和传递函数依赖 D. 主属性对码的部分和传递函数依赖
-                    </li>
-                    <li data-answer="C">下面关于函数依赖，不正确的是( )。<br>
-                        A、若X→Y，X→Z，则X→YZ　　B、若X→Y，Y包含Y'，则X→Y'<br>
-                        C、若XY→Z，则X→Z，Y→Z　　D、若X→Y，Y→Z，则X→Z
-                    </li>
-                </ol>
-            </div>
-            <button class="answer-btn" data-group="6">显示答案</button>
-        </div>
-        
-        <!-- 第61-70题 -->
-        <div class="question-block">
-            <div class="question-group single-choice">
-                <ol start="61">
-                    <li data-answer="C">在R(U)中，如果X→Y，并且对于X的任何一个真子集X'，都没有X'→Y，则( )。<br>
-                        A、X为U的候选码　　　　B、Y对X部分函数依赖<br>
-                        C、Y对X完全函数依赖　　D、R属于2NF
-                    </li>
-                    <li data-answer="C">在数据库系统中，把可以相互区别的客观事物称为（ ）<br>
-                        A.文件　　　B.字段　　　　C.实体　　　D.关键码
-                    </li>
-                    <li data-answer="D">公司中有多个部门和多名职员，每个职员只能属于一个部门，一个部门可以有多名职员，从部门到职员的联系类型是（ ）。<br>
-                        A．多对多　　　B．一对一　　C．多对一　　　D．一对多
-                    </li>
-                    <li data-answer="C">在E-R模型中，如果有3个不同的实体型，3个M:N的联系，根据E-R模型转换为关系模型的规则，至少转换的关系数目为（ ）个。<br>
-                        A. 4个　　　B. 5个　　　　C. 6个　　　　D. 7个
-                    </li>
-                    <li data-answer="C">在设计全局ER模型的过程中，我们需要解决的冲突不包括（ ）。<br>
-                        A.属性冲突　　B. 命名冲突　　C.联系冲突　D.结构冲突
-                    </li>
-                    <li data-answer="C">从E-R模型向关系模型转换，一个m:n的联系转换成关系模式时，该关系模式的键是 ( )。<br>
-                        A． m端实体的键　　　　　　B．n端实体的键<br>
-                        C．m端实体键与n端实体键组合　D．重新选取其他属性
-                    </li>
-                    <li data-answer="D">查询优化策略中，正确的策略是 （ ）<br>
-                        A．尽可能早地执行笛卡尔积操作　　B．尽可能早地执行并操作<br>
-                        C．尽可能早地执行差操作　　　　D．尽可能早地执行选择操作
-                    </li>
-                    <li data-answer="B">关系代数表达式的优化策略中，首先要做的是(　　)。<br>
-                        A、对文件进行预处理　　B、尽早执行选择运算<br>
-                        C、执行笛卡儿积运算　　D、投影运算
-                    </li>
-                    <li data-answer="D">基于"学生-选课-课程"数据库中的三个关系：<br>
-                        Student(Sno,Sname,Ssex,Sage),<br>
-                        Course(Cno,Cname,Teacher), <br>
-                        SC(Sno,Cno,Grade)<br>
-                        查询选修了2号课程的学生姓名，可以用下面几个关系代数表达式表示，效率最高的为（ ）。<br>
-                        A. π<sub>Sname</sub>(σ<sub>Student.Sno=SC.Sno∧SC.Cno='2'</sub>(Student×SC) )<br>
-                        B. π<sub>Sname</sub>(σ<sub>SC.Cno='2'</sub>(Student∞SC) )<br>
-                        C. π<sub>Sname</sub>(Student∞σ<sub>SC.Cno='2'</sub>(SC) ) <br>
-                        D. π<sub>Sname</sub>(π<sub>Sname,Sno</sub>(Student)∞σ<sub>SC.Cno='2'</sub>(SC) )
-                    </li>
-                    <li data-answer="A">若系统在运行过程中，由于某种硬件故障，使存储在外存上的数据部分损失或全部损失，这种情况称为（ ）。<br>
-                        A. 介质故障　B. 运行故障　　C. 系统故障　D. 事务故障
-                    </li>
-                </ol>
-            </div>
-            <button class="answer-btn" data-group="7">显示答案</button>
-        </div>
-        
-        <!-- 第71-80题 -->
-        <div class="question-block">
-            <div class="question-group single-choice">
-                <ol start="71">
-                    <li data-answer="B">若系统在运行过程中，由于某种原因，造成系统停止运行，致使事务在执行过程中以非控制方式终止，这时内存中的信息丢失，而存储在外存上的数据未受影响，这种情况称为（ ）。<br>
-                        A．事务故障　　B．系统故障　C．介质故障　　D．运行故障
-                    </li>
-                    <li data-answer="C">用于数据库恢复的重要文件是（ ）<br>
-                        A. 数据库文件　　B. 备注文件　C. 日志文件　　D. 索引文件
-                    </li>
-                    <li data-answer="C">事务日志用于保存 （ ）<br>
-                        A.程序运行过程　B.数据操作 C. 对数据的更新操作 D. 程序的执行结果
-                    </li>
-                    <li data-answer="C">下面哪一项不属于事务的ACID特性？（ ）<br>
-                        A、原子性　　B、一致性　　　C、正确性　　　D、持续性
-                    </li>
-                    <li data-answer="A">一个事务的执行，要么全部完成，要么全部不做，一个事务中对数据库的所有操作都是一个不可分割的操作序列的属性是（ ）。<br>
-                        A. 原子性　　B. 一致性　　C. 隔离性　　D. 持久性
-                    </li>
-                    <li data-answer="A">在数据库中，产生数据不一致的根本原因是（ ）。<br>
-                        A．数据冗余　　　　B．数据存储量太大　　<br>
-                        C．没有严格保护数据　　D．未对数据进行完整性控制
-                    </li>
-                    <li data-answer="D">在下列（ ）情况下，T2会读到“脏数据”。<br>
-                        A. 事务T1修改数据A，事务T2读数据A，事务T1提交<br>
-                        B. 事务T1读数据A，事务T2读数据A<br>
-                        C. 事务T2修改数据A，事务T1读数据A，事务T2被撤消<br>
-                        D. 事务T1修改数据A，事务T2读数据A，事务T1被撤消
-                    </li>
-                    <li data-answer="B">已知事务T1和T2的并发操作序列如图所示：<br>
-                        <table>
-                            <tr><th>T1</th><th>T2</th></tr>
-                            <tr><td>① 读A=10</td><td></td></tr>
-                            <tr><td></td><td>② 读A=10</td></tr>
-                            <tr><td>③ A＝A-2写回</td><td></td></tr>
-                            <tr><td></td><td>④ A＝A-8写回</td></tr>
-                        </table>
-                        下面评价正确的是（　）。<br>
-                        A. 该操作不存在问题　　　　B. 该操作丢失修改<br>
-                        C. 该操作不可重复读　　　　D. 该操作读“脏”数据
-                    </li>
-                    <li data-answer="D">设有两个事务T1,T2，其并发操作如下表所示，下面评价正确的是（ ）。<br>
-                        <table>
-                            <tr><th>T1</th><th>T2</th></tr>
-                            <tr><td>① 读A=10<br>② A=A*2写回<br>③ ROLLBACK<br>恢复A=10</td><td>④ 读A=20</td></tr>
-                        </table>
-                        A．该操作不存在问题　　B．该操作丢失修改 <br>
-                        C．该操作不能重复读　　D．该操作读“脏”数据
-                    </li>
-                    <li data-answer="A">对数据库并发操作有可能带来的问题包括（ ）<br>
-                        A.读出“脏数据”　　　　　B.带来数据的冗余<br>
-                        C.未被授权的用户非法存取数据　D.破坏数据独立性
-                    </li>
-                </ol>
-            </div>
-            <button class="answer-btn" data-group="8">显示答案</button>
-        </div>
-        
-        <!-- 第81-83题 -->
-        <div class="question-block">
-            <div class="question-group single-choice">
-                <ol start="81">
-                    <li data-answer="D">下列事务对数据对象A的请求中，相容的是（ ）。<br>
-                        A. T1加X锁，T2加X锁　　　　B. T1加X锁，T2加S锁<br>
-                        C. T1加S锁，T2加X锁　　　　D. T1加S锁，T2加S锁
-                    </li>
-                    <li data-answer="B">所谓“两段”封锁的含义是每个事务分成以下前后两个阶段( )。<br>
-                        A. 获得阶段和扩展阶段　　　　B. 扩展阶段和收缩阶段<br>
-                        C. 收缩阶段和释放封锁阶段　　D. 扩展阶段和申请封锁阶段
-                    </li>
-                    <li data-answer="D">设事务T1和T2对数据库中的数据A进行操作，可能有如下几种情况，请问哪一种不会发生冲突操作（ ）。<br>
-                        A. T1正在写A，T2要读A　　　　B. T1正在写A，T2也要写A<br>
-                        C. T1正在读A，T2要写A　　　　D. T1正在读A，T2也要读A
-                    </li>
-                </ol>
-            </div>
-            <button class="answer-btn" data-group="9">显示答案</button>
-        </div>
+    </div>
+
+    <script>
+        //  所有单选题原始数据（题干+选项内容+原始正确答案字母），ABCD固定，仅打乱选项内容
+        const allQuestions = [
+            {
+                stem: '( )是长期存储在计算机内的、有组织的、可共享的数据集合。',
+                options: ['数据模式', '数据库', '数据库管理系统', '数据结构'],
+                answer: 'B'
+            },
+            {
+                stem: '数据管理的三个阶段中，由应用程序管理数据的阶段是（ ）。',
+                options: ['数据库系统阶段', '人工管理阶段、文件系统阶段和数据库系统阶段', '人工管理阶段和文件系统阶段', '只有人工管理阶段'],
+                answer: 'C'
+            },
+            {
+                stem: '下列哪一个不是层次模型的优点（ ）。',
+                options: ['数据结构比较简单', '数据库查询效率高', '提供了良好的完整性支持', '结构严密，层次命令趋于程序化'],
+                answer: 'D'
+            },
+            {
+                stem: '数据库的特点有：较高的程序与数据独立性、方便的用户接口和（ ）。',
+                options: ['程序结构化', '程序标准化', '数据模块化', '数据结构化'],
+                answer: 'D'
+            },
+            {
+                stem: '在数据库的三级模式结构中，外模式有( )。',
+                options: ['1个', '2个', '3个', '任意多个'],
+                answer: 'D'
+            },
+            {
+                stem: '在数据库的三级模式结构中，（ ）是数据物理结构和存储方式的描述，是数据在数据库内部的表示方式。',
+                options: ['外模式', '模式', '用户模式', '内模式'],
+                answer: 'D'
+            },
+            {
+                stem: '模式的逻辑子集通常称为（　　）',
+                options: ['存储模式', '内模式', '外模式', '模式'],
+                answer: 'C'
+            },
+            {
+                stem: '三级模式间存在两种映像，它们是( )。',
+                options: ['内模式与子模式之间，模式与内模式之间', '子模式与内模式之间，外模式与内模式之间', '子模式与外模式之间，模式与内模式之间', '模式与内模式之间，模式与外模式之间'],
+                answer: 'D'
+            },
+            {
+                stem: '数据库的三级模式结构之间存在着两级映像，使得数据库系统具有较高的（ ）',
+                options: ['事务并发性', '数据可靠性', '数据独立性', '数据重用性'],
+                answer: 'C'
+            },
+            {
+                stem: '在关系数据库中，当关系的型改变时，用户程序可以不变，这是( )。',
+                options: ['数据的存储独立性', '数据的位置独立性', '数据的逻辑独立性', '数据的物理独立性'],
+                answer: 'C'
+            },
+            {
+                stem: '在关系模型中，关系的“基数”是指( )。',
+                options: ['属性个数', '元组个数', '关系个数', '列数'],
+                answer: 'B'
+            },
+            {
+                stem: '关系代数运算是以（ ）为基础的运算 。',
+                options: ['关系运算', '谓词演算', '集合运算', '代数运算'],
+                answer: 'C'
+            },
+            {
+                stem: '下面对于关系的叙述中，哪个是不正确的？( )',
+                options: ['关系中的每个属性是不可分解的', '在关系中元组的顺序是无关紧要的', '任意的一个二维表都是一个关系', '每一个关系只有一种记录类型'],
+                answer: 'C'
+            },
+            {
+                stem: '进行自然联接运算的两个关系必须具有（ ）',
+                options: ['公共属性', '相同关系名', '相同属性个数', '相同关键字'],
+                answer: 'A'
+            },
+            {
+                stem: '关系模型中，一个关系只有一个（ ） 。',
+                options: ['候选键', '外键', '超键', '主键'],
+                answer: 'D'
+            },
+            {
+                stem: '关系数据库管理系统应能实现的专门关系运算包括( )',
+                options: ['排序、索引、统计', '选择、投影、连接', '关联、更新、排序', '显示、打印、制表'],
+                answer: 'B'
+            },
+            {
+                stem: '在关系代数的专门关系运算中，从表中选出满足某种条件的元组的操作称为（ ）。',
+                options: ['投影', '连接', '选择', '扫描'],
+                answer: 'C'
+            },
+            {
+                stem: '在关系代数的操作中，哪一种操作会自动去掉重复列？( )',
+                options: ['选择', '投影', '连接', '自然连接'],
+                answer: 'D'
+            },
+            {
+                stem: '设关系R与S具有相同的目数，且对应的属性取自相同的域。集合{t | t∈R∧t∈S}表示的是( )。',
+                options: ['R∪S', 'R∩S', 'R－S', 'R×S'],
+                answer: 'B'
+            },
+            {
+                stem: '设关系R和S具有相同的元数，且对应的属性取自相同的域。集合{t | t∈R∧t∈S}表示的是( )。',
+                options: ['R∪S', 'R－S', 'R×S', 'R∩S'],
+                answer: 'D'
+            },
+            {
+                stem: '设关系R和S具有相同的元数，且对应的属性取自相同的域。集合{t | t∈R∨t∈S}表示的是( )。',
+                options: ['R∪S', 'R－S', 'R×S', 'R∩S'],
+                answer: 'A'
+            },
+            {
+                stem: '已知关系R 和S，则R∩S 等价于（ ）',
+                options: ['（R-S）-S', 'S-（S-R）', '（S-R）-R', 'S-（R-S）'],
+                answer: 'B'
+            },
+            {
+                stem: '关系R和S如下表，R－S的结果是( )<table><tr><th colspan="3">R</th></tr><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>4</td><td>5</td><td>6</td></tr><tr><td>7</td><td>8</td><td>9</td></tr></table><table><tr><th colspan="3">S</th></tr><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>4</td><td>5</td><td>6</td></tr><tr><td>6</td><td>2</td><td>4</td></tr><tr><td>9</td><td>8</td><td>7</td></tr></table>',
+                options: ['<table><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>7</td><td>8</td><td>9</td></tr></table>', '<table><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>7</td><td>8</td><td>9</td></tr><tr><td>6</td><td>2</td><td>4</td></tr></table>', '<table><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>9</td><td>9</td><td>9</td></tr></table>', '<table><tr><td>C</td><td>A</td><td>B</td></tr><tr><td>6</td><td>2</td><td>4</td></tr><tr><td>9</td><td>8</td><td>7</td></tr></table>'],
+                answer: 'A'
+            },
+            {
+                stem: '谓词OUT JOIN实现表的（ ）运算。',
+                options: ['内连接', '外连接', '合并连接', '自然连接'],
+                answer: 'B'
+            },
+            {
+                stem: '关系R,S和T如下。关系T是由关系R和S经过哪种操作得到的？（ ）<table><tr><th colspan="3">R</th></tr><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>4</td><td>1</td><td>6</td></tr><tr><td>3</td><td>2</td><td>4</td></tr></table><table><tr><th colspan="3">S</th></tr><tr><td>B</td><td>D</td><td>E</td></tr><tr><td>2</td><td>1</td><td>3</td></tr><tr><td>1</td><td>7</td><td>3</td></tr><tr><td>2</td><td>7</td><td>1</td></tr></table><table><tr><th colspan="5">T</th></tr><tr><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td></tr><tr><td>1</td><td>2</td><td>3</td><td>1</td><td>3</td></tr><tr><td>1</td><td>2</td><td>3</td><td>7</td><td>1</td></tr><tr><td>4</td><td>1</td><td>6</td><td>7</td><td>3</td></tr><tr><td>3</td><td>2</td><td>4</td><td>1</td><td>3</td></tr><tr><td>3</td><td>2</td><td>4</td><td>7</td><td>1</td></tr></table>',
+                options: ['R∞S', 'R－S', 'R×S', 'R∪S'],
+                answer: 'A'
+            },
+            {
+                stem: '已知关系R、S和T如图所示，下列运算结果为关系T的是（　　）。<table><tr><th colspan="2">R</th></tr><tr><td>A</td><td>B</td></tr><tr><td>a1</td><td>b1</td></tr><tr><td>a1</td><td>b2</td></tr><tr><td>a2</td><td>b2</td></tr></table><table><tr><th colspan="2">S</th></tr><tr><td>A</td><td>D</td></tr><tr><td>a1</td><td>d1</td></tr><tr><td>a2</td><td>d2</td></tr></table><table><tr><th colspan="4">T</th></tr><tr><td>R.A</td><td>R.B</td><td>S.A</td><td>S.D</td></tr><tr><td>a1</td><td>b1</td><td>a1</td><td>d1</td></tr><tr><td>a1</td><td>b2</td><td>a1</td><td>d1</td></tr><tr><td>a2</td><td>b2</td><td>a2</td><td>d2</td></tr></table>',
+                options: ['R×S', 'R∞S', 'R∩S', 'σ<sub>R.A=S.A</sub>(R×S)'],
+                answer: 'D'
+            },
+            {
+                stem: '设关系S（A, C），与SQL语句：SELECT DISTINCT C FROM S WHERE A>10等价的关系代数表达式是（ ）。',
+                options: ['∏<sub>C</sub>(S)', 'σ<sub>A>10</sub>（S）', '∏<sub>C</sub> (σ<sub>A>10</sub>（S）)', 'σ<sub>A>10</sub>（∏<sub>C</sub>(S)）'],
+                answer: 'C'
+            },
+            {
+                stem: '有一个关系：学生（学号，姓名，性别），规定学号的值域是8个数字组成的字符串，这一规则属于（ ）。',
+                options: ['实体完整性约束', '参照完整性约束', '用户自定义完整性约束', '关键字完整性约束'],
+                answer: 'C'
+            },
+            {
+                stem: '下面哪一项不属于关系的三类完整性约束？（　　）',
+                options: ['实体完整性', '参照完整性', '结构完整性', '用户定义的完整性'],
+                answer: 'C'
+            },
+            {
+                stem: '外码必须为空值或等于被参照表中某个元组的主码。这是（ ）。',
+                options: ['实体完整性规则', '参照完整性规则', '用户自定义完整性规则', '域完整性规则'],
+                answer: 'B'
+            },
+            {
+                stem: '有关系R(A,B,C) 主码=A ； 关系S(D,A) 主码=D，外码=A，参照于R的属性A。关系R和S的元组如图所示。指出关系中违反关系完整性规则的元组是( )。<table><tr><th colspan="2">S</th></tr><tr><td>D</td><td>A</td></tr><tr><td>d1</td><td>a2</td></tr><tr><td>d2</td><td>Null</td></tr><tr><td>d3</td><td>a3</td></tr><tr><td>d4</td><td>a1</td></tr></table><table><tr><th colspan="3">R</th></tr><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>a1</td><td>b2</td><td>3</td></tr><tr><td>a2</td><td>b1</td><td>3</td></tr><tr><td>a4</td><td>b2</td><td>5</td></tr></table>',
+                options: ['(d1,a2)', '(d2,Null)', '(d3,a3)', '(d4,a1)'],
+                answer: 'C'
+            },
+            {
+                stem: '已知关系R和S如图所示，属性A为R的主码、S的外码，属性C为S的主码。S中违反参照完整性约束的元组是( )。<table><tr><th colspan="2">R</th></tr><tr><td>A</td><td>B</td></tr><tr><td>a1</td><td>b1</td></tr><tr><td>a2</td><td>b5</td></tr></table><table><tr><th colspan="3">S</th></tr><tr><td>C</td><td>D</td><td>A</td></tr><tr><td>c1</td><td>d1</td><td>a1</td></tr><tr><td>c2</td><td>d4</td><td>null</td></tr><tr><td>c3</td><td>d1</td><td>a3</td></tr><tr><td>c4</td><td>d3</td><td>a2</td></tr></table>',
+                options: ['｛c1, d1, a1｝', '｛c2, d4, null｝', '｛c3, d1, a3｝', '｛c4, d3, a2｝'],
+                answer: 'C'
+            },
+            {
+                stem: '设有供应商关系S和零件关系P如下图所示。它们的主码分别是“供应商号”和“零件号”，零件关系P的属性“供应商号”是它的外码，属性颜色只能取值(红，白，兰)。(这里假定DBMS不支持“级联修改”功能)。若要删除关系S中的行，删除行的值分别列出如下，哪个（些）可以被删除？（ ）<table><tr><th colspan="3">供应商关系S</th></tr><tr><td>供应商号</td><td>供应商名</td><td>所在城市</td></tr><tr><td>B01</td><td>红星</td><td>北京</td></tr><tr><td>S10</td><td>宇宙</td><td>上海</td></tr><tr><td>T20</td><td>黎明</td><td>天津</td></tr><tr><td>Z01</td><td>立新</td><td>重庆</td></tr></table><table><tr><th colspan="3">零件关系P</th></tr><tr><td>零件号</td><td>颜色</td><td>供应商号</td></tr><tr><td>010</td><td>红</td><td>B01</td></tr><tr><td>201</td><td>兰</td><td>T20</td></tr><tr><td>312</td><td>白</td><td>S10</td></tr></table>Ⅰ. (\'S10\',\'宇宙\',\'上海\')　　II.(\'Z01\',\'立新\',\'重庆\')',
+                options: ['只有I', '只有II', '都可以', '都不可以'],
+                answer: 'B'
+            },
+            {
+                stem: '在创建SQL基本表C、列值为空值（NULL），则说明这一列：（ ）。',
+                options: ['值为 0', '值为空格', '值是未知的', '值是非法的'],
+                answer: 'C'
+            },
+            {
+                stem: '通过（ ）实现参照完整性规则的。',
+                options: ['PRIMARY KEY子句', 'FORGEIGN KEY子句', 'NOT NULL', 'CHECK子句'],
+                answer: 'B'
+            },
+            {
+                stem: '在SQL中，建立索引用( )。',
+                options: ['CREATE SCHMA命令', 'CREATE TABLE命令', 'CREATE VIEW命令', 'CREATE INDEX命令'],
+                answer: 'D'
+            },
+            {
+                stem: '数据库的操纵功能不包括下列哪个 ( )。',
+                options: ['定义表结构', '查询表数据', '修改表数据', '插入表数据'],
+                answer: 'A'
+            },
+            {
+                stem: '列值为空值（NULL），则说明这一列：（ ）。',
+                options: ['值为 0', '值为空格', '值是未知的', '值是非法的'],
+                answer: 'C'
+            },
+            {
+                stem: '在SQL语言中，子查询是（ ） 。',
+                options: ['返回单表中数据子集的查询语言', '选取多表中字段子集的查询语句', '选取单表中字段子集的查询语', '嵌入到另一个查询语句之中的查询语句'],
+                answer: 'D'
+            },
+            {
+                stem: '在SQL语言中可以使用的通配符有（ ）',
+                options: ['% 和 _', '* 和?', '% 和 *', '? 和 %'],
+                answer: 'A'
+            },
+            {
+                stem: '在SQL中，通配符%代表（　　）',
+                options: ['任意长度（长度可以为0）的字符串', '任意单个字符', '百分号', '长度不能为0的字符串'],
+                answer: 'A'
+            },
+            {
+                stem: '设有一个关系S（SNO, SNAME），如果要找出倒数第三个字母为A，并且至少包含4个字母的SNAME，则查询条件子句应写成：WHERE SNAME LIKE ( )。',
+                options: ['\'_ A _ %\' ', '\'_ % A _ _\' ', '\'_ A _ _\' ', '\'_ _ A _ %\' '],
+                answer: 'D'
+            },
+            {
+                stem: '在SQL查询语句中，用来统计一列中值的个数，使用的聚集函数名称是（ ）。',
+                options: ['COUNT', 'AVG', 'SUM', 'MAX'],
+                answer: 'A'
+            },
+            {
+                stem: '若要撤销数据库中已经存在的表Student，可以使用（ ）。',
+                options: ['DELETE TABLE Student', 'DELETE Student', 'DROP TABLE Student', 'DROP Student'],
+                answer: 'C'
+            },
+            {
+                stem: '以下关于视图的描述中，错误的是( )。',
+                options: ['可以对任何视图进行任意的修改操作', '视图能够简化用户的操作', '视图能够对数据提供安全保护作用', '视图对重构数据库提供了一定程度的独立性'],
+                answer: 'A'
+            },
+            {
+                stem: '所谓视图，是指（ ）。',
+                options: ['数据库中独立存在的表，每个视图对应一个存储文件', '从一个或几个基本表或视图中导出的表，视图是一个虚表', '建立在数据库文件上的索引文件，一个视图可以带多个索引文件', '存储在数据库中的可视化数据图形'],
+                answer: 'B'
+            },
+            {
+                stem: '在数据库系统中，视图可以提供数据的（　　　）',
+                options: ['完整性', '并发性', '安全性', '可恢复性'],
+                answer: 'C'
+            },
+            {
+                stem: '在数据库系统中，对存取权限的定义称为（ ）。',
+                options: ['命令', '授权', '定义', '审计'],
+                answer: 'B'
+            },
+            {
+                stem: '将数据库对象的操作权限授予用户，属于安全控制机制中的( )。',
+                options: ['用户标识与鉴别', '自主存取控制', '强制存取控制', '审计'],
+                answer: 'B'
+            },
+            {
+                stem: '以下（ ）不属于实现数据库系统安全性的主要技术和方法。',
+                options: ['存取控制技术', '视图技术', '审计技术', '出入机房登记和加防盗门'],
+                answer: 'D'
+            },
+            {
+                stem: '若以选课（学号，课号，成绩）表达“某学生选修某课程获得了某个成绩。”则在（ ）的情况下，成绩不完全依赖于学号。',
+                options: ['一个学生只能选修一门课', '一门课程只能被一个学生选修', '一个学生可以选修多门课', '一门课程可以被多个学生选修'],
+                answer: 'C'
+            },
+            {
+                stem: '在数据库设计中，将E-R图转换成关系数据模型的过程属于（ ）。',
+                options: ['需求分析阶段', '逻辑设计阶段', '概念设计阶段', '物理设计阶段'],
+                answer: 'B'
+            },
+            {
+                stem: '若关系模式R的所有候选码均为单个属性，则R最高一定可以达到（　　）。',
+                options: ['1NF', '4NF', '3NF', '2NF'],
+                answer: 'D'
+            },
+            {
+                stem: '关系模式规范化的最起码的要求是达到第一范式，即满足( )。',
+                options: ['每个非码属性都完全依赖于码', '主码属性唯一标识关系中的元组', '关系中的元组不可重复', '每个属性都是不可分解的'],
+                answer: 'A'
+            },
+            {
+                stem: '关系模式设计理论主要解决的问题是（ ）',
+                options: ['插入异常、删除异常和数据冗余', '提高查询速度', '减少数据操作的复杂性', '保证数据的安全性和完整性'],
+                answer: 'A'
+            },
+            {
+                stem: '关系模式分解的无损连接和保持函数依赖两个特性之间的联系是( )。',
+                options: ['前者成立蕴涵后者成立', '没有必然的联系', '同时成立或者同时不成立', '后者成立蕴涵前者成立'],
+                answer: 'B'
+            },
+            {
+                stem: '关系模式中各级范式之间的关系为（ ）。',
+                options: ['3NF⊇2NF⊇1NF', '3NF⊇1NF⊇2NF', '1NF⊇2NF⊇3NF', '2NF⊇1NF⊇3NF'],
+                answer: 'A'
+            },
+            {
+                stem: '在关系数据库中，从关系规范化的意义看，如果关系R中的非主属性对码有部分函数依赖，那么R至多是（ ）',
+                options: ['1NF', '2NF', '3NF', 'BCNF'],
+                answer: 'A'
+            },
+            {
+                stem: '从3NF到BCNF，消除了关系模式的( )。',
+                options: ['非主属性对码的部分函数依赖', '非主属性对码的传递函数依赖', '非主属性对码的部分和传递函数依赖', '主属性对码的部分和传递函数依赖'],
+                answer: 'D'
+            },
+            {
+                stem: '下面关于函数依赖，不正确的是( )。',
+                options: ['若X→Y，X→Z，则X→YZ', '若X→Y，Y包含Y\'，则X→Y\'', '若XY→Z，则X→Z，Y→Z', '若X→Y，Y→Z，则X→Z'],
+                answer: 'C'
+            },
+            {
+                stem: '在R(U)中，如果X→Y，并且对于X的任何一个真子集X\'，都没有X\'→Y，则( )。',
+                options: ['X为U的候选码', 'Y对X部分函数依赖', 'Y对X完全函数依赖', 'R属于2NF'],
+                answer: 'C'
+            },
+            {
+                stem: '在数据库系统中，把可以相互区别的客观事物称为（ ）',
+                options: ['文件', '字段', '实体', '关键码'],
+                answer: 'C'
+            },
+            {
+                stem: '公司中有多个部门和多名职员，每个职员只能属于一个部门，一个部门可以有多名职员，从部门到职员的联系类型是（ ）。',
+                options: ['多对多', '一对一', '多对一', '一对多'],
+                answer: 'D'
+            },
+            {
+                stem: '在E-R模型中，如果有3个不同的实体型，3个M:N的联系，根据E-R模型转换为关系模型的规则，至少转换的关系数目为（ ）个。',
+                options: ['4个', '5个', '6个', '7个'],
+                answer: 'C'
+            },
+            {
+                stem: '在设计全局ER模型的过程中，我们需要解决的冲突不包括（ ）。',
+                options: ['属性冲突', '命名冲突', '联系冲突', '结构冲突'],
+                answer: 'C'
+            },
+            {
+                stem: '从E-R模型向关系模型转换，一个m:n的联系转换成关系模式时，该关系模式的键是 ( )。',
+                options: ['m端实体的键', 'n端实体的键', 'm端实体键与n端实体键组合', '重新选取其他属性'],
+                answer: 'C'
+            },
+            {
+                stem: '查询优化策略中，正确的策略是 （ ）',
+                options: ['尽可能早地执行笛卡尔积操作', '尽可能早地执行并操作', '尽可能早地执行差操作', '尽可能早地执行选择操作'],
+                answer: 'D'
+            },
+            {
+                stem: '关系代数表达式的优化策略中，首先要做的是(　　)。',
+                options: ['对文件进行预处理', '尽早执行选择运算', '执行笛卡儿积运算', '投影运算'],
+                answer: 'B'
+            },
+            {
+                stem: '基于"学生-选课-课程"数据库中的三个关系：Student(Sno,Sname,Ssex,Sage),Course(Cno,Cname,Teacher), SC(Sno,Cno,Grade)查询选修了2号课程的学生姓名，可以用下面几个关系代数表达式表示，效率最高的为（ ）。',
+                options: ['π<sub>Sname</sub>(σ<sub>Student.Sno=SC.Sno∧SC.Cno=\'2\'</sub>(Student×SC) )', 'π<sub>Sname</sub>(σ<sub>SC.Cno=\'2\'</sub>(Student∞SC) )', 'π<sub>Sname</sub>(Student∞σ<sub>SC.Cno=\'2\'</sub>(SC) ) ', 'π<sub>Sname</sub>(π<sub>Sname,Sno</sub>(Student)∞σ<sub>SC.Cno=\'2\'</sub>(SC) )'],
+                answer: 'D'
+            },
+            {
+                stem: '由于某种硬件故障，使存储在外存上的数据部分损失或全部损失，这种情况称为（ ）。',
+                options: ['介质故障', '运行故障', '系统故障', '事务故障'],
+                answer: 'A'
+            },
+            {
+                stem: '若系统在运行过程中，由于某种原因，造成系统停止运行，致使事务在执行过程中以非控制方式终止，这时内存中的信息丢失，而存储在外存上的数据未受影响，这种情况称为（ ）。',
+                options: ['事务故障', '系统故障', '介质故障', '运行故障'],
+                answer: 'B'
+            },
+            {
+                stem: '用于数据库恢复的重要文件是（ ）',
+                options: ['数据库文件', '备注文件', '日志文件', '索引文件'],
+                answer: 'C'
+            },
+            {
+                stem: '事务日志用于保存 （ ）',
+                options: ['程序运行过程', '数据操作', '对数据的更新操作', '程序的执行结果'],
+                answer: 'C'
+            },
+            {
+                stem: '下面哪一项不属于事务的ACID特性？（ ）',
+                options: ['原子性', '一致性', '正确性', '持续性'],
+                answer: 'C'
+            },
+            {
+                stem: '一个事务的执行，要么全部完成，要么全部不做，一个事务中对数据库的所有操作都是一个不可分割的操作序列的属性是（ ）。',
+                options: ['原子性', '一致性', '隔离性', '持久性'],
+                answer: 'A'
+            },
+            {
+                stem: '在数据库中，产生数据不一致的根本原因是（ ）。',
+                options: ['数据冗余', '数据存储量太大', '没有严格保护数据', '未对数据进行完整性控制'],
+                answer: 'A'
+            },
+            {
+                stem: '在下列（ ）情况下，T2会读到“脏数据”。',
+                options: ['事务T1修改数据A，事务T2读数据A，事务T1提交', '事务T1读数据A，事务T2读数据A', '事务T2修改数据A，事务T1读数据A，事务T2被撤消', '事务T1修改数据A，事务T2读数据A，事务T1被撤消'],
+                answer: 'D'
+            },
+            {
+                stem: '已知事务T1和T2的并发操作序列如图所示：<table><tr><th>T1</th><th>T2</th></tr><tr><td>① 读A=10</td><td></td></tr><tr><td></td><td>② 读A=10</td></tr><tr><td>③ A＝A-2写回</td><td></td></tr><tr><td></td><td>④ A＝A-8写回</td></tr></table>下面评价正确的是（　）。',
+                options: ['该操作不存在问题', '该操作丢失修改', '该操作不可重复读', '该操作读“脏”数据'],
+                answer: 'B'
+            },
+            {
+                stem: '设有两个事务T1,T2，其并发操作如下表所示，下面评价正确的是（ ）。<table><tr><th>T1</th><th>T2</th></tr><tr><td>① 读A=10<br>② A=A*2写回<br>③ ROLLBACK<br>恢复A=10</td><td>④ 读A=20</td></tr></table>',
+                options: ['该操作不存在问题', '该操作丢失修改 ', '该操作不能重复读', '该操作读“脏”数据'],
+                answer: 'D'
+            },
+            {
+                stem: '对数据库并发操作有可能带来的问题包括（ ）',
+                options: ['读出“脏数据”', '带来数据的冗余', '未被授权的用户非法存取数据', '破坏数据独立性'],
+                answer: 'A'
+            },
+            {
+                stem: '下列事务对数据对象A的请求中，相容的是（ ）。',
+                options: ['T1加X锁，T2加X锁', 'T1加X锁，T2加S锁', 'T1加S锁，T2加X锁', 'T1加S锁，T2加S锁'],
+                answer: 'D'
+            },
+            {
+                stem: '所谓“两段”封锁的含义是每个事务分成以下前后两个阶段( )。',
+                options: ['获得阶段和扩展阶段', '扩展阶段和收缩阶段', '收缩阶段和释放封锁阶段', '扩展阶段和申请封锁阶段'],
+                answer: 'B'
+            },
+            {
+                stem: '设事务T1和T2对数据库中的数据A进行操作，可能有如下几种情况，请问哪一种不会发生冲突操作（ ）。',
+                options: ['T1正在写A，T2要读A', 'T1正在写A，T2也要写A', 'T1正在读A，T2要写A', 'T1正在读A，T2也要读A'],
+                answer: 'D'
+            }
+        ];
+
+        // 随机打乱数组 工具函数（仅打乱选项内容）
+        function shuffleArr(arr) {
+            return arr.sort(() => Math.random() - 0.5);
+        }
+        // 选项字母固定为A/B/C/D，不打乱
+        const fixedOptionLetters = ['A', 'B', 'C', 'D'];
+        // 每5题一组拆分数组
+        function splitQuestions(arr, groupSize = 5) {
+            const groups = [];
+            for (let i = 0; i < arr.length; i += groupSize) {
+                groups.push(arr.slice(i, i + groupSize));
+            }
+            return groups;
+        }
+
+        // 初始化页面：题目乱序+每5题一组+选项内容乱序（字母固定）+答案动态匹配
+        function initQuestions() {
+            const questionContainer = document.getElementById('random-questions');
+            // 1. 全局打乱所有题目顺序
+            const randomAllQuestions = shuffleArr([...allQuestions]);
+            // 2. 按每5题拆分分组
+            const questionGroups = splitQuestions(randomAllQuestions);
+            
+            // 3. 遍历每组渲染：题目+固定字母+乱序选项 + 本组按钮 + 本组答案框
+            questionGroups.forEach((group, groupIndex) => {
+                const groupWrap = document.createElement('div');
+                groupWrap.className = 'question-group-item';
+                const ol = document.createElement('ol');
+
+                group.forEach((item, idxInGroup) => {
+                    const li = document.createElement('li');
+                    // 仅打乱选项内容，字母固定A/B/C/D
+                    const randomOptions = shuffleArr([...item.options]);
+                    // 动态匹配答案：找到原始正确选项在乱序后数组的位置，对应固定字母
+                    const originRightOption = item.options[fixedOptionLetters.findIndex(l => l === item.answer)];
+                    const currentRightIdx = randomOptions.findIndex(opt => opt === originRightOption);
+                    const currentRightLetter = fixedOptionLetters[currentRightIdx];
+                    li.dataset.answer = currentRightLetter; // 存储当前题最终正确字母
+
+                    // 拼接：固定A/B/C/D + 乱序选项内容
+                    let optionHtml = '';
+                    randomOptions.forEach((opt, optIdx) => {
+                        optionHtml += `${fixedOptionLetters[optIdx]}. ${opt}<br>`;
+                    });
+                    // 全局连续题号
+                    const globalIdx = groupIndex * 5 + idxInGroup + 1;
+                    li.innerHTML = `${globalIdx}. ${item.stem}<br>${optionHtml}`;
+                    ol.appendChild(li);
+                });
+                groupWrap.appendChild(ol);
+
+                // 4. 本组专属答案按钮
+                const answerBtn = document.createElement('button');
+                answerBtn.className = 'answer-btn';
+                const startNum = groupIndex * 5 + 1;
+                const endNum = Math.min((groupIndex + 1) * 5, allQuestions.length);
+                answerBtn.textContent = `显示第${startNum}-${endNum}题答案`;
+                groupWrap.appendChild(answerBtn);
+
+                // 5. 本组专属答案框
+                const answerBox = document.createElement('div');
+                answerBox.className = 'answer-box';
+                answerBox.id = `answer-box-${groupIndex}`;
+                const answerTitle = document.createElement('h4');
+                answerTitle.textContent = `第${startNum}-${endNum}题 答案`;
+                answerBox.appendChild(answerTitle);
+                const answerList = document.createElement('div');
+                answerList.className = 'answer-list';
+
+                // 生成本组正确答案（动态匹配后的固定字母）
+                group.forEach((item, idxInGroup) => {
+                    const globalIdx = groupIndex * 5 + idxInGroup + 1;
+                    const randomOptions = shuffleArr([...item.options]);
+                    const originRightOption = item.options[fixedOptionLetters.findIndex(l => l === item.answer)];
+                    const currentRightIdx = randomOptions.findIndex(opt => opt === originRightOption);
+                    const currentRightLetter = fixedOptionLetters[currentRightIdx];
+                    
+                    const answerItem = document.createElement('div');
+                    answerItem.className = 'answer-item';
+                    answerItem.textContent = `${globalIdx}题：${currentRightLetter}`;
+                    answerList.appendChild(answerItem);
+                });
+                answerBox.appendChild(answerList);
+                groupWrap.appendChild(answerBox);
+
+                // 6. 按钮点击事件：显示本组答案+禁用按钮
+                answerBtn.addEventListener('click', () => {
+                    document.getElementById(`answer-box-${groupIndex}`).style.display = 'block';
+                    answerBtn.disabled = true;
+                });
+
+                questionContainer.appendChild(groupWrap);
+            });
+        }
+
+        // 页面加载完成执行初始化
+        window.onload = initQuestions;
+    </script>
+
 
         <!-- 二、填空题 -->
         <h2>二、填空题</h2>
