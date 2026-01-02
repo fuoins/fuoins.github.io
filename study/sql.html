@@ -77,7 +77,7 @@ th { background-color: #f2f2f2; }
             {
                 stem: '数据管理的三个阶段中，由应用程序管理数据的阶段是（ ）。',
                 options: ['数据库系统阶段', '人工管理阶段、文件系统阶段和数据库系统阶段', '人工管理阶段和文件系统阶段', '只有人工管理阶段'],
-                answer: 'C'
+                answer: 'D'
             },
             {
                 stem: '下列哪一个不是层次模型的优点（ ）。',
@@ -160,9 +160,9 @@ th { background-color: #f2f2f2; }
                 answer: 'D'
             },
             {
-                stem: '设关系R与S具有相同的目数，且对应的属性取自相同的域。集合{t | t∈R∧t∈S}表示的是( )。',
+                stem: '设关系R与S具有相同的目数，且对应的属性取自相同的域。集合{t | t∈R∧t∈S\}表示的是( )。',
                 options: ['R∪S', 'R∩S', 'R－S', 'R×S'],
-                answer: 'B'
+                answer: 'C'
             },
             {
                 stem: '设关系R和S具有相同的元数，且对应的属性取自相同的域。集合{t | t∈R∧t∈S}表示的是( )。',
@@ -180,7 +180,7 @@ th { background-color: #f2f2f2; }
                 answer: 'B'
             },
             {
-                stem: '关系R和S如下表，R－S的结果是( )<table><tr><th colspan="3">R</th></tr><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>4</td><td>5</td><td>6</td></tr><tr><td>7</td><td>8</td><td>9</td></tr></table><table><tr><th colspan="3">S</th></tr><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>4</td><td>5</td><td>6</td></tr><tr><td>6</td><td>2</td><td>4</td></tr><tr><td>9</td><td>8</td><td>7</td></tr></table>',
+                stem: '关系R和S如下表，R－S的结果是( )<table><tr><th colspan="3">R</th></tr><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>4</td><td>5</td><td>6</td></tr><tr><td>7</td><td>8</td><td>9</td></tr></table><table><tr><th colspan="3">S</th></tr><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>4</td><td>5</td><td>6</td></tr><tr><td>6</td><td>2</td><td>4</td></tr></table>',
                 options: ['<table><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>7</td><td>8</td><td>9</td></tr></table>', '<table><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>7</td><td>8</td><td>9</td></tr><tr><td>6</td><td>2</td><td>4</td></tr></table>', '<table><tr><td>A</td><td>B</td><td>C</td></tr><tr><td>1</td><td>2</td><td>3</td></tr><tr><td>9</td><td>9</td><td>9</td></tr></table>', '<table><tr><td>C</td><td>A</td><td>B</td></tr><tr><td>6</td><td>2</td><td>4</td></tr><tr><td>9</td><td>8</td><td>7</td></tr></table>'],
                 answer: 'A'
             },
@@ -277,7 +277,7 @@ th { background-color: #f2f2f2; }
             {
                 stem: '设有一个关系S（SNO, SNAME），如果要找出倒数第三个字母为A，并且至少包含4个字母的SNAME，则查询条件子句应写成：WHERE SNAME LIKE ( )。',
                 options: ['\'_ A _ %\' ', '\'_ % A _ _\' ', '\'_ A _ _\' ', '\'_ _ A _ %\' '],
-                answer: 'D'
+                answer: 'B'
             },
             {
                 stem: '在SQL查询语句中，用来统计一列中值的个数，使用的聚集函数名称是（ ）。',
@@ -336,8 +336,8 @@ th { background-color: #f2f2f2; }
             },
             {
                 stem: '关系模式规范化的最起码的要求是达到第一范式，即满足( )。',
-                options: ['每个非码属性都完全依赖于码', '主码属性唯一标识关系中的元组', '关系中的元组不可重复', '每个属性都是不可分解的'],
-                answer: 'A'
+                options: ['每个非码属性都完全依赖于码', '主码属性唯一标识关系中的元组', '关系中的元组不可重复', '每个分量都是不可分解的'],
+                answer: 'D'
             },
             {
                 stem: '关系模式设计理论主要解决的问题是（ ）',
@@ -412,7 +412,7 @@ th { background-color: #f2f2f2; }
             {
                 stem: '基于"学生-选课-课程"数据库中的三个关系：Student(Sno,Sname,Ssex,Sage),Course(Cno,Cname,Teacher), SC(Sno,Cno,Grade)查询选修了2号课程的学生姓名，可以用下面几个关系代数表达式表示，效率最高的为（ ）。',
                 options: ['π<sub>Sname</sub>(σ<sub>Student.Sno=SC.Sno∧SC.Cno=\'2\'</sub>(Student×SC) )', 'π<sub>Sname</sub>(σ<sub>SC.Cno=\'2\'</sub>(Student∞SC) )', 'π<sub>Sname</sub>(Student∞σ<sub>SC.Cno=\'2\'</sub>(SC) ) ', 'π<sub>Sname</sub>(π<sub>Sname,Sno</sub>(Student)∞σ<sub>SC.Cno=\'2\'</sub>(SC) )'],
-                answer: 'D'
+                answer: 'B'
             },
             {
                 stem: '由于某种硬件故障，使存储在外存上的数据部分损失或全部损失，这种情况称为（ ）。',
@@ -486,6 +486,7 @@ th { background-color: #f2f2f2; }
             }
         ];
 
+
         // 随机打乱选项内容（深拷贝打乱，避免原数组污染）
         function shuffleOptions(options) {
             const copy = [...options];
@@ -501,13 +502,12 @@ th { background-color: #f2f2f2; }
             }
             return groups;
         }
-
-        // 核心初始化：一题一乱序+同一乱序集生成题目+答案，精准匹配
-        function initQuiz() {
-            const container = document.getElementById('random-questions');
-            // 1. 全局打乱题目顺序
-            const shuffledQuestions = [...allQuestions].sort(() => Math.random() - 0.5);
-            const questionGroups = splitIntoGroups(shuffledQuestions);
+// 核心初始化：一题一乱序+同一乱序集生成题目+答案，精准匹配
+         function initQuiz() {
+             const container = document.getElementById('random-questions');
+             // 1. 全局打乱题目顺序
+             const shuffledQuestions = [...allQuestions].sort(() => Math.random() - 0.5);
+             const questionGroups = splitIntoGroups(shuffledQuestions);
 
             // 2. 遍历每组渲染
             questionGroups.forEach((group, groupIdx) => {
@@ -539,7 +539,6 @@ th { background-color: #f2f2f2; }
                 });
 
                 groupWrap.appendChild(ol);
-
                 // 3. 本组答案按钮
                 const btn = document.createElement('button');
                 btn.className = 'answer-btn';
