@@ -525,7 +525,7 @@ th { background-color: #f2f2f2; }
                     const originRightOpt = q.options[fixedLetters.findIndex(l => l === q.answer)];
                     //  找乱序后该选项对应的固定字母，就是最终正确答案
                     const finalRightLetter = fixedLetters[shuffledOpt.findIndex(opt => opt === originRightOpt)];
-                    
+
                     //  存入本组答案，后续直接渲染，不重复计算
                     groupAnswers.push({ num: globalNum, ans: finalRightLetter });
 
@@ -578,43 +578,169 @@ th { background-color: #f2f2f2; }
     </script>
 
 
-        <!-- 二、填空题 -->
-        <h2>二、填空题</h2>
-        <div class="question-group fill-blank">
-            <ol>
-                <li>数据库管理系统或DBMS是位于用户与操作系统之间的一层数据管理软件。</li>
-                <li>数据模型的三个组成部分是数据结构、数据操作和完整性约束。</li>
-                <li>若在实体R的诸属性中，属性A不是R的主键，却是另一个实体S的主键，则称A为R的外键。</li>
-                <li>建表的同时可以定义与该表有关的完整性约束条件，这些完整性约束条件被存储在系统的数据字典中。</li>
-                <li>关系中主码的取值必须唯一且非空，这条规则是实体完整性规则。</li>
-                <li>用树型结构表示实体类型及实体间联系的数据模型称为层次模型。</li>
-                <li>在数据库中，当某个实际值暂时未知或无意义时，我们将其表示为null。</li>
-                <li>关系数据库中的投影操作是指从关系中抽出特定字段。</li>
-                <li>关系R与S的属性个数分别为r和s，则R×S的属性个数为r+s。</li>
-                <li>若集合D1={4,2,3}，集合D2={a1,b1,c1}，集合D3={'男','女'}，则D1×D2×D3包含的元组数为18。</li>
-                <li>设有选课关系SC(Sno,Cno, Grade)。查询选修2号课程的学生学号关系代数表达式为π<sub>Sno</sub>(σ<sub>Cno='2'</sub>（SC）) 。</li>
-                <li>在SQL查询时，如果要去掉查询结果中的重复元组，应使用DISTINCT关键字。</li>
-                <li>进行分组查询时，应当使用GROUP BY子句。使用HAVING子句可提取分组满足条件的元组。</li>
-                <li>在SQL中，对修改基本表结构的命令关键字为 alter TABLE。</li>
-                <li>查询中需统计元组的个数时，应使用 COUNT（）聚集函数。</li>
-                <li>角色是一组系统权限的集合，用它管理权限可以简化授权的过程。</li>
-                <li>学生社团可以接纳多名学生参加，但每个学生只能参加一个社团，从社团到学生之间的联系类型是 一对多。</li>
-                <li>在E-R图中，属性用椭圆表示。在E-R图中，联系用菱形表示。</li>
-                <li>在关系模式R(A，C，D)中，存在函数依赖关系{A→C ，C→D}，则候选码是A。</li>
-                <li>包含在所有候选键中的属性称为主属性。</li>
-                <li>Armstrong公理系统有以下推理规则：自反律、增广律、传递律。</li>
-                <li>设有关系模式R(U,F)，其中U=(A, B, C, D)，F={A→C, C→B, AD→B }，则R的候选码为AD。</li>
-                <li>一个低一级范式的关系模式，通过模式分解可以转换为若干个高一级范式的关系模式的集合，这种过程叫规范化。</li>
-                <li>事务是用户定义的一个数据库操作序列，事务的ACID特性有：原子性、一致性、隔离性和持续性。</li>
-                <li>事务提交和事务回滚的语句分别是COMMIT和ROLLBACK。</li>
-                <li>DBMS对数据库进行封锁采用的两种基本锁类型是排它锁和共享锁。</li>
-                <li>封锁是实现并发控制的一个重要技术。基本的封锁类型有共享锁和排它锁。</li>
-                <li>数据库系统中诊断死锁，一般使用超时法或事务等待图法。</li>
-                <li>判断一个并发调度是否正确，可用可串行化概念来衡量。</li>
-                <li>并发控制的主要技术有封锁、时间戳和乐观控制法。</li>
-                <li>在有多个事务需要执行时，如果利用分时的方法，同时处理多个事务，则称事务是并行或并发执行。</li>
-            </ol>
-        </div>
+<h2>二、填空题</h2>
+<div class="question-group fill-blank">
+    <ol id="fillQuestionList">
+        <!-- 第1-5题 分组 -->
+        <li class="fill-group-item" data-group="1">是位于用户与操作系统之间的一层数据管理软件。<span class="blank-underline"></span><span class="answer-item" style="display: none;">数据库管理系统或DBMS</span></li>
+        <li class="fill-group-item" data-group="1">数据模型的三个组成部分是数据结构、<span class="blank-underline"></span>和完整性约束。<span class="answer-item" style="display: none;">数据操作</span></li>
+        <li class="fill-group-item" data-group="1">若在实体R的诸属性中，属性A不是R的主键，却是另一个实体S的主键，则称A为R的<span class="blank-underline"></span>。<span class="answer-item" style="display: none;">外键</span></li>
+        <li class="fill-group-item" data-group="1">建表的同时可以定义与该表有关的完整性约束条件，这些完整性约束条件被存储在系统的<span class="blank-underline"></span>中。<span class="answer-item" style="display: none;">数据字典</span></li>
+        <li class="fill-group-item" data-group="1">关系中主码的取值必须唯一且非空，这条规则是<span class="blank-underline"></span>完整性规则。<span class="answer-item" style="display: none;">实体</span></li>
+        <li class="btn-item" data-group="1"><button class="show-answer-btn" onclick="toggleFillAnswer(this)">显示/隐藏答案（第1组）</button></li>
+
+        <!-- 第6-10题 分组 -->
+        <li class="fill-group-item" data-group="2">用树型结构表示实体类型及实体间联系的数据模型称为<span class="blank-underline"></span>。<span class="answer-item" style="display: none;">层次模型</span></li>
+        <li class="fill-group-item" data-group="2">在数据库中，当某个实际值暂时未知或无意义时，我们将其表示为<span class="blank-underline"></span>。<span class="answer-item" style="display: none;">null</span></li>
+        <li class="fill-group-item" data-group="2">关系数据库中的<span class="blank-underline"></span>操作是指从关系中抽出特定字段。<span class="answer-item" style="display: none;">投影</span></li>
+        <li class="fill-group-item" data-group="2">关系R与S的属性个数分别为r和s，则R×S的属性个数为<span class="blank-underline"></span>。<span class="answer-item" style="display: none;">r+s</span></li>
+        <li class="fill-group-item" data-group="2">若集合D1={4,2,3}，集合D2={a1,b1,c1}，集合D3={'男','女'}，则D1×D2×D3包含的元组数为<span class="blank-underline"></span>。<span class="answer-item" style="display: none;">18</span></li>
+        <li class="btn-item" data-group="2"><button class="show-answer-btn" onclick="toggleFillAnswer(this)">显示/隐藏答案（第2组）</button></li>
+
+        <!-- 第11-15题 分组 -->
+        <li class="fill-group-item" data-group="3">设有选课关系SC(Sno,Cno, Grade)。查询选修2号课程的学生学号关系代数表达式为<span class="blank-underline"></span>。<span class="answer-item" style="display: none;">π<sub>Sno</sub>(σ<sub>Cno='2'</sub>（SC）)</span></li>
+        <li class="fill-group-item" data-group="3">在SQL查询时，如果要去掉查询结果中的重复元组，应使用<span class="blank-underline"></span>关键字。<span class="answer-item" style="display: none;">DISTINCT</span></li>
+        <li class="fill-group-item" data-group="3">进行分组查询时，应当使用<span class="blank-underline"></span>子句。使用<span class="blank-underline"></span>子句可提取分组满足条件的元组。<span class="answer-item" style="display: none;">GROUP BY</span><span class="answer-item" style="display: none;">HAVING</span></li>
+        <li class="fill-group-item" data-group="3">在SQL中，对修改基本表结构的命令关键字为<span class="blank-underline"></span>。<span class="answer-item" style="display: none;">alter TABLE</span></li>
+        <li class="fill-group-item" data-group="3">查询中需统计元组的个数时，应使用<span class="blank-underline"></span>聚集函数。<span class="answer-item" style="display: none;">COUNT（）</span></li>
+        <li class="btn-item" data-group="3"><button class="show-answer-btn" onclick="toggleFillAnswer(this)">显示/隐藏答案（第3组）</button></li>
+
+        <!-- 第16-20题 分组 -->
+        <li class="fill-group-item" data-group="4">角色是一组<span class="blank-underline"></span>的集合，用它管理权限可以简化授权的过程。<span class="answer-item" style="display: none;">系统权限</span></li>
+        <li class="fill-group-item" data-group="4">学生社团可以接纳多名学生参加，但每个学生只能参加一个社团，从社团到学生之间的联系类型是<span class="blank-underline"></span>。<span class="answer-item" style="display: none;">一对多</span></li>
+        <li class="fill-group-item" data-group="4">在E-R图中，属性用<span class="blank-underline"></span>表示。在E-R图中，联系用<span class="blank-underline"></span>表示。<span class="answer-item" style="display: none;">椭圆</span><span class="answer-item" style="display: none;">菱形</span></li>
+        <li class="fill-group-item" data-group="4">在关系模式R(A，C，D)中，存在函数依赖关系{A→C ，C→D}，则候选码是<span class="blank-underline"></span>。<span class="answer-item" style="display: none;">A</span></li>
+        <li class="fill-group-item" data-group="4">包含在所有候选键中的属性称为<span class="blank-underline"></span>。<span class="answer-item" style="display: none;">主属性</span></li>
+        <li class="btn-item" data-group="4"><button class="show-answer-btn" onclick="toggleFillAnswer(this)">显示/隐藏答案（第4组）</button></li>
+
+        <!-- 第21-25题 分组 -->
+        <li class="fill-group-item" data-group="5">Armstrong公理系统有以下推理规则：自反律、<span class="blank-underline"></span>、传递律。<span class="answer-item" style="display: none;">增广律</span></li>
+        <li class="fill-group-item" data-group="5">设有关系模式R(U,F)，其中U=(A, B, C, D)，F={A→C, C→B, AD→B }，则R的候选码为<span class="blank-underline"></span>。<span class="answer-item" style="display: none;">AD</span></li>
+        <li class="fill-group-item" data-group="5">一个低一级范式的关系模式，通过模式分解可以转换为若干个高一级范式的关系模式的集合，这种过程叫<span class="blank-underline"></span>。<span class="answer-item" style="display: none;">规范化</span></li>
+        <li class="fill-group-item" data-group="5">事务是用户定义的一个数据库操作序列，事务的ACID特性有：原子性、<span class="blank-underline"></span>、隔离性和持续性。<span class="answer-item" style="display: none;">一致性</span></li>
+        <li class="fill-group-item" data-group="5">事务提交和事务回滚的语句分别是<span class="blank-underline"></span>和ROLLBACK。<span class="answer-item" style="display: none;">COMMIT</span></li>
+        <li class="btn-item" data-group="5"><button class="show-answer-btn" onclick="toggleFillAnswer(this)">显示/隐藏答案（第5组）</button></li>
+
+        <!-- 第26-30题 分组 -->
+        <li class="fill-group-item" data-group="6">DBMS对数据库进行封锁采用的两种基本锁类型是<span class="blank-underline"></span>和<span class="blank-underline"></span>。<span class="answer-item" style="display: none;">排它锁</span><span class="answer-item" style="display: none;">共享锁</span></li>
+        <li class="fill-group-item" data-group="6">封锁是实现并发控制的一个重要技术。基本的封锁类型有<span class="blank-underline"></span>和<span class="blank-underline"></span>。<span class="answer-item" style="display: none;">共享锁</span><span class="answer-item" style="display: none;">排它锁</span></li>
+        <li class="fill-group-item" data-group="6">数据库系统中诊断死锁，一般使用<span class="blank-underline"></span>或事务等待图法。<span class="answer-item" style="display: none;">超时法</span></li>
+        <li class="fill-group-item" data-group="6">判断一个并发调度是否正确，可用<span class="blank-underline"></span>来衡量。<span class="answer-item" style="display: none;">可串行化概念</span></li>
+        <li class="fill-group-item" data-group="6">并发控制的主要技术有<span class="blank-underline"></span>、时间戳和乐观控制法。<span class="answer-item" style="display: none;">封锁</span></li>
+        <li class="btn-item" data-group="6"><button class="show-answer-btn" onclick="toggleFillAnswer(this)">显示/隐藏答案（第6组）</button></li>
+
+        <!-- 剩余1题 单独分组 -->
+        <li class="fill-group-item" data-group="7">在有多个事务需要执行时，如果利用分时的方法，同时处理多个事务，则称事务是<span class="blank-underline"></span>执行。<span class="answer-item" style="display: none;">并行或并发</span></li>
+        <li class="btn-item" data-group="7"><button class="show-answer-btn" onclick="toggleFillAnswer(this)">显示/隐藏答案（第7组）</button></li>
+    </ol>
+    <!-- 手动重新随机排序按钮（全局打乱分组+组内打乱） -->
+    <button id="resetFillSortBtn" class="show-answer-btn">重新全局随机排序填空题</button>
+</div>
+
+<!-- 填空题独立JS：全局打乱分组+组内打乱，完全隔离选择题 -->
+<script>
+// 填空题专用洗牌算法
+function shuffleFillArr(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+// 核心升级：1.全局打乱分组顺序  2. 每组内打乱题目顺序
+function randomSortFillQuestions() {
+    const ol = document.getElementById('fillQuestionList');
+    // 1. 先按data-group分组，拿到所有分组（含题目+对应按钮）
+    const groupMap = new Map();
+    Array.from(ol.children).forEach(item => {
+        const group = item.dataset.group;
+        if (!groupMap.has(group)) groupMap.set(group, []);
+        groupMap.get(group).push(item);
+    });
+    // 2. 全局打乱分组的顺序（关键：实现分组乱序）
+    const shuffledGroups = shuffleFillArr(Array.from(groupMap.values()));
+    // 3. 清空原有节点，重新渲染
+    ol.innerHTML = '';
+    // 4. 遍历乱序后的分组，每组内再打乱题目（按钮固定在组最后）
+    shuffledGroups.forEach(groupItems => {
+        const questionItems = groupItems.filter(item => !item.classList.contains('btn-item'));
+        const btnItem = groupItems.filter(item => item.classList.contains('btn-item'));
+        const sortedQuestions = shuffleFillArr(questionItems); // 组内题目乱序
+        const newGroup = [...sortedQuestions, ...btnItem]; // 题目+按钮重组
+        newGroup.forEach(item => ol.appendChild(item));
+    });
+}
+
+// 答案显隐：适配data-group，精准对应本组题目，不受排序影响
+function toggleFillAnswer(btn) {
+    const group = btn.parentElement.dataset.group; // 拿到当前按钮所属分组
+    const allGroupItems = document.querySelectorAll(`.fill-group-item[data-group="${group}"]`);
+    allGroupItems.forEach(li => {
+        const answers = li.querySelectorAll('.answer-item');
+        answers.forEach(ans => {
+            ans.style.display = ans.style.display === 'none' ? 'inline-block' : 'none';
+        });
+    });
+}
+
+// 填空题独立初始化，不干扰选择题
+document.addEventListener('DOMContentLoaded', function() {
+    randomSortFillQuestions();
+    document.getElementById('resetFillSortBtn').addEventListener('click', randomSortFillQuestions);
+});
+</script>
+
+<!-- 填空题独立样式（无改动，兼容新排序逻辑） -->
+<style>
+.fill-blank .blank-underline {
+    display: inline-block;
+    width: 120px;
+    border-bottom: 2px solid #333;
+    margin: 0 6px;
+    vertical-align: text-bottom;
+}
+.fill-blank .answer-item {
+    background-color: #e6f7ff;
+    color: #1890ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin: 0 4px;
+    display: none;
+    vertical-align: text-bottom;
+}
+.fill-blank .show-answer-btn {
+    margin: 10px 0 20px 20px;
+    padding: 4px 12px;
+    border: 1px solid #1890ff;
+    background-color: #fff;
+    color: #1890ff;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+}
+.fill-blank .show-answer-btn:hover {
+    background-color: #1890ff;
+    color: #fff;
+    transition: 0.2s;
+}
+.fill-blank ol {
+    padding-left: 28px;
+    margin: 15px 0;
+}
+.fill-blank ol li {
+    margin: 10px 0;
+    line-height: 1.8;
+    font-size: 15px;
+    list-style-type: decimal;
+}
+.fill-blank .btn-item {
+    list-style-type: none;
+    margin-left: -28px;
+}
+</style>
+
+
 
         <!-- 三、问答题 -->
         <h2>三、问答题</h2>
@@ -769,7 +895,7 @@ th { background-color: #f2f2f2; }
             <p>C（CNO，CNAME，TEACHER）</p>
             <p>SC（SNO，CNO ，GRADE）</p>
             <p>（其中SNO为学号，SNAME为学生姓名，SEX 为性别，AGE为年龄， CNO为课程号， CNAME为课程名，TEACHER为教师，GRADE为成绩）。试写出下列相关操作的SQL语句。</p>
-            
+
             <table>
                 <tr><<th colspan="3">C</</th></tr>
                 <tr><td>CNO</td><td>CNAME</td><td>TEACHER</td></tr>
@@ -876,7 +1002,7 @@ th { background-color: #f2f2f2; }
             <p>客户（客户编号，客户名称，性别，年龄）</p>
             <p>商品（商品编号，商品名称，单价）</p>
             <p>订购单（客户编号，商品编号，订购数量）</p>
-            
+
             <table>
                 <tr><<th colspan="4">C</</th></tr>
                 <tr><td>CN</td><td>CNAME</td><td>SEX</td><td>AGE</td></tr>
@@ -972,7 +1098,7 @@ th { background-color: #f2f2f2; }
         </div>
 
                 <!-- 五、综合应用题 - 关系模式范式分析 -->
-    
+
 
      <h2>五、综合应用题</h2>
 
@@ -1164,9 +1290,9 @@ th { background-color: #f2f2f2; }
                     const olStart = ol ? parseInt(ol.getAttribute('start') || 1) : 1;
                     const qNum = olStart + index;
                     const qAnswer = q.getAttribute('data-answer');
-                    
+
                     currentGroup.push({ num: qNum, answer: qAnswer });
-                    
+
                     // 每5题分一组，或最后不足5题也成组
                     if ((index + 1) % 5 === 0 || index === questions.length - 1) {
                         answerGroups.push([...currentGroup]);
@@ -1177,7 +1303,7 @@ th { background-color: #f2f2f2; }
                 // 创建答案框
                 const answerBox = document.createElement('div');
                 answerBox.className = 'answer-box';
-                
+
                 // 生成每组答案的HTML
                 let answerHtml = '';
                 answerGroups.forEach((grp, grpIndex) => {
