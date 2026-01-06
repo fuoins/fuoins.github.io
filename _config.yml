@@ -3,21 +3,23 @@ title: fuoins' Blog
 email: your-email@example.com
 description: >-
   一个基于Jekyll构建的高级感白色调博客，支持数学公式渲染，完美适配移动端
-baseurl: "" # 如果你是直接部署在根域名，保持为空
-url: "https://fuoins.github.io" # 替换为你的实际域名
+baseurl: ""
+url: "https://fuoins.github.io"
 twitter_username: fuoins
 github_username: fuoins
 
-# Jekyll 核心配置
+# Jekyll 核心配置 - 适配 GitHub Pages v232
 markdown: kramdown
 highlighter: rouge
 kramdown:
   input: GFM
-  math_engine: mathjax # 启用mathjax支持
   syntax_highlighter: rouge
   syntax_highlighter_opts:
     block:
       line_numbers: true
+
+# 关键修改：移除 math_engine: mathjax（GitHub Pages 环境下会冲突）
+# 改用前端渲染方式处理数学公式
 
 # 构建配置
 permalink: /:year/:month/:day/:title/
@@ -25,14 +27,15 @@ paginate: 5
 paginate_path: /page/:num/
 timezone: Asia/Shanghai
 
-# 插件 (github-pages v232 内置插件)
+# 关键修改：只保留 GitHub Pages v232 兼容的插件
+# 移除不必要的插件声明，避免冲突
 plugins:
   - jekyll-paginate
   - jekyll-seo-tag
   - jekyll-sitemap
   - jekyll-feed
 
-# 主题禁用 (使用自定义主题)
+# 禁用主题
 theme: null
 
 # 自定义变量
@@ -53,13 +56,13 @@ defaults:
     values:
       layout: "default"
 
-# 数学公式配置
+# 数学公式配置 - 简化版（避免与 GitHub Pages 冲突）
 math:
   enable: true
   mathjax:
     src: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
     config: |
-      MathJax = {
+      window.MathJax = {
         tex: {
           inlineMath: [['$', '$'], ['\\(', '\\)']],
           displayMath: [['$$', '$$'], ['\\[', '\\]']],
@@ -74,19 +77,18 @@ math:
           fontCache: 'global'
         },
         options: {
-          enableMenu: false,
-          renderActions: {
-            findScript: [10, doc => {
-              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-                const display = !!node.type.match(/; *mode=display/);
-                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-                const text = document.createTextNode('');
-                node.parentNode.replaceChild(text, node);
-                math.start = {node: text, delim: '', n: 0};
-                math.end = {node: text, delim: '', n: 0};
-                doc.math.push(math);
+          enableMenu: false
+        },
+        startup: {
+          pageReady: function() {
+            return MathJax.startup.defaultPageReady().then(function() {
+              // 处理公式换行
+              document.querySelectorAll('.mjx-chtml').forEach(el => {
+                el.style.maxWidth = '100%';
+                el.style.overflowX = 'auto';
+                el.style.display = 'inline-block';
               });
-            }, '', false],
+            });
           }
         }
       };
