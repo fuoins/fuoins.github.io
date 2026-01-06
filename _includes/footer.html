@@ -1,5 +1,11 @@
-<footer class="site-footer">
-  <div class="container">
-    <p>&copy; {{ site.time | date: '%Y' }} {{ site.title }}. All rights reserved.</p>
-  </div>
+<footer class="footer-container">
+    <div class="footer-content">
+        <p>&copy; {{ site.time | date: '%Y' }} {{ site.author.name }}. All rights reserved.</p>
+        <p>{{ site.description }}</p>
+        <div class="footer-links">
+            <a href="{{ site.url }}{{ site.baseurl }}">主页</a>
+            <a href="{{ site.url }}{{ site.baseurl }}/pages/about/">关于</a>
+            <a href="mailto:{{ site.author.email }}">联系我</a>
+        </div>
+    </div>
 </footer>

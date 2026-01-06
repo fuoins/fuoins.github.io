@@ -1,12 +1,41 @@
 ---
 layout: default
 ---
-<article class="post">
-  <h1 class="post-title">{{ page.title }}</h1>
-  <time class="post-date" datetime="{{ page.date | date_to_xmlschema }}">
-    {{ page.date | date: "%Y-%m-%d" }}
-  </time>
-  <div class="post-content">
+
+<!-- 文章头部 -->
+<div class="post-header">
+    <h1 class="post-title">{{ page.title }}</h1>
+    <div class="post-meta">
+        发布时间：{{ page.date | date: site.date_format }} |
+        分类：{% if page.categories %}{{ page.categories | join: ', ' }}{% else %}未分类{% endif %} |
+        标签：{% if page.tags %}{{ page.tags | join: ', ' }}{% else %}无{% endif %}
+    </div>
+</div>
+
+<!-- 文章内容 -->
+<div class="post-content">
     {{ content }}
-  </div>
-</article>
+</div>
+
+<!-- 文章底部 -->
+<div class="post-footer" style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+    <h3 style="font-size: 1.2rem; color: var(--primary); margin-bottom: 1rem;">相关推荐</h3>
+    <ul style="list-style: none; margin-left: 0;">
+        {% for post in site.posts limit: 3 %}
+        {% if post.url != page.url %}
+        <li style="margin-bottom: 1rem;">
+            <a href="{{ post.url | relative_url }}" style="color: var(--accent); text-decoration: none;">
+                → {{ post.title }}
+            </a>
+            <span style="color: var(--secondary); font-size: 0.9rem; margin-left: 1rem;">
+            ({{ post.date | date: '%Y-%m-%d' }})
+          </span>
+        </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+
+    <p style="margin-top: 2rem; color: var(--secondary); font-size: 0.9rem;">
+        本文为原创内容，未经授权禁止转载。如需引用，请注明出处：<a href="{{ page.url | absolute_url }}">{{ page.title }} | {{ site.title }}</a>
+    </p>
+</div>

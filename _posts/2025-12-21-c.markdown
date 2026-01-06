@@ -5,9 +5,9 @@ subtitle:     "拆解C语言变量、常量、数组等核心知识点"
 author:       "Zy"
 header-style: text
 catalog:      true
+categories: 笔记
 tags:
   - C语言
-  - 编程笔记
 ---
 
 # C语言核心基础笔记解析

@@ -1,8 +1,66 @@
-<header class="site-header">
-  <div class="container">
-    <a class="site-title" href="{{ "/" | relative_url }}">{{ site.title }}</a>
-    <nav class="site-nav">
-      <a href="{{ "/" | relative_url }}">首页</a>
-    </nav>
-  </div>
+<header class="header-container">
+    <div class="nav-wrapper">
+        <!-- Logo -->
+        <a href="{{ site.url }}{{ site.baseurl }}" class="logo">{{ site.title }}</a>
+
+        <!-- 桌面端导航菜单 -->
+        <ul class="nav-menu">
+            {% for item in site.nav %}
+            <li class="nav-item">
+                <a href="{{ item.url | relative_url }}" {% if page.url == item.url %}class="active"{% endif %}>
+                    {{ item.name }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- 移动端导航触发器 -->
+        <div class="mobile-trigger" id="mobileTrigger">
+            ☰
+        </div>
+    </div>
+
+    <!-- 移动端导航菜单 -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            {% for item in site.nav %}
+            <li>
+                <a href="{{ item.url | relative_url }}" {% if page.url == item.url %}class="active"{% endif %}>
+                    {{ item.name }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 </header>
+
+<!-- 移动端导航交互（原生JS，无插件） -->
+<script>
+    // 获取触发器和菜单元素
+    const mobileTrigger = document.getElementById('mobileTrigger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    // 点击触发器切换菜单显示/隐藏
+    mobileTrigger.addEventListener('click', function() {
+      mobileMenu.classList.toggle('active');
+      // 切换图标
+      mobileTrigger.textContent = mobileMenu.classList.contains('active') ? '✕' : '☰';
+    });
+
+    // 点击菜单选项后关闭菜单
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        mobileMenu.classList.remove('active');
+        mobileTrigger.textContent = '☰';
+      });
+    });
+
+    // 窗口大小变化时重置菜单状态
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768) {
+        mobileMenu.classList.remove('active');
+        mobileTrigger.textContent = '☰';
+      }
+    });
+</script>

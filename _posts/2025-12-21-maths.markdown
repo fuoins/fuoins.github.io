@@ -5,8 +5,9 @@ subtitle:     "梳理核心知识点"
 author:       "Zy"
 header-style: text
 catalog:      true
-tags:
-  - 数学
+categories: 笔记
+tags:       数学
+
 ---
 
 # 数学核心知识点解析

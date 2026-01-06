@@ -1,11 +1,43 @@
 <!DOCTYPE html>
-<html lang="{{ site.lang | default: "zh-CN" }}">
-  {% include head.html %}
-  <body>
-    {% include header.html %}
-    <main class="container main-content">
-      {{ content }}
-    </main>
-    {% include footer.html %}
-  </body>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="{{ site.viewport }}">
+    <meta name="author" content="{{ site.author.name }}">
+    <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <meta name="keywords" content="{{ site.keywords }}">
+    <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+
+    <!-- 核心样式 -->
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+
+    <!-- 页面专属样式 -->
+    {% if page.custom_css %}
+    {% for css in page.custom_css %}
+    <link rel="stylesheet" href="{{ css | relative_url }}">
+    {% endfor %}
+    {% endif %}
+</head>
+<body>
+<!-- 导航栏 -->
+{% include header.html %}
+
+<!-- 主内容区 -->
+<main class="main-container">
+    {{ content }}
+</main>
+
+<!-- 页脚 -->
+{% include footer.html %}
+
+<!-- 数学公式支持（所有页面加载） -->
+{% include mathjax.html %}
+
+<!-- 页面专属脚本 -->
+{% if page.custom_js %}
+{% for js in page.custom_js %}
+<script src="{{ js | relative_url }}"></script>
+{% endfor %}
+{% endif %}
+</body>
 </html>

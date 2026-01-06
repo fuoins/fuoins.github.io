@@ -1,33 +1,55 @@
-# 基础配置
-title: fuoins's Blog
-email: your-email@example.com
-description: "极简风格的技术博客"
-baseurl: "" # 部署到根域名时留空
-url: "https://fuoins.github.io" # 替换为你的实际域名
-permalink: /:year/:month/:day/:title/
-lang: zh-CN
+# 站点基础信息
+title: "ZY' Notes"
+subtitle: "以技术为帆，探索无限可能"
+description: "专注于编程、数学与技术思考的个人博客，用简洁的文字记录成长与探索。"
+keywords: "编程, 数学, Jekyll, 技术博客, ZY"
+author:
+  name: "ZY"
+  email: "2627737542@qq.com"
+  url: "https://fuoins.github.io"
 
-# Jekyll 核心配置（适配 github-pages v232 + jekyll v3.10.0）
+# 站点URL（适配GitHub Pages）
+url: "https://fuoins.github.io"
+baseurl: "" # 根目录无需填写
+
+# 核心配置（无插件）
+permalink: /posts/:year/:month/:day/:title/
 markdown: kramdown
 kramdown:
-  math_engine: mathjax # 启用MathJax渲染数学公式
-  syntax_highlighter: rouge
-  input: GFM # 支持GitHub Flavored Markdown
+  input: GFM
+  syntax_highlighter_opts:
+    disable: false
+    line_numbers: false
+  math_engine: mathjax # 原生支持MathJax（无插件）
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
 
-# 仅保留必要插件（github-pages 内置，无需额外安装）
-plugins:
-  - jekyll-feed
-  - jekyll-seo-tag
-
-# 禁用非必要功能
+# 页面排除与包含
 exclude:
   - Gemfile
   - Gemfile.lock
   - node_modules
-  - vendor/bundle/
-  - vendor/cache/
-  - vendor/gems/
-  - vendor/ruby/
+  - vendor
+  - README.md
+  - .gitignore
+  - .github
 
-# 移动端适配相关
-responsive: true
+# 导航菜单（用于header）
+nav:
+  - name: "主页"
+    url: "/"
+  - name: "本站详细"
+    url: "/pages/writing/"
+  - name: "文章归档"
+    url: "/pages/archive/"
+  - name: "关于赵宇"
+    url: "/pages/about/"
+
+# 时间格式
+timezone: Asia/Shanghai
+date_format: "%Y-%m-%d %H:%M:%S"
+
+# 移动端适配基础配置
+viewport: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"

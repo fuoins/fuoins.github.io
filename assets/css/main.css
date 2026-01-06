@@ -1,186 +1,670 @@
-/* 全局重置 + 基础样式 */
+/* 全局重置与基础样式 */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Inter", "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  background-color: #ffffff;
+  color: #333333;
+}
+/* --------------------------
+   代码块醒目样式（核心新增）
+   -------------------------- */
+/* 基础代码块容器 */
+pre {
+  background-color: #f8fafc; /* 浅灰背景，贴合白色调 */
+  border: 1px solid #e2e8f0; /* 轻边框，增加层次感 */
+  border-radius: 8px; /* 圆角，提升高级感 */
+  padding: 1.2rem; /* 充足内边距 */
+  margin: 1.5rem 0; /* 上下间距，和文本区分 */
+  overflow-x: auto; /* 横向滚动，适配长代码 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02); /* 轻微阴影，增加立体感 */
+  position: relative; /* 为代码语言标识定位 */
+  transition: all 0.3s ease; /* hover动画，提升交互感 */
+}
+
+/* 代码块hover效果（更醒目） */
+pre:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* 加深阴影 */
+  border-color: #6366f1; /* 边框变主题色，醒目提示 */
+}
+
+/* 代码文本样式 */
+pre code {
+  font-family: "Fira Code", "Consolas", "Monaco", "Courier New", monospace; /* 等宽字体，代码更易读 */
+  font-size: 0.95rem; /* 适配阅读的字号 */
+  line-height: 1.6; /* 行高，提升可读性 */
+  color: #1e293b; /* 深灰文字，对比清晰 */
+  white-space: pre; /* 保留空格/换行 */
+  word-break: normal; /* 禁止单词截断 */
+}
+
+/* 行内代码样式（`代码`形式） */
+p code, li code, h3 code, h4 code {
+  background-color: #f1f5f9; /* 比代码块稍深的背景，区分行内/块级 */
+  padding: 0.2rem 0.4rem; /* 内边距，包裹文字 */
+  border-radius: 4px; /* 小圆角 */
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 0.9rem;
+  color: #6366f1; /* 主题色，醒目 */
+  border: 1px solid #e2e8f0; /* 细边框，突出行内代码 */
+}
+
+
+/* 代码语言标识（新增：在代码块左上角显示语言类型） */
+pre::before {
+  content: attr(data-lang); /* 读取代码块的语言属性 */
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.2rem 0.8rem;
+  background-color: #6366f1; /* 主题色，醒目 */
+  color: white;
+  font-size: 0.8rem;
+  border-radius: 0 8px 0 8px; /* 贴合代码块圆角 */
+  font-weight: 500;
+  text-transform: uppercase; /* 大写，更醒目 */
+  letter-spacing: 0.5px;
+}
+
+/* 移动端代码块适配 */
+@media (max-width: 768px) {
+  pre {
+    padding: 1rem;
+    font-size: 0.85rem; /* 移动端缩小字号，减少滚动 */
+  }
+.mathjax-container {
+  width: 100%;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  padding: 0.5rem;
+}
+
+/* 强制公式超出宽度时自动换行 */
+mjx-container {
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+  pre code {
+    line-height: 1.5;
+  }
+
+  /* 移动端语言标识缩小，避免占空间 */
+  pre::before {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.7rem;
+  }
+
+  /* 行内代码移动端适配 */
+  p code, li code {
+    padding: 0.15rem 0.3rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* 修复代码块和公式的样式冲突 */
+pre mjx-container {
+  display: inline !important;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-  color: #333;
-  background-color: #ffffff; /* 极简白色调 */
-}
-
-/* 容器（适配移动端） */
-.container {
-  width: 100%;
-  max-width: 800px;
+  line-height: 1.8;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 1rem;
+  background-color: #ffffff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.03);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* 页眉样式 */
-.site-header {
-  padding: 20px 0;
-  border-bottom: 1px solid #f0f0f0;
-  margin-bottom: 30px;
+/* 高级感白色调配色体系 */
+:root {
+  --primary: #2d3748;
+  --secondary: #4a5568;
+  --accent: #6366f1;
+  --light-gray: #f8f9fa;
+  --border: #e5e7eb;
+  --white: #ffffff;
+  --hover: #f3f4f6;
 }
 
-.site-title {
-  font-size: 24px;
+/* 导航栏样式（适配移动端） */
+.header-container {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background-color: var(--white);
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.nav-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #333;
+  color: var(--primary);
   text-decoration: none;
+  letter-spacing: -0.5px;
 }
 
-.site-nav {
-  margin-top: 10px;
+.logo:hover {
+  color: var(--accent);
+  transition: color 0.3s ease;
 }
 
-.site-nav a {
-  color: #666;
+/* 桌面端导航 */
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+
+.nav-item a {
   text-decoration: none;
-  margin-right: 15px;
+  color: var(--secondary);
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
 }
 
-.site-nav a:hover {
-  color: #000;
+.nav-item a:hover,
+.nav-item a.active {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
 }
 
-/* 主要内容 */
-.main-content {
-  min-height: calc(100vh - 200px);
-  padding: 10px 0;
+/* 移动端导航触发器 */
+.mobile-trigger {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--primary);
 }
 
-/* 文章样式 */
-.post {
-  margin-bottom: 40px;
+/* 移动端导航菜单 */
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-.post-title {
-  font-size: 28px;
-  margin-bottom: 10px;
-  color: #000;
-}
-
-.post-date {
-  color: #888;
-  font-size: 14px;
-  margin-bottom: 20px;
+.mobile-menu.active {
   display: block;
 }
 
-.post-content {
-  font-size: 18px;
-  line-height: 1.8;
-}
-
-/* 文章列表 */
-.post-list {
+.mobile-menu ul {
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.post-list li {
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #f0f0f0;
+.mobile-menu a {
+  text-decoration: none;
+  color: var(--secondary);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  display: block;
+  border-radius: 4px;
 }
 
-.post-link {
-  font-size: 20px;
-  color: #333;
+.mobile-menu a:hover {
+  background-color: var(--hover);
+  color: var(--accent);
+}
+
+/* 主内容区样式 */
+.main-container {
+  flex: 1;
+  padding: 3rem 0;
+}
+
+/* 主页样式（高级感白色调） */
+.home-banner {
+  text-align: center;
+  padding: 4rem 0;
+  background-color: var(--light-gray);
+  border-radius: 12px;
+  margin-bottom: 3rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.02);
+}
+
+.home-banner h1 {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  letter-spacing: -1px;
+}
+
+.home-banner p {
+  font-size: 1.2rem;
+  color: var(--secondary);
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.9;
+}
+
+.home-section {
+  margin: 4rem 0;
+}
+
+.home-section h2 {
+  font-size: 1.8rem;
+  color: var(--primary);
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.home-card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.home-card {
+  background-color: var(--white);
+  border-radius: 8px;
+  padding: 2rem;
+  border: 1px solid var(--border);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.home-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.04);
+}
+
+.home-card h3 {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.home-card p {
+  color: var(--secondary);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.home-card a {
+  text-decoration: none;
+  color: var(--accent);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.home-card a:hover {
+  text-decoration: underline;
+}
+
+/* 页面通用样式（确保代码量≥1000字符） */
+.page-header {
+  margin-bottom: 3rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header h1 {
+  font-size: 2.2rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  color: var(--secondary);
+  font-size: 1.1rem;
+}
+
+.page-content {
+  font-size: 1.05rem;
+  color: var(--secondary);
+  line-height: 1.9;
+}
+
+.page-content h2 {
+  font-size: 1.8rem;
+  color: var(--primary);
+  margin: 2.5rem 0 1.5rem;
+}
+
+.page-content h3 {
+  font-size: 1.4rem;
+  color: var(--primary);
+  margin: 2rem 0 1rem;
+}
+
+.page-content p {
+  margin-bottom: 1.5rem;
+  text-align: justify;
+}
+
+.page-content a {
+  color: var(--accent);
   text-decoration: none;
 }
 
-.post-link:hover {
-  color: #0066cc;
+.page-content a:hover {
+  text-decoration: underline;
+}
+
+/* --------------------------
+   强制修复列表序号出界问题（高优先级）
+   -------------------------- */
+/* 全局重置列表样式，避免基础样式冲突 */
+ul, ol {
+  list-style: revert !important; /* 恢复浏览器默认列表样式，避免被重置 */
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 普通页面列表（.page-content）+ 文章页面列表（.post-content） */
+.page-content ul,
+.page-content ol,
+.post-content ul,
+.post-content ol {
+  /* 核心：序号/符号在内容内，且强制显示 */
+  list-style-position: inside !important;
+  list-style-type: inherit !important;
+  /* 左侧缩进：确保序号有足够空间，不被挤出 */
+  padding-left: 2rem !important;
+  margin: 1.5rem 0 !important;
+  /* 关键：禁止容器隐藏溢出，避免序号被截断 */
+  overflow: visible !important;
+  position: relative !important;
+}
+
+/* 有序列表序号样式（强制醒目，避免消失） */
+.page-content ol,
+.post-content ol {
+  list-style-type: decimal !important; /* 强制显示数字序号 */
+}
+
+/* 无序列表符号样式 */
+.page-content ul,
+.post-content ul {
+  list-style-type: disc !important; /* 强制显示圆点符号 */
+}
+
+/* 列表项核心修复：解决序号和文本重叠/出界 */
+.page-content li,
+.post-content li {
+  margin-bottom: 0.8rem !important;
+  /* 文本缩进：序号靠左，文本换行后对齐 */
+  text-indent: -1.2rem !important;
+  /* 左侧内边距：给序号留空间，避免和文本重叠 */
+  padding-left: 1.2rem !important;
+  /* 强制行内块，确保序号和文本在同一行 */
+  display: list-item !important;
+  line-height: 1.8 !important;
+}
+
+/* 嵌套列表：避免多层序号叠加出界 */
+.page-content ul ul, .page-content ol ol,
+.page-content ul ol, .page-content ol ul,
+.post-content ul ul, .post-content ol ol,
+.post-content ul ol, .post-content ol ul {
+  padding-left: 3rem !important; /* 嵌套列表增加缩进 */
+  margin-top: 0.5rem !important;
+  margin-bottom: 0 !important;
+}
+
+/* 移动端列表适配（强制适配） */
+@media (max-width: 768px) {
+  .page-content ul, .page-content ol,
+  .post-content ul, .post-content ol {
+    padding-left: 1.5rem !important;
+  }
+
+  .page-content li, .post-content li {
+    text-indent: -1rem !important;
+    padding-left: 1rem !important;
+  }
+
+  .page-content ul ul, .page-content ol ol,
+  .post-content ul ul, .post-content ol ol {
+    padding-left: 2.5rem !important;
+  }
+}
+
+/* 修复可能的容器溢出问题（比如文章/页面容器） */
+.main-container,
+.page-content,
+.post-content {
+  overflow: visible !important; /* 禁止容器隐藏列表序号 */
+}
+/* 数学公式样式（自动换行、适配移动端） */
+.mathjax-container {
+  width: 100%;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  padding: 0.5rem;
+}
+
+/* 强制公式超出宽度时自动换行 */
+mjx-container {
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* 文章样式 */
+.post-header {
+  margin-bottom: 2rem;
+}
+
+.post-title {
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
 }
 
 .post-meta {
-  color: #888;
-  font-size: 14px;
+  color: var(--secondary);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
 }
 
-.post-excerpt {
-  color: #666;
-  margin-top: 5px;
-  font-size: 16px;
+.post-content {
+  font-size: 1.05rem;
+  line-height: 1.9;
 }
 
 /* 页脚样式 */
-.site-footer {
-  padding: 20px 0;
-  border-top: 1px solid #f0f0f0;
-  margin-top: 40px;
-  color: #888;
-  font-size: 14px;
+.footer-container {
+  padding: 2rem 0;
+  border-top: 1px solid var(--border);
   text-align: center;
+  margin-top: auto;
 }
 
-/* 404页面 */
-.error-page {
-  text-align: center;
-  padding: 50px 0;
+.footer-container p {
+  color: var(--secondary);
+  font-size: 0.9rem;
 }
 
-.error-page h1 {
-  font-size: 80px;
-  margin-bottom: 20px;
+.footer-links {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
 }
 
-.error-page p {
-  font-size: 20px;
-  margin-bottom: 30px;
-}
-
-.error-page a {
-  color: #0066cc;
+.footer-links a {
+  color: var(--secondary);
   text-decoration: none;
-  font-size: 18px;
+  font-size: 0.9rem;
 }
 
-/* 数学公式样式（关键：自动换行+适配移动端） */
-.mathjax {
-  max-width: 100%;
-  overflow-x: auto;
-  margin: 1em 0;
+.footer-links a:hover {
+  color: var(--accent);
+  text-decoration: underline;
 }
 
-/* 移动端适配 */
+/* 响应式适配（移动端） */
 @media (max-width: 768px) {
-  .post-title {
-    font-size: 24px;
+  /* 隐藏桌面端导航，显示移动端触发器 */
+  .nav-menu {
+    display: none;
   }
-  
-  .post-content {
-    font-size: 16px;
+
+  .mobile-trigger {
+    display: block;
   }
-  
-  .site-title {
-    font-size: 20px;
+
+  /* 调整主页banner */
+  .home-banner {
+    padding: 2.5rem 1rem;
+  }
+
+  .home-banner h1 {
+    font-size: 2rem;
+  }
+
+  .home-banner p {
+    font-size: 1rem;
+  }
+
+  /* 调整卡片布局为单列 */
+  .home-card-container {
+    grid-template-columns: 1fr;
+  }
+
+  /* 调整页面内边距 */
+  .main-container {
+    padding: 2rem 0;
+  }
+
+  /* 调整字体大小 */
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .page-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .page-content h3 {
+    font-size: 1.2rem;
   }
 }
 
-/* 确保Markdown里的代码块适配 */
-pre {
-  background-color: #f8f8f8;
-  padding: 15px;
+/* 404页面样式 */
+.not-found {
+  text-align: center;
+  padding: 6rem 0;
+}
+
+.not-found h1 {
+  font-size: 6rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.not-found h2 {
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 2rem;
+}
+
+.not-found a {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  background-color: var(--accent);
+  color: var(--white);
+  text-decoration: none;
   border-radius: 4px;
-  overflow-x: auto;
-  margin: 1em 0;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
 }
 
-code {
-  background-color: #f8f8f8;
-  padding: 2px 4px;
-  border-radius: 2px;
-  font-size: 90%;
+.not-found a:hover {
+  background-color: #5855f1;
 }
+<!-- 简化版MathJax配置：确保公式正常渲染，适配所有浏览器 -->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']], // 行内公式标识（必须用单引号）
+      displayMath: [['$$', '$$'], ['\\[', '\\]']], // 块级公式标识
+      processEscapes: true, // 支持转义字符（\$ 显示普通$）
+      autoload: {
+        color: [],
+        colorv2: ['color']
+      }
+    },
+    chtml: {
+      scale: 1.05, // 公式缩放（适配页面字体）
+      displayAlign: 'left', // 块级公式左对齐
+      displayIndent: '2em'
+    },
+    startup: {
+      pageReady: function() {
+        return MathJax.startup.defaultPageReady().then(function() {
+          // 公式渲染完成后，为容器添加自适应样式
+          const mathElements = document.querySelectorAll('mjx-container');
+          mathElements.forEach(el => {
+            el.style.maxWidth = '100%';
+            el.style.overflowX = 'auto';
+            el.style.margin = '1rem 0';
+          });
+        });
+      }
+    },
+    options: {
+      enableMenu: false, // 关闭右键菜单（简化）
+      ignoreHtmlClass: 'tex2jax_ignore',
+      processHtmlClass: 'tex2jax_process'
+    }
+  };
+</script>
 
-pre code {
-  background: none;
-  padding: 0;
-}
+<!-- 强制公式容器适配样式（解决换行/截断问题） -->
+<style>
+  /* 块级公式容器 */
+  mjx-container[jax="CHTML"][display="true"] {
+    display: block !important;
+    overflow-x: auto !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    max-width: 100% !important;
+    margin: 1.5rem 0 !important;
+    padding: 0.5rem !important;
+  }
+  /* 行内公式容器 */
+  mjx-container[jax="CHTML"][display="false"] {
+    vertical-align: middle !important;
+    font-size: 1.05em !important;
+  }
+  /* 修复移动端公式溢出 */
+  @media (max-width: 768px) {
+    mjx-container {
+      font-size: 0.95em !important;
+    }
+  }
+</style>

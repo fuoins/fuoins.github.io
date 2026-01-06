@@ -1,0 +1,76 @@
+---
+layout: default
+---
+
+<!-- 主页Banner区域 -->
+<section class="home-banner">
+    <h1>{{ site.title }}</h1>
+    <p>{{ site.subtitle }} —— {{ site.description }}</p>
+</section>
+
+<!-- 核心内容区域 -->
+<section class="home-section">
+    <h2>关于这个博客</h2>
+    <div class="page-content">
+        <p>欢迎来到ZY的个人博客，这里是我记录技术思考、编程实践和数学探索的地方。我始终相信，好的笔记不仅是对知识的沉淀，更是对思维的梳理。这个博客基于Jekyll构建，采用纯静态部署方式，无多余插件，保证访问速度与稳定性，同时兼顾移动端适配，让你在任何设备上都能舒适阅读。</p>
+        <p>博客的核心定位是“简洁、实用、有深度”：不追求花哨的界面，只专注于内容本身；不堆砌无意义的文字，只分享经过验证的经验；不回避复杂的问题，只尝试用通俗的语言解释核心逻辑。无论是编程中的坑、数学中的难点，还是学习中的感悟，都将在这里呈现。</p>
+        <p>如果你对编程、数学、开源技术感兴趣，或者正在学习Jekyll、GitHub Pages相关知识，这里的内容或许能给你一些启发。我会持续更新，也欢迎你通过联系方式与我交流，共同成长。</p>
+    </div>
+</section>
+
+<!-- 最新文章区域 -->
+<section class="home-section">
+    <h2>最新文章</h2>
+    <div class="home-card-container">
+        {% if site.posts.size > 0 %}
+        {% for post in site.posts limit: 3 %}
+        <div class="home-card">
+            <h3>{{ post.title }}</h3>
+            <p class="post-meta">{{ post.date | date: site.date_format }}</p>
+            <p>{{ post.excerpt | strip_html | truncate: 150 }}</p>
+            <a href="{{ post.url | relative_url }}">阅读全文 →</a>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="home-card">
+            <h3>暂无文章</h3>
+            <p>敬请期待，博主正在努力创作中...</p>
+            <a href="{{ '/pages/about/' | relative_url }}">了解更多 →</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- 功能介绍区域 -->
+<section class="home-section">
+    <h2>博客特色</h2>
+    <div class="home-card-container">
+        <div class="home-card">
+            <h3>全端适配</h3>
+            <p>基于Jekyll原生功能构建，不依赖任何第三方插件，避免插件兼容问题，保证博客稳定运行。所有功能均通过原生HTML/CSS/JS实现，加载速度更快，适配GitHub Pages的严格环境。</p>
+            <p>采用响应式设计，从手机、平板到桌面端，都能自适应布局。导航栏在移动端会自动折叠为汉堡菜单，内容区域会调整字体大小和间距，保证在小屏幕上的可读性。</p>
+
+            <p></p>
+            <a href="{{ '/pages/writing/' | relative_url }}">了解技术细节 →</a>
+        </div>
+        <div class="home-card">
+            <h3>数学公式支持</h3>
+            <p>集成MathJax 3.x，完美支持LaTeX语法的数学公式渲染，行内公式和块级公式均可正常显示。针对移动端做了特殊优化，公式超出屏幕宽度时会自动换行，保证阅读体验。</p>
+            <p>无论是简单的代数公式，还是复杂的微积分、线性代数公式，都能精准渲染，满足数学、物理、工程等领域的写作需求。</p>
+            {% assign target_filename = "2026-01-06-test-math.md" %}
+            {% for post in site.posts %}
+            {% if post.path contains target_filename %}
+            <a href="{{ post.url | relative_url }}" class="post-link">
+                查看公式示例 ：{{ post.title }}
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="home-card">
+            <h3>那个男人</h3>
+            <p>单身</p>
+            <p>未来之星，国家栋梁，是成语里面的学富五车，才高八斗，是都市小说里的城市之光，是俗语里的天秀之人，是粤语里的巴鸠撚闭，是武侠小说里的人中龙，是吾日三省吾身的自律者，是相亲节目里面的心动嘉宾，是自然界的丛林之王，是世间所有丑与恶的唾弃者，是世间所有美与好的创造者</p>
+            <a href="{{ '/pages/about/' | relative_url }}">查看适配细节 →</a>
+        </div>
+    </div>
+</section>
