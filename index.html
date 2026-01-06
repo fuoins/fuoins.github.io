@@ -35,7 +35,8 @@ description: fuoins 的个人技术博客，分享编程、数学、算法等领
 
     <h2>最新文章</h2>
     <div class="post-list">
-        {% for post in site.posts %}
+        <!-- 极简版：直接遍历文章，无 empty 标签 -->
+        {% for post in site.posts limit: 10 %}
         <article class="post-card">
             <h3 class="post-card-title">
                 <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
@@ -48,11 +49,15 @@ description: fuoins 的个人技术博客，分享编程、数学、算法等领
             </div>
             <a href="{{ post.url | relative_url }}" class="post-card-readmore">阅读全文 →</a>
         </article>
-        {% empty %} <!-- 修复点：确保empty紧跟for循环，无多余换行/空格 -->
+        {% endfor %}
+
+        <!-- 手动添加：如果没有文章，需手动创建一篇测试文章 -->
+        {% assign post_count = site.posts | size %}
+        {% if post_count == 0 %}
         <p class="text-center" style="grid-column: 1/-1; padding: 2em; color: #666;">
             暂无文章，敬请期待...
         </p>
-        {% endfor %}
+        {% endif %}
     </div>
 </div>
 
@@ -94,6 +99,62 @@ description: fuoins 的个人技术博客，分享编程、数学、算法等领
       color: #444;
     }
 
+    .post-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2em;
+      margin-top: 2em;
+    }
+
+    .post-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.5em;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      transition: transform 0.3s;
+    }
+
+    .post-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .post-card-title {
+      font-size: 1.4em;
+      margin-bottom: 0.8em;
+    }
+
+    .post-card-title a {
+      color: #222;
+      text-decoration: none;
+    }
+
+    .post-card-title a:hover {
+      color: #007bff;
+    }
+
+    .post-card-meta {
+      color: #666;
+      font-size: 0.9em;
+      margin-bottom: 1em;
+    }
+
+    .post-card-excerpt {
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 1em;
+    }
+
+    .post-card-readmore {
+      display: inline-block;
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .post-card-readmore:hover {
+      text-decoration: underline;
+    }
+
     @media (max-width: 768px) {
       .home-page {
         padding: 1.5em 1em;
@@ -105,6 +166,15 @@ description: fuoins 的个人技术博客，分享编程、数学、算法等领
 
       .intro-section h2 {
         font-size: 1.6em;
+      }
+
+      .post-list {
+        grid-template-columns: 1fr;
+        gap: 1.5em;
+      }
+
+      .post-card {
+        padding: 1.2em;
       }
     }
 </style>
