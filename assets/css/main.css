@@ -56,21 +56,7 @@ p code, li code, h3 code, h4 code {
 }
 
 
-/* 代码语言标识（新增：在代码块左上角显示语言类型） */
-pre::before {
-    content: "ZY" !important; /
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 0.2rem 0.8rem;
-  background-color: #6366f1; /* 主题色，醒目 */
-  color: white;
-  font-size: 0.8rem;
-  border-radius: 0 8px 0 8px; /* 贴合代码块圆角 */
-  font-weight: 500;
-  text-transform: uppercase; /* 大写，更醒目 */
-  letter-spacing: 0.5px;
-}
+
 
 /* 移动端代码块适配 */
 @media (max-width: 768px) {
@@ -95,11 +81,7 @@ mjx-container {
     line-height: 1.5;
   }
 
-  /* 移动端语言标识缩小，避免占空间 */
-  pre::before {
-    padding: 0.2rem 0.6rem;
-    font-size: 0.7rem;
-  }
+
 
   /* 行内代码移动端适配 */
   p code, li code {
