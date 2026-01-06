@@ -1,4 +1,0 @@
-gem sources --remove https://rubygems.org/
-gem sources --add https://mirrors.tuna.tsinghua.edu.cn/rubygems/
-gem install bundler
-bundle install

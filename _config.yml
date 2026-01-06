@@ -1,116 +1,127 @@
 # Site settings
-title: Zy Blog
-SEOTitle: 赵宇的博客 | Zy Blog
-header-img: "img/1000217243.jpg"
-email: your-email@example.com # 替换为你的实际邮箱
-description: "这里是赵宇的个人博客，记录技术成长、生活思考与学习笔记，与你一起探索技术与生活的边界"
-keyword: "赵宇, Zy, 赵宇的博客, Zy Blog, 博客, 个人网站, 技术分享, 学习笔记, 前端, 编程, 开发"
-url: "https://fuoins.github.io" # 你的博客域名（无需修改，保持 GitHub Pages 地址）
-baseurl: "" # 若博客部署在子目录则填写（如 '/blog'），此处默认无需修改
-
-# Publish posts or collection documents with a future date.
-future: true
-
-# SNS settings
-RSS: false
-weibo_username: # 可选：填写你的微博用户名（无则留空）
-zhihu_username: # 可选：填写你的知乎用户名（无则留空）
-github_username: fuoins # 你的 GitHub 用户名（已默认填充）
-twitter_username: # 可选：填写你的 Twitter 用户名（无则留空）
-#facebook_username: # 可选：填写你的 Facebook 用户名（无则留空）
-#linkedin_username: # 可选：填写你的 LinkedIn 用户名（无则留空）
+title: SBZY's Blog
+description: 一个专注于技术、编程和思考的博客
+baseurl: "" # 如果托管在子路径，例如"/blog"，则填写"/blog"
+url: "https://sbzy666.github.io" # 您的域名
+github_username: sbzy666
 
 # Build settings
-# from 2016, 'pygments' is unsupported on GitHub Pages. Use 'rouge' for highlighting instead.
-highlighter: rouge
-permalink: pretty
-paginate: 10
-exclude:
-  [
-    "less",
-    "node_modules",
-    "Gruntfile.js",
-    "package.json",
-    "README.md",
-  ]
-anchorjs: true # if you want to customize anchor. check out line:181 of `post.html`
-# If you have timezone issue (e.g. #68) in China, uncomment to use this:
-timezone: Asia/Shanghai
-
-# Gems
-# from PR#40, to support local preview for Jekyll 3.0
-# make sure you have this gem installed
-# `$ gem install jekyll-paginate`
-plugins: [jekyll-paginate]
-
-# Markdown settings
-# replace redcarpet to kramdown,
-# although redcarpet can auto highlight code, the lack of header-id make the catalog impossible, so I switch to kramdown
-# document: http://jekyllrb.com/docs/configuration/#kramdown
 markdown: kramdown
+highlighter: rouge
+permalink: /:year/:month/:day/:title/
+paginate: 5
+paginate_path: /page:num/
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-paginate
+  - jekyll-sitemap
+
+# Collections
+collections:
+  archive:
+    output: true
+    permalink: /archive/:path/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      comments: true
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"
+
+# Navigation
+navigation:
+  - title: 首页
+    url: /
+  - title: 归档
+    url: /archive.html
+  - title: 关于
+    url: /about.html
+
+# Social links
+social:
+  github: sbzy666
+  email: sbzy666@example.com
+
+# Search
+search: true
+
+# MathJax支持
+mathjax: true
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md
+  - LICENSE
+
+# 主题设置
+theme_color: "#4a86e8"
+accent_color: "#ff6b6b"
+background_color: "#ffffff"
+text_color: "#333333"
+secondary_text_color: "#666666"
+border_color: "#eaeaea"
+
+# 作者信息
+author:
+  name: "SBZY"
+  bio: "热爱技术的程序员，喜欢分享知识"
+  avatar: "/img/avatar.jpg"
+
+# 评论系统 (可选)
+comments:
+  disqus:
+    shortname: "sbzyblog"
+
+# 分析工具
+analytics:
+  google: "UA-XXXXXXXXX-X" # 替换为您的Google Analytics ID
+
+# SEO设置
+seo:
+  title: true
+  description: true
+  author: true
+  twitter_card: summary_large_image
+  og_image: "/img/og-image.jpg"
+
+# 时间格式
+date_format: "%Y年%m月%d日"
+time_format: "%H:%M"
+
+# 分页
+paginate: 5
+paginate_path: "/page/:num/"
+
+# 语法高亮
 kramdown:
-  input: GFM # use Github Flavored Markdown !important
+  syntax_highlighter: rouge
   syntax_highlighter_opts:
+    css_class: 'highlight'
     span:
       line_numbers: false
     block:
-      line_numbers: true
+      line_numbers: false
       start_line: 1
 
-
-# Disqus settings（评论功能，无需则可留空）
-disqus_username: # 可选：填写你的 Disqus 用户名（无则留空，关闭评论）
-
-# Netease settings（网易云评论，无需则保持关闭）
-netease_comment: false
-
-# Analytics settings（统计功能，按需配置）
-# Baidu Analytics（百度统计）
-# ba_track_id: [your baidu track id] # 可选：填写百度统计跟踪ID（无则留空）
-
-# Google Analytics（谷歌统计）
-ga_track_id: "" # 可选：填写谷歌统计跟踪ID（格式 UA-xxxxxx-xx，无则留空）
-ga_domain: fuoins.github.io # 谷歌统计关联域名（与博客域名一致）
-
-# Sidebar settings（侧边栏配置）
-sidebar: true # 是否显示侧边栏（保持开启）
-sidebar-about-description: "热爱技术，乐于分享 <br> 持续学习，稳步成长" # 个人简介（可自定义修改）
-sidebar-avatar: # 可选：填写头像绝对路径（如 https://github.com/fuoins.png，无则留空）
-
-# Featured Tags（精选标签功能）
-featured-tags: true # 是否启用精选标签
-featured-condition-size: 0 # 标签下文章数超过此数值则显示为精选标签
-
-# Progressive Web Apps（渐进式Web应用）
-chrome-tab-theme-color: "#000000"
-service-worker: true
-# MathJax rendering for layout:page (e.g. post preview)
-page-mathjax: true
-
-# Friends（友链，已按需求删除原列表，无需则保持空数组）
-friends:
-  [
-    { title: "ZYBlog(支持微信)", href: "https://fuoins.github.io/" },
-    { title: "ZYBlog(加载图片快CDN加速)", href: "https://zy520.de5.net/" },
-    { title: "待部署zy666.de5.net", href: "https://zy666.de5.net/" },
-    { title: "待部署zysb.de5.net", href: "https://zysb.de5.net/" },
-  ]
-
-
-# 新增：自定义静态文件 Cache-Control 响应头（解决 Cloudflare 缓存验证延迟问题）
-headers:
-  - path: "/*.jpg"
-    values:
-      Cache-Control: "public, max-age=31536000, immutable"
-  - path: "/*.png"
-    values:
-      Cache-Control: "public, max-age=31536000, immutable"
-  - path: "/*.webp"
-    values:
-      Cache-Control: "public, max-age=31536000, immutable"
-  - path: "/*.gif"
-    values:
-      Cache-Control: "public, max-age=31536000, immutable"
-  - path: "/img/*"
-    values:
-      Cache-Control: "public, max-age=31536000, immutable"
+# 自定义变量
+custom:
+  max_related_posts: 3
+  show_reading_time: true
+  reading_time_words_per_minute: 200

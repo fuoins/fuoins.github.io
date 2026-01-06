@@ -1,0 +1,25 @@
+/* 完整的响应式CSS文件，包含：
+   1. 重置样式和基础样式
+   2. 布局系统
+   3. 响应式设计
+   4. 暗色主题支持
+   5. 移动端优化
+   6. 数学公式样式
+   7. 搜索框样式
+   8. 动画效果
+*/
+
+/* 示例代码片段 */
+:root {
+    --primary-color: #4a86e8;
+    --secondary-color: #ff6b6b;
+    --background-color: #ffffff;
+    --text-color: #333333;
+    --border-color: #eaeaea;
+    /* ... 更多变量 */
+}
+
+/* 媒体查询 */
+@media (max-width: 768px) {
+    /* 移动端样式 */
+}

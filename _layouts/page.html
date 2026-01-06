@@ -2,65 +2,216 @@
 layout: default
 ---
 
-<!-- Page Header -->
-{% include intro-header.html type='page' %}
-
-<!-- Main Content -->
-<div class="container">
-  <div class="row">
-    {% if site.sidebar == false %}
-    <!-- NO SIDEBAR -->
-    <!-- PostList Container -->
-    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1
-      postlist-container">
-      {{ content }}
+<div class="page-container">
+    <div class="container">
+        <header class="page-header">
+            <h1 class="page-title">{{ page.title }}</h1>
+            {% if page.subtitle %}
+            <p class="page-subtitle">{{ page.subtitle }}</p>
+            {% endif %}
+            
+            {% if page.image %}
+            <div class="page-image">
+                <img src="{{ page.image | relative_url }}" alt="{{ page.title }}" loading="lazy">
+            </div>
+            {% endif %}
+        </header>
+        
+        <div class="page-content">
+            {{ content }}
+            
+            <!-- 数学公式支持 -->
+            {% if site.mathjax or page.mathjax %}
+            <div class="mathjax-note">
+                <p>此页面支持数学公式渲染。公式会自动换行以适应屏幕宽度。</p>
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if page.modified_date %}
+        <footer class="page-footer">
+            <div class="page-meta">
+                <p>最后更新: {{ page.modified_date | date: site.date_format }}</p>
+            </div>
+        </footer>
+        {% endif %}
     </div>
-    <!-- Sidebar Container -->
-    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1
-      sidebar-container">
-      <!-- Featured Tags -->
-      {% include featured-tags.html %}
-
-      <!-- Friends Blog -->
-      {% include friends.html %}
-    </div>
-    {% else %}
-
-    <!-- USE SIDEBAR -->
-    <!-- PostList Container -->
-    <div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12
-      col-xs-12 postlist-container">
-      {{ content }}
-    </div>
-    <!-- Sidebar Container -->
-    <div class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 col-sm-12
-      col-xs-12 sidebar-container">
-      <!-- Featured Tags -->
-      {% include featured-tags.html %}
-
-      <!-- Short About -->
-      {% include short-about.html %}
-
-      <!-- Friends Blog -->
-      {% include friends.html %}
-
-      <!-- Ads -->
-      {% include ads.html %}
-    </div>
-    {% endif %}
-  </div>
 </div>
 
+<!-- 页面特定脚本 -->
+{% if page.scripts %}
+{% for script in page.scripts %}
+<script src="{{ script | relative_url }}" defer></script>
+{% endfor %}
+{% endif %}
+
+<!-- 页面特定样式 -->
+{% if page.styles %}
+{% for style in page.styles %}
+<link rel="stylesheet" href="{{ style | relative_url }}">
+{% endfor %}
+{% endif %}
+
 <script>
-  MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']]
-    },
-    svg: {
-      fontCache: 'global'
-    }
-  };
-  </script>
-  <script type="text/javascript" id="MathJax-script" async
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
-  </script>
+    // 页面特定JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+        // 处理数学公式
+        if (typeof MathJax !== 'undefined' && ({{ site.mathjax | default: false }} || {{ page.mathjax | default: false }})) {
+            MathJax.Hub.Config({
+                CommonHTML: { linebreaks: { automatic: true } },
+                "HTML-CSS": { linebreaks: { automatic: true } },
+                SVG: { linebreaks: { automatic: true } }
+            });
+            
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            
+            window.addEventListener('resize', function() {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            });
+        }
+        
+        // 页面动画效果
+        const pageContent = document.querySelector('.page-content');
+        if (pageContent) {
+            const elements = pageContent.querySelectorAll('h2, h3, p, ul, ol, pre, blockquote, .mathjax-note');
+            elements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                
+                setTimeout(() => {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, 100 + index * 50);
+            });
+        }
+        
+        // 内部链接平滑滚动
+        const internalLinks = document.querySelectorAll('.page-content a[href^="#"]');
+        internalLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 添加高亮效果
+                    targetElement.classList.add('highlight');
+                    setTimeout(() => {
+                        targetElement.classList.remove('highlight');
+                    }, 2000);
+                }
+            });
+        });
+        
+        // 代码块复制功能
+        const codeBlocks = document.querySelectorAll('.page-content pre code');
+        codeBlocks.forEach(codeBlock => {
+            const container = document.createElement('div');
+            container.className = 'code-container';
+            
+            const pre = codeBlock.parentNode;
+            pre.parentNode.insertBefore(container, pre);
+            container.appendChild(pre);
+            
+            const copyButton = document.createElement('button');
+            copyButton.className = 'copy-code-button';
+            copyButton.innerHTML = '复制';
+            copyButton.setAttribute('aria-label', '复制代码');
+            container.appendChild(copyButton);
+            
+            copyButton.addEventListener('click', function() {
+                const code = codeBlock.textContent;
+                navigator.clipboard.writeText(code).then(() => {
+                    const originalText = this.textContent;
+                    this.textContent = '已复制!';
+                    this.classList.add('copied');
+                    
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.classList.remove('copied');
+                    }, 2000);
+                });
+            });
+        });
+        
+        // 图片懒加载和灯箱效果
+        const images = document.querySelectorAll('.page-content img:not([loading="lazy"])');
+        images.forEach(img => {
+            img.setAttribute('loading', 'lazy');
+            
+            // 添加灯箱功能
+            if (!img.closest('a')) {
+                img.style.cursor = 'zoom-in';
+                img.addEventListener('click', function() {
+                    const lightbox = document.createElement('div');
+                    lightbox.className = 'lightbox';
+                    lightbox.innerHTML = `
+                        <div class="lightbox-content">
+                            <img src="${this.src}" alt="${this.alt}">
+                            <button class="lightbox-close" aria-label="关闭灯箱">×</button>
+                            <div class="lightbox-caption">${this.alt || ''}</div>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(lightbox);
+                    
+                    // 关闭灯箱
+                    lightbox.addEventListener('click', function(e) {
+                        if (e.target === lightbox || e.target.classList.contains('lightbox-close')) {
+                            document.body.removeChild(lightbox);
+                        }
+                    });
+                    
+                    // ESC键关闭
+                    document.addEventListener('keydown', function closeOnEsc(e) {
+                        if (e.key === 'Escape') {
+                            document.body.removeChild(lightbox);
+                            document.removeEventListener('keydown', closeOnEsc);
+                        }
+                    });
+                });
+            }
+        });
+        
+        // 表格响应式处理
+        const tables = document.querySelectorAll('.page-content table');
+        tables.forEach(table => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'table-responsive';
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        });
+        
+        // 数学公式的额外处理
+        if (typeof MathJax !== 'undefined') {
+            // 监听DOM变化，以便在动态内容中渲染数学公式
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+                    }
+                });
+            });
+            
+            observer.observe(document.querySelector('.page-content'), {
+                childList: true,
+                subtree: true
+            });
+            
+            // 处理窗口大小变化时的公式重排
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+                }, 250);
+            });
+        }
+    });
+</script>
