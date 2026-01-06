@@ -1,68 +1,42 @@
 <header class="site-header">
     <div class="container">
-        <div class="site-header__inner">
-            <!-- 博客标题 -->
-            <a href="{{ "/" | relative_url }}" class="site-header__logo">
-            <h1 class="site-title">{{ site.title }}</h1>
-            </a>
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <a href="{{ "/" | relative_url }}" class="brand-link">
+                <span class="brand-name">{{ site.title }}</span>
+                </a>
+            </div>
 
             <!-- 移动端菜单按钮 -->
-            <button class="site-header__menu-toggle" id="menu-toggle" aria-label="切换导航菜单">
-                <span class="menu-toggle__icon"></span>
-                <span class="menu-toggle__icon"></span>
-                <span class="menu-toggle__icon"></span>
+            <button class="menu-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
             </button>
 
             <!-- 导航菜单 -->
-            <nav class="site-nav" id="site-nav">
-                <ul class="site-nav__list">
-                    {% for item in site.nav %}
-                    <li class="site-nav__item">
-                        <a href="{{ item.url | relative_url }}" class="site-nav__link {% if page.url == item.url %}site-nav__link--active{% endif %}">
-                            {{ item.title }}
+            <div class="navbar-menu">
+                <ul class="nav-list">
+                    <li class="nav-item {% if page.url == '/' %}active{% endif %}">
+                        <a href="{{ "/" | relative_url }}" class="nav-link">
+                        <i class="fas fa-home"></i> 首页
                         </a>
                     </li>
-                    {% endfor %}
+                    <li class="nav-item {% if page.url contains '/about' %}active{% endif %}">
+                        <a href="{{ "/about" | relative_url }}" class="nav-link">
+                        <i class="fas fa-user"></i> 关于
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ "/posts" | relative_url }}" class="nav-link">
+                        <i class="fas fa-book"></i> 文章
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://github.com/fuoins" target="_blank" class="nav-link">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </li>
                 </ul>
-            </nav>
-        </div>
+            </div>
+        </nav>
     </div>
-
-    <!-- 导航菜单交互脚本 -->
-    <script>
-        (function() {
-          const menuToggle = document.getElementById('menu-toggle');
-          const siteNav = document.getElementById('site-nav');
-
-          // 切换菜单显示/隐藏
-          menuToggle.addEventListener('click', function() {
-            siteNav.classList.toggle('site-nav--open');
-            menuToggle.classList.toggle('menu-toggle--active');
-
-            // 禁止/允许页面滚动
-            document.body.style.overflow = siteNav.classList.contains('site-nav--open') ? 'hidden' : 'auto';
-          });
-
-          // 移动端点击导航项后关闭菜单
-          const navLinks = document.querySelectorAll('.site-nav__link');
-          navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-              if (window.innerWidth <= 768) {
-                siteNav.classList.remove('site-nav--open');
-                menuToggle.classList.remove('menu-toggle--active');
-                document.body.style.overflow = 'auto';
-              }
-            });
-          });
-
-          // 窗口大小变化时重置菜单状态
-          window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
-              siteNav.classList.remove('site-nav--open');
-              menuToggle.classList.remove('menu-toggle--active');
-              document.body.style.overflow = 'auto';
-            }
-          });
-        })();
-    </script>
 </header>

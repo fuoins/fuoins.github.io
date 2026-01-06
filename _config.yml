@@ -1,25 +1,57 @@
-# 博客基础配置
-title: "Fuoins' Blog"
+# 站点基础配置
+title: fuoins' Blog
 email: your-email@example.com
 description: >-
-  一个基于 Jekyll 构建的高级感白色调博客，专注技术分享与思考，适配全终端设备，完美支持数学公式渲染与自动换行，为你带来极致的阅读体验。
-baseurl: "" # 若部署在根目录则为空
-url: "https://fuoins.github.io" # 你的博客域名
+  一个基于Jekyll构建的高级感白色调博客，支持数学公式渲染，完美适配移动端
+baseurl: "" # 如果你是直接部署在根域名，保持为空
+url: "https://fuoins.github.io" # 替换为你的实际域名
 twitter_username: fuoins
-github_username:  fuoins
+github_username: fuoins
 
-# 构建配置
+# Jekyll 核心配置
 markdown: kramdown
 highlighter: rouge
+kramdown:
+  input: GFM
+  math_engine: mathjax # 启用mathjax支持
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: true
+
+# 构建配置
 permalink: /:year/:month/:day/:title/
 paginate: 5
-paginate_path: "/page/:num/"
+paginate_path: /page/:num/
+timezone: Asia/Shanghai
 
-# 插件（需确保本地安装或GitHub Pages支持）
+# 插件 (github-pages v232 内置插件)
 plugins:
   - jekyll-paginate
   - jekyll-seo-tag
+  - jekyll-sitemap
   - jekyll-feed
+
+# 主题禁用 (使用自定义主题)
+theme: null
+
+# 自定义变量
+collections:
+  posts:
+    output: true
+    permalink: /posts/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "fuoins"
+  - scope:
+      path: ""
+    values:
+      layout: "default"
 
 # 数学公式配置
 math:
@@ -27,47 +59,34 @@ math:
   mathjax:
     src: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
     config: |
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [['$','$'], ['\\(','\\)']],
-          displayMath: [['$$','$$'], ['\\[','\\]']],
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
           processEscapes: true,
-          processEnvironments: true,
-          autoNumber: "AMS",
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+          autoload: {
+            color: [],
+            colorv2: ['color']
+          },
+          packages: {'[+]': ['noerrors']}
         },
-        "HTML-CSS": {
-          linebreaks: { automatic: true } # 公式自动换行
+        svg: {
+          fontCache: 'global'
         },
-        SVG: {
-          linebreaks: { automatic: true }
+        options: {
+          enableMenu: false,
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = {node: text, delim: '', n: 0};
+                math.end = {node: text, delim: '', n: 0};
+                doc.math.push(math);
+              });
+            }, '', false],
+          }
         }
-      });
-
-# 主题相关
-theme: null # 禁用默认主题，使用自定义样式
-sass:
-  sass_dir: _sass
-  style: compressed
-
-# 自定义变量
-collections:
-  posts:
-    output: true
-    permalink: /posts/:title/
-
-# 响应式配置
-responsive:
-  breakpoints:
-    mobile: 768px
-    tablet: 992px
-    desktop: 1200px
-
-# 站点导航
-nav:
-  - title: "首页"
-    url: "/"
-  - title: "文章"
-    url: "/posts/"
-  - title: "关于"
-    url: "/about/"
+      };

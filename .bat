@@ -25,11 +25,13 @@ type nul > _layouts\post.html
 
 REM 创建 _posts 目录及示例文章
 if not exist "_posts" mkdir _posts
-type nul > _posts\2026-01-06-first-post.md
+type nul > _posts\2026-01-06-welcome-to-my-blog.md
 
-REM 创建 assets/css 目录及样式文件
+REM 创建 assets/css 和 assets/js 目录及文件
 if not exist "assets\css" mkdir assets\css
 type nul > assets\css\main.css
+if not exist "assets\js" mkdir assets\js
+type nul > assets\js\main.js
 
 echo.
 echo 目录结构创建完成：
@@ -45,10 +47,12 @@ echo │   ├── default.html
 echo │   ├── home.html
 echo │   └── post.html
 echo ├── _posts/
-echo │   └── 2026-01-06-first-post.md
+echo │   └── 2026-01-06-welcome-to-my-blog.md
 echo ├── assets/
-echo │   └── css/
-echo │       └── main.css
+echo │   ├── css/
+echo │   │   └── main.css
+echo │   └── js/
+echo │       └── main.js
 echo ├── 404.html
 echo ├── about.md
 echo └── index.md

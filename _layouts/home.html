@@ -1,128 +1,160 @@
 ---
 layout: default
-class: home-page
 ---
 
-<!-- 首页英雄区 -->
-<section class="hero">
-    <div class="hero__inner">
-        <h1 class="hero__title">欢迎来到 {{ site.title }}</h1>
-        <p class="hero__subtitle">{{ site.description }}</p>
-        <a href="{{ "/posts/" | relative_url }}" class="hero__button">浏览文章</a>
+<!-- 英雄区域 -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">欢迎来到 {{ site.title }}</h1>
+        <p class="hero-subtitle">{{ site.description }}</p>
+        <a href="{{ "/posts" | relative_url }}" class="btn btn-primary">
+        <i class="fas fa-pen"></i> 浏览文章
+        </a>
     </div>
 </section>
 
-<!-- 最新文章区 -->
-<section class="latest-posts">
-    <div class="latest-posts__header">
-        <h2 class="latest-posts__title">最新文章</h2>
-        <hr class="latest-posts__divider">
+<!-- 特色文章 -->
+<section class="featured-posts">
+    <div class="section-header">
+        <h2 class="section-title">最新文章</h2>
+        <div class="section-divider"></div>
     </div>
 
-    <div class="posts-list">
-        {% if site.posts.size > 0 %}
-        {% for post in paginator.posts %}
+    <div class="posts-grid">
+        {% for post in site.posts limit: 3 %}
         <article class="post-card">
-            <div class="post-card__header">
-                <h3 class="post-card__title">
+            <div class="post-card-header">
+                <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
+                <h3 class="post-title">
                     <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
                 </h3>
-                <div class="post-card__meta">
-                    <span class="post-card__date">{{ post.date | date: "%Y年%m月%d日" }}</span>
-                    {% if post.categories.size > 0 %}
-                    <span class="post-card__categories">
-                  {% for category in post.categories %}
-                    <a href="{{ "/categories/" | relative_url }}{{ category | slugify }}/">{{ category }}</a>
-                        {% unless forloop.last %}, {% endunless %}
-                  {% endfor %}
-                </span>
-                    {% endif %}
-                </div>
             </div>
 
-            <div class="post-card__excerpt">
-                {% if post.excerpt %}
-                {{ post.excerpt | strip_html | truncate: 200 }}
-                {% else %}
-                {{ post.content | strip_html | truncate: 200 }}
-                {% endif %}
+            <div class="post-card-excerpt">
+                <p>{{ post.excerpt | strip_html | truncate: 150 }}</p>
             </div>
 
-            <div class="post-card__footer">
-                <a href="{{ post.url | relative_url }}" class="post-card__read-more">阅读全文 →</a>
+            <div class="post-card-footer">
+                <a href="{{ post.url | relative_url }}" class="read-more">
+                    阅读更多 <i class="fas fa-arrow-right"></i>
+                </a>
+                <span class="post-author">
+            <i class="fas fa-user"></i> {{ post.author }}
+          </span>
             </div>
         </article>
-        {% endfor %}
-        {% else %}
+        {% empty %}
         <div class="no-posts">
             <p>暂无文章，敬请期待...</p>
+            <a href="{{ "/" | relative_url }}" class="btn btn-secondary">返回首页</a>
         </div>
-        {% endif %}
+        {% endfor %}
     </div>
 
-    <!-- 分页控件 -->
-    {% if paginator.total_pages > 1 %}
-    <nav class="pagination">
-        <ul class="pagination__list">
-            <!-- 上一页 -->
-            {% if paginator.previous_page %}
-            <li class="pagination__item">
-                <a href="{{ paginator.previous_page_path | relative_url }}" class="pagination__link">上一页</a>
-            </li>
-            {% else %}
-            <li class="pagination__item pagination__item--disabled">
-                <span class="pagination__link">上一页</span>
-            </li>
-            {% endif %}
-
-            <!-- 页码 -->
-            {% for page in (1..paginator.total_pages) %}
-            {% if page == paginator.page %}
-            <li class="pagination__item pagination__item--active">
-                <span class="pagination__link">{{ page }}</span>
-            </li>
-            {% elsif page == 1 %}
-            <li class="pagination__item">
-                <a href="{{ "/" | relative_url }}" class="pagination__link">{{ page }}</a>
-            </li>
-            {% else %}
-            <li class="pagination__item">
-                <a href="{{ site.paginate_path | replace: ':num', page | relative_url }}" class="pagination__link">{{ page }}</a>
-            </li>
-            {% endif %}
-            {% endfor %}
-
-            <!-- 下一页 -->
-            {% if paginator.next_page %}
-            <li class="pagination__item">
-                <a href="{{ paginator.next_page_path | relative_url }}" class="pagination__link">下一页</a>
-            </li>
-            {% else %}
-            <li class="pagination__item pagination__item--disabled">
-                <span class="pagination__link">下一页</span>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
+    <!-- 查看更多按钮 -->
+    {% if site.posts.size > 3 %}
+    <div class="view-more-container">
+        <a href="{{ "/posts" | relative_url }}" class="btn btn-outline">
+        <i class="fas fa-th-list"></i> 查看所有文章
+        </a>
+    </div>
     {% endif %}
 </section>
 
-<!-- 博客特色区 -->
-<section class="features">
-    <div class="features__inner">
+<!-- 功能介绍 -->
+<section class="features-section">
+    <div class="section-header">
+        <h2 class="section-title">博客特色</h2>
+        <div class="section-divider"></div>
+    </div>
+
+    <div class="features-grid">
         <div class="feature-card">
-            <h3 class="feature-card__title">优雅排版</h3>
-            <p class="feature-card__description">基于 Inter 字体的现代化排版，白色调高级感设计，适配所有设备屏幕，阅读体验拉满。</p>
+            <div class="feature-icon">
+                <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h3 class="feature-title">移动端适配</h3>
+            <p class="feature-description">完美适配手机、平板、电脑等各种设备，无论何时何地都能舒适阅读。</p>
         </div>
 
         <div class="feature-card">
-            <h3 class="feature-card__title">数学公式</h3>
-            <p class="feature-card__description">完美支持 LaTeX 数学公式渲染，超出宽度自动换行，移动端也能清晰查看复杂公式。</p>
+            <div class="feature-icon">
+                <i class="fas fa-square-root-alt"></i>
+            </div>
+            <h3 class="feature-title">数学公式支持</h3>
+            <p class="feature-description">全面支持LaTeX数学公式渲染，公式超出宽度时自动换行，兼顾美观与实用性。</p>
         </div>
 
         <div class="feature-card">
-            <h3 class="feature-card__title">响应式设计</h3>
-            <p class="feature-card__description">从手机到桌面端的全尺寸适配，无论在什么设备上，都能获得一致的视觉体验。</p>
+            <div class="feature-icon">
+                <i class="fas fa-palette"></i>
+            </div>
+            <h3 class="feature-title">高级感设计</h3>
+            <p class="feature-description">极简白色调设计风格，注重细节与交互体验，打造高级感视觉效果。</p>
         </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-code"></i>
+            </div>
+            <h3 class="feature-title">代码高亮</h3>
+            <p class="feature-description">支持多种编程语言的代码高亮显示，代码阅读体验更佳。</p>
+        </div>
+    </div>
+</section>
+
+<!-- 数学公式示例 -->
+<section class="math-example-section">
+    <div class="section-header">
+        <h2 class="section-title">数学公式示例</h2>
+        <div class="section-divider"></div>
+    </div>
+
+    <div class="math-example-content">
+        <p>以下是一些常用的数学公式示例，展示自动换行效果：</p>
+
+        <div class="math-display">
+            $$
+            \int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+            $$
+        </div>
+
+        <div class="math-display">
+            $$
+            \frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2} \right) + f(x,y,z,t)
+            $$
+        </div>
+
+        <div class="math-display">
+            $$
+            \sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}, \quad \prod_{k=1}^{n} k = n!, \quad \lim_{x \to \infty} \frac{\sin x}{x} = 0
+            $$
+        </div>
+
+        <div class="math-display">
+            $$
+            \begin{bmatrix}
+            a_{11} & a_{12} & \dots & a_{1n} \\
+            a_{21} & a_{22} & \dots & a_{2n} \\
+            \vdots & \vdots & \ddots & \vdots \\
+            a_{m1} & a_{m2} & \dots & a_{mn}
+            \end{bmatrix}
+            \begin{bmatrix}
+            x_1 \\
+            x_2 \\
+            \vdots \\
+            x_n
+            \end{bmatrix}
+            =
+            \begin{bmatrix}
+            b_1 \\
+            b_2 \\
+            \vdots \\
+            b_m
+            \end{bmatrix}
+            $$
+        </div>
+
+        <p>行内公式示例：欧拉公式 $e^{i\pi} + 1 = 0$ 是数学中最优美的公式之一，勾股定理 $a^2 + b^2 = c^2$ 是基础几何公式。</p>
     </div>
 </section>

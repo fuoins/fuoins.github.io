@@ -1,61 +1,63 @@
-<!-- MathJax 3.x 配置，支持公式自动换行 -->
-<script type="text/javascript">
-    window.MathJax = {
-      tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']],
-        processEscapes: true,
-        packages: {'[+]': ['autoload', 'physics', 'boldsymbol']}
-      },
-      svg: {
-        linebreaks: {
-          automatic: true,
-          width: 'container' // 基于容器宽度自动换行
-        }
-      },
-      chtml: {
-        linebreaks: {
-          automatic: true,
-          width: 'container'
-        }
-      },
-      startup: {
-        pageReady: function() {
-          return MathJax.startup.defaultPageReady().then(function() {
-            // 监听窗口大小变化，重新渲染公式
+{% if site.math.enable %}
+<script>
+    // 加载MathJax v3
+    window.MathJax = {{ site.math.mathjax.config | jsonify }};
+
+    (function () {
+      var script = document.createElement('script');
+      script.src = '{{ site.math.mathjax.src }}';
+      script.async = true;
+      document.head.appendChild(script);
+
+      // 监听MathJax加载完成事件，处理公式换行
+      window.addEventListener('load', function() {
+        if (window.MathJax) {
+          MathJax.startup.promise.then(() => {
+            // 为所有数学公式容器添加自动换行样式
+            const mathElements = document.querySelectorAll('.mjx-chtml, .mjx-svg');
+            mathElements.forEach(el => {
+              el.style.maxWidth = '100%';
+              el.style.overflowX = 'auto';
+              el.style.display = 'inline-block';
+            });
+
+            // 监听窗口大小变化，重新适配公式
             window.addEventListener('resize', function() {
-              MathJax.typesetPromise();
+              MathJax.typeset();
             });
           });
         }
-      }
-    };
+      });
+    })();
 </script>
-<!-- 加载MathJax核心库 -->
-<script src="{{ site.math.mathjax.src }}" id="MathJax-script" async></script>
-<!-- 公式容器样式修复 -->
+
+<!-- 公式换行样式 -->
 <style>
-    /* 确保公式容器自适应宽度，超出时自动换行 */
-    .MathJax {
-      max-width: 100% !important;
-      overflow-x: auto !important;
-      overflow-y: hidden !important;
-      padding: 0.2rem 0 !important;
+    /* 数学公式自动换行核心样式 */
+    .math-display {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 0.5rem 0;
+      margin: 1rem 0;
+      -webkit-overflow-scrolling: touch;
     }
-    .MathJax_Display {
-      overflow-x: auto !important;
-      overflow-y: hidden !important;
-      max-width: 100% !important;
-      margin: 0.5rem 0 !important;
-      padding: 0.2rem 0 !important;
+
+    mjx-container, .mjx-chtml {
+      white-space: pre-wrap !important;
+      word-break: break-all !important;
     }
+
     /* 移动端公式适配 */
     @media (max-width: 768px) {
-      .MathJax {
-        font-size: 0.9rem !important;
+      .math-display {
+        padding: 0.3rem 0;
+        margin: 0.8rem 0;
       }
-      .MathJax_Display {
-        padding: 0.1rem 0 !important;
+
+      mjx-container {
+        font-size: 0.9em !important;
       }
     }
 </style>
+{% endif %}

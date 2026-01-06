@@ -1,42 +1,31 @@
 ---
 layout: default
 title: 404 - 页面未找到
-description: 你访问的页面不存在或已被删除
 ---
 
-<div class="not-found">
-    <h1 class="not-found__title">404</h1>
-    <h2 class="not-found__subtitle">页面未找到</h2>
-    <p class="not-found__description">
-        抱歉，你访问的页面不存在、已被删除，或者网址输入有误。<br>
-        可能的原因：
-    <ul style="list-style: disc; margin: 1rem auto; max-width: 500px; text-align: left;">
-        <li>页面链接已更新或调整</li>
-        <li>手动输入的网址存在拼写错误</li>
-        <li>该页面从未存在过</li>
-        <li>服务器临时故障（可能性极低）</li>
-    </ul>
-    </p>
-    <p class="not-found__suggestion">
-        你可以尝试以下操作：
-    <ul style="list-style: disc; margin: 1rem auto; max-width: 500px; text-align: left;">
-        <li>检查网址是否正确，重新输入</li>
-        <li>返回<a href="{{ "/" | relative_url }}">首页</a>浏览最新文章</li>
-        <li>使用浏览器的返回按钮回到上一页</li>
-        <li>通过<a href="{{ "/about/" | relative_url }}">关于页</a>的联系方式反馈问题</li>
-    </ul>
-    </p>
-    <a href="{{ "/" | relative_url }}" class="not-found__button">返回首页</a>
+<div class="error-page">
+    <div class="error-code">404</div>
+    <h2 class="error-message">页面未找到</h2>
+    <p>抱歉，你访问的页面不存在或已被删除。</p>
+    <a href="{{ "/" | relative_url }}" class="btn btn-primary">
+    <i class="fas fa-home"></i> 返回首页
+    </a>
 
-    <div style="margin-top: 3rem; padding: 2rem; background-color: #f9fafb; border-radius: 0.5rem; max-width: 800px; margin-left: auto; margin-right: auto;">
-        <h3 style="margin-bottom: 1rem; font-size: 1.25rem;">数学公式小彩蛋（测试自动换行）</h3>
-        <p>以下公式在移动端会自动换行，展示本博客的数学公式适配能力：</p>
-        <div style="text-align: left; margin-top: 1rem;">
+    <div style="margin-top: 3rem;">
+        <h3>你可能想访问这些页面：</h3>
+        <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap;">
+            <a href="{{ "/" | relative_url }}" class="btn btn-outline">首页</a>
+            <a href="{{ "/about" | relative_url }}" class="btn btn-outline">关于我</a>
+            <a href="{{ "/posts" | relative_url }}" class="btn btn-outline">文章列表</a>
+        </div>
+    </div>
+
+    <!-- 数学公式彩蛋 -->
+    <div style="margin-top: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+        <p>404 的数学表达：</p>
+        <div class="math-display">
             $$
-            f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!} (x-a)^n = f(a) + f'(a)(x-a) + \frac{f''(a)}{2!}(x-a)^2 + \frac{f'''(a)}{3!}(x-a)^3 + \dots
-            $$
-            $$
-            \mathbf{X} = \begin{bmatrix} x_{11} & x_{12} & \dots & x_{1n} \\ x_{21} & x_{22} & \dots & x_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ x_{m1} & x_{m2} & \dots & x_{mn} \end{bmatrix} \quad \mathbf{Y} = \mathbf{X}\mathbf{W} + \mathbf{b} \quad \mathcal{L}(\mathbf{W}, \mathbf{b}) = \frac{1}{N} \sum_{i=1}^{N} \| \mathbf{y}_i - (\mathbf{X}_i\mathbf{W} + \mathbf{b}) \|^2
+            404 = \sum_{n=1}^{20} n + \prod_{k=1}^4 k - \sqrt{16}
             $$
         </div>
     </div>
