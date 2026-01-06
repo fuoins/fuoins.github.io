@@ -1,0 +1,161 @@
+---
+layout: default
+---
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">{{ page.title }}</h1>
+        <div class="post-meta">
+            <span class="post-date">{{ page.date | date: "%Y年%m月%d日" }}</span>
+            <span class="post-author">作者：{{ page.author | default: site.github_username }}</span>
+            {% if page.categories %}
+            <span class="post-categories">分类：{{ page.categories | join: "、" }}</span>
+            {% endif %}
+            {% if page.tags %}
+            <span class="post-tags">标签：{{ page.tags | join: "、" }}</span>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="post-content">
+        {{ content }}
+    </div>
+
+    <footer class="post-footer">
+        <div class="post-nav">
+            {% if page.previous %}
+            <a href="{{ page.previous.url | relative_url }}" class="prev-post">上一篇：{{ page.previous.title }}</a>
+            {% endif %}
+            {% if page.next %}
+            <a href="{{ page.next.url | relative_url }}" class="next-post">下一篇：{{ page.next.title }}</a>
+            {% endif %}
+        </div>
+        <div class="post-share">
+            <p>如果觉得这篇文章对你有帮助，欢迎分享给更多人～</p>
+            <div class="share-links">
+                <a href="https://twitter.com/intent/tweet?url={{ page.url | absolute_url }}&text={{ page.title }}" target="_blank">Twitter</a>
+                <a href="https://github.com/fuoins" target="_blank">GitHub</a>
+                <a href="mailto:?subject={{ page.title }}&body={{ page.url | absolute_url }}">邮件</a>
+            </div>
+        </div>
+    </footer>
+</article>
+
+<!-- 评论区占位（可扩展） -->
+<div class="comments-section">
+    <h3>评论区</h3>
+    <p>评论功能暂未开放，如有问题可通过邮箱联系我：{{ site.email }}</p>
+</div>
+
+<!-- 文章底部额外样式 -->
+<style>
+    .post {
+      margin: 2em 0;
+      padding: 2em;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .post-header {
+      border-bottom: 1px solid #eee;
+      padding-bottom: 1em;
+      margin-bottom: 1.5em;
+    }
+    .post-title {
+      font-size: 2em;
+      margin-bottom: 0.5em;
+      color: #333;
+    }
+    .post-meta {
+      color: #666;
+      font-size: 0.9em;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .post-content {
+      font-size: 18px;
+      line-height: 1.9;
+      color: #444;
+      margin-bottom: 2em;
+    }
+    .post-content p {
+      margin: 1em 0;
+    }
+    .post-content h2 {
+      font-size: 1.8em;
+      margin: 1.5em 0 0.8em;
+      color: #222;
+    }
+    .post-content h3 {
+      font-size: 1.5em;
+      margin: 1.2em 0 0.6em;
+      color: #222;
+    }
+    .post-footer {
+      border-top: 1px solid #eee;
+      padding-top: 1.5em;
+      margin-top: 2em;
+    }
+    .post-nav {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 1.5em;
+    }
+    .prev-post, .next-post {
+      color: #007bff;
+      text-decoration: none;
+    }
+    .prev-post:hover, .next-post:hover {
+      text-decoration: underline;
+    }
+    .share-links {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .share-links a {
+      padding: 5px 10px;
+      background: #f5f5f5;
+      border-radius: 4px;
+      color: #333;
+      text-decoration: none;
+    }
+    .share-links a:hover {
+      background: #eee;
+    }
+    .comments-section {
+      margin-top: 3em;
+      padding: 1.5em;
+      background: #f9f9f9;
+      border-radius: 8px;
+    }
+    .comments-section h3 {
+      margin-top: 0;
+      color: #333;
+    }
+
+    /* 移动端文章适配 */
+    @media (max-width: 768px) {
+      .post {
+        padding: 1.5em 1em;
+        margin: 1em 0;
+      }
+      .post-title {
+        font-size: 1.6em;
+      }
+      .post-content {
+        font-size: 16px;
+        line-height: 1.8;
+      }
+      .post-meta {
+        flex-direction: column;
+        gap: 5px;
+      }
+      .post-nav {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+</style>

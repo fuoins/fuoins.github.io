@@ -1,0 +1,101 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+    <meta name="description" content="{{ page.description | default: site.description }}">
+    <meta name="author" content="{{ site.github_username }}">
+
+    <!-- 基础样式 -->
+    <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}">
+
+    <!-- 数学公式渲染核心依赖（KaTeX） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+    <!-- 数学公式自动渲染配置（含自动换行） -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          renderMathInElement(document.body, {
+            delimiters: [
+              {left: "$$", right: "$$", display: true},
+              {left: "$", right: "$", display: false},
+              {left: "\\(", right: "\\)", display: false},
+              {left: "\\[", right: "\\]", display: true}
+            ],
+            throwOnError: false,
+            errorColor: "#cc0000",
+            strict: false,
+            // 公式自动换行核心配置
+            trust: true,
+            macros: {},
+            // 自定义渲染回调，处理公式换行
+            postProcess: function(element) {
+              element.style.overflowX = "auto";
+              element.style.whiteSpace = "pre-wrap";
+              element.style.wordBreak = "break-all";
+              element.style.maxWidth = "100%";
+            }
+          });
+        });
+    </script>
+
+    <!-- 移动端适配额外meta -->
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- 图标（可选，这里用默认） -->
+    <link rel="shortcut icon" href="{{ "/favicon.ico" | relative_url }}" type="image/x-icon">
+    <link rel="icon" href="{{ "/favicon.ico" | relative_url }}" type="image/x-icon">
+
+    <!-- SEO优化 -->
+    <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="og:description" content="{{ page.description | default: site.description }}">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    <meta property="og:type" content="website">
+
+    <!-- 响应式样式媒体查询 -->
+    <style>
+        /* 移动端适配核心样式 */
+        @media (max-width: 768px) {
+          .container {
+            width: 95% !important;
+            padding: 0 10px !important;
+          }
+          .post-content {
+            font-size: 16px !important;
+            line-height: 1.8 !important;
+          }
+          .header-nav {
+            flex-direction: column !important;
+            gap: 10px !important;
+            padding: 15px 0 !important;
+          }
+          /* 移动端公式适配 */
+          .katex {
+            font-size: 14px !important;
+          }
+          .katex-display {
+            overflow-x: auto !important;
+            padding: 0 5px !important;
+          }
+        }
+
+        /* 公式自动换行核心样式 */
+        .katex-display {
+          overflow-x: auto;
+          white-space: pre-wrap;
+          word-break: break-all;
+          max-width: 100%;
+          margin: 1em 0;
+        }
+        .katex {
+          white-space: normal !important;
+        }
+        .katex-html {
+          overflow-x: auto;
+        }
+    </style>
+</head>

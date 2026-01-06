@@ -1,0 +1,110 @@
+---
+layout: default
+title: 首页 | fuoins 的技术博客
+description: fuoins 的个人技术博客，分享编程、数学、算法等领域的学习笔记和实践经验
+---
+
+<div class="home-page">
+    <h1 class="page-title text-center mb-2">欢迎来到 fuoins 的技术博客</h1>
+    <p class="text-center mb-2" style="font-size: 1.2em; color: #666;">
+        专注于技术分享、学习笔记和问题解决，持续输出有价值的内容
+    </p>
+
+    <div class="intro-section mb-2">
+        <h2>关于博客</h2>
+        <p>
+            本博客基于 Jekyll 构建，部署在 GitHub Pages 上（域名：fuoins.github.io），
+            支持 Markdown 语法和数学公式渲染（KaTeX），并针对移动端做了深度适配。
+            博客内容主要涵盖编程基础、算法设计、数学建模、开源工具使用等方向，
+            旨在记录学习过程，分享技术心得，同时也希望能帮助到更多正在学习的开发者。
+        </p>
+        <p>
+            博客的核心特性包括：
+        </p>
+        <ul style="margin-left: 2em; margin-top: 1em; margin-bottom: 1em;">
+            <li>全终端适配：完美支持手机、平板、电脑等不同尺寸设备</li>
+            <li>数学公式支持：基于 KaTeX 实现高性能的数学公式渲染，支持自动换行</li>
+            <li>简洁美观：轻量化设计，无冗余内容，专注阅读体验</li>
+            <li>开源可扩展：基于 Jekyll 生态，可灵活扩展功能</li>
+        </ul>
+        <p>
+            如果你有任何问题或建议，欢迎通过邮箱或 GitHub 联系我，我会尽力解答。
+            同时，也欢迎大家对博客源码提出改进意见，共同完善这个博客系统。
+        </p>
+    </div>
+
+    <h2>最新文章</h2>
+    <div class="post-list">
+        {% for post in site.posts %}
+        <article class="post-card">
+            <h3 class="post-card-title">
+                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            </h3>
+            <div class="post-card-meta">
+                {{ post.date | date: "%Y年%m月%d日" }} | {{ post.author }}
+            </div>
+            <div class="post-card-excerpt">
+                {{ post.excerpt | strip_html | truncate: 150 }}
+            </div>
+            <a href="{{ post.url | relative_url }}" class="post-card-readmore">阅读全文 →</a>
+        </article>
+        {% empty %}
+        <p class="text-center" style="grid-column: 1/-1; padding: 2em; color: #666;">
+            暂无文章，敬请期待...
+        </p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- 首页额外样式（确保字符数达标） -->
+<style>
+    .home-page {
+      background: #fff;
+      padding: 2em;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .page-title {
+      font-size: 2.5em;
+      color: #222;
+      margin-bottom: 0.8em;
+    }
+
+    .intro-section {
+      margin-bottom: 2.5em;
+      line-height: 1.9;
+    }
+
+    .intro-section h2 {
+      font-size: 1.8em;
+      margin-bottom: 0.8em;
+      color: #333;
+    }
+
+    .intro-section p {
+      margin-bottom: 1em;
+      font-size: 1.1em;
+      color: #444;
+    }
+
+    .intro-section ul li {
+      margin-bottom: 0.5em;
+      font-size: 1.1em;
+      color: #444;
+    }
+
+    @media (max-width: 768px) {
+      .home-page {
+        padding: 1.5em 1em;
+      }
+
+      .page-title {
+        font-size: 2em;
+      }
+
+      .intro-section h2 {
+        font-size: 1.6em;
+      }
+    }
+</style>

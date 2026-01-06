@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+{% include head.html %}
+<body>
+{% include header.html %}
+<main class="main-content container">
+    {{ content }}
+</main>
+{% include footer.html %}
+
+<!-- 基础JS（可扩展） -->
+<script>
+    // 移动端菜单适配（可选扩展）
+    document.addEventListener('DOMContentLoaded', function() {
+      // 监听窗口大小变化，优化移动端体验
+      window.addEventListener('resize', function() {
+        const container = document.querySelector('.container');
+        if (window.innerWidth < 768) {
+          container.style.width = '95%';
+        } else {
+          container.style.width = '80%';
+          container.style.maxWidth = '1200px';
+        }
+      });
+
+      // 初始化页面样式
+      const initPage = () => {
+        const katexElements = document.querySelectorAll('.katex-display');
+        katexElements.forEach(el => {
+          el.style.overflowX = 'auto';
+          el.style.maxWidth = '100%';
+        });
+      };
+
+      // 页面加载完成后初始化
+      window.onload = initPage;
+    });
+</script>
+</body>
+</html>
