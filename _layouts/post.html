@@ -1,161 +1,99 @@
 ---
 layout: default
+class: post-page
 ---
+
+<!-- 文章头部 -->
 <article class="post">
-    <header class="post-header">
-        <h1 class="post-title">{{ page.title }}</h1>
-        <div class="post-meta">
-            <span class="post-date">{{ page.date | date: "%Y年%m月%d日" }}</span>
-            <span class="post-author">作者：{{ page.author | default: site.github_username }}</span>
-            {% if page.categories %}
-            <span class="post-categories">分类：{{ page.categories | join: "、" }}</span>
+    <header class="post__header">
+        <h1 class="post__title">{{ page.title }}</h1>
+        <div class="post__meta">
+            <span class="post__date">{{ page.date | date: "%Y年%m月%d日" }}</span>
+            {% if page.categories.size > 0 %}
+            <span class="post__categories">
+          分类：
+          {% for category in page.categories %}
+            <a href="{{ "/categories/" | relative_url }}{{ category | slugify }}/">{{ category }}</a>
+                {% unless forloop.last %}, {% endunless %}
+          {% endfor %}
+        </span>
             {% endif %}
-            {% if page.tags %}
-            <span class="post-tags">标签：{{ page.tags | join: "、" }}</span>
+            {% if page.tags.size > 0 %}
+            <span class="post__tags">
+          标签：
+          {% for tag in page.tags %}
+            <a href="{{ "/tags/" | relative_url }}{{ tag | slugify }}/">{{ tag }}</a>
+                {% unless forloop.last %}, {% endunless %}
+          {% endfor %}
+        </span>
             {% endif %}
         </div>
+        <hr class="post__divider">
     </header>
 
-    <div class="post-content">
+    <!-- 文章内容 -->
+    <div class="post__content">
         {{ content }}
     </div>
 
-    <footer class="post-footer">
-        <div class="post-nav">
-            {% if page.previous %}
-            <a href="{{ page.previous.url | relative_url }}" class="prev-post">上一篇：{{ page.previous.title }}</a>
-            {% endif %}
-            {% if page.next %}
-            <a href="{{ page.next.url | relative_url }}" class="next-post">下一篇：{{ page.next.title }}</a>
-            {% endif %}
+    <!-- 文章底部 -->
+    <footer class="post__footer">
+        <hr class="post__divider">
+        <div class="post__share">
+            <h4 class="post__share-title">分享本文</h4>
+            <ul class="post__share-list">
+                <li class="post__share-item">
+                    <a href="https://twitter.com/intent/tweet?url={{ page.url | absolute_url }}&text={{ page.title }}" target="_blank" rel="noopener noreferrer">Twitter</a>
+                </li>
+                <li class="post__share-item">
+                    <a href="https://github.com/share" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </li>
+                <li class="post__share-item">
+                    <a href="mailto:?subject={{ page.title }}&body={{ page.url | absolute_url }}" rel="noopener noreferrer">邮件</a>
+                </li>
+            </ul>
         </div>
-        <div class="post-share">
-            <p>如果觉得这篇文章对你有帮助，欢迎分享给更多人～</p>
-            <div class="share-links">
-                <a href="https://twitter.com/intent/tweet?url={{ page.url | absolute_url }}&text={{ page.title }}" target="_blank">Twitter</a>
-                <a href="https://github.com/fuoins" target="_blank">GitHub</a>
-                <a href="mailto:?subject={{ page.title }}&body={{ page.url | absolute_url }}">邮件</a>
+
+        <!-- 上一篇/下一篇导航 -->
+        <div class="post__nav">
+            {% if page.previous %}
+            <div class="post__nav-item post__nav-item--prev">
+                <h4 class="post__nav-title">上一篇</h4>
+                <a href="{{ page.previous.url | relative_url }}" class="post__nav-link">{{ page.previous.title }}</a>
             </div>
+            {% endif %}
+
+            {% if page.next %}
+            <div class="post__nav-item post__nav-item--next">
+                <h4 class="post__nav-title">下一篇</h4>
+                <a href="{{ page.next.url | relative_url }}" class="post__nav-link">{{ page.next.title }}</a>
+            </div>
+            {% endif %}
         </div>
     </footer>
 </article>
 
-<!-- 评论区占位（可扩展） -->
-<div class="comments-section">
-    <h3>评论区</h3>
-    <p>评论功能暂未开放，如有问题可通过邮箱联系我：{{ site.email }}</p>
-</div>
-
-<!-- 文章底部额外样式 -->
-<style>
-    .post {
-      margin: 2em 0;
-      padding: 2em;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    .post-header {
-      border-bottom: 1px solid #eee;
-      padding-bottom: 1em;
-      margin-bottom: 1.5em;
-    }
-    .post-title {
-      font-size: 2em;
-      margin-bottom: 0.5em;
-      color: #333;
-    }
-    .post-meta {
-      color: #666;
-      font-size: 0.9em;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-    .post-content {
-      font-size: 18px;
-      line-height: 1.9;
-      color: #444;
-      margin-bottom: 2em;
-    }
-    .post-content p {
-      margin: 1em 0;
-    }
-    .post-content h2 {
-      font-size: 1.8em;
-      margin: 1.5em 0 0.8em;
-      color: #222;
-    }
-    .post-content h3 {
-      font-size: 1.5em;
-      margin: 1.2em 0 0.6em;
-      color: #222;
-    }
-    .post-footer {
-      border-top: 1px solid #eee;
-      padding-top: 1.5em;
-      margin-top: 2em;
-    }
-    .post-nav {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 1.5em;
-    }
-    .prev-post, .next-post {
-      color: #007bff;
-      text-decoration: none;
-    }
-    .prev-post:hover, .next-post:hover {
-      text-decoration: underline;
-    }
-    .share-links {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
-    .share-links a {
-      padding: 5px 10px;
-      background: #f5f5f5;
-      border-radius: 4px;
-      color: #333;
-      text-decoration: none;
-    }
-    .share-links a:hover {
-      background: #eee;
-    }
-    .comments-section {
-      margin-top: 3em;
-      padding: 1.5em;
-      background: #f9f9f9;
-      border-radius: 8px;
-    }
-    .comments-section h3 {
-      margin-top: 0;
-      color: #333;
-    }
-
-    /* 移动端文章适配 */
-    @media (max-width: 768px) {
-      .post {
-        padding: 1.5em 1em;
-        margin: 1em 0;
-      }
-      .post-title {
-        font-size: 1.6em;
-      }
-      .post-content {
-        font-size: 16px;
-        line-height: 1.8;
-      }
-      .post-meta {
-        flex-direction: column;
-        gap: 5px;
-      }
-      .post-nav {
-        flex-direction: column;
-        gap: 15px;
-      }
-    }
-</style>
+<!-- 相关文章推荐 -->
+<section class="related-posts">
+    <h2 class="related-posts__title">相关文章</h2>
+    <div class="related-posts__list">
+        {% assign related_posts = site.posts | where_exp: "post", "post.categories contains page.categories[0] and post.url != page.url" | limit: 3 %}
+        {% if related_posts.size > 0 %}
+        {% for post in related_posts %}
+        <article class="related-post-card">
+            <h3 class="related-post-card__title">
+                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            </h3>
+            <div class="related-post-card__meta">
+                <span class="related-post-card__date">{{ post.date | date: "%Y年%m月%d日" }}</span>
+            </div>
+            <p class="related-post-card__excerpt">
+                {{ post.excerpt | strip_html | truncate: 100 }}
+            </p>
+        </article>
+        {% endfor %}
+        {% else %}
+        <p class="related-posts__empty">暂无相关文章</p>
+        {% endif %}
+    </div>
+</section>

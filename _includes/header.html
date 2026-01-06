@@ -1,13 +1,68 @@
 <header class="site-header">
     <div class="container">
-        <nav class="header-nav">
-            <a href="{{ "/" | relative_url }}" class="site-title">{{ site.title }}</a>
-            <ul class="nav-links">
-                <li><a href="{{ "/" | relative_url }}">首页</a></li>
-                <li><a href="{{ "/posts" | relative_url }}">所有文章</a></li>
-                <li><a href="https://github.com/fuoins" target="_blank">GitHub</a></li>
-                <li><a href="{{ "/about" | relative_url }}">关于我</a></li>
-            </ul>
-        </nav>
+        <div class="site-header__inner">
+            <!-- 博客标题 -->
+            <a href="{{ "/" | relative_url }}" class="site-header__logo">
+            <h1 class="site-title">{{ site.title }}</h1>
+            </a>
+
+            <!-- 移动端菜单按钮 -->
+            <button class="site-header__menu-toggle" id="menu-toggle" aria-label="切换导航菜单">
+                <span class="menu-toggle__icon"></span>
+                <span class="menu-toggle__icon"></span>
+                <span class="menu-toggle__icon"></span>
+            </button>
+
+            <!-- 导航菜单 -->
+            <nav class="site-nav" id="site-nav">
+                <ul class="site-nav__list">
+                    {% for item in site.nav %}
+                    <li class="site-nav__item">
+                        <a href="{{ item.url | relative_url }}" class="site-nav__link {% if page.url == item.url %}site-nav__link--active{% endif %}">
+                            {{ item.title }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
     </div>
+
+    <!-- 导航菜单交互脚本 -->
+    <script>
+        (function() {
+          const menuToggle = document.getElementById('menu-toggle');
+          const siteNav = document.getElementById('site-nav');
+
+          // 切换菜单显示/隐藏
+          menuToggle.addEventListener('click', function() {
+            siteNav.classList.toggle('site-nav--open');
+            menuToggle.classList.toggle('menu-toggle--active');
+
+            // 禁止/允许页面滚动
+            document.body.style.overflow = siteNav.classList.contains('site-nav--open') ? 'hidden' : 'auto';
+          });
+
+          // 移动端点击导航项后关闭菜单
+          const navLinks = document.querySelectorAll('.site-nav__link');
+          navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+              if (window.innerWidth <= 768) {
+                siteNav.classList.remove('site-nav--open');
+                menuToggle.classList.remove('menu-toggle--active');
+                document.body.style.overflow = 'auto';
+              }
+            });
+          });
+
+          // 窗口大小变化时重置菜单状态
+          window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+              siteNav.classList.remove('site-nav--open');
+              menuToggle.classList.remove('menu-toggle--active');
+              document.body.style.overflow = 'auto';
+            }
+          });
+        })();
+    </script>
 </header>

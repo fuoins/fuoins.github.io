@@ -1,40 +1,62 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 {% include head.html %}
-<body>
+<body class="page {{ page.layout }} {{ page.class }}">
+<!-- 页眉 -->
 {% include header.html %}
-<main class="main-content container">
-    {{ content }}
+
+<!-- 主内容区 -->
+<main class="main-content">
+    <div class="container">
+        {{ content }}
+    </div>
 </main>
+
+<!-- 页脚 -->
 {% include footer.html %}
 
-<!-- 基础JS（可扩展） -->
+<!-- 全局脚本 -->
 <script>
-    // 移动端菜单适配（可选扩展）
+    // 页面加载完成后的通用处理
     document.addEventListener('DOMContentLoaded', function() {
-      // 监听窗口大小变化，优化移动端体验
-      window.addEventListener('resize', function() {
-        const container = document.querySelector('.container');
-        if (window.innerWidth < 768) {
-          container.style.width = '95%';
-        } else {
-          container.style.width = '80%';
-          container.style.maxWidth = '1200px';
-        }
+      // 平滑滚动
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: 'smooth'
+            });
+          }
+        });
       });
 
-      // 初始化页面样式
-      const initPage = () => {
-        const katexElements = document.querySelectorAll('.katex-display');
-        katexElements.forEach(el => {
-          el.style.overflowX = 'auto';
-          el.style.maxWidth = '100%';
+      // 图片懒加载（基础实现）
+      const images = document.querySelectorAll('img[data-src]');
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+            imageObserver.unobserve(img);
+          }
         });
-      };
+      });
 
-      // 页面加载完成后初始化
-      window.onload = initPage;
+      images.forEach(img => {
+        imageObserver.observe(img);
+      });
     });
 </script>
+
+<!-- 页面特定脚本 -->
+{% if page.foot_scripts %}
+{{ page.foot_scripts }}
+{% endif %}
 </body>
 </html>

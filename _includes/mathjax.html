@@ -1,0 +1,61 @@
+<!-- MathJax 3.x 配置，支持公式自动换行 -->
+<script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        packages: {'[+]': ['autoload', 'physics', 'boldsymbol']}
+      },
+      svg: {
+        linebreaks: {
+          automatic: true,
+          width: 'container' // 基于容器宽度自动换行
+        }
+      },
+      chtml: {
+        linebreaks: {
+          automatic: true,
+          width: 'container'
+        }
+      },
+      startup: {
+        pageReady: function() {
+          return MathJax.startup.defaultPageReady().then(function() {
+            // 监听窗口大小变化，重新渲染公式
+            window.addEventListener('resize', function() {
+              MathJax.typesetPromise();
+            });
+          });
+        }
+      }
+    };
+</script>
+<!-- 加载MathJax核心库 -->
+<script src="{{ site.math.mathjax.src }}" id="MathJax-script" async></script>
+<!-- 公式容器样式修复 -->
+<style>
+    /* 确保公式容器自适应宽度，超出时自动换行 */
+    .MathJax {
+      max-width: 100% !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      padding: 0.2rem 0 !important;
+    }
+    .MathJax_Display {
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      max-width: 100% !important;
+      margin: 0.5rem 0 !important;
+      padding: 0.2rem 0 !important;
+    }
+    /* 移动端公式适配 */
+    @media (max-width: 768px) {
+      .MathJax {
+        font-size: 0.9rem !important;
+      }
+      .MathJax_Display {
+        padding: 0.1rem 0 !important;
+      }
+    }
+</style>

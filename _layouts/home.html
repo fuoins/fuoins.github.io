@@ -1,0 +1,128 @@
+---
+layout: default
+class: home-page
+---
+
+<!-- 首页英雄区 -->
+<section class="hero">
+    <div class="hero__inner">
+        <h1 class="hero__title">欢迎来到 {{ site.title }}</h1>
+        <p class="hero__subtitle">{{ site.description }}</p>
+        <a href="{{ "/posts/" | relative_url }}" class="hero__button">浏览文章</a>
+    </div>
+</section>
+
+<!-- 最新文章区 -->
+<section class="latest-posts">
+    <div class="latest-posts__header">
+        <h2 class="latest-posts__title">最新文章</h2>
+        <hr class="latest-posts__divider">
+    </div>
+
+    <div class="posts-list">
+        {% if site.posts.size > 0 %}
+        {% for post in paginator.posts %}
+        <article class="post-card">
+            <div class="post-card__header">
+                <h3 class="post-card__title">
+                    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+                </h3>
+                <div class="post-card__meta">
+                    <span class="post-card__date">{{ post.date | date: "%Y年%m月%d日" }}</span>
+                    {% if post.categories.size > 0 %}
+                    <span class="post-card__categories">
+                  {% for category in post.categories %}
+                    <a href="{{ "/categories/" | relative_url }}{{ category | slugify }}/">{{ category }}</a>
+                        {% unless forloop.last %}, {% endunless %}
+                  {% endfor %}
+                </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="post-card__excerpt">
+                {% if post.excerpt %}
+                {{ post.excerpt | strip_html | truncate: 200 }}
+                {% else %}
+                {{ post.content | strip_html | truncate: 200 }}
+                {% endif %}
+            </div>
+
+            <div class="post-card__footer">
+                <a href="{{ post.url | relative_url }}" class="post-card__read-more">阅读全文 →</a>
+            </div>
+        </article>
+        {% endfor %}
+        {% else %}
+        <div class="no-posts">
+            <p>暂无文章，敬请期待...</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- 分页控件 -->
+    {% if paginator.total_pages > 1 %}
+    <nav class="pagination">
+        <ul class="pagination__list">
+            <!-- 上一页 -->
+            {% if paginator.previous_page %}
+            <li class="pagination__item">
+                <a href="{{ paginator.previous_page_path | relative_url }}" class="pagination__link">上一页</a>
+            </li>
+            {% else %}
+            <li class="pagination__item pagination__item--disabled">
+                <span class="pagination__link">上一页</span>
+            </li>
+            {% endif %}
+
+            <!-- 页码 -->
+            {% for page in (1..paginator.total_pages) %}
+            {% if page == paginator.page %}
+            <li class="pagination__item pagination__item--active">
+                <span class="pagination__link">{{ page }}</span>
+            </li>
+            {% elsif page == 1 %}
+            <li class="pagination__item">
+                <a href="{{ "/" | relative_url }}" class="pagination__link">{{ page }}</a>
+            </li>
+            {% else %}
+            <li class="pagination__item">
+                <a href="{{ site.paginate_path | replace: ':num', page | relative_url }}" class="pagination__link">{{ page }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+
+            <!-- 下一页 -->
+            {% if paginator.next_page %}
+            <li class="pagination__item">
+                <a href="{{ paginator.next_page_path | relative_url }}" class="pagination__link">下一页</a>
+            </li>
+            {% else %}
+            <li class="pagination__item pagination__item--disabled">
+                <span class="pagination__link">下一页</span>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</section>
+
+<!-- 博客特色区 -->
+<section class="features">
+    <div class="features__inner">
+        <div class="feature-card">
+            <h3 class="feature-card__title">优雅排版</h3>
+            <p class="feature-card__description">基于 Inter 字体的现代化排版，白色调高级感设计，适配所有设备屏幕，阅读体验拉满。</p>
+        </div>
+
+        <div class="feature-card">
+            <h3 class="feature-card__title">数学公式</h3>
+            <p class="feature-card__description">完美支持 LaTeX 数学公式渲染，超出宽度自动换行，移动端也能清晰查看复杂公式。</p>
+        </div>
+
+        <div class="feature-card">
+            <h3 class="feature-card__title">响应式设计</h3>
+            <p class="feature-card__description">从手机到桌面端的全尺寸适配，无论在什么设备上，都能获得一致的视觉体验。</p>
+        </div>
+    </div>
+</section>
