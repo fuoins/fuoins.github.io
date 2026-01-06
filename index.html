@@ -48,7 +48,7 @@ description: fuoins 的个人技术博客，分享编程、数学、算法等领
             </div>
             <a href="{{ post.url | relative_url }}" class="post-card-readmore">阅读全文 →</a>
         </article>
-        {% empty %}
+        {% empty %} <!-- 修复点：确保empty紧跟for循环，无多余换行/空格 -->
         <p class="text-center" style="grid-column: 1/-1; padding: 2em; color: #666;">
             暂无文章，敬请期待...
         </p>
