@@ -1,18 +1,13 @@
-<footer class="site-footer">
+<header class="site-header">
     <div class="container">
-        <div class="footer-content">
-            <p class="copyright">
-                © {{ "now" | date: "%Y" }} {{ site.title }} | 由 Jekyll 驱动 |
-                <a href="https://github.com/fuoins/fuoins.github.io" target="_blank">源码</a>
-            </p>
-            <p class="contact">
-                邮箱：<a href="mailto:{{ site.email }}">{{ site.email }}</a> |
-                GitHub：<a href="https://github.com/{{ site.github_username }}" target="_blank">@{{ site.github_username }}</a>
-            </p>
-            <p class="disclaimer">
-                本博客内容仅供学习交流使用，禁止商用，如有侵权请联系删除。
-                所有文章均为原创，转载请注明出处。
-            </p>
-        </div>
+        <nav class="header-nav">
+            <a href="{{ "/" | relative_url }}" class="site-title">{{ site.title }}</a>
+            <ul class="nav-links">
+                <li><a href="{{ "/" | relative_url }}">首页</a></li>
+                <li><a href="{{ "/posts" | relative_url }}">所有文章</a></li>
+                <li><a href="https://github.com/fuoins" target="_blank">GitHub</a></li>
+                <li><a href="{{ "/about" | relative_url }}">关于我</a></li>
+            </ul>
+        </nav>
     </div>
-</footer>
+</header>
