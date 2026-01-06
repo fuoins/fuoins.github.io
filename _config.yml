@@ -1,38 +1,25 @@
 # 基础配置
-title: "fuoins' Blog"
+title: fuoins's Blog
 email: your-email@example.com
-description: "高级感白色调个人技术博客 | 支持数学公式与移动端适配"
-baseurl: ""
-url: "https://fuoins.github.io"
-twitter_username: fuoins
-github_username: fuoins
+description: "极简风格的技术博客"
+baseurl: "" # 部署到根域名时留空
+url: "https://fuoins.github.io" # 替换为你的实际域名
+permalink: /:year/:month/:day/:title/
+lang: zh-CN
 
-# 构建配置（适配github-pages v232 + jekyll v3.10.0）
+# Jekyll 核心配置（适配 github-pages v232 + jekyll v3.10.0）
 markdown: kramdown
-highlighter: rouge
 kramdown:
-  input: GFM
-  math_engine: mathjax  # 数学公式引擎
+  math_engine: mathjax # 启用MathJax渲染数学公式
   syntax_highlighter: rouge
-  hard_wrap: false      # 配合公式自动换行
-  auto_ids: true
-  footnote_nr: 1
-  entity_output: as_char
-  toc_levels: 1..6
-  smart_quotes: lsquo,rsquo,ldquo,rdquo
-  enable_coderay: false
+  input: GFM # 支持GitHub Flavored Markdown
 
-# 分页（github-pages内置）
-paginate: 5
-paginate_path: "/page:num/"
-
-# 插件（仅保留github-pages内置，无多余）
+# 仅保留必要插件（github-pages 内置，无需额外安装）
 plugins:
-  - jekyll-paginate
-  - jekyll-github-metadata
+  - jekyll-feed
   - jekyll-seo-tag
 
-# 排除文件
+# 禁用非必要功能
 exclude:
   - Gemfile
   - Gemfile.lock
@@ -41,13 +28,6 @@ exclude:
   - vendor/cache/
   - vendor/gems/
   - vendor/ruby/
-  - README.md
 
-# 时区
-timezone: Asia/Shanghai
-
-# 永久链接
-permalink: /:year/:month/:day/:title/
-
-# 主题（禁用默认，自定义样式）
-theme: null
+# 移动端适配相关
+responsive: true

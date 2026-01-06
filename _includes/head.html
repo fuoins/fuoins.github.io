@@ -1,32 +1,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
-  <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 }}">
+  <title>{{ page.title | default: site.title }}</title>
+  <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | truncate: 160 }}">
   
-  <!-- SEO优化（github-pages内置插件） -->
-  {% seo %}
-  
-  <!-- 自定义样式 -->
+  <!-- 核心样式 -->
   <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}">
   
-  <!-- 字体（高级感无衬线字体） -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- 数学公式支持（MathJax v3） -->
-  {% include mathjax.html %}
-  
-  <!-- 图标（可选，增强高级感） -->
-  <link rel="icon" type="image/svg+xml" href="{{ "/assets/favicon.svg" | relative_url }}">
-  <link rel="alternate icon" href="{{ "/assets/favicon.ico" | relative_url }}">
-  
-  <!-- 移动端适配meta -->
-  <meta name="apple-mobile-web-app-title" content="{{ site.title }}">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="white">
-  <meta name="theme-color" content="#ffffff">
+  <!-- MathJax 配置（支持公式自动换行） -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']], // 行内公式标识
+        displayMath: [['$$', '$$'], ['\\[', '\\]']], // 块级公式标识
+        autoload: {
+          color: [],
+          colorv2: ['color']
+        }
+      },
+      chtml: {
+        displayAlign: 'left', // 公式左对齐（适配移动端）
+        scale: 1,
+        minScale: 0.8,
+        // 关键：公式超出宽度时自动换行
+        linebreaks: {
+          automatic: true,
+          width: 'container' // 基于容器宽度换行
+        }
+      },
+      startup: {
+        pageReady: () => {
+          return MathJax.startup.defaultPageReady().then(() => {
+            // 确保公式渲染后适配样式
+            document.querySelectorAll('.mjx-chtml').forEach(el => {
+              el.style.maxWidth = '100%';
+              el.style.overflowX = 'auto';
+            });
+          });
+        }
+      }
+    };
+  </script>
 </head>

@@ -1,29 +1,8 @@
 <header class="site-header">
   <div class="container">
+    <a class="site-title" href="{{ "/" | relative_url }}">{{ site.title }}</a>
     <nav class="site-nav">
-      <div class="site-logo">
-        <a href="{{ "/" | relative_url }}">{{ site.title }}</a>
-      </div>
-      <div class="nav-links">
-        <a href="{{ "/" | relative_url }}" class="nav-link {% if page.url == "/" %}active{% endif %}">首页</a>
-        <a href="{{ "/about" | relative_url }}" class="nav-link {% if page.url == "/about/" %}active{% endif %}">关于</a>
-        <a href="https://github.com/fuoins" target="_blank" class="nav-link">GitHub</a>
-      </div>
-      <!-- 移动端汉堡菜单 -->
-      <button class="hamburger" aria-label="菜单">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-      </button>
+      <a href="{{ "/" | relative_url }}">首页</a>
     </nav>
   </div>
 </header>
-
-<!-- 移动端菜单面板 -->
-<div class="mobile-menu">
-  <div class="mobile-menu-content">
-    <a href="{{ "/" | relative_url }}" class="mobile-nav-link {% if page.url == "/" %}active{% endif %}">首页</a>
-    <a href="{{ "/about" | relative_url }}" class="mobile-nav-link {% if page.url == "/about/" %}active{% endif %}">关于</a>
-    <a href="https://github.com/fuoins" target="_blank" class="mobile-nav-link">GitHub</a>
-  </div>
-</div>
