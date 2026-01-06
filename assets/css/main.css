@@ -58,7 +58,7 @@ p code, li code, h3 code, h4 code {
 
 /* 代码语言标识（新增：在代码块左上角显示语言类型） */
 pre::before {
-  content: attr(data-lang); /* 读取代码块的语言属性 */
+    content: "ZY" !important; /
   position: absolute;
   top: 0;
   right: 0;
