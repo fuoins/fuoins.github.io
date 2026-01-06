@@ -2,131 +2,68 @@
 layout: default
 ---
 
-<article class="post-content">
-    <!-- 文章头部 -->
-    <header class="post-header">
-        <h1 class="post-title">{{ page.title }}</h1>
-        <div class="post-meta">
-      <span class="post-date">
-        <i class="fas fa-calendar"></i> {{ page.date | date: "%Y年%m月%d日" }}
-      </span>
-            <span class="post-author">
-        <i class="fas fa-user"></i> {{ page.author | default: site.github_username }}
-      </span>
-            {% if page.categories.size > 0 %}
-            <span class="post-categories">
-          <i class="fas fa-folder"></i>
+<!-- 文章头部 -->
+<article class="post">
+  <header class="post-header">
+    <h1 class="post-title">{{ page.title }}</h1>
+    <div class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">
+        {{ page.date | date: "%Y年%m月%d日" }}
+      </time>
+      {% if page.categories.size > 0 %}
+        <span class="post-categories">
+          分类: 
           {% for category in page.categories %}
             <a href="{{ "/categories/" | relative_url }}{{ category | slugify }}">{{ category }}</a>
-                {% unless forloop.last %}, {% endunless %}
+            {% unless forloop.last %}, {% endunless %}
           {% endfor %}
         </span>
-            {% endif %}
-            {% if page.tags.size > 0 %}
-            <span class="post-tags">
-          <i class="fas fa-tags"></i>
-          {% for tag in page.tags %}
-            <a href="{{ "/tags/" | relative_url }}{{ tag | slugify }}">{{ tag }}</a>
-                {% unless forloop.last %}, {% endunless %}
-          {% endfor %}
-        </span>
-            {% endif %}
-        </div>
-    </header>
-
-    <!-- 文章内容 -->
-    <div class="post-body">
-        {{ content }}
-
-        <!-- 数学公式容器处理 -->
-        <script>
-            // 为所有块级公式添加自动换行容器
-            document.addEventListener('DOMContentLoaded', function() {
-              const displayMath = document.querySelectorAll('script[type="math/tex; mode=display"]');
-              displayMath.forEach(el => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'math-display';
-                el.parentNode.insertBefore(wrapper, el);
-                wrapper.appendChild(el);
-              });
-
-              // 触发MathJax重新渲染
-              if (window.MathJax) {
-                MathJax.typeset();
-              }
-            });
-        </script>
+      {% endif %}
     </div>
+  </header>
 
-    <!-- 文章底部 -->
-    <footer class="post-footer">
-        <div class="post-share">
-            <h4>分享本文</h4>
-            <div class="share-links">
-                <a href="https://twitter.com/intent/tweet?url={{ page.url | absolute_url }}&text={{ page.title }}" target="_blank" rel="noopener">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a href="https://facebook.com/sharer/sharer.php?u={{ page.url | absolute_url }}" target="_blank" rel="noopener">
-                    <i class="fab fa-facebook"></i>
-                </a>
-                <a href="https://github.com/fuoins" target="_blank" rel="noopener">
-                    <i class="fab fa-github"></i>
-                </a>
-            </div>
-        </div>
+  <!-- 文章内容 -->
+  <div class="post-content">
+    {{ content }}
+  </div>
 
-        <div class="post-nav">
-            {% if page.previous %}
-            <div class="prev-post">
-                <h4>上一篇</h4>
-                <a href="{{ page.previous.url | relative_url }}" class="nav-link">
-                    <i class="fas fa-arrow-left"></i> {{ page.previous.title }}
-                </a>
-            </div>
-            {% endif %}
-
-            {% if page.next %}
-            <div class="next-post">
-                <h4>下一篇</h4>
-                <a href="{{ page.next.url | relative_url }}" class="nav-link">
-                    {{ page.next.title }} <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-            {% endif %}
-        </div>
-    </footer>
+  <!-- 文章底部 -->
+  <footer class="post-footer">
+    {% if page.tags.size > 0 %}
+      <div class="post-tags">
+        <span>标签:</span>
+        {% for tag in page.tags %}
+          <a href="{{ "/tags/" | relative_url }}{{ tag | slugify }}" class="tag">{{ tag }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <div class="post-nav">
+      {% if page.previous %}
+        <a href="{{ page.previous.url | relative_url }}" class="prev-post">
+          <span>上一篇</span>
+          <span>{{ page.previous.title }}</span>
+        </a>
+      {% endif %}
+      {% if page.next %}
+        <a href="{{ page.next.url | relative_url }}" class="next-post">
+          <span>下一篇</span>
+          <span>{{ page.next.title }}</span>
+        </a>
+      {% endif %}
+    </div>
+  </footer>
 </article>
 
-<!-- 相关文章 -->
+<!-- 相关推荐（简单实现） -->
 <section class="related-posts">
-    <div class="section-header">
-        <h2 class="section-title">相关文章</h2>
-        <div class="section-divider"></div>
-    </div>
-
-    <div class="related-posts-grid">
-        {% assign related_posts = site.posts | where_exp: "post", "post.url != page.url" | sample: 2 %}
-        {% for post in related_posts %}
-        <article class="related-post-card">
-            <h3 class="related-post-title">
-                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-            </h3>
-            <span class="related-post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
-            <p class="related-post-excerpt">{{ post.excerpt | strip_html | truncate: 100 }}</p>
-        </article>
-        {% endfor %}
-    </div>
-</section>
-
-<!-- 评论区 (可自行集成Disqus/Giscus等) -->
-<section class="comments-section">
-    <div class="section-header">
-        <h2 class="section-title">评论</h2>
-        <div class="section-divider"></div>
-    </div>
-
-    <div class="comments-container">
-        <p>评论功能正在建设中，敬请期待...</p>
-        <!-- 可在这里集成Giscus/Disqus等评论系统 -->
-    </div>
+  <h3 class="section-title">相关文章</h3>
+  <div class="related-posts-list">
+    {% assign related_posts = site.posts | where_exp: "post", "post.url != page.url" | sample: 2 %}
+    {% for post in related_posts %}
+      <a href="{{ post.url | relative_url }}" class="related-post-card">
+        <h4>{{ post.title }}</h4>
+        <time>{{ post.date | date: "%Y年%m月%d日" }}</time>
+      </a>
+    {% endfor %}
+  </div>
 </section>

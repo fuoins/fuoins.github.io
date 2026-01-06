@@ -1,94 +1,53 @@
-# 站点基础配置
-title: fuoins' Blog
+# 基础配置
+title: "fuoins' Blog"
 email: your-email@example.com
-description: >-
-  一个基于Jekyll构建的高级感白色调博客，支持数学公式渲染，完美适配移动端
+description: "高级感白色调个人技术博客 | 支持数学公式与移动端适配"
 baseurl: ""
 url: "https://fuoins.github.io"
 twitter_username: fuoins
 github_username: fuoins
 
-# Jekyll 核心配置 - 适配 GitHub Pages v232
+# 构建配置（适配github-pages v232 + jekyll v3.10.0）
 markdown: kramdown
 highlighter: rouge
 kramdown:
   input: GFM
+  math_engine: mathjax  # 数学公式引擎
   syntax_highlighter: rouge
-  syntax_highlighter_opts:
-    block:
-      line_numbers: true
+  hard_wrap: false      # 配合公式自动换行
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+  enable_coderay: false
 
-# 关键修改：移除 math_engine: mathjax（GitHub Pages 环境下会冲突）
-# 改用前端渲染方式处理数学公式
-
-# 构建配置
-permalink: /:year/:month/:day/:title/
+# 分页（github-pages内置）
 paginate: 5
-paginate_path: /page/:num/
-timezone: Asia/Shanghai
+paginate_path: "/page:num/"
 
-# 关键修改：只保留 GitHub Pages v232 兼容的插件
-# 移除不必要的插件声明，避免冲突
+# 插件（仅保留github-pages内置，无多余）
 plugins:
   - jekyll-paginate
+  - jekyll-github-metadata
   - jekyll-seo-tag
-  - jekyll-sitemap
-  - jekyll-feed
 
-# 禁用主题
+# 排除文件
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md
+
+# 时区
+timezone: Asia/Shanghai
+
+# 永久链接
+permalink: /:year/:month/:day/:title/
+
+# 主题（禁用默认，自定义样式）
 theme: null
-
-# 自定义变量
-collections:
-  posts:
-    output: true
-    permalink: /posts/:name/
-
-defaults:
-  - scope:
-      path: ""
-      type: "posts"
-    values:
-      layout: "post"
-      author: "fuoins"
-  - scope:
-      path: ""
-    values:
-      layout: "default"
-
-# 数学公式配置 - 简化版（避免与 GitHub Pages 冲突）
-math:
-  enable: true
-  mathjax:
-    src: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
-    config: |
-      window.MathJax = {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']],
-          displayMath: [['$$', '$$'], ['\\[', '\\]']],
-          processEscapes: true,
-          autoload: {
-            color: [],
-            colorv2: ['color']
-          },
-          packages: {'[+]': ['noerrors']}
-        },
-        svg: {
-          fontCache: 'global'
-        },
-        options: {
-          enableMenu: false
-        },
-        startup: {
-          pageReady: function() {
-            return MathJax.startup.defaultPageReady().then(function() {
-              // 处理公式换行
-              document.querySelectorAll('.mjx-chtml').forEach(el => {
-                el.style.maxWidth = '100%';
-                el.style.overflowX = 'auto';
-                el.style.display = 'inline-block';
-              });
-            });
-          }
-        }
-      };

@@ -1,68 +1,47 @@
-{% if site.math.enable %}
-<!-- 数学公式渲染 - 适配 GitHub Pages 环境 -->
-<script type="text/javascript">
-    {{ site.math.mathjax.config }}
-</script>
-
-<!-- 加载 MathJax 库 -->
-<script type="text/javascript" id="MathJax-script" async
-        src="{{ site.math.mathjax.src }}">
-</script>
-
-<!-- 公式换行样式 -->
-<style>
-    /* 数学公式自动换行核心样式 */
-    .math-display {
-      width: 100%;
-      overflow-x: auto;
-      overflow-y: hidden;
-      padding: 0.5rem 0;
-      margin: 1rem 0;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    mjx-container, .mjx-chtml {
-      white-space: pre-wrap !important;
-      word-break: break-all !important;
-      max-width: 100% !important;
-    }
-
-    /* 移动端公式适配 */
-    @media (max-width: 768px) {
-      .math-display {
-        padding: 0.3rem 0;
-        margin: 0.8rem 0;
-      }
-
-      mjx-container {
-        font-size: 0.9em !important;
-      }
-    }
-</style>
-
-<!-- 页面加载完成后处理公式容器 -->
+<!-- MathJax v3 配置（支持自动换行+移动端适配） -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // 为所有块级公式添加自动换行容器
-      setTimeout(function() {
-        const mathElements = document.querySelectorAll('script[type^="math/tex"]');
-        mathElements.forEach(el => {
-          const display = el.type.includes('mode=display');
-          if (display) {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'math-display';
-            el.parentNode.insertBefore(wrapper, el);
-            wrapper.appendChild(el);
-          }
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],  // 行内公式标识
+      displayMath: [['$$', '$$'], ['\\[', '\\]']], // 块级公式标识
+      processEscapes: true,  // 支持转义$
+      autoload: {
+        color: [],
+        colorv2: ['color']
+      },
+      packages: {'[+]': ['noerrors']}
+    },
+    svg: {
+      fontCache: 'global',
+      scale: 1,
+      displayAlign: 'center',
+      overflow: 'linebreak'  // 公式超出宽度自动换行
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+            const display = !!node.type.match(/; *mode=display/);
+            const math = new Option().text + node.textContent;
+            const text = document.createTextNode(display ? `$$${math}$$` : `$${math}$$`);
+            node.parentNode.replaceChild(text, node);
+          });
+        }, '', false],
+        renderDocument: [200, () => MathJax.startup.document.render(), '', false]
+      }
+    },
+    startup: {
+      pageReady() {
+        return MathJax.startup.defaultPageReady().then(() => {
+          // 公式渲染后适配移动端宽度
+          document.querySelectorAll('.MJX-TEX').forEach(el => {
+            el.style.maxWidth = '100%';
+            el.style.overflowX = 'auto';
+          });
         });
-
-        // 监听窗口大小变化
-        window.addEventListener('resize', function() {
-          if (window.MathJax) {
-            MathJax.typeset();
-          }
-        });
-      }, 500);
-    });
+      }
+    }
+  };
 </script>
-{% endif %}
+<!-- MathJax 核心脚本 -->
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

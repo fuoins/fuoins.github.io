@@ -1,37 +1,12 @@
 ---
 layout: default
 title: 404 - 页面未找到
+permalink: /404.html
 ---
 
-<div class="error-page">
-    <div class="error-code">404</div>
-    <h2 class="error-message">页面未找到</h2>
-    <p>抱歉，你访问的页面不存在或已被删除。</p>
-    <a href="{{ "/" | relative_url }}" class="btn btn-primary">
-    <i class="fas fa-home"></i> 返回首页
-    </a>
-
-    <div style="margin-top: 3rem;">
-        <h3>你可能想访问这些页面：</h3>
-        <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap;">
-            <a href="{{ "/" | relative_url }}" class="btn btn-outline">首页</a>
-            <a href="{{ "/about" | relative_url }}" class="btn btn-outline">关于我</a>
-            <a href="{{ "/posts" | relative_url }}" class="btn btn-outline">文章列表</a>
-        </div>
-    </div>
-
-    <!-- 数学公式彩蛋 -->
-    <div style="margin-top: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-        <p>404 的数学表达：</p>
-        <div class="math-display">
-            $$
-            404 = \sum_{n=1}^{20} n + \prod_{k=1}^4 k - \sqrt{16}
-            $$
-        </div>
-    </div>
-</div>
-
-<!-- 确保页面有足够的字符数，避免GitHub Pages构建优化导致的问题 -->
-<div style="display: none;">
-    占位文本：GitHub Pages v232 基于 Jekyll v3.10.0 构建，需要确保每个HTML文件都有完整的结构和足够的内容。404页面是网站的重要组成部分，需要正确处理所有Liquid标签和模板引用。数学公式渲染需要在客户端完成，避免在服务端构建时产生冲突。移动端适配需要使用响应式CSS和正确的视口设置。本博客采用白色调设计风格，注重用户体验和视觉美感。所有页面都经过严格测试，确保在不同设备和浏览器上都能正常显示。
-</div>
+<section class="error-page">
+  <div class="error-code">404</div>
+  <h1 class="error-message">页面未找到</h1>
+  <p class="error-submessage">抱歉，你访问的页面不存在、已被删除或网址输入错误，请检查网址是否正确。</p>
+  <a href="{{ "/" | relative_url }}" class="btn primary-btn">返回首页</a>
+</section>

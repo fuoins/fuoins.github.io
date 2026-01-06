@@ -25,7 +25,7 @@ type nul > _layouts\post.html
 
 REM 创建 _posts 目录及示例文章
 if not exist "_posts" mkdir _posts
-type nul > _posts\2026-01-06-welcome-to-my-blog.md
+type nul > _posts\2026-01-06-first-post.md
 
 REM 创建 assets/css 和 assets/js 目录及文件
 if not exist "assets\css" mkdir assets\css
@@ -47,7 +47,7 @@ echo │   ├── default.html
 echo │   ├── home.html
 echo │   └── post.html
 echo ├── _posts/
-echo │   └── 2026-01-06-welcome-to-my-blog.md
+echo │   └── 2026-01-06-first-post.md
 echo ├── assets/
 echo │   ├── css/
 echo │   │   └── main.css

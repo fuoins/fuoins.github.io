@@ -2,159 +2,57 @@
 layout: default
 ---
 
-<!-- 英雄区域 -->
-<section class="hero-section">
-    <div class="hero-content">
-        <h1 class="hero-title">欢迎来到 {{ site.title }}</h1>
-        <p class="hero-subtitle">{{ site.description }}</p>
-        <a href="{{ "/posts" | relative_url }}" class="btn btn-primary">
-        <i class="fas fa-pen"></i> 浏览文章
-        </a>
-    </div>
+<!-- 首页英雄区 -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>欢迎来到 {{ site.title }}</h1>
+    <p class="hero-subtitle">{{ site.description }}</p>
+    <a href="#posts" class="btn primary-btn">查看文章</a>
+  </div>
 </section>
 
-<!-- 特色文章 -->
-<section class="featured-posts">
-    <div class="section-header">
-        <h2 class="section-title">最新文章</h2>
-        <div class="section-divider"></div>
-    </div>
-
-    <div class="posts-grid">
-        {% for post in site.posts limit: 3 %}
+<!-- 文章列表 -->
+<section id="posts" class="posts-section">
+  <h2 class="section-title">最新文章</h2>
+  <div class="posts-list">
+    {% if site.posts.size > 0 %}
+      {% for post in paginator.posts %}
         <article class="post-card">
-            <div class="post-card-header">
-                <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
-                <h3 class="post-title">
-                    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-                </h3>
-            </div>
-
-            <div class="post-card-excerpt">
-                <p>{{ post.excerpt | strip_html | truncate: 150 }}</p>
-            </div>
-
-            <div class="post-card-footer">
-                <a href="{{ post.url | relative_url }}" class="read-more">
-                    阅读更多 <i class="fas fa-arrow-right"></i>
-                </a>
-                <span class="post-author">
-            <i class="fas fa-user"></i> {{ post.author }}
-          </span>
-            </div>
+          <div class="post-card-header">
+            <h3 class="post-title">
+              <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            </h3>
+            <time class="post-date" datetime="{{ post.date | date_to_xmlschema }}">
+              {{ post.date | date: "%Y年%m月%d日" }}
+            </time>
+          </div>
+          <div class="post-excerpt">
+            {{ post.excerpt | strip_html | truncate: 200 }}
+          </div>
+          <a href="{{ post.url | relative_url }}" class="post-read-more">阅读更多 →</a>
         </article>
-        {% empty %}
-        <div class="no-posts">
-            <p>暂无文章，敬请期待...</p>
-            <a href="{{ "/" | relative_url }}" class="btn btn-secondary">返回首页</a>
-        </div>
-        {% endfor %}
-    </div>
-
-    <!-- 查看更多按钮 -->
-    {% if site.posts.size > 3 %}
-    <div class="view-more-container">
-        <a href="{{ "/posts" | relative_url }}" class="btn btn-outline">
-        <i class="fas fa-th-list"></i> 查看所有文章
-        </a>
-    </div>
+      {% endfor %}
+    {% else %}
+      <p class="no-posts">暂无文章，敬请期待...</p>
     {% endif %}
-</section>
+  </div>
 
-<!-- 功能介绍 -->
-<section class="features-section">
-    <div class="section-header">
-        <h2 class="section-title">博客特色</h2>
-        <div class="section-divider"></div>
+  <!-- 分页控件 -->
+  {% if paginator.total_pages > 1 %}
+    <div class="pagination">
+      {% if paginator.previous_page %}
+        <a href="{{ paginator.previous_page_path | relative_url }}" class="pagination-link prev">上一页</a>
+      {% else %}
+        <span class="pagination-link prev disabled">上一页</span>
+      {% endif %}
+
+      <span class="pagination-current">第 {{ paginator.page }} 页 / 共 {{ paginator.total_pages }} 页</span>
+
+      {% if paginator.next_page %}
+        <a href="{{ paginator.next_page_path | relative_url }}" class="pagination-link next">下一页</a>
+      {% else %}
+        <span class="pagination-link next disabled">下一页</span>
+      {% endif %}
     </div>
-
-    <div class="features-grid">
-        <div class="feature-card">
-            <div class="feature-icon">
-                <i class="fas fa-mobile-alt"></i>
-            </div>
-            <h3 class="feature-title">移动端适配</h3>
-            <p class="feature-description">完美适配手机、平板、电脑等各种设备，无论何时何地都能舒适阅读。</p>
-        </div>
-
-        <div class="feature-card">
-            <div class="feature-icon">
-                <i class="fas fa-square-root-alt"></i>
-            </div>
-            <h3 class="feature-title">数学公式支持</h3>
-            <p class="feature-description">全面支持LaTeX数学公式渲染，公式超出宽度时自动换行，兼顾美观与实用性。</p>
-        </div>
-
-        <div class="feature-card">
-            <div class="feature-icon">
-                <i class="fas fa-palette"></i>
-            </div>
-            <h3 class="feature-title">高级感设计</h3>
-            <p class="feature-description">极简白色调设计风格，注重细节与交互体验，打造高级感视觉效果。</p>
-        </div>
-
-        <div class="feature-card">
-            <div class="feature-icon">
-                <i class="fas fa-code"></i>
-            </div>
-            <h3 class="feature-title">代码高亮</h3>
-            <p class="feature-description">支持多种编程语言的代码高亮显示，代码阅读体验更佳。</p>
-        </div>
-    </div>
-</section>
-
-<!-- 数学公式示例 -->
-<section class="math-example-section">
-    <div class="section-header">
-        <h2 class="section-title">数学公式示例</h2>
-        <div class="section-divider"></div>
-    </div>
-
-    <div class="math-example-content">
-        <p>以下是一些常用的数学公式示例，展示自动换行效果：</p>
-
-        <div class="math-display">
-            $$
-            \int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
-            $$
-        </div>
-
-        <div class="math-display">
-            $$
-            \frac{\partial u}{\partial t} = \alpha \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} + \frac{\partial^2 u}{\partial z^2} \right) + f(x,y,z,t)
-            $$
-        </div>
-
-        <div class="math-display">
-            $$
-            \sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}, \quad \prod_{k=1}^{n} k = n!, \quad \lim_{x \to \infty} \frac{\sin x}{x} = 0
-            $$
-        </div>
-
-        <div class="math-display">
-            $$
-            \begin{bmatrix}
-            a_{11} & a_{12} & \dots & a_{1n} \\
-            a_{21} & a_{22} & \dots & a_{2n} \\
-            \vdots & \vdots & \ddots & \vdots \\
-            a_{m1} & a_{m2} & \dots & a_{mn}
-            \end{bmatrix}
-            \begin{bmatrix}
-            x_1 \\
-            x_2 \\
-            \vdots \\
-            x_n
-            \end{bmatrix}
-            =
-            \begin{bmatrix}
-            b_1 \\
-            b_2 \\
-            \vdots \\
-            b_m
-            \end{bmatrix}
-            $$
-        </div>
-
-        <p>行内公式示例：欧拉公式 $e^{i\pi} + 1 = 0$ 是数学中最优美的公式之一，勾股定理 $a^2 + b^2 = c^2$ 是基础几何公式。</p>
-    </div>
+  {% endif %}
 </section>

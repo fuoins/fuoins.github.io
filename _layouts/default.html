@@ -1,23 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-{% include head.html %}
-<body>
-<!-- 页面加载动画 -->
-<div class="loader-wrapper">
-    <div class="loader"></div>
-</div>
-
-<!-- 头部导航 -->
-{% include header.html %}
-
-<!-- 主内容区 -->
-<main class="site-main">
-    <div class="container">
+  {% include head.html %}
+  <body>
+    {% include header.html %}
+    <main class="site-main">
+      <div class="container">
         {{ content }}
-    </div>
-</main>
-
-<!-- 底部 -->
-{% include footer.html %}
-</body>
+      </div>
+    </main>
+    {% include footer.html %}
+  </body>
 </html>
