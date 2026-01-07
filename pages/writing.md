@@ -122,81 +122,140 @@ window.MathJax = {
 
 #### 3. 代码块醒目效果实现（纯CSS）
 代码块的醒目效果完全通过CSS实现，无需任何高亮插件，核心设计思路如下：
-- **基础样式**：浅灰背景+细边框+圆角，贴合白色调高级感；
-- **hover效果**：边框变主题色+阴影加深，提升交互感；
-- **语言标识**：通过`attr(data-lang)`获取代码块语言，显示在右上角；
+- **基础样式**：dark；
 - **移动端适配**：缩小内边距和字号，减少横向滚动。
 
 核心样式代码（对应`assets/css/main.css`）：
 ```css
-/* 代码块容器 */
 pre {
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 1.2rem;
-  margin: 1.5rem 0;
-  overflow-x: auto;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-  position: relative;
-  transition: all 0.3s ease;
+  background-color: #2B2B2B !important; /* IDEA默认暗黑背景 */
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 16px !important;
+  margin: 24px 0 !important;
+  position: relative !important;
+  font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace !important;
+  line-height: 1.7 !important;
+  font-size: 13px !important;
+  color: #A9B7C6 !important;
+
+  /* 核心防扩宽 */
+  max-width: 100% !important;
+  width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  box-sizing: border-box !important;
+  white-space: pre !important;
+  word-wrap: normal !important;
+  word-break: keep-all !important;
+  min-width: auto !important;
+  flex-shrink: 1 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
 }
 
-/* hover效果 */
-pre:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  border-color: #6366f1;
-}
-
-/* 代码文本样式 */
 pre code {
-  font-family: "Fira Code", "Consolas", monospace;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: #1e293b;
-  white-space: pre;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  color: inherit !important;
+  white-space: pre !important;
+  display: block !important;
+  max-width: 100% !important;
+  overflow: visible !important;
 }
 
-/* 语言标识 */
+/* IDEA Dark语法高亮（不变） */
+pre code .k, pre code .keyword {
+  color: #CC7832 !important;
+  font-weight: 500 !important;
+}
+pre code .s, pre code .string, pre code .s1, pre code .s2 {
+  color: #6A8759 !important;
+}
+pre code .c, pre code .comment, pre code .cm, pre code .c1 {
+  color: #808080 !important;
+  font-style: italic !important;
+  opacity: 0.9 !important;
+}
+pre code .nf, pre code .function {
+  color: #FFC66D !important;
+}
+pre code .nv, pre code .variable, pre code .id {
+  color: #A9B7C6 !important;
+}
+pre code .m, pre code .number {
+  color: #6897BB !important;
+}
+pre code .o, pre code .operator {
+  color: #A9B7C6 !important;
+}
+pre code .kc, pre code .boolean {
+  color: #9876AA !important;
+}
+pre code .nb, pre code .built_in {
+  color: #6897BB !important;
+}
+
+/* ZY标识（不变） */
 pre::before {
-  content: attr(data-lang);
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 0.2rem 0.8rem;
-  background-color: #6366f1;
-  color: white;
-  font-size: 0.8rem;
-  border-radius: 0 8px 0 8px;
-  text-transform: uppercase;
+  content: "ZY" !important;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  padding: 2px 10px !important;
+  background-color: #3C3F41 !important;
+  color: #A9B7C6 !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  letter-spacing: 0.5px !important;
+  border-radius: 0 4px 0 4px !important;
+  z-index: 1 !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  max-width: 50% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
-/* 行内代码样式 */
-p code, li code {
-  background-color: #f1f5f9;
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
-  font-family: "Fira Code", monospace;
-  color: #6366f1;
-  border: 1px solid #e2e8f0;
+p code, li code, h3 code, h4 code {
+  /* 你指定的核心样式（100%保留，无任何修改） */
+  background-color: #f8f8f8 !important;
+  padding: 2px 4px !important;
+  border-radius: 0 !important; /* 直角 */
+  font-family: 'JetBrains Mono', 'Consolas', monospace !important;
+  font-size: 13px !important;
+  color: #7d5bbf !important;
+  border: 1px solid #e0e0e0 !important;
+
+
+
+/* 移动端同步修改 */
+@media (max-width: 768px) {
+  p code, li code {
+    /* 你指定的样式完全保留，仅微调字号 */
+    padding: 2px 4px !important;
+    font-size: 12px !important;
+    background-color: #f8f8f8 !important;
+    color: #7d5bbf !important;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 0 !important;
+
+    /* 同步核心平衡方案 */
+    display: inline !important;
+    display: inline-block !important;
+    max-width: 100% !important;
+    width: auto !important;
+    white-space: pre-line !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    overflow: visible !important;
+    vertical-align: baseline !important;
+    box-sizing: border-box !important;
+    line-height: 1.6 !important;
+    hyphens: auto !important;
+  }
 }
-```
-
-代码块使用示例：
-```python
-# 快速排序算法实现
-def quick_sort(arr):
-    if len(arr) <= 1:
-        return arr
-    pivot = arr[len(arr) // 2]
-    left = [x for x in arr if x < pivot]
-    middle = [x for x in arr if x == pivot]
-    right = [x for x in arr if x > pivot]
-    return quick_sort(left) + middle + quick_sort(right)
-
-# 测试代码
-test_arr = [3, 6, 8, 10, 1, 2, 1]
-print(quick_sort(test_arr)) # 输出：[1, 1, 2, 3, 6, 8, 10]
 ```
 
 #### 4. 列表序号出界问题修复
