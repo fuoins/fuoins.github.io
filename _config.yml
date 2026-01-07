@@ -70,3 +70,16 @@ headers:
   - path: "/img/*"
     values:
       Cache-Control: "public, max-age=31536000, immutable"
+
+# ========== 新增：确保所有MD页面使用default模板 ==========
+defaults:
+  - scope:
+      path: ""        # 匹配所有文件
+      type: "pages"   # 匹配所有MD页面
+    values:
+      layout: "default"  # 强制使用default模板
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "default"  # 若有posts目录，也强制使用

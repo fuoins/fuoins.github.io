@@ -1,6 +1,24 @@
 <head>
-  <!-- 禁止浏览器缓存当前页面 -->
+  <!-- 基础元信息（复用你的_config.yml配置） -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="{{ site.viewport }}">
+  <meta name="author" content="{{ site.author.name }}">
+  <meta name="description" content="{{ page.description | default: site.description }}">
+  <meta name="keywords" content="{{ page.keywords | default: site.keywords }}">
+  
+  <!-- ========== 核心：禁用页面缓存 ========== -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
+
+  <!-- 页面标题 -->
+  <title>{{ page.title | default: site.title }}</title>
+
+  <!-- 静态资源添加动态版本号（避免CSS/JS缓存） -->
+  <!-- 若有自定义CSS/JS，按此格式添加?v={{ site.time | date: '%Y%m%d%H%M%S' }} -->
+  <link rel="stylesheet" href="/css/main.css?v={{ site.time | date: '%Y%m%d%H%M%S' }}" />
+  <script src="/js/main.js?v={{ site.time | date: '%Y%m%d%H%M%S' }}" defer></script>
+
+  <!-- MathJax支持（适配你的kramdown配置） -->
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
 </head>

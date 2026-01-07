@@ -8,13 +8,18 @@
     <meta name="keywords" content="{{ site.keywords }}">
     <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
 
-    <!-- 核心样式 -->
-    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+    <!-- ========== 新增：禁用页面缓存的核心配置 ========== -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 
-    <!-- 页面专属样式 -->
+    <!-- 核心样式（新增动态版本号，避免CSS缓存） -->
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?v={{ site.time | date: '%Y%m%d%H%M%S' }}">
+
+    <!-- 页面专属样式（新增动态版本号） -->
     {% if page.custom_css %}
     {% for css in page.custom_css %}
-    <link rel="stylesheet" href="{{ css | relative_url }}">
+    <link rel="stylesheet" href="{{ css | relative_url }}?v={{ site.time | date: '%Y%m%d%H%M%S' }}">
     {% endfor %}
     {% endif %}
 </head>
@@ -33,10 +38,10 @@
 <!-- 数学公式支持（所有页面加载） -->
 {% include mathjax.html %}
 
-<!-- 页面专属脚本 -->
+<!-- 页面专属脚本（新增动态版本号，避免JS缓存） -->
 {% if page.custom_js %}
 {% for js in page.custom_js %}
-<script src="{{ js | relative_url }}"></script>
+<script src="{{ js | relative_url }}?v={{ site.time | date: '%Y%m%d%H%M%S' }}"></script>
 {% endfor %}
 {% endif %}
 </body>
