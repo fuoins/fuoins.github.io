@@ -12,88 +12,6 @@ html {
   background-color: #ffffff;
   color: #333333;
 }
-/* --------------------------
-   代码块醒目样式（核心新增）
-   -------------------------- */
-/* 基础代码块容器 */
-pre {
-  background-color: #f8fafc; /* 浅灰背景，贴合白色调 */
-  border: 1px solid #e2e8f0; /* 轻边框，增加层次感 */
-  border-radius: 8px; /* 圆角，提升高级感 */
-  padding: 1.2rem; /* 充足内边距 */
-  margin: 1.5rem 0; /* 上下间距，和文本区分 */
-  overflow-x: auto; /* 横向滚动，适配长代码 */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02); /* 轻微阴影，增加立体感 */
-  position: relative; /* 为代码语言标识定位 */
-  transition: all 0.3s ease; /* hover动画，提升交互感 */
-}
-
-/* 代码块hover效果（更醒目） */
-pre:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* 加深阴影 */
-  border-color: #6366f1; /* 边框变主题色，醒目提示 */
-}
-
-/* 代码文本样式 */
-pre code {
-  font-family: "Fira Code", "Consolas", "Monaco", "Courier New", monospace; /* 等宽字体，代码更易读 */
-  font-size: 0.95rem; /* 适配阅读的字号 */
-  line-height: 1.6; /* 行高，提升可读性 */
-  color: #1e293b; /* 深灰文字，对比清晰 */
-  white-space: pre; /* 保留空格/换行 */
-  word-break: normal; /* 禁止单词截断 */
-}
-
-/* 行内代码样式（`代码`形式） */
-p code, li code, h3 code, h4 code {
-  background-color: #f1f5f9; /* 比代码块稍深的背景，区分行内/块级 */
-  padding: 0.2rem 0.4rem; /* 内边距，包裹文字 */
-  border-radius: 4px; /* 小圆角 */
-  font-family: "Fira Code", "Consolas", monospace;
-  font-size: 0.9rem;
-  color: #6366f1; /* 主题色，醒目 */
-  border: 1px solid #e2e8f0; /* 细边框，突出行内代码 */
-}
-
-
-
-
-/* 移动端代码块适配 */
-@media (max-width: 768px) {
-  pre {
-    padding: 1rem;
-    font-size: 0.85rem; /* 移动端缩小字号，减少滚动 */
-  }
-.mathjax-container {
-  width: 100%;
-  overflow-x: auto;
-  margin: 1.5rem 0;
-  padding: 0.5rem;
-}
-
-/* 强制公式超出宽度时自动换行 */
-mjx-container {
-  overflow-x: auto;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-  pre code {
-    line-height: 1.5;
-  }
-
-
-
-  /* 行内代码移动端适配 */
-  p code, li code {
-    padding: 0.15rem 0.3rem;
-    font-size: 0.85rem;
-  }
-}
-
-/* 修复代码块和公式的样式冲突 */
-pre mjx-container {
-  display: inline !important;
-}
 
 body {
   line-height: 1.8;
@@ -320,38 +238,6 @@ body {
 .page-header p {
   color: var(--secondary);
   font-size: 1.1rem;
-}
-
-.page-content {
-  font-size: 1.05rem;
-  color: var(--secondary);
-  line-height: 1.9;
-}
-
-.page-content h2 {
-  font-size: 1.8rem;
-  color: var(--primary);
-  margin: 2.5rem 0 1.5rem;
-}
-
-.page-content h3 {
-  font-size: 1.4rem;
-  color: var(--primary);
-  margin: 2rem 0 1rem;
-}
-
-.page-content p {
-  margin-bottom: 1.5rem;
-  text-align: justify;
-}
-
-.page-content a {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-.page-content a:hover {
-  text-decoration: underline;
 }
 
 /* --------------------------
@@ -587,66 +473,136 @@ mjx-container {
 .not-found a:hover {
   background-color: #5855f1;
 }
-<!-- 简化版MathJax配置：确保公式正常渲染，适配所有浏览器 -->
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
-<script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']], // 行内公式标识（必须用单引号）
-      displayMath: [['$$', '$$'], ['\\[', '\\]']], // 块级公式标识
-      processEscapes: true, // 支持转义字符（\$ 显示普通$）
-      autoload: {
-        color: [],
-        colorv2: ['color']
-      }
-    },
-    chtml: {
-      scale: 1.05, // 公式缩放（适配页面字体）
-      displayAlign: 'left', // 块级公式左对齐
-      displayIndent: '2em'
-    },
-    startup: {
-      pageReady: function() {
-        return MathJax.startup.defaultPageReady().then(function() {
-          // 公式渲染完成后，为容器添加自适应样式
-          const mathElements = document.querySelectorAll('mjx-container');
-          mathElements.forEach(el => {
-            el.style.maxWidth = '100%';
-            el.style.overflowX = 'auto';
-            el.style.margin = '1rem 0';
-          });
-        });
-      }
-    },
-    options: {
-      enableMenu: false, // 关闭右键菜单（简化）
-      ignoreHtmlClass: 'tex2jax_ignore',
-      processHtmlClass: 'tex2jax_process'
-    }
-  };
-</script>
+/* --------------------------
+   代码块：IDEA Dark + ZY标识 + 防扩宽（完全不变）
+   -------------------------- */
+pre {
+  background-color: #2B2B2B !important; /* IDEA默认暗黑背景 */
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 16px !important;
+  margin: 24px 0 !important;
+  position: relative !important;
+  font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace !important;
+  line-height: 1.7 !important;
+  font-size: 13px !important;
+  color: #A9B7C6 !important;
 
-<!-- 强制公式容器适配样式（解决换行/截断问题） -->
-<style>
-  /* 块级公式容器 */
-  mjx-container[jax="CHTML"][display="true"] {
-    display: block !important;
-    overflow-x: auto !important;
-    white-space: pre-wrap !important;
-    word-wrap: break-word !important;
+  /* 核心防扩宽 */
+  max-width: 100% !important;
+  width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  box-sizing: border-box !important;
+  white-space: pre !important;
+  word-wrap: normal !important;
+  word-break: keep-all !important;
+  min-width: auto !important;
+  flex-shrink: 1 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+pre code {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  color: inherit !important;
+  white-space: pre !important;
+  display: block !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+/* IDEA Dark语法高亮（不变） */
+pre code .k, pre code .keyword {
+  color: #CC7832 !important;
+  font-weight: 500 !important;
+}
+pre code .s, pre code .string, pre code .s1, pre code .s2 {
+  color: #6A8759 !important;
+}
+pre code .c, pre code .comment, pre code .cm, pre code .c1 {
+  color: #808080 !important;
+  font-style: italic !important;
+  opacity: 0.9 !important;
+}
+pre code .nf, pre code .function {
+  color: #FFC66D !important;
+}
+pre code .nv, pre code .variable, pre code .id {
+  color: #A9B7C6 !important;
+}
+pre code .m, pre code .number {
+  color: #6897BB !important;
+}
+pre code .o, pre code .operator {
+  color: #A9B7C6 !important;
+}
+pre code .kc, pre code .boolean {
+  color: #9876AA !important;
+}
+pre code .nb, pre code .built_in {
+  color: #6897BB !important;
+}
+
+/* ZY标识（不变） */
+pre::before {
+  content: "ZY" !important;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  padding: 2px 10px !important;
+  background-color: #3C3F41 !important;
+  color: #A9B7C6 !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  letter-spacing: 0.5px !important;
+  border-radius: 0 4px 0 4px !important;
+  z-index: 1 !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  max-width: 50% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+p code, li code, h3 code, h4 code {
+  /* 你指定的核心样式（100%保留，无任何修改） */
+  background-color: #f8f8f8 !important;
+  padding: 2px 4px !important;
+  border-radius: 0 !important; /* 直角 */
+  font-family: 'JetBrains Mono', 'Consolas', monospace !important;
+  font-size: 13px !important;
+  color: #7d5bbf !important;
+  border: 1px solid #e0e0e0 !important;
+
+
+
+/* 移动端同步修改 */
+@media (max-width: 768px) {
+  p code, li code {
+    /* 你指定的样式完全保留，仅微调字号 */
+    padding: 2px 4px !important;
+    font-size: 12px !important;
+    background-color: #f8f8f8 !important;
+    color: #7d5bbf !important;
+    border: 1px solid #e0e0e0 !important;
+    border-radius: 0 !important;
+
+    /* 同步核心平衡方案 */
+    display: inline !important;
+    display: inline-block !important;
     max-width: 100% !important;
-    margin: 1.5rem 0 !important;
-    padding: 0.5rem !important;
+    width: auto !important;
+    white-space: pre-line !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    overflow: visible !important;
+    vertical-align: baseline !important;
+    box-sizing: border-box !important;
+    line-height: 1.6 !important;
+    hyphens: auto !important;
   }
-  /* 行内公式容器 */
-  mjx-container[jax="CHTML"][display="false"] {
-    vertical-align: middle !important;
-    font-size: 1.05em !important;
-  }
-  /* 修复移动端公式溢出 */
-  @media (max-width: 768px) {
-    mjx-container {
-      font-size: 0.95em !important;
-    }
-  }
-</style>
+}
+

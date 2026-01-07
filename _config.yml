@@ -53,3 +53,20 @@ date_format: "%Y-%m-%d %H:%M:%S"
 
 # 移动端适配基础配置
 viewport: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+# 新增：自定义静态文件 Cache-Control 响应头（解决 Cloudflare 缓存验证延迟问题）
+headers:
+  - path: "/*.jpg"
+    values:
+      Cache-Control: "public, max-age=31536000, immutable"
+  - path: "/*.png"
+    values:
+      Cache-Control: "public, max-age=31536000, immutable"
+  - path: "/*.webp"
+    values:
+      Cache-Control: "public, max-age=31536000, immutable"
+  - path: "/*.gif"
+    values:
+      Cache-Control: "public, max-age=31536000, immutable"
+  - path: "/img/*"
+    values:
+      Cache-Control: "public, max-age=31536000, immutable"
