@@ -1,88 +1,87 @@
-<!-- 使用 MathJax 4.x beta（目前最新穩定支援 scroll/linebreak 的版本） -->
-<script src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0-beta.5/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
-
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 简化版MathJax配置：确保公式正常渲染，适配所有浏览器 -->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
 <script>
     window.MathJax = {
       tex: {
-        inlineMath: [['\( ', ' \)'], ['\\(', '\\)']],
-        displayMath: [['\[ ', ' \]'], ['\\[', '\\]']],
-        processEscapes: true,
+        inlineMath: [['$', '$'], ['\\(', '\\)']], // 行内公式标识（必须用单引号）
+        displayMath: [['$$', '$$'], ['\\[', '\\]']], // 块级公式标识
+        processEscapes: true, // 支持转义字符（\$ 显示普通$）
         autoload: {
           color: [],
           colorv2: ['color']
         }
       },
       chtml: {
-        scale: 1.05,                  // 整體略放大一點，清晰度好
-        displayAlign: 'left',
+        scale: 1.05, // 公式缩放（适配页面字体）
+        displayAlign: 'left', // 块级公式左对齐
         displayIndent: '2em',
-        displayOverflow: 'scroll'     // 關鍵！手機上強制出現水平滾動條（也可試 'linebreak' 但斷行不一定完美）
+        linebreaks: {
+          automatic: true, // 开启自动换行（核心修复）
+          width: '90%' // 换行宽度阈值（适配移动端）
+        }
       },
       startup: {
         pageReady: function() {
           return MathJax.startup.defaultPageReady().then(function() {
-            // 渲染完後再加強容器（保險）
-            const mathContainers = document.querySelectorAll('mjx-container[jax="CHTML"][display="true"]');
-            mathContainers.forEach(el => {
+            // 公式渲染完成后，为容器添加自适应样式
+            const mathElements = document.querySelectorAll('mjx-container');
+            mathElements.forEach(el => {
               el.style.maxWidth = '100%';
-              el.style.width = '100%';                    // 強制佔滿寬度
               el.style.overflowX = 'auto';
-              el.style.overflowY = 'hidden';
-              el.style.WebkitOverflowScrolling = 'touch'; // iOS 滑動更順
-              el.style.margin = '1.5rem 0';
-              el.style.padding = '0.5rem 0';
+              el.style.margin = '1rem 0';
             });
           });
         }
       },
       options: {
-        enableMenu: false,
+        enableMenu: false, // 关闭右键菜单（简化）
         ignoreHtmlClass: 'tex2jax_ignore',
         processHtmlClass: 'tex2jax_process'
       }
     };
 </script>
-
-<!-- 加強 CSS：針對手機 + 覆蓋 MathJax 內部行為 -->
+<!-- 强制公式容器适配样式（解决换行/截断问题） -->
 <style>
-    /* 塊級公式（display math） */
+    /* 全局容器基础样式（确保不超出视口） */
+    body {
+      margin: 0;
+      padding: 0 1rem;
+      box-sizing: border-box;
+    }
+    /* 块级公式容器（强化移动端换行） */
     mjx-container[jax="CHTML"][display="true"] {
       display: block !important;
-      max-width: 100% !important;
-      width: 100% !important;
       overflow-x: auto !important;
-      overflow-y: hidden !important;
-      -webkit-overflow-scrolling: touch !important;
+      white-space: pre-wrap !important; /* 强制支持换行 */
+      word-wrap: break-word !important;
+      max-width: 100% !important;
       margin: 1.5rem 0 !important;
-      padding: 0.5rem 0 !important;
+      padding: 0.5rem !important;
       box-sizing: border-box !important;
     }
-
-    /* 防止內層 mjx-math 被壓縮 */
-    mjx-container[jax="CHTML"][display="true"] mjx-math {
-      display: inline-block !important;
-      min-width: 100% !important;
-      white-space: nowrap !important;   /* 保持公式不自動斷，但允許容器滾動 */
-    }
-
-    /* 行內公式微調 */
+    /* 行内公式容器 */
     mjx-container[jax="CHTML"][display="false"] {
       vertical-align: middle !important;
       font-size: 1.05em !important;
+      white-space: normal !important;
     }
-
-    /* 手機小螢幕再縮一點，避免太擠 */
+    /* 修复移动端公式溢出（细化适配） */
     @media (max-width: 768px) {
       mjx-container {
         font-size: 0.95em !important;
+        max-width: calc(100% - 2rem) !important; /* 减去页面内边距 */
+      }
+      /* 块级公式移动端缩进调整 */
+      mjx-container[jax="CHTML"][display="true"] {
+        displayIndent: '1em' !important;
       }
     }
-
-    /* 如果你想把公式包在 div 裡更保險，可選用 */
-    .math-scroll-wrapper {
-      max-width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      margin: 1rem 0;
-    }
 </style>
+</head>
+<body>
+<!-- 你的页面内容 -->
+</body>
+</html>
