@@ -325,20 +325,48 @@ ul, ol {
 .post-content {
   overflow: visible !important; /* 禁止容器隐藏列表序号 */
 }
-/* 数学公式样式（自动换行、适配移动端） */
+/* 数学公式容器：全局适配 */
 .mathjax-container {
-  width: 100%;
-  overflow-x: auto;
-  margin: 1.5rem 0;
-  padding: 0.5rem;
+  width: 100% !important;
+  overflow-x: auto !important;
+  margin: 1.5rem 0 !important;
+  padding: 0.5rem !important;
+  box-sizing: border-box !important; /* 避免 padding 撑大宽度 */
 }
 
-/* 强制公式超出宽度时自动换行 */
+/* 覆盖 MathJax 生成的 mjx-container 样式 */
 mjx-container {
-  overflow-x: auto;
-  white-space: normal;
-  word-wrap: break-word;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: auto !important;
+  white-space: pre-wrap !important;
+  word-break: break-all !important; /* 强制长公式换行 */
+  display: inline-block !important; /* 行内公式保持对齐，块级公式自动换行 */
+  box-sizing: border-box !important;
 }
+
+/* 块级公式单独处理：强制块级显示 */
+mjx-container[jax="CHTML"][display="true"] {
+  display: block !important;
+  margin: 1.5rem auto !important;
+  padding: 0.5rem !important;
+}
+
+/* 行内公式：保持垂直居中 */
+mjx-container[jax="CHTML"][display="false"] {
+  vertical-align: middle !important;
+  font-size: 1.05em !important;
+}
+
+/* 移动端进一步适配 */
+@media (max-width: 768px) {
+  mjx-container {
+    font-size: 0.9em !important;
+    padding: 0.2rem !important;
+  }
+}
+
 
 /* 文章样式 */
 .post-header {
