@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- MathJax核心配置（适配现有全局CSS） -->
+<!-- MathJax最终适配：公式换行+页面绝对不宽出 -->
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
 <script>
     window.MathJax = {
@@ -17,7 +17,7 @@
         displayIndent: '1em',
         linebreaks: {
           automatic: true,
-          width: 'calc(100% - 2rem)', // 适配body内边距，不超父容器
+          width: 'calc(100vw - 2.4rem)', // 基于视口宽度，强制不超屏
           linebreakAtWhitespace: true
         }
       },
@@ -26,11 +26,11 @@
           return MathJax.startup.defaultPageReady().then(function() {
             const mathElements = document.querySelectorAll('mjx-container');
             mathElements.forEach(el => {
-              el.style.maxWidth = '100%';
-              el.style.overflowX = 'hidden'; // 禁止横向滚动
-              el.style.overflowY = 'visible';
-              el.style.margin = '1.5rem 0';
-              el.offsetHeight; // 触发重绘
+              el.style.maxWidth = '100vw !important';
+              el.style.overflowX = 'hidden !important';
+              el.style.overflowY = 'visible !important';
+              el.style.margin = '1.5rem 0 !important';
+              el.offsetHeight; // 强制重绘
             });
           });
         }
@@ -43,13 +43,19 @@
     };
 </script>
 <style>
-    /* 块级公式：强制换行+不撑宽页面（高优先级适配） */
+    /* 强制页面不宽出核心（高优先级穿透） */
+    html, body {
+      overflow-x: hidden !important; /* 彻底禁止横向滚动 */
+      max-width: 100vw !important; /* 页面宽度=视口宽度，绝不超界 */
+    }
+
+    /* 块级公式：绝对限制在视口内，换行不撑页 */
     .page-content mjx-container[jax="CHTML"][display="true"],
     .post-content mjx-container[jax="CHTML"][display="true"] {
       display: block !important;
-      max-width: calc(100% - 2rem) !important; /* 匹配现有页面内边距 */
+      max-width: calc(100vw - 2.4rem) !important; /* 视口宽 - 左右内边距（精准适配） */
       width: 100% !important;
-      overflow-x: hidden !important;
+      overflow-x: hidden !important; /* 禁用横向滚动，避免页面被撑宽 */
       overflow-y: visible !important;
       white-space: pre-wrap !important;
       word-wrap: break-word !important;
@@ -57,11 +63,15 @@
       margin: 1.5rem 0 !important;
       padding: 0.5rem !important;
       box-sizing: border-box !important;
+      position: relative !important;
+      left: 0 !important;
+      transform: none !important;
     }
 
-    /* 公式内部元素：继承换行样式，避免局部溢出 */
+    /* 公式内部元素：强制继承视口宽度限制 */
     mjx-container[jax="CHTML"] mjx-math,
-    mjx-container[jax="CHTML"] mjx-row {
+    mjx-container[jax="CHTML"] mjx-row,
+    mjx-container[jax="CHTML"] mjx-itable {
       white-space: pre-wrap !important;
       word-wrap: break-word !important;
       word-break: break-all !important;
@@ -69,21 +79,21 @@
       box-sizing: border-box !important;
     }
 
-    /* 行内公式：适配文本流，不撑破行 */
+    /* 行内公式：不撑破文本流 */
     .page-content mjx-container[jax="CHTML"][display="false"],
     .post-content mjx-container[jax="CHTML"][display="false"] {
       vertical-align: middle !important;
       font-size: 1em !important;
       white-space: normal !important;
-      max-width: calc(100% - 1rem) !important;
+      max-width: calc(100vw - 2.4rem) !important;
       box-sizing: border-box !important;
     }
 
-    /* 移动端专项适配（匹配现有响应式规则） */
+    /* 移动端终极适配 */
     @media (max-width: 768px) {
       .page-content mjx-container[jax="CHTML"][display="true"],
       .post-content mjx-container[jax="CHTML"][display="true"] {
-        max-width: calc(100% - 1.6rem) !important; /* 匹配body移动端内边距 */
+        max-width: calc(100vw - 1.6rem) !important; /* 匹配移动端内边距 */
         displayIndent: 0 !important;
         padding: 0.3rem !important;
         font-size: 0.88em !important;
@@ -91,11 +101,12 @@
 
       mjx-container {
         font-size: 0.9em !important;
+        max-width: calc(100vw - 1.6rem) !important;
       }
     }
 </style>
 </head>
 <body>
-<!-- 你的页面内容（公式会自动适配.page-content/.post-content容器） -->
+<!-- 页面内容正常放置，公式自动适配 -->
 </body>
 </html>
