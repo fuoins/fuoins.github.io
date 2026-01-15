@@ -82,43 +82,181 @@ window.addEventListener('resize', function() {
 - 用`transition`添加平滑动画，提升交互体验。
 
 #### 2. 数学公式渲染与移动端自动换行
-数学公式是技术博客的重要功能，本博客通过**MathJax 3.x**实现公式渲染，核心解决了两个关键问题：
-- **公式不显示**：通过正确配置`inlineMath`和`displayMath`，确保`$...$`（行内公式）和`$$...$$`（块级公式）被正确识别；
-- **移动端换行异常**：通过CSS强制公式容器`overflow-x: auto`，超出屏幕宽度时显示横向滚动条，同时用`white-space: pre-wrap`实现自动换行。
-
-核心配置（对应`_includes/mathjax.html`）：
-```javascript
+ 
+数学公式是技术博客的重要功能，本博客通过MathJax 3.x实现公式渲染，核心解决了两个关键问题：
+ 
+- 公式不显示：通过正确配置 `inlineMath` 和 `displayMath `，确保 `$...$ （行内公式）`和` $$...$$ （块级公式）`被正确识别；
+- 移动端换行异常：从「公式不换行」→「公式换行但页面宽出」→「公式换行且页面不超界」，通过三层优化实现终极适配。
+ 
+实现原理
+ 
+核心是「MathJax 内核配置 + CSS 样式穿透」，既要让 MathJax 识别公式并主动换行，也要强制限制公式容器宽度，避免撑开页面：
+ 
+1. MathJax 配置层：开启自动换行机制，指定换行宽度阈值，渲染后强制重绘确保样式生效；
+2. CSS 限制层：用  `100vw `（视口宽度）绑定页面最大宽度，禁止横向滚动，同时穿透 MathJax 默认样式，强制公式内部元素继承换行规则。
+ 
+优化历程（从问题到解决）
+ 
+阶段1：初始配置（解决「公式不显示」）
+ 
+先完成基础渲染配置，确保行内/块级公式被正确解析，关闭冗余右键菜单简化体验：
+ ```
+javascript  
 window.MathJax = {
   tex: {
     inlineMath: [['$', '$'], ['\\(', '\\)']], // 行内公式标识
     displayMath: [['$$', '$$'], ['\\[', '\\]']], // 块级公式标识
-    processEscapes: true // 支持\$显示普通美元符号
+    processEscapes: true // 支持 \$ 显示普通美元符号
+  },
+  options: { enableMenu: false } // 关闭右键菜单
+};
+```
+ 
+阶段2：第一版换行（解决「公式不换行」，但页面宽出）
+ 
+开启 MathJax 自动换行，给公式容器加基础换行样式，但未限制页面宽度，导致公式换行后页面仍被横向拉长：
+```
+javascript  
+html: {
+  linebreaks: {
+    automatic: true, // 开启自动换行
+    width: '85%' // 换行宽度阈值
+  }
+}
+ 
+ 
+css  
+mjx-container[jax="CHTML"][display="true"] {
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+}
+```
+ 
+阶段3：终极适配（解决「页面宽出」，达成目标）
+ 
+核心修改3点，实现「公式换行 + 页面不变宽」：
+ 
+1. 给  `html/body ` 加 ` max-width: 100vw + overflow-x: hidden `，彻底禁止页面横向超界；
+2. 换行宽度改用  `calc(100vw - 内边距)` ，绑定视口宽度，公式再长也不超屏；
+3. 穿透 MathJax 内部元素`（ mjx-math / mjx-row ）`，强制继承换行规则，避免局部元素撑宽。
+ 
+核心配置（`最终版，对应  _includes/mathjax.html `）
+ ```
+html  
+<!DOCTYPE html>
+<html>
+<head>
+<!-- MathJax 3.x 公式渲染配置 -->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true,
+    autoload: { color: [], colorv2: ['color'] }
   },
   chtml: {
-    scale: 1.05, // 公式缩放比例，适配页面字体
-    displayAlign: 'left' // 块级公式左对齐，便于换行
+    scale: 1.02, // 微调缩放，平衡清晰度与宽度
+    displayAlign: 'left', // 块级公式左对齐
+    displayIndent: '1em',
+    linebreaks: {
+      automatic: true,
+      width: 'calc(100vw - 2.4rem)', // 视口宽 - 左右内边距，精准控宽
+      linebreakAtWhitespace: true
+    }
   },
   startup: {
     pageReady: function() {
       return MathJax.startup.defaultPageReady().then(function() {
-        // 公式渲染完成后添加自适应样式
+        // 渲染后强制重绘，确保样式生效
         const mathElements = document.querySelectorAll('mjx-container');
         mathElements.forEach(el => {
-          el.style.maxWidth = '100%';
-          el.style.overflowX = 'auto';
+          el.style.maxWidth = '100vw !important';
+          el.style.overflowX = 'hidden !important';
+          el.style.margin = '1.5rem 0 !important';
+          el.offsetHeight; // 触发浏览器重绘
         });
       });
     }
+  },
+  options: {
+    enableMenu: false,
+    ignoreHtmlClass: 'tex2jax_ignore',
+    processHtmlClass: 'tex2jax_process'
   }
 };
-```
+</script>
+<style>
+/* 页面不宽出核心样式（高优先级穿透） */
+html, body {
+  overflow-x: hidden !important; /* 禁止横向滚动 */
+  max-width: 100vw !important; /* 页面宽度=视口宽度，绝不超界 */
+}
 
-公式渲染示例：
-- 行内公式：$f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x-a)^n$
-- 块级公式（自动换行测试）：
-  $$
-  F(x,y)=\int_{0}^{1}\int_{0}^{1}\frac{\partial^2}{\partial u\partial v}\left[\frac{u^2v^2}{1-(ux+vy)^2}\right]dudv + \prod_{k=1}^{10}\left(1+\frac{1}{k^2}\right)
-  $$
+/* 块级公式：强制换行+不撑页 */
+.page-content mjx-container[jax="CHTML"][display="true"],
+.post-content mjx-container[jax="CHTML"][display="true"] {
+  display: block !important;
+  max-width: calc(100vw - 2.4rem) !important;
+  width: 100% !important;
+  overflow-x: hidden !important;
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  word-break: break-all !important; /* 极端长公式强制断字 */
+  margin: 1.5rem 0 !important;
+  padding: 0.5rem !important;
+  box-sizing: border-box !important;
+}
+
+/* 公式内部元素：继承换行规则 */
+mjx-container[jax="CHTML"] mjx-math,
+mjx-container[jax="CHTML"] mjx-row,
+mjx-container[jax="CHTML"] mjx-itable {
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* 行内公式：适配文本流，不撑破行 */
+.page-content mjx-container[jax="CHTML"][display="false"],
+.post-content mjx-container[jax="CHTML"][display="false"] {
+  vertical-align: middle !important;
+  max-width: calc(100vw - 2.4rem) !important;
+  box-sizing: border-box !important;
+}
+
+/* 移动端适配（匹配博客响应式规则） */
+@media (max-width: 768px) {
+  .page-content mjx-container[jax="CHTML"][display="true"],
+  .post-content mjx-container[jax="CHTML"][display="true"] {
+    max-width: calc(100vw - 1.6rem) !important; /* 匹配移动端内边距 */
+    displayIndent: 0 !important;
+    padding: 0.3rem !important;
+    font-size: 0.88em !important;
+  }
+}
+</style>
+</head>
+<body>
+<!-- 公式会自动适配 .page-content/.post-content 容器，直接在 MD 中写 $公式$ 或 $$公式$$ 即可 -->
+</body>
+</html>
+ 
+ ```
+使用方式
+ 
+在 MD 文章中直接编写公式，无需额外标签：
+ 
+- 行内公式： $f(x) = x^2 + 2x + 1$ （嵌入文本中）；
+- 块级公式：
+ 
+math  
+$$
+f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}} + \sum_{n=1}^{\infty} \frac{1}{n^2}
+$$
+   
 
 #### 3. 代码块醒目效果实现（纯CSS）
 代码块的醒目效果完全通过CSS实现，无需任何高亮插件，核心设计思路如下：
