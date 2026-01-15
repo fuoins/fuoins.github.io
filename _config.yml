@@ -42,7 +42,7 @@ nav:
     url: "/"
   - name: "本站详细"
     url: "/pages/writing/"
-  - name: "文章归档"
+  - name: "Notes"
     url: "/pages/archive/"
   - name: "关于赵宇"
     url: "/pages/about/"
