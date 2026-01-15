@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- 强化移动端换行适配：MathJax核心配置 + 强制样式穿透 -->
+<!-- MathJax核心配置（适配现有全局CSS） -->
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
 <script>
     window.MathJax = {
@@ -12,26 +12,25 @@
         autoload: { color: [], colorv2: ['color'] }
       },
       chtml: {
-        scale: 1.02, // 降低缩放，避免宽度溢出
+        scale: 1.02,
         displayAlign: 'left',
-        displayIndent: '1em', // 缩小缩进，预留换行空间
+        displayIndent: '1em',
         linebreaks: {
-          automatic: true, // 强制自动换行
-          width: '85%', // 严格限制换行宽度（适配移动端）
-          linebreakAtWhitespace: true // 允许在空白处换行
+          automatic: true,
+          width: 'calc(100% - 2rem)', // 适配body内边距，不超父容器
+          linebreakAtWhitespace: true
         }
       },
       startup: {
         pageReady: function() {
           return MathJax.startup.defaultPageReady().then(function() {
-            // 渲染后强制重排，确保样式生效
             const mathElements = document.querySelectorAll('mjx-container');
             mathElements.forEach(el => {
               el.style.maxWidth = '100%';
-              el.style.overflowX = 'auto';
-              el.style.margin = '1rem 0';
-              // 主动触发重绘
-              el.offsetHeight;
+              el.style.overflowX = 'hidden'; // 禁止横向滚动
+              el.style.overflowY = 'visible';
+              el.style.margin = '1.5rem 0';
+              el.offsetHeight; // 触发重绘
             });
           });
         }
@@ -44,58 +43,59 @@
     };
 </script>
 <style>
-    /* 全局重置，避免父容器干扰 */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      padding: 0 0.8rem;
-      overflow-x: hidden; /* 禁止页面横向滚动 */
-    }
-    /* 块级公式：穿透MathJax默认样式，强制换行 */
-    mjx-container[jax="CHTML"][display="true"] {
+    /* 块级公式：强制换行+不撑宽页面（高优先级适配） */
+    .page-content mjx-container[jax="CHTML"][display="true"],
+    .post-content mjx-container[jax="CHTML"][display="true"] {
       display: block !important;
-      max-width: 100% !important;
-      overflow-x: auto !important;
-      white-space: pre-wrap !important; /* 强制文本换行 */
+      max-width: calc(100% - 2rem) !important; /* 匹配现有页面内边距 */
+      width: 100% !important;
+      overflow-x: hidden !important;
+      overflow-y: visible !important;
+      white-space: pre-wrap !important;
       word-wrap: break-word !important;
-      word-break: break-all !important; /* 极端情况强制断字 */
+      word-break: break-all !important;
       margin: 1.5rem 0 !important;
       padding: 0.5rem !important;
+      box-sizing: border-box !important;
     }
-    /* 公式内部元素：强制继承换行样式 */
-    mjx-container[jax="CHTML"] mjx-math {
+
+    /* 公式内部元素：继承换行样式，避免局部溢出 */
+    mjx-container[jax="CHTML"] mjx-math,
+    mjx-container[jax="CHTML"] mjx-row {
       white-space: pre-wrap !important;
       word-wrap: break-word !important;
       word-break: break-all !important;
       max-width: 100% !important;
+      box-sizing: border-box !important;
     }
-    /* 行内公式：避免撑破行 */
-    mjx-container[jax="CHTML"][display="false"] {
+
+    /* 行内公式：适配文本流，不撑破行 */
+    .page-content mjx-container[jax="CHTML"][display="false"],
+    .post-content mjx-container[jax="CHTML"][display="false"] {
       vertical-align: middle !important;
       font-size: 1em !important;
       white-space: normal !important;
-      max-width: 90% !important;
+      max-width: calc(100% - 1rem) !important;
+      box-sizing: border-box !important;
     }
-    /* 移动端专项适配（强制窄屏换行） */
+
+    /* 移动端专项适配（匹配现有响应式规则） */
     @media (max-width: 768px) {
+      .page-content mjx-container[jax="CHTML"][display="true"],
+      .post-content mjx-container[jax="CHTML"][display="true"] {
+        max-width: calc(100% - 1.6rem) !important; /* 匹配body移动端内边距 */
+        displayIndent: 0 !important;
+        padding: 0.3rem !important;
+        font-size: 0.88em !important;
+      }
+
       mjx-container {
         font-size: 0.9em !important;
-        max-width: calc(100% - 1.6rem) !important; /* 精确减去页面内边距 */
-      }
-      mjx-container[jax="CHTML"][display="true"] {
-        displayIndent: 0 !important; /* 取消缩进，节省宽度 */
-        padding: 0.3rem !important;
       }
     }
 </style>
 </head>
 <body>
-<!-- 测试公式（可替换为你的内容） -->
-$$
-f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}} + \int_{a}^{b} x^2 dx + \sum_{n=1}^{\infty} \frac{1}{n^2} + \sqrt{x^2 + y^2 + z^2 + w^2 + v^2}
-$$
+<!-- 你的页面内容（公式会自动适配.page-content/.post-content容器） -->
 </body>
 </html>
