@@ -325,47 +325,6 @@ ul, ol {
 .post-content {
   overflow: visible !important; /* 禁止容器隐藏列表序号 */
 }
-/* === 1. 核心容器：确保宽度和溢出处理 === */
-/* 针对 MathJax v3 */
-mjx-container {
-    display: block !important; /* 强制块级，防止被当作文本流 */
-    width: 100% !important;
-    max-width: 100% !important;
-    /* 启用横向滚动条，这是防止页面被撑开的最后一道防线 */
-    overflow-x: auto !important;
-    /* 禁止内部换行破坏公式结构，但允许容器滚动 */
-    overflow-y: hidden !important;
-    /* 如果你坚持要强制换行（可能会切碎公式），请注释掉 overflow-x，开启下面这行 */
-    /* white-space: normal !important; */
-}
-
-/* === 2. 针对 KaTeX (Jekyll 中也很常见) === */
-.katex {
-    white-space: normal !important;
-    word-break: break-word !important;
-}
-
-/* === 3. 关键修复：针对手机 Safari 的文本自动缩放 === */
-/* iOS Safari 有时为了“美观”会强行放大公式字体，导致换行失效 */
-.mjx-chtml {
-    -webkit-text-size-adjust: none !important;
-    text-size-adjust: none !important;
-}
-
-/* === 4. 针对行内公式的微调 === */
-/* 有时候行内公式会被上下行高挤压 */
-.mjx-container [tabindex] {
-    outline: none !important; /* 去除聚焦蓝框 */
-}
-
-/* === 5. 最强硬的手段：如果你一定要公式换行（不推荐，会很难看） === */
-/* 如果你发现公式太长必须切碎换行，请取消下面这几行的注释 */
-/*
-.mjx-container > * {
-    word-break: break-all !important;
-    white-space: normal !important;
-}
-*/
 
 /* 文章样式 */
 .post-header {
