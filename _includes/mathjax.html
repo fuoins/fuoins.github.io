@@ -1,87 +1,101 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- 简化版MathJax配置：确保公式正常渲染，适配所有浏览器 -->
+<!-- 强化移动端换行适配：MathJax核心配置 + 强制样式穿透 -->
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
 <script>
     window.MathJax = {
       tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']], // 行内公式标识（必须用单引号）
-        displayMath: [['$$', '$$'], ['\\[', '\\]']], // 块级公式标识
-        processEscapes: true, // 支持转义字符（\$ 显示普通$）
-        autoload: {
-          color: [],
-          colorv2: ['color']
-        }
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        autoload: { color: [], colorv2: ['color'] }
       },
       chtml: {
-        scale: 1.05, // 公式缩放（适配页面字体）
-        displayAlign: 'left', // 块级公式左对齐
-        displayIndent: '2em',
+        scale: 1.02, // 降低缩放，避免宽度溢出
+        displayAlign: 'left',
+        displayIndent: '1em', // 缩小缩进，预留换行空间
         linebreaks: {
-          automatic: true, // 开启自动换行（核心修复）
-          width: '90%' // 换行宽度阈值（适配移动端）
+          automatic: true, // 强制自动换行
+          width: '85%', // 严格限制换行宽度（适配移动端）
+          linebreakAtWhitespace: true // 允许在空白处换行
         }
       },
       startup: {
         pageReady: function() {
           return MathJax.startup.defaultPageReady().then(function() {
-            // 公式渲染完成后，为容器添加自适应样式
+            // 渲染后强制重排，确保样式生效
             const mathElements = document.querySelectorAll('mjx-container');
             mathElements.forEach(el => {
               el.style.maxWidth = '100%';
               el.style.overflowX = 'auto';
               el.style.margin = '1rem 0';
+              // 主动触发重绘
+              el.offsetHeight;
             });
           });
         }
       },
       options: {
-        enableMenu: false, // 关闭右键菜单（简化）
+        enableMenu: false,
         ignoreHtmlClass: 'tex2jax_ignore',
         processHtmlClass: 'tex2jax_process'
       }
     };
 </script>
-<!-- 强制公式容器适配样式（解决换行/截断问题） -->
 <style>
-    /* 全局容器基础样式（确保不超出视口） */
-    body {
+    /* 全局重置，避免父容器干扰 */
+    * {
       margin: 0;
-      padding: 0 1rem;
+      padding: 0;
       box-sizing: border-box;
     }
-    /* 块级公式容器（强化移动端换行） */
+    body {
+      padding: 0 0.8rem;
+      overflow-x: hidden; /* 禁止页面横向滚动 */
+    }
+    /* 块级公式：穿透MathJax默认样式，强制换行 */
     mjx-container[jax="CHTML"][display="true"] {
       display: block !important;
-      overflow-x: auto !important;
-      white-space: pre-wrap !important; /* 强制支持换行 */
-      word-wrap: break-word !important;
       max-width: 100% !important;
+      overflow-x: auto !important;
+      white-space: pre-wrap !important; /* 强制文本换行 */
+      word-wrap: break-word !important;
+      word-break: break-all !important; /* 极端情况强制断字 */
       margin: 1.5rem 0 !important;
       padding: 0.5rem !important;
-      box-sizing: border-box !important;
     }
-    /* 行内公式容器 */
+    /* 公式内部元素：强制继承换行样式 */
+    mjx-container[jax="CHTML"] mjx-math {
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;
+      word-break: break-all !important;
+      max-width: 100% !important;
+    }
+    /* 行内公式：避免撑破行 */
     mjx-container[jax="CHTML"][display="false"] {
       vertical-align: middle !important;
-      font-size: 1.05em !important;
+      font-size: 1em !important;
       white-space: normal !important;
+      max-width: 90% !important;
     }
-    /* 修复移动端公式溢出（细化适配） */
+    /* 移动端专项适配（强制窄屏换行） */
     @media (max-width: 768px) {
       mjx-container {
-        font-size: 0.95em !important;
-        max-width: calc(100% - 2rem) !important; /* 减去页面内边距 */
+        font-size: 0.9em !important;
+        max-width: calc(100% - 1.6rem) !important; /* 精确减去页面内边距 */
       }
-      /* 块级公式移动端缩进调整 */
       mjx-container[jax="CHTML"][display="true"] {
-        displayIndent: '1em' !important;
+        displayIndent: 0 !important; /* 取消缩进，节省宽度 */
+        padding: 0.3rem !important;
       }
     }
 </style>
 </head>
 <body>
-<!-- 你的页面内容 -->
+<!-- 测试公式（可替换为你的内容） -->
+$$
+f(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}} + \int_{a}^{b} x^2 dx + \sum_{n=1}^{\infty} \frac{1}{n^2} + \sqrt{x^2 + y^2 + z^2 + w^2 + v^2}
+$$
 </body>
 </html>
