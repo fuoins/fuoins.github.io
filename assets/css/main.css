@@ -336,7 +336,7 @@ ul, ol {
 /* 强制公式超出宽度时自动换行 */
 mjx-container {
   overflow-x: auto;
-  white-space: pre-wrap;
+  white-space: normal;
   word-wrap: break-word;
 }
 
