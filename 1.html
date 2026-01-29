@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随机分队</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f5f5;
+            gap: 30px;
+        }
+        .btn {
+            padding: 12px 30px;
+            font-size: 18px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #3367d6;
+        }
+        .team-box {
+            display: flex;
+            gap: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .team {
+            width: 200px;
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .team h3 {
+            color: #4285f4;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        .team p {
+            font-size: 20px;
+            line-height: 2.2;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <button class="btn" id="randomBtn">点击随机分队</button>
+    <div class="team-box">
+        <div class="team" id="team1">
+            <h3>第一队</h3>
+            <p>待分队</p>
+        </div>
+        <div class="team" id="team2">
+            <h3>第二队</h3>
+            <p>待分队</p>
+        </div>
+    </div>
+
+    <script>
+        // 人员列表
+        const people = ['宇爹', '峰儿', '蕤儿', '米儿', '阳儿', '德儿'];
+        const randomBtn = document.getElementById('randomBtn');
+        const team1 = document.getElementById('team1');
+        const team2 = document.getElementById('team2');
+
+        // 随机分队方法
+        function randomTeam() {
+            // 深拷贝并打乱数组
+            const shuffled = [...people].sort(() => Math.random() - 0.5);
+            // 平均分割为两队
+            const t1 = shuffled.slice(0, 3);
+            const t2 = shuffled.slice(3);
+            // 渲染到页面
+            team1.innerHTML = `<h3>第一队</h3><p>${t1.join('<br>')}</p>`;
+            team2.innerHTML = `<h3>第二队</h3><p>${t2.join('<br>')}</p>`;
+        }
+
+        // 绑定按钮点击事件
+        randomBtn.addEventListener('click', randomTeam);
+    </script>
+</body>
+</html>
