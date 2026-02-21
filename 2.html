@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>随机分组</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui, sans-serif}
+  body{background:#f7f8fa;padding:40px 20px}
+  .box{max-width:700px;margin:0 auto;text-align:center}
+  h1{margin-bottom:10px;color:#222}
+  .tip{color:#666;margin-bottom:30px}
+  .groups{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+  .group{background:#fff;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,0.08);
+          width:260px;padding:24px}
+  .group h2{margin-bottom:16px;color:#0066cc}
+  .item{padding:8px 0;font-size:16px;color:#333}
+  .btn{margin-top:30px;padding:12px 24px;background:#0066cc;color:#fff;
+       border:none;border-radius:12px;font-size:16px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>8人随机分组</h1>
+  <p class="tip">每组4人，点击按钮重新随机分组</p >
+  <div class="groups" id="groups"></div>
+  <button class="btn" onclick="render()">重新随机分组</button>
+</div>
+
+<script>
+const names = ['福德','阳','虎','赵宇','子瑶','米','刘蕤宁','宋海峰']
+
+function render(){
+  // 打乱数组
+  const arr = [...names].sort(()=>Math.random()-0.5)
+  const g1 = arr.slice(0,4)
+  const g2 = arr.slice(4,8)
+  const html = `
+    <div class="group">
+      <h2>第一组</h2>
+      ${g1.map(n=>`<div class="item">${n}</div>`).join('')}
+    </div>
+    <div class="group">
+      <h2>第二组</h2>
+      ${g2.map(n=>`<div class="item">${n}</div>`).join('')}
+    </div>
+  `
+  document.getElementById('groups').innerHTML = html
+}
+
+// 初始加载就分一次
+render()
+</script>
+</body>
+</html>
