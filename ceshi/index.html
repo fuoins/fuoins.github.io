@@ -331,9 +331,9 @@
         <!-- 简介区域 -->
         <div class="intro-section">
             <h2>👋 欢迎使用宇总在线测试系统</h2>
-            <p>本系统支持多种题型，包括<span class="highlight">选择题</span>、<span class="highlight">填空题</span>和<span class="highlight">简答题</span>。</p>
+            <p>本系统支持多种题型，包括<span class="highlight">选择题</span>、<span class="highlight">填空题</span>、<span class="highlight">简答题</span>和<span class="highlight">判断题</span>。</p>
             <p>🔄 每次刷新页面，<strong>题目顺序</strong>和<strong>选项顺序</strong>都会随机打乱，帮助你更好地巩固知识。</p>
-            <p>💡 选择题点击后立即判断对错，填空题和简答题点击"显示答案"按钮查看参考答案。</p>
+            <p>💡 选择题和判断题点击后立即判断对错，填空题和简答题点击"显示答案"按钮查看参考答案。</p>
             <p>📱 如需定制专属题库，请联系下方微信二维码。</p>
         </div>
         
@@ -361,15 +361,21 @@
                 <div id="choice-questions"></div>
             </div>
             
+            <!-- 判断题部分 (新增) -->
+            <div class="section" id="judge-section">
+                <h2 class="section-title">二、判断题（正确选“√”，错误选“×”）</h2>
+                <div id="judge-questions"></div>
+            </div>
+            
             <!-- 填空题部分 -->
             <div class="section" id="fill-section">
-                <h2 class="section-title">二、填空题</h2>
+                <h2 class="section-title">三、填空题</h2>
                 <div id="fill-questions"></div>
             </div>
             
             <!-- 简答题部分 -->
             <div class="section" id="essay-section">
-                <h2 class="section-title">三、简答题</h2>
+                <h2 class="section-title">四、简答题</h2>
                 <div id="essay-questions"></div>
             </div>
         </div>
@@ -424,6 +430,7 @@
                 
                 // 渲染题目
                 renderChoiceQuestions();
+                renderJudgeQuestions(); // 新增：渲染判断题
                 renderFillQuestions();
                 renderEssayQuestions();
                 
@@ -497,6 +504,88 @@
                             this.querySelector('.feedback').className = 'feedback wrong-feedback';
                             allOptions.forEach(opt => {
                                 if (opt.dataset.correct === 'true') {
+                                    opt.classList.add('selected');
+                                    opt.querySelector('.feedback').textContent = '✓ 正确答案';
+                                    opt.querySelector('.feedback').className = 'feedback correct-feedback';
+                                }
+                            });
+                        }
+                    });
+                    optionsDiv.appendChild(optionDiv);
+                });
+                questionDiv.appendChild(optionsDiv);
+                container.appendChild(questionDiv);
+            });
+        }
+
+        // 渲染判断题 (新增函数)
+        function renderJudgeQuestions() {
+            const container = document.getElementById('judge-questions');
+            container.innerHTML = '';
+            if (!currentExamData.judgeQuestions) return;
+            
+            // 判断题选项固定为 "√ 正确" 和 "× 错误"
+            const judgeOptions = ["√ 正确", "× 错误"];
+            
+            const shuffledQuestions = [...currentExamData.judgeQuestions].sort(() => Math.random() - 0.5);
+            
+            shuffledQuestions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.textContent = `${index + 1}. ${q.question}`;
+                questionDiv.appendChild(questionText);
+                
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+                
+                // 判断题的选项顺序也随机
+                const shuffledOptions = [...judgeOptions].sort(() => Math.random() - 0.5);
+                
+                shuffledOptions.forEach((option, optIndex) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'option';
+                    // 判断这个选项是否是正确的（"√ 正确" 对应 true, "× 错误" 对应 false）
+                    const isThisOptionTrue = option.startsWith('√');
+                    optionDiv.dataset.correct = (isThisOptionTrue === q.answer);
+                    
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = `judge-${q.id}`;
+                    radio.id = `judge-${q.id}-opt${optIndex}`;
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = `judge-${q.id}-opt${optIndex}`;
+                    label.textContent = ` ${option}`;
+                    
+                    const feedback = document.createElement('span');
+                    feedback.className = 'feedback';
+                    
+                    optionDiv.appendChild(radio);
+                    optionDiv.appendChild(label);
+                    optionDiv.appendChild(feedback);
+                    
+                    optionDiv.addEventListener('click', function() {
+                        const isCorrect = this.dataset.correct === 'true';
+                        const allOptions = this.parentElement.querySelectorAll('.option');
+                        allOptions.forEach(opt => {
+                            opt.classList.remove('selected', 'wrong');
+                            opt.querySelector('.feedback').textContent = '';
+                        });
+                        if (isCorrect) {
+                            this.classList.add('selected');
+                            this.querySelector('.feedback').textContent = '✓ 正确';
+                            this.querySelector('.feedback').className = 'feedback correct-feedback';
+                        } else {
+                            this.classList.add('wrong');
+                            this.querySelector('.feedback').textContent = '✗ 错误';
+                            this.querySelector('.feedback').className = 'feedback wrong-feedback';
+                            // 显示正确答案
+                            allOptions.forEach(opt => {
+                                const optIsTrue = opt.querySelector('label').textContent.includes('√');
+                                if (optIsTrue === q.answer) {
                                     opt.classList.add('selected');
                                     opt.querySelector('.feedback').textContent = '✓ 正确答案';
                                     opt.querySelector('.feedback').className = 'feedback correct-feedback';
