@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宇总在线测试系统</title>
+    <style>
+        body { font-family: 'Microsoft YaHei', Arial, sans-serif; line-height: 1.6; max-width: 1000px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        .container { background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #333; margin-bottom: 30px; }
+        
+        /* 题库选择器 */
+        .selector-panel {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            color: white;
+        }
+        .selector-panel select {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            min-width: 300px;
+            cursor: pointer;
+        }
+        .selector-panel button {
+            padding: 10px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+        .selector-panel button:hover { background-color: #218838; }
+        
+        /* 原有样式保持不变 */
+        .section { margin-bottom: 40px; padding-bottom: 20px; border-bottom: 2px solid #eee; }
+        .section-title { color: #2c3e50; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #ddd; }
+        .question { margin-bottom: 25px; padding: 15px; background-color: #f9f9f9; border-radius: 8px; border-left: 4px solid #3498db; position: relative; }
+        .question-text { font-weight: bold; margin-bottom: 10px; color: #2c3e50; }
+        .options { margin-left: 20px; }
+        .option { margin-bottom: 8px; padding: 8px; cursor: pointer; border-radius: 4px; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background-color: #e8f4fc; }
+        .option.selected { background-color: #d4edda; border-left: 3px solid #28a745; }
+        .option.wrong { background-color: #f8d7da; border-left: 3px solid #dc3545; }
+        .feedback { margin-left: 10px; font-weight: bold; }
+        .correct-feedback { color: #28a745; }
+        .wrong-feedback { color: #dc3545; }
+        .answer-area { margin-top: 15px; padding: 10px; background-color: #e8f4fc; border-radius: 5px; border-left: 3px solid #17a2b8; display: none; white-space: pre-wrap; }
+        .answer-area strong { color: #17a2b8; }
+        .show-answer-btn { display: inline-block; margin-top: 10px; padding: 5px 10px; background-color: #17a2b8; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; }
+        .show-answer-btn:hover { background-color: #138496; }
+        #loading { text-align: center; padding: 50px; font-size: 18px; color: #666; display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 宇总在线测试系统</h1>
+        
+        <!-- 题库选择面板 -->
+        <div class="selector-panel">
+            <h2>请选择题库</h2>
+            <select id="examSelector">
+                <option value="">-- 请选择一套试卷 --</option>
+                <option value="data/web-basic.json">Web基础测试</option>
+                <option value="data/js-advanced.json">JavaScript进阶测试</option>
+                <option value="data/custom.json">自定义题库</option>
+            </select>
+            <button onclick="loadSelectedExam()">开始测试</button>
+        </div>
+
+        <!-- 加载提示 -->
+        <div id="loading">⏳ 正在加载题目...</div>
+
+        <!-- 题目容器（初始隐藏） -->
+        <div id="examContainer" style="display:none;">
+            <!-- 选择题部分 -->
+            <div class="section" id="choice-section">
+                <h2 class="section-title">一、选择题（每题只有一个正确答案）</h2>
+                <div id="choice-questions"></div>
+            </div>
+            
+            <!-- 填空题部分 -->
+            <div class="section" id="fill-section">
+                <h2 class="section-title">二、填空题</h2>
+                <div id="fill-questions"></div>
+            </div>
+            
+            <!-- 简答题部分 -->
+            <div class="section" id="essay-section">
+                <h2 class="section-title">三、简答题</h2>
+                <div id="essay-questions"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量，用于存储当前题库数据
+        let currentExamData = null;
+
+        // 加载选中的题库
+        async function loadSelectedExam() {
+            const selector = document.getElementById('examSelector');
+            const filePath = selector.value;
+            
+            if (!filePath) {
+                alert('请先选择一套题库！');
+                return;
+            }
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('examContainer').style.display = 'none';
+
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) throw new Error('文件加载失败');
+                
+                currentExamData = await response.json();
+                
+                // 渲染题目
+                renderChoiceQuestions();
+                renderFillQuestions();
+                renderEssayQuestions();
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('examContainer').style.display = 'block';
+                
+                // 滚动到顶部
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch (error) {
+                alert('加载题库失败！请确保文件路径正确，且文件格式为JSON。\n错误：' + error.message);
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        // ===== 以下函数与之前版本基本一致，只是改为读取 currentExamData =====
+
+        function renderChoiceQuestions() {
+            const container = document.getElementById('choice-questions');
+            container.innerHTML = '';
+            if (!currentExamData.choiceQuestions) return;
+            
+            const shuffledQuestions = [...currentExamData.choiceQuestions].sort(() => Math.random() - 0.5);
+            
+            shuffledQuestions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.textContent = `${index + 1}. ${q.question}`;
+                questionDiv.appendChild(questionText);
+                
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+                const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+                
+                shuffledOptions.forEach((option, optIndex) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'option';
+                    optionDiv.dataset.correct = (shuffledOptions.indexOf(q.options[q.answer]) === optIndex);
+                    
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = `choice-${q.id}`;
+                    radio.id = `choice-${q.id}-opt${optIndex}`;
+                    
+                    const label = document.createElement('label');
+                    label.htmlFor = `choice-${q.id}-opt${optIndex}`;
+                    label.textContent = ` ${String.fromCharCode(65 + optIndex)}. ${option}`;
+                    
+                    const feedback = document.createElement('span');
+                    feedback.className = 'feedback';
+                    
+                    optionDiv.appendChild(radio);
+                    optionDiv.appendChild(label);
+                    optionDiv.appendChild(feedback);
+                    
+                    optionDiv.addEventListener('click', function() {
+                        const isCorrect = this.dataset.correct === 'true';
+                        const allOptions = this.parentElement.querySelectorAll('.option');
+                        allOptions.forEach(opt => {
+                            opt.classList.remove('selected', 'wrong');
+                            opt.querySelector('.feedback').textContent = '';
+                        });
+                        if (isCorrect) {
+                            this.classList.add('selected');
+                            this.querySelector('.feedback').textContent = '✓ 正确';
+                            this.querySelector('.feedback').className = 'feedback correct-feedback';
+                        } else {
+                            this.classList.add('wrong');
+                            this.querySelector('.feedback').textContent = '✗ 错误';
+                            this.querySelector('.feedback').className = 'feedback wrong-feedback';
+                            allOptions.forEach(opt => {
+                                if (opt.dataset.correct === 'true') {
+                                    opt.classList.add('selected');
+                                    opt.querySelector('.feedback').textContent = '✓ 正确答案';
+                                    opt.querySelector('.feedback').className = 'feedback correct-feedback';
+                                }
+                            });
+                        }
+                    });
+                    optionsDiv.appendChild(optionDiv);
+                });
+                questionDiv.appendChild(optionsDiv);
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function renderFillQuestions() {
+            const container = document.getElementById('fill-questions');
+            container.innerHTML = '';
+            if (!currentExamData.fillQuestions) return;
+            
+            const shuffledQuestions = [...currentExamData.fillQuestions].sort(() => Math.random() - 0.5);
+            
+            shuffledQuestions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.innerHTML = `${index + 1}. ${q.question}`;
+                questionDiv.appendChild(questionText);
+                
+                const btn = document.createElement('button');
+                btn.className = 'show-answer-btn';
+                btn.textContent = '显示答案';
+                btn.onclick = function() { answerDiv.style.display = 'block'; this.style.display = 'none'; };
+                questionDiv.appendChild(btn);
+                
+                const answerDiv = document.createElement('div');
+                answerDiv.className = 'answer-area';
+                const answer = Array.isArray(q.answer) ? q.answer.join('、') : q.answer;
+                answerDiv.innerHTML = `<strong>参考答案：</strong>${answer}`;
+                questionDiv.appendChild(answerDiv);
+                
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function renderEssayQuestions() {
+            const container = document.getElementById('essay-questions');
+            container.innerHTML = '';
+            if (!currentExamData.essayQuestions) return;
+            
+            const shuffledQuestions = [...currentExamData.essayQuestions].sort(() => Math.random() - 0.5);
+            
+            shuffledQuestions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.textContent = `${index + 1}. ${q.question}`;
+                questionDiv.appendChild(questionText);
+                
+                const btn = document.createElement('button');
+                btn.className = 'show-answer-btn';
+                btn.textContent = '显示参考答案';
+                btn.onclick = function() { answerDiv.style.display = 'block'; this.style.display = 'none'; };
+                questionDiv.appendChild(btn);
+                
+                const answerDiv = document.createElement('div');
+                answerDiv.className = 'answer-area';
+                answerDiv.innerHTML = `<strong>参考答案：</strong>\n${q.answer}`;
+                questionDiv.appendChild(answerDiv);
+                
+                container.appendChild(questionDiv);
+            });
+        }
+    </script>
+</body>
+</html>
+
