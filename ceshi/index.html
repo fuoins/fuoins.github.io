@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>在线测试系统</title>
+    <title>宇总在线测试系统</title>
     <style>
         * {
             margin: 0;
@@ -326,11 +326,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>📚 在线测试系统</h1>
+        <h1>📚 宇总在线测试系统</h1>
         
         <!-- 简介区域 -->
         <div class="intro-section">
-            <h2>👋 欢迎使用智能测试系统</h2>
+            <h2>👋 欢迎使用宇总在线测试系统</h2>
             <p>本系统支持多种题型，包括<span class="highlight">选择题</span>、<span class="highlight">填空题</span>和<span class="highlight">简答题</span>。</p>
             <p>🔄 每次刷新页面，<strong>题目顺序</strong>和<strong>选项顺序</strong>都会随机打乱，帮助你更好地巩固知识。</p>
             <p>💡 选择题点击后立即判断对错，填空题和简答题点击"显示答案"按钮查看参考答案。</p>
@@ -342,9 +342,10 @@
             <h2>📝 请选择题库</h2>
             <select id="examSelector">
                 <option value="">-- 请选择一套试卷 --</option>
-                <option value="data/web-basic.json">Web基础测试</option>
-                <option value="data/js-advanced.json">JavaScript进阶测试</option>
-                <option value="data/custom.json">自定义题库</option>
+                <option value="data/os.json">操作系统</option>
+                <option value="data/ds.json">数据结构</option>
+                <option value="data/cn.json">计算机网络</option>
+                <option value="data/soft.json">软件工程</option>
             </select>
             <button onclick="loadSelectedExam()">开始测试</button>
         </div>
@@ -380,17 +381,17 @@
             
             <div class="qr-codes">
                 <div class="qr-code-item">
-                    <img src="../bhu/img/ck.png" alt="微信联系">
+                    <img src="../bhu/img/wx.png" alt="微信联系">
                     <p>微信联系</p>
                 </div>
                 <div class="qr-code-item">
-                    <img src="../bhu/img/wx.png" alt="打赏支持">
+                    <img src="../bhu/img/sk.png" alt="打赏支持">
                     <p>打赏支持</p>
                 </div>
             </div>
             
             <div class="footer-note">
-                <p>© 2024 在线测试系统 | 题库定制请联系上方微信</p>
+                <p>© 2026 宇总在线测试系统 | 题库定制请联系上方微信</p>
             </div>
         </div>
     </div>
@@ -419,7 +420,7 @@
                 currentExamData = await response.json();
                 
                 // 更新页面标题
-                document.querySelector('h1').textContent = `📚 ${currentExamData.examTitle || '在线测试系统'}`;
+                document.querySelector('h1').textContent = `📚 ${currentExamData.examTitle || '宇总在线测试系统'}`;
                 
                 // 渲染题目
                 renderChoiceQuestions();
@@ -432,7 +433,7 @@
                 // 滚动到顶部
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } catch (error) {
-                alert('加载题库失败！请确保文件路径正确，且文件格式为JSON。\n错误：' + error.message);
+                alert('加载题库失败！目前题库正在制作中\n错误：' + error.message);
                 document.getElementById('loading').style.display = 'none';
             }
         }
