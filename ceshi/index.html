@@ -3,69 +3,343 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>宇总在线测试系统</title>
+    <title>在线测试系统</title>
     <style>
-        body { font-family: 'Microsoft YaHei', Arial, sans-serif; line-height: 1.6; max-width: 1000px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
-        .container { background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #333; margin-bottom: 30px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif; 
+            line-height: 1.6; 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .container { 
+            background-color: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            margin-bottom: 30px;
+        }
+        
+        h1 { 
+            text-align: center; 
+            color: #2c3e50; 
+            margin-bottom: 20px; 
+            font-size: 2.5em;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* 简介区域 */
+        .intro-section {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .intro-section h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .intro-section p {
+            margin-bottom: 12px;
+            font-size: 1.05em;
+            line-height: 1.7;
+        }
+        
+        .intro-section .highlight {
+            background-color: rgba(255,255,255,0.2);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
         
         /* 题库选择器 */
         .selector-panel {
             text-align: center;
-            padding: 20px;
+            padding: 25px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
+            border-radius: 12px;
             margin-bottom: 30px;
             color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
+        
+        .selector-panel h2 {
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
         .selector-panel select {
-            padding: 10px 20px;
+            padding: 12px 20px;
             font-size: 16px;
-            border-radius: 5px;
+            border-radius: 8px;
             border: none;
             min-width: 300px;
             cursor: pointer;
+            background-color: white;
+            color: #333;
+            margin-right: 10px;
         }
+        
         .selector-panel button {
-            padding: 10px 30px;
+            padding: 12px 35px;
             font-size: 16px;
-            border-radius: 5px;
+            border-radius: 8px;
             border: none;
             background-color: #28a745;
             color: white;
             cursor: pointer;
-            margin-left: 10px;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            font-weight: bold;
         }
-        .selector-panel button:hover { background-color: #218838; }
         
-        /* 原有样式保持不变 */
-        .section { margin-bottom: 40px; padding-bottom: 20px; border-bottom: 2px solid #eee; }
-        .section-title { color: #2c3e50; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #ddd; }
-        .question { margin-bottom: 25px; padding: 15px; background-color: #f9f9f9; border-radius: 8px; border-left: 4px solid #3498db; position: relative; }
-        .question-text { font-weight: bold; margin-bottom: 10px; color: #2c3e50; }
+        .selector-panel button:hover { 
+            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 136, 56, 0.3);
+        }
+        
+        /* 加载提示 */
+        #loading { 
+            text-align: center; 
+            padding: 50px; 
+            font-size: 18px; 
+            color: #666; 
+            display: none; 
+        }
+        
+        /* 题目区域 */
+        .section { 
+            margin-bottom: 40px; 
+            padding-bottom: 20px; 
+            border-bottom: 2px solid #eee; 
+        }
+        
+        .section-title { 
+            color: #2c3e50; 
+            margin-bottom: 20px; 
+            padding-bottom: 10px; 
+            border-bottom: 1px solid #ddd; 
+            font-size: 1.5em;
+        }
+        
+        .question { 
+            margin-bottom: 25px; 
+            padding: 20px; 
+            background-color: #f9f9f9; 
+            border-radius: 10px; 
+            border-left: 4px solid #3498db; 
+            position: relative; 
+            transition: transform 0.2s;
+        }
+        
+        .question:hover {
+            transform: translateX(5px);
+        }
+        
+        .question-text { 
+            font-weight: bold; 
+            margin-bottom: 15px; 
+            color: #2c3e50; 
+            font-size: 1.1em;
+        }
+        
         .options { margin-left: 20px; }
-        .option { margin-bottom: 8px; padding: 8px; cursor: pointer; border-radius: 4px; transition: all 0.2s; display: flex; align-items: center; }
-        .option:hover { background-color: #e8f4fc; }
-        .option.selected { background-color: #d4edda; border-left: 3px solid #28a745; }
-        .option.wrong { background-color: #f8d7da; border-left: 3px solid #dc3545; }
-        .feedback { margin-left: 10px; font-weight: bold; }
+        
+        .option { 
+            margin-bottom: 10px; 
+            padding: 12px 15px; 
+            cursor: pointer; 
+            border-radius: 8px; 
+            transition: all 0.2s; 
+            display: flex; 
+            align-items: center; 
+            background-color: white;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .option:hover { 
+            background-color: #e8f4fc; 
+            border-color: #3498db;
+        }
+        
+        .option.selected { 
+            background-color: #d4edda; 
+            border-left: 4px solid #28a745; 
+            border-color: #28a745;
+        }
+        
+        .option.wrong { 
+            background-color: #f8d7da; 
+            border-left: 4px solid #dc3545; 
+            border-color: #dc3545;
+        }
+        
+        .feedback { 
+            margin-left: 15px; 
+            font-weight: bold; 
+            font-size: 1.1em;
+        }
+        
         .correct-feedback { color: #28a745; }
         .wrong-feedback { color: #dc3545; }
-        .answer-area { margin-top: 15px; padding: 10px; background-color: #e8f4fc; border-radius: 5px; border-left: 3px solid #17a2b8; display: none; white-space: pre-wrap; }
-        .answer-area strong { color: #17a2b8; }
-        .show-answer-btn { display: inline-block; margin-top: 10px; padding: 5px 10px; background-color: #17a2b8; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; }
-        .show-answer-btn:hover { background-color: #138496; }
-        #loading { text-align: center; padding: 50px; font-size: 18px; color: #666; display: none; }
+        
+        /* 答案区域 */
+        .answer-area { 
+            margin-top: 15px; 
+            padding: 15px; 
+            background-color: #e8f4fc; 
+            border-radius: 8px; 
+            border-left: 4px solid #17a2b8; 
+            display: none; 
+            white-space: pre-wrap; 
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .answer-area strong { 
+            color: #17a2b8; 
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .show-answer-btn { 
+            display: inline-block; 
+            margin-top: 10px; 
+            padding: 8px 15px; 
+            background-color: #17a2b8; 
+            color: white; 
+            border: none; 
+            border-radius: 6px; 
+            font-size: 13px; 
+            cursor: pointer; 
+            transition: background-color 0.3s;
+        }
+        
+        .show-answer-btn:hover { 
+            background-color: #138496; 
+        }
+        
+        /* 打赏区域 */
+        .donation-section {
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 40px;
+            text-align: center;
+            border: 1px solid #dee2e6;
+        }
+        
+        .donation-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .donation-section p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 1.1em;
+        }
+        
+        .qr-codes {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .qr-code-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+        
+        .qr-code-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .qr-code-item img {
+            width: 180px;
+            height: 180px;
+            border-radius: 8px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .qr-code-item p {
+            margin: 0;
+            font-weight: bold;
+            color: #333;
+            font-size: 1em;
+        }
+        
+        .footer-note {
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .selector-panel select {
+                min-width: 100%;
+                margin-bottom: 15px;
+                margin-right: 0;
+            }
+            
+            .qr-codes {
+                gap: 20px;
+            }
+            
+            .qr-code-item img {
+                width: 150px;
+                height: 150px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📚 宇总在线测试系统</h1>
+        <h1>📚 在线测试系统</h1>
+        
+        <!-- 简介区域 -->
+        <div class="intro-section">
+            <h2>👋 欢迎使用智能测试系统</h2>
+            <p>本系统支持多种题型，包括<span class="highlight">选择题</span>、<span class="highlight">填空题</span>和<span class="highlight">简答题</span>。</p>
+            <p>🔄 每次刷新页面，<strong>题目顺序</strong>和<strong>选项顺序</strong>都会随机打乱，帮助你更好地巩固知识。</p>
+            <p>💡 选择题点击后立即判断对错，填空题和简答题点击"显示答案"按钮查看参考答案。</p>
+            <p>📱 如需定制专属题库，请联系下方微信二维码。</p>
+        </div>
         
         <!-- 题库选择面板 -->
         <div class="selector-panel">
-            <h2>请选择题库</h2>
+            <h2>📝 请选择题库</h2>
             <select id="examSelector">
                 <option value="">-- 请选择一套试卷 --</option>
                 <option value="data/web-basic.json">Web基础测试</option>
@@ -98,6 +372,27 @@
                 <div id="essay-questions"></div>
             </div>
         </div>
+        
+        <!-- 打赏区域 -->
+        <div class="donation-section">
+            <h3>☕ 支持开发者</h3>
+            <p>如果您觉得这个测试系统对您有帮助，欢迎打赏支持，鼓励我们继续开发更多实用工具！</p>
+            
+            <div class="qr-codes">
+                <div class="qr-code-item">
+                    <img src="../bhu/img/ck.png" alt="微信联系">
+                    <p>微信联系</p>
+                </div>
+                <div class="qr-code-item">
+                    <img src="../bhu/img/wx.png" alt="打赏支持">
+                    <p>打赏支持</p>
+                </div>
+            </div>
+            
+            <div class="footer-note">
+                <p>© 2024 在线测试系统 | 题库定制请联系上方微信</p>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -123,6 +418,9 @@
                 
                 currentExamData = await response.json();
                 
+                // 更新页面标题
+                document.querySelector('h1').textContent = `📚 ${currentExamData.examTitle || '在线测试系统'}`;
+                
                 // 渲染题目
                 renderChoiceQuestions();
                 renderFillQuestions();
@@ -139,8 +437,7 @@
             }
         }
 
-        // ===== 以下函数与之前版本基本一致，只是改为读取 currentExamData =====
-
+        // 渲染选择题
         function renderChoiceQuestions() {
             const container = document.getElementById('choice-questions');
             container.innerHTML = '';
@@ -213,6 +510,7 @@
             });
         }
 
+        // 渲染填空题
         function renderFillQuestions() {
             const container = document.getElementById('fill-questions');
             container.innerHTML = '';
@@ -245,6 +543,7 @@
             });
         }
 
+        // 渲染简答题
         function renderEssayQuestions() {
             const container = document.getElementById('essay-questions');
             container.innerHTML = '';
@@ -278,4 +577,3 @@
     </script>
 </body>
 </html>
-
