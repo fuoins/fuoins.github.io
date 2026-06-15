@@ -1,5 +1,5 @@
 {
-"examTitle": "计算机网络复习基础练习题",
+"examTitle": "复习基础练习题",
 "choiceQuestions": [
 {
 "id": 1,
@@ -107,7 +107,7 @@
 "id": 18,
 "question": "关于统计时分复用的说法错误的是下列哪一个？",
 "options": ["属于静态信道共享技术", "线路利用率较高", "用户数多于时隙数", "用户时隙的位置固定"],
-"answer": 0
+"answer": [0,3]
 },
 {
 "id": 19,
@@ -761,7 +761,7 @@
 {
 "id": 14,
 "question": "IP数据报中的片偏移字段单位为______个字节。",
-"answer": "4"
+"answer": "8"
 },
 {
 "id": 15,
@@ -1124,7 +1124,7 @@
 {
 "id": 34,
 "question": "任何用户的计算机与 Internet 连接，都必须从 ISP（网络服务商）取得一个随机的 IP 地址 。",
-"answer": true
+"answer": false
 },
 {
 "id": 35,
@@ -1139,7 +1139,7 @@
 {
 "id": 37,
 "question": "任何用户的计算机与 Internet 连接，都必须从 ISP（网络服务商）取得一个随机的 IP 地址 。",
-"answer": true
+"answer": false
 },
 {
 "id": 38,
@@ -1199,7 +1199,7 @@
 {
 "id": 49,
 "question": "截获信息的攻击属于被动攻击。",
-"answer": false
+"answer": true
 },
 {
 "id": 50,
@@ -1217,4 +1217,4 @@
 "answer": true
 }
 ]
-} 
+}
