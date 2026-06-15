@@ -84,19 +84,52 @@
             font-size: 1.8em;
         }
         
+        .selector-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
         .selector-panel select {
             padding: 12px 20px;
             font-size: 16px;
             border-radius: 8px;
             border: none;
-            min-width: 300px;
+            min-width: 200px;
             cursor: pointer;
             background-color: white;
             color: #333;
-            margin-right: 10px;
         }
         
-        .selector-panel button {
+        .mode-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .mode-btn {
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        .mode-btn.active {
+            background-color: #28a745;
+        }
+        
+        .mode-btn:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .start-btn {
             padding: 12px 35px;
             font-size: 16px;
             border-radius: 8px;
@@ -108,7 +141,7 @@
             font-weight: bold;
         }
         
-        .selector-panel button:hover { 
+        .start-btn:hover { 
             background-color: #218838;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(33, 136, 56, 0.3);
@@ -307,10 +340,15 @@
                 font-size: 2em;
             }
             
-            .selector-panel select {
-                min-width: 100%;
-                margin-bottom: 15px;
-                margin-right: 0;
+            .selector-row {
+                flex-direction: column;
+            }
+            
+            .selector-panel select,
+            .mode-buttons,
+            .start-btn {
+                width: 100%;
+                margin-bottom: 10px;
             }
             
             .qr-codes {
@@ -332,22 +370,31 @@
         <div class="intro-section">
             <h2>👋 欢迎使用宇总在线测试系统</h2>
             <p>本系统支持多种题型，包括<span class="highlight">单选题</span>、<span class="highlight">多选题</span>、<span class="highlight">判断题</span>、<span class="highlight">填空题</span>和<span class="highlight">简答题</span>。</p>
-            <p>🔄 每次刷新页面，<strong>题目顺序</strong>和<strong>选项顺序</strong>都会随机打乱，帮助你更好地巩固知识。</p>
+            <p>🔄 <strong>随机测试</strong>：每次刷新页面，题目和选项都会随机打乱。</p>
+            <p>📝 <strong>顺序测试</strong>：题目和选项按题库原始顺序显示。</p>
             <p>💡 选择题和判断题点击后立即判断对错，填空题和简答题点击"显示答案"按钮查看参考答案。</p>
             <p>📱 如需定制专属题库，请联系下方微信二维码。</p>
         </div>
         
         <!-- 题库选择面板 -->
         <div class="selector-panel">
-            <h2>📝 请选择题库</h2>
-            <select id="examSelector">
-                <option value="">-- 请选择一套试卷 --</option>
-                <option value="data/os.json">操作系统</option>
-                <option value="data/ds.json">数据结构</option>
-                <option value="data/cn.json">计算机网络</option>
-                <option value="data/soft.json">软件工程</option>
-            </select>
-            <button onclick="loadSelectedExam()">开始测试</button>
+            <h2>📝 请选择题库和模式</h2>
+            <div class="selector-row">
+                <select id="examSelector">
+                    <option value="">-- 请选择一套试卷 --</option>
+                    <option value="data/os.json">操作系统</option>
+                    <option value="data/ds.json">数据结构</option>
+                    <option value="data/cn.json">计算机网络</option>
+                    <option value="data/soft.json">软件工程</option>
+                </select>
+                
+                <div class="mode-buttons">
+                    <button class="mode-btn active" id="randomMode" onclick="setMode('random')">随机测试</button>
+                    <button class="mode-btn" id="orderMode" onclick="setMode('order')">顺序测试</button>
+                </div>
+                
+                <button class="start-btn" onclick="loadSelectedExam()">开始测试</button>
+            </div>
         </div>
 
         <!-- 加载提示 -->
@@ -403,8 +450,18 @@
     </div>
 
     <script>
-        // 全局变量，用于存储当前题库数据
+        // 全局变量
         let currentExamData = null;
+        let isRandomMode = true; // true为随机模式，false为顺序模式
+
+        // 设置测试模式
+        function setMode(mode) {
+            isRandomMode = (mode === 'random');
+            
+            // 更新按钮样式
+            document.getElementById('randomMode').classList.toggle('active', isRandomMode);
+            document.getElementById('orderMode').classList.toggle('active', !isRandomMode);
+        }
 
         // 加载选中的题库
         async function loadSelectedExam() {
@@ -445,15 +502,23 @@
             }
         }
 
+        // 辅助函数：根据模式决定是否随机排序
+        function shuffleIfRandom(array) {
+            if (isRandomMode) {
+                return [...array].sort(() => Math.random() - 0.5);
+            }
+            return [...array]; // 顺序模式直接返回副本，不改变原顺序
+        }
+
         // 渲染选择题（支持单选和多选）
         function renderChoiceQuestions() {
             const container = document.getElementById('choice-questions');
             container.innerHTML = '';
             if (!currentExamData.choiceQuestions) return;
             
-            const shuffledQuestions = [...currentExamData.choiceQuestions].sort(() => Math.random() - 0.5);
+            const questions = shuffleIfRandom(currentExamData.choiceQuestions);
             
-            shuffledQuestions.forEach((q, index) => {
+            questions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'question';
                 
@@ -468,16 +533,16 @@
                 
                 const optionsDiv = document.createElement('div');
                 optionsDiv.className = 'options';
-                const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+                const options = shuffleIfRandom(q.options);
                 
                 // 存储原始索引映射
                 const originalIndexMap = new Map();
-                shuffledOptions.forEach((option, shuffledIdx) => {
+                options.forEach((option, shuffledIdx) => {
                     const originalIdx = q.options.indexOf(option);
                     originalIndexMap.set(shuffledIdx, originalIdx);
                 });
                 
-                shuffledOptions.forEach((option, optIndex) => {
+                options.forEach((option, optIndex) => {
                     const optionDiv = document.createElement('div');
                     optionDiv.className = 'option';
                     
@@ -574,9 +639,9 @@
             if (!currentExamData.judgeQuestions) return;
             
             const judgeOptions = ["√ 正确", "× 错误"];
-            const shuffledQuestions = [...currentExamData.judgeQuestions].sort(() => Math.random() - 0.5);
+            const questions = shuffleIfRandom(currentExamData.judgeQuestions);
             
-            shuffledQuestions.forEach((q, index) => {
+            questions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'question';
                 
@@ -588,9 +653,9 @@
                 const optionsDiv = document.createElement('div');
                 optionsDiv.className = 'options';
                 
-                const shuffledOptions = [...judgeOptions].sort(() => Math.random() - 0.5);
+                const options = shuffleIfRandom(judgeOptions);
                 
-                shuffledOptions.forEach((option, optIndex) => {
+                options.forEach((option, optIndex) => {
                     const optionDiv = document.createElement('div');
                     optionDiv.className = 'option';
                     
@@ -657,9 +722,9 @@
             container.innerHTML = '';
             if (!currentExamData.fillQuestions) return;
             
-            const shuffledQuestions = [...currentExamData.fillQuestions].sort(() => Math.random() - 0.5);
+            const questions = shuffleIfRandom(currentExamData.fillQuestions);
             
-            shuffledQuestions.forEach((q, index) => {
+            questions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'question';
                 
@@ -671,7 +736,10 @@
                 const btn = document.createElement('button');
                 btn.className = 'show-answer-btn';
                 btn.textContent = '显示答案';
-                btn.onclick = function() { answerDiv.style.display = 'block'; this.style.display = 'none'; };
+                btn.onclick = function() { 
+                    answerDiv.style.display = 'block'; 
+                    this.style.display = 'none'; 
+                };
                 questionDiv.appendChild(btn);
                 
                 const answerDiv = document.createElement('div');
@@ -690,9 +758,9 @@
             container.innerHTML = '';
             if (!currentExamData.essayQuestions) return;
             
-            const shuffledQuestions = [...currentExamData.essayQuestions].sort(() => Math.random() - 0.5);
+            const questions = shuffleIfRandom(currentExamData.essayQuestions);
             
-            shuffledQuestions.forEach((q, index) => {
+            questions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'question';
                 
@@ -704,7 +772,10 @@
                 const btn = document.createElement('button');
                 btn.className = 'show-answer-btn';
                 btn.textContent = '显示参考答案';
-                btn.onclick = function() { answerDiv.style.display = 'block'; this.style.display = 'none'; };
+                btn.onclick = function() { 
+                    answerDiv.style.display = 'block'; 
+                    this.style.display = 'none'; 
+                };
                 questionDiv.appendChild(btn);
                 
                 const answerDiv = document.createElement('div');
