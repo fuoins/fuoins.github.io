@@ -331,7 +331,7 @@
         <!-- 简介区域 -->
         <div class="intro-section">
             <h2>👋 欢迎使用宇总在线测试系统</h2>
-            <p>本系统支持多种题型，包括<span class="highlight">选择题</span>、<span class="highlight">填空题</span>、<span class="highlight">简答题</span>和<span class="highlight">判断题</span>。</p>
+            <p>本系统支持多种题型，包括<span class="highlight">单选题</span>、<span class="highlight">多选题</span>、<span class="highlight">判断题</span>、<span class="highlight">填空题</span>和<span class="highlight">简答题</span>。</p>
             <p>🔄 每次刷新页面，<strong>题目顺序</strong>和<strong>选项顺序</strong>都会随机打乱，帮助你更好地巩固知识。</p>
             <p>💡 选择题和判断题点击后立即判断对错，填空题和简答题点击"显示答案"按钮查看参考答案。</p>
             <p>📱 如需定制专属题库，请联系下方微信二维码。</p>
@@ -355,15 +355,15 @@
 
         <!-- 题目容器（初始隐藏） -->
         <div id="examContainer" style="display:none;">
-            <!-- 选择题部分 -->
+            <!-- 选择题部分（包含单选和多选） -->
             <div class="section" id="choice-section">
-                <h2 class="section-title">一、选择题（每题只有一个正确答案）</h2>
+                <h2 class="section-title">一、选择题</h2>
                 <div id="choice-questions"></div>
             </div>
             
-            <!-- 判断题部分 (新增) -->
+            <!-- 判断题部分 -->
             <div class="section" id="judge-section">
-                <h2 class="section-title">二、判断题（正确选“√”，错误选“×”）</h2>
+                <h2 class="section-title">二、判断题</h2>
                 <div id="judge-questions"></div>
             </div>
             
@@ -430,7 +430,7 @@
                 
                 // 渲染题目
                 renderChoiceQuestions();
-                renderJudgeQuestions(); // 新增：渲染判断题
+                renderJudgeQuestions();
                 renderFillQuestions();
                 renderEssayQuestions();
                 
@@ -445,7 +445,7 @@
             }
         }
 
-        // 渲染选择题
+        // 渲染选择题（支持单选和多选）
         function renderChoiceQuestions() {
             const container = document.getElementById('choice-questions');
             container.innerHTML = '';
@@ -459,22 +459,33 @@
                 
                 const questionText = document.createElement('div');
                 questionText.className = 'question-text';
-                questionText.textContent = `${index + 1}. ${q.question}`;
+                
+                // 判断是单选还是多选
+                const isMultiple = Array.isArray(q.answer);
+                const questionType = isMultiple ? '【多选】' : '【单选】';
+                questionText.textContent = `${index + 1}. ${questionType} ${q.question}`;
                 questionDiv.appendChild(questionText);
                 
                 const optionsDiv = document.createElement('div');
                 optionsDiv.className = 'options';
                 const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
                 
+                // 存储原始索引映射
+                const originalIndexMap = new Map();
+                shuffledOptions.forEach((option, shuffledIdx) => {
+                    const originalIdx = q.options.indexOf(option);
+                    originalIndexMap.set(shuffledIdx, originalIdx);
+                });
+                
                 shuffledOptions.forEach((option, optIndex) => {
                     const optionDiv = document.createElement('div');
                     optionDiv.className = 'option';
-                    optionDiv.dataset.correct = (shuffledOptions.indexOf(q.options[q.answer]) === optIndex);
                     
-                    const radio = document.createElement('input');
-                    radio.type = 'radio';
-                    radio.name = `choice-${q.id}`;
-                    radio.id = `choice-${q.id}-opt${optIndex}`;
+                    const input = document.createElement('input');
+                    input.type = isMultiple ? 'checkbox' : 'radio';
+                    input.name = `choice-${q.id}`;
+                    input.id = `choice-${q.id}-opt${optIndex}`;
+                    input.value = optIndex;
                     
                     const label = document.createElement('label');
                     label.htmlFor = `choice-${q.id}-opt${optIndex}`;
@@ -483,50 +494,86 @@
                     const feedback = document.createElement('span');
                     feedback.className = 'feedback';
                     
-                    optionDiv.appendChild(radio);
+                    optionDiv.appendChild(input);
                     optionDiv.appendChild(label);
                     optionDiv.appendChild(feedback);
                     
-                    optionDiv.addEventListener('click', function() {
-                        const isCorrect = this.dataset.correct === 'true';
-                        const allOptions = this.parentElement.querySelectorAll('.option');
-                        allOptions.forEach(opt => {
+                    optionDiv.addEventListener('click', function(e) {
+                        if (e.target.tagName !== 'INPUT') {
+                            input.checked = !input.checked;
+                        }
+                        
+                        // 获取当前选中的选项
+                        const selectedInputs = optionsDiv.querySelectorAll('input:checked');
+                        const selectedOriginalIndices = Array.from(selectedInputs).map(input => {
+                            const shuffledIdx = parseInt(input.value);
+                            return originalIndexMap.get(shuffledIdx);
+                        }).sort();
+                        
+                        // 判断是否正确
+                        let isCorrect = false;
+                        if (isMultiple) {
+                            // 多选题：比较数组
+                            const correctAnswers = [...q.answer].sort();
+                            isCorrect = JSON.stringify(selectedOriginalIndices) === JSON.stringify(correctAnswers);
+                        } else {
+                            // 单选题：比较单个值
+                            isCorrect = selectedOriginalIndices[0] === q.answer;
+                        }
+                        
+                        // 清除之前的状态
+                        optionsDiv.querySelectorAll('.option').forEach(opt => {
                             opt.classList.remove('selected', 'wrong');
                             opt.querySelector('.feedback').textContent = '';
                         });
+                        
                         if (isCorrect) {
-                            this.classList.add('selected');
-                            this.querySelector('.feedback').textContent = '✓ 正确';
-                            this.querySelector('.feedback').className = 'feedback correct-feedback';
+                            optionDiv.classList.add('selected');
+                            feedback.textContent = '✓ 正确';
+                            feedback.className = 'feedback correct-feedback';
                         } else {
-                            this.classList.add('wrong');
-                            this.querySelector('.feedback').textContent = '✗ 错误';
-                            this.querySelector('.feedback').className = 'feedback wrong-feedback';
-                            allOptions.forEach(opt => {
-                                if (opt.dataset.correct === 'true') {
+                            optionDiv.classList.add('wrong');
+                            feedback.textContent = '✗ 错误';
+                            feedback.className = 'feedback wrong-feedback';
+                            
+                            // 显示正确答案
+                            optionsDiv.querySelectorAll('.option').forEach(opt => {
+                                const optInput = opt.querySelector('input');
+                                const shuffledIdx = parseInt(optInput.value);
+                                const originalIdx = originalIndexMap.get(shuffledIdx);
+                                
+                                let shouldBeSelected = false;
+                                if (isMultiple) {
+                                    shouldBeSelected = q.answer.includes(originalIdx);
+                                } else {
+                                    shouldBeSelected = originalIdx === q.answer;
+                                }
+                                
+                                if (shouldBeSelected) {
                                     opt.classList.add('selected');
-                                    opt.querySelector('.feedback').textContent = '✓ 正确答案';
-                                    opt.querySelector('.feedback').className = 'feedback correct-feedback';
+                                    const optFeedback = opt.querySelector('.feedback');
+                                    optFeedback.textContent = '✓ 正确答案';
+                                    optFeedback.className = 'feedback correct-feedback';
                                 }
                             });
                         }
                     });
+                    
                     optionsDiv.appendChild(optionDiv);
                 });
+                
                 questionDiv.appendChild(optionsDiv);
                 container.appendChild(questionDiv);
             });
         }
 
-        // 渲染判断题 (新增函数)
+        // 渲染判断题
         function renderJudgeQuestions() {
             const container = document.getElementById('judge-questions');
             container.innerHTML = '';
             if (!currentExamData.judgeQuestions) return;
             
-            // 判断题选项固定为 "√ 正确" 和 "× 错误"
             const judgeOptions = ["√ 正确", "× 错误"];
-            
             const shuffledQuestions = [...currentExamData.judgeQuestions].sort(() => Math.random() - 0.5);
             
             shuffledQuestions.forEach((q, index) => {
@@ -541,13 +588,12 @@
                 const optionsDiv = document.createElement('div');
                 optionsDiv.className = 'options';
                 
-                // 判断题的选项顺序也随机
                 const shuffledOptions = [...judgeOptions].sort(() => Math.random() - 0.5);
                 
                 shuffledOptions.forEach((option, optIndex) => {
                     const optionDiv = document.createElement('div');
                     optionDiv.className = 'option';
-                    // 判断这个选项是否是正确的（"√ 正确" 对应 true, "× 错误" 对应 false）
+                    
                     const isThisOptionTrue = option.startsWith('√');
                     optionDiv.dataset.correct = (isThisOptionTrue === q.answer);
                     
@@ -570,10 +616,12 @@
                     optionDiv.addEventListener('click', function() {
                         const isCorrect = this.dataset.correct === 'true';
                         const allOptions = this.parentElement.querySelectorAll('.option');
+                        
                         allOptions.forEach(opt => {
                             opt.classList.remove('selected', 'wrong');
                             opt.querySelector('.feedback').textContent = '';
                         });
+                        
                         if (isCorrect) {
                             this.classList.add('selected');
                             this.querySelector('.feedback').textContent = '✓ 正确';
@@ -582,6 +630,7 @@
                             this.classList.add('wrong');
                             this.querySelector('.feedback').textContent = '✗ 错误';
                             this.querySelector('.feedback').className = 'feedback wrong-feedback';
+                            
                             // 显示正确答案
                             allOptions.forEach(opt => {
                                 const optIsTrue = opt.querySelector('label').textContent.includes('√');
@@ -593,8 +642,10 @@
                             });
                         }
                     });
+                    
                     optionsDiv.appendChild(optionDiv);
                 });
+                
                 questionDiv.appendChild(optionsDiv);
                 container.appendChild(questionDiv);
             });
