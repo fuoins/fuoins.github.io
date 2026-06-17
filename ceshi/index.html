@@ -661,50 +661,36 @@
     <script>
         // 全局变量
         let currentExamData = null;
-        let isRandomMode = true; // true为随机模式，false为顺序模式
-        let wrongSetEnabled = false; // 错题集功能是否开启
-        let currentExamFile = ''; // 当前题库文件名
-        let unlockCountdown = null; // 解锁倒计时计时器
-        
-        // 页面加载时初始化
+        let isRandomMode = true;
+        let wrongSetEnabled = false;
+        let currentExamFile = '';
+        let unlockCountdown = null;
+
         document.addEventListener('DOMContentLoaded', function() {
-            // 初始化错题集状态
             const savedWrongSetState = localStorage.getItem('wrongSetEnabled');
             if (savedWrongSetState === 'true') {
                 wrongSetEnabled = true;
                 document.getElementById('wrongSetToggle').checked = true;
             }
-            
-            // 初始化题库解锁状态
             updateExamSelectorState();
         });
 
-        // 设置测试模式
         function setMode(mode) {
             isRandomMode = (mode === 'random');
-            
-            // 更新按钮样式
             document.getElementById('randomMode').classList.toggle('active', isRandomMode);
             document.getElementById('orderMode').classList.toggle('active', !isRandomMode);
         }
-        
-        // 更新题库选择器的可用状态
+
         function updateExamSelectorState() {
             const selector = document.getElementById('examSelector');
             const zyPerfect = localStorage.getItem('perfect_zy') === 'true';
-            
-            // 遍历所有选项
             for (let i = 0; i < selector.options.length; i++) {
                 const option = selector.options[i];
                 const value = option.value;
-                
-                // 赵宇粉丝测试题始终可用
                 if (value === 'data/zy.json') {
                     option.disabled = false;
                     option.text = '赵宇粉丝测试题（需满分解锁）';
-                } 
-                // 其他题库需要赵宇粉丝测试题满分才能解锁
-                else if (value) {
+                } else if (value) {
                     if (zyPerfect) {
                         option.disabled = false;
                         option.text = option.text.replace('（未解锁）', '');
@@ -717,24 +703,19 @@
                 }
             }
         }
-        
-        // 切换错题集功能
+
         function toggleWrongSet() {
             wrongSetEnabled = document.getElementById('wrongSetToggle').checked;
             localStorage.setItem('wrongSetEnabled', wrongSetEnabled);
             updateClearButtonState();
-            
-            // 如果开启了错题集，重新加载当前题库以显示错题
             if (wrongSetEnabled && currentExamData) {
                 renderAllQuestions();
             }
         }
-        
-        // 更新清除错题按钮状态
+
         function updateClearButtonState() {
             const clearBtn = document.getElementById('clearWrongBtn');
             const examName = getExamDisplayName(currentExamFile);
-            
             if (wrongSetEnabled && currentExamFile) {
                 clearBtn.disabled = false;
                 clearBtn.textContent = `清除【${examName}】错题`;
@@ -743,30 +724,23 @@
                 clearBtn.textContent = '清除错题';
             }
         }
-        
-        // 清除当前题库的错题
+
         function clearCurrentWrongQuestions() {
             if (!currentExamFile || !wrongSetEnabled) return;
-            
             const examKey = getExamKey(currentExamFile);
             localStorage.removeItem(`wrong_${examKey}_choice`);
             localStorage.removeItem(`wrong_${examKey}_judge`);
-            
             const examName = getExamDisplayName(currentExamFile);
             alert(`已清除【${examName}】的错题记录！`);
-            
-            // 重新渲染题目
             if (currentExamData) {
                 renderAllQuestions();
             }
         }
-        
-        // 获取题库的唯一键名
+
         function getExamKey(filename) {
             return filename.replace('data/', '').replace('.json', '');
         }
-        
-        // 获取题库的显示名称
+
         function getExamDisplayName(filename) {
             const names = {
                 'data/os.json': '操作系统',
@@ -777,292 +751,223 @@
             };
             return names[filename] || '未知题库';
         }
-        
-        // 检查赵宇粉丝测试题是否满分
+
         function isZYPerfect() {
             return localStorage.getItem('perfect_zy') === 'true';
         }
-        
-        // 显示解锁提示模态框
+
         function showUnlockModal() {
             const modal = document.getElementById('unlockModal');
             const timerElement = document.getElementById('countdownTimer');
             const closeBtn = document.getElementById('modalCloseBtn');
-            
             modal.style.display = 'flex';
             closeBtn.style.display = 'none';
-            
             let countdown = 5;
             timerElement.textContent = countdown;
-            
             unlockCountdown = setInterval(function() {
                 countdown--;
                 timerElement.textContent = countdown;
-                
                 if (countdown <= 0) {
                     clearInterval(unlockCountdown);
                     closeBtn.style.display = 'block';
                 }
             }, 1000);
         }
-        
-        // 关闭解锁提示模态框
+
         function closeUnlockModal() {
             const modal = document.getElementById('unlockModal');
             modal.style.display = 'none';
-            
             if (unlockCountdown) {
                 clearInterval(unlockCountdown);
                 unlockCountdown = null;
             }
-            
-            // 重置选择框到赵宇粉丝测试题
             document.getElementById('examSelector').value = 'data/zy.json';
         }
-        
-        // 记录错题
+
         function recordWrongQuestion(examFile, questionType, questionId) {
             if (!wrongSetEnabled) return;
-            
             const examKey = getExamKey(examFile);
             const storageKey = `wrong_${examKey}_${questionType}`;
-            
-            // 获取现有的错题记录
             let wrongQuestions = JSON.parse(localStorage.getItem(storageKey) || '[]');
-            
-            // 如果这道题不在错题集中，添加进去
             if (!wrongQuestions.includes(questionId)) {
                 wrongQuestions.push(questionId);
                 localStorage.setItem(storageKey, JSON.stringify(wrongQuestions));
             }
         }
-        
-        // 获取错题列表
+
         function getWrongQuestions(examFile, questionType) {
             if (!wrongSetEnabled) return [];
-            
             const examKey = getExamKey(examFile);
             const storageKey = `wrong_${examKey}_${questionType}`;
-            
             return JSON.parse(localStorage.getItem(storageKey) || '[]');
         }
-        
-        // 检查是否满分
-        function checkPerfectScore(examFile, choiceQuestions, judgeQuestions) {
+
+        // ★★★ 修复的核心：只有所有选择题和判断题都已作答且无错题才算满分 ★★★
+        function checkPerfectScore(examFile) {
             const examKey = getExamKey(examFile);
+            
+            // 获取所有选择题和判断题的题目元素
+            const choiceQuestions = document.querySelectorAll('#choice-questions .question');
+            const judgeQuestions = document.querySelectorAll('#judge-questions .question');
+            const allQuestions = [...choiceQuestions, ...judgeQuestions];
+            
+            // 如果有题目尚未作答，则不视为满分
+            const allAnswered = allQuestions.length > 0 && allQuestions.every(q => q.classList.contains('answered'));
+            if (!allAnswered) {
+                localStorage.setItem(`perfect_${examKey}`, false);
+                return false;
+            }
             
             // 获取错题记录
             const wrongChoice = JSON.parse(localStorage.getItem(`wrong_${examKey}_choice`) || '[]');
             const wrongJudge = JSON.parse(localStorage.getItem(`wrong_${examKey}_judge`) || '[]');
             
-            // 如果没有错题，则认为是满分
             const isPerfect = wrongChoice.length === 0 && wrongJudge.length === 0;
-            
-            // 记录满分状态
             localStorage.setItem(`perfect_${examKey}`, isPerfect);
             
-            // 如果是赵宇粉丝测试题，更新题库选择器状态
             if (examFile === 'data/zy.json') {
                 updateExamSelectorState();
                 if (isPerfect) {
                     alert('🎉 恭喜！您已完成赵宇粉丝测试题并达到满分！其他题库已解锁。');
                 }
             }
-            
             return isPerfect;
         }
-        
-        // 加载选中的题库
+
         async function loadSelectedExam() {
             const selector = document.getElementById('examSelector');
             const filePath = selector.value;
-            
             if (!filePath) {
                 alert('请先选择一套题库！');
                 return;
             }
-            
-            // 检查是否选择了未解锁的题库
             if (filePath !== 'data/zy.json' && !isZYPerfect()) {
                 showUnlockModal();
                 return;
             }
-            
             currentExamFile = filePath;
             updateClearButtonState();
-            
             document.getElementById('loading').style.display = 'block';
             document.getElementById('examContainer').style.display = 'none';
 
             try {
                 const response = await fetch(filePath);
                 if (!response.ok) throw new Error('文件加载失败');
-                
                 currentExamData = await response.json();
-                
-                // 更新页面标题
                 document.querySelector('h1').textContent = `📚 ${currentExamData.examTitle || '宇总在线测试系统'}`;
-                
-                // 渲染所有题目
                 renderAllQuestions();
-                
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('examContainer').style.display = 'block';
-                
-                // 滚动到顶部
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } catch (error) {
                 alert('加载题库失败！目前题库正在制作中\n错误：' + error.message);
                 document.getElementById('loading').style.display = 'none';
             }
         }
-        
-        // 渲染所有题目
+
         function renderAllQuestions() {
             if (!currentExamData) return;
-            
             renderChoiceQuestions();
             renderJudgeQuestions();
             renderFillQuestions();
             renderEssayQuestions();
-            
-            // 检查是否满分（对赵宇粉丝测试题特别处理）
-            if (currentExamFile === 'data/zy.json') {
-                // 延迟检查，确保所有题目都已渲染
-                setTimeout(() => {
-                    checkPerfectScore(currentExamFile, 
-                        currentExamData.choiceQuestions || [], 
-                        currentExamData.judgeQuestions || []);
-                }, 100);
-            }
+            // ★★★ 不再自动调用 checkPerfectScore，只在答题时触发 ★★★
         }
 
-        // 辅助函数：根据模式决定是否随机排序
         function shuffleIfRandom(array) {
             if (isRandomMode) {
                 return [...array].sort(() => Math.random() - 0.5);
             }
-            return [...array]; // 顺序模式直接返回副本，不改变原顺序
+            return [...array];
         }
-        
-        // 过滤错题
+
         function filterWrongQuestions(questions, wrongIds) {
             if (!wrongSetEnabled || wrongIds.length === 0) return questions;
             return questions.filter(q => wrongIds.includes(q.id));
         }
 
-        // 渲染选择题（支持单选和多选）
         function renderChoiceQuestions() {
             const container = document.getElementById('choice-questions');
             container.innerHTML = '';
             if (!currentExamData.choiceQuestions) return;
-            
-            // 获取错题ID列表
             const wrongIds = getWrongQuestions(currentExamFile, 'choice');
-            
-            // 如果开启了错题集且有错题，只显示错题
             let questions = wrongSetEnabled && wrongIds.length > 0 
                 ? filterWrongQuestions(currentExamData.choiceQuestions, wrongIds)
                 : currentExamData.choiceQuestions;
-            
-            // 根据模式决定是否随机排序
             questions = shuffleIfRandom(questions);
-            
+
             questions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'question';
                 questionDiv.dataset.questionId = q.id;
-                
+
                 const questionText = document.createElement('div');
                 questionText.className = 'question-text';
-                
-                // 判断是单选还是多选
                 const isMultiple = Array.isArray(q.answer);
                 const questionType = isMultiple ? '【多选】' : '【单选】';
                 questionText.textContent = `${index + 1}. ${questionType} ${q.question}`;
                 questionDiv.appendChild(questionText);
-                
+
                 const optionsDiv = document.createElement('div');
                 optionsDiv.className = 'options';
-                
-                // 根据模式决定是否随机排序选项
                 const options = shuffleIfRandom(q.options);
-                
-                // 存储原始索引映射
                 const originalIndexMap = new Map();
                 options.forEach((option, shuffledIdx) => {
                     const originalIdx = q.options.indexOf(option);
                     originalIndexMap.set(shuffledIdx, originalIdx);
                 });
-                
+
                 options.forEach((option, optIndex) => {
                     const optionDiv = document.createElement('div');
                     optionDiv.className = 'option';
-                    
                     const input = document.createElement('input');
                     input.type = isMultiple ? 'checkbox' : 'radio';
                     input.name = `choice-${q.id}`;
                     input.id = `choice-${q.id}-opt${optIndex}`;
                     input.value = optIndex;
-                    
                     const label = document.createElement('label');
                     label.htmlFor = `choice-${q.id}-opt${optIndex}`;
                     label.textContent = ` ${String.fromCharCode(65 + optIndex)}. ${option}`;
-                    
                     const feedback = document.createElement('span');
                     feedback.className = 'feedback';
-                    
                     optionDiv.appendChild(input);
                     optionDiv.appendChild(label);
                     optionDiv.appendChild(feedback);
-                    
+
                     optionDiv.addEventListener('click', function(e) {
-                        // 如果已经作答，不允许更改
-                        if (questionDiv.classList.contains('answered')) {
-                            return;
-                        }
-                        
+                        if (questionDiv.classList.contains('answered')) return;
                         if (e.target.tagName !== 'INPUT') {
                             input.checked = !input.checked;
                         }
-                        
-                        // 标记为已作答
                         questionDiv.classList.add('answered');
                         optionsDiv.querySelectorAll('.option').forEach(opt => {
                             opt.classList.add('answered');
                             opt.querySelector('input').disabled = true;
                         });
-                        
-                        // 获取当前选中的选项
+
                         const selectedInputs = optionsDiv.querySelectorAll('input:checked');
-                        const selectedOriginalIndices = Array.from(selectedInputs).map(input => {
-                            const shuffledIdx = parseInt(input.value);
+                        const selectedOriginalIndices = Array.from(selectedInputs).map(inp => {
+                            const shuffledIdx = parseInt(inp.value);
                             return originalIndexMap.get(shuffledIdx);
                         }).sort();
-                        
-                        // 判断是否正确
+
                         let isCorrect = false;
                         if (isMultiple) {
-                            // 多选题：比较数组
                             const correctAnswers = [...q.answer].sort();
                             isCorrect = JSON.stringify(selectedOriginalIndices) === JSON.stringify(correctAnswers);
                         } else {
-                            // 单选题：比较单个值
                             isCorrect = selectedOriginalIndices[0] === q.answer;
                         }
-                        
-                        // 清除之前的状态
+
                         optionsDiv.querySelectorAll('.option').forEach(opt => {
                             opt.classList.remove('selected', 'wrong');
                             opt.querySelector('.feedback').textContent = '';
                         });
-                        
+
                         if (isCorrect) {
                             optionDiv.classList.add('selected');
                             feedback.textContent = '✓ 正确';
                             feedback.className = 'feedback correct-feedback';
-                            
-                            // 如果开启了错题集，从错题中移除
                             if (wrongSetEnabled) {
                                 removeFromWrongQuestions(q.id, 'choice');
                             }
@@ -1070,25 +975,19 @@
                             optionDiv.classList.add('wrong');
                             feedback.textContent = '✗ 错误';
                             feedback.className = 'feedback wrong-feedback';
-                            
-                            // 如果开启了错题集，记录错题
                             if (wrongSetEnabled) {
                                 recordWrongQuestion(currentExamFile, 'choice', q.id);
                             }
-                            
-                            // 显示正确答案
                             optionsDiv.querySelectorAll('.option').forEach(opt => {
                                 const optInput = opt.querySelector('input');
                                 const shuffledIdx = parseInt(optInput.value);
                                 const originalIdx = originalIndexMap.get(shuffledIdx);
-                                
                                 let shouldBeSelected = false;
                                 if (isMultiple) {
                                     shouldBeSelected = q.answer.includes(originalIdx);
                                 } else {
                                     shouldBeSelected = originalIdx === q.answer;
                                 }
-                                
                                 if (shouldBeSelected) {
                                     opt.classList.add('selected');
                                     const optFeedback = opt.querySelector('.feedback');
@@ -1097,25 +996,20 @@
                                 }
                             });
                         }
-                        
-                        // 如果是赵宇粉丝测试题，检查是否满分
+
+                        // ★★★ 每次答题后检查满分 ★★★
                         if (currentExamFile === 'data/zy.json') {
-                            setTimeout(() => {
-                                checkPerfectScore(currentExamFile, 
-                                    currentExamData.choiceQuestions || [], 
-                                    currentExamData.judgeQuestions || []);
-                            }, 100);
+                            setTimeout(() => checkPerfectScore(currentExamFile), 100);
                         }
                     });
-                    
+
                     optionsDiv.appendChild(optionDiv);
                 });
-                
+
                 questionDiv.appendChild(optionsDiv);
                 container.appendChild(questionDiv);
             });
-            
-            // 如果开启了错题集且没有错题，显示提示
+
             if (wrongSetEnabled && wrongIds.length > 0 && container.children.length === 0) {
                 const noWrongMsg = document.createElement('div');
                 noWrongMsg.className = 'question';
@@ -1123,108 +1017,82 @@
                 container.appendChild(noWrongMsg);
             }
         }
-        
-        // 从错题中移除
+
         function removeFromWrongQuestions(questionId, questionType) {
             if (!wrongSetEnabled || !currentExamFile) return;
-            
             const examKey = getExamKey(currentExamFile);
             const storageKey = `wrong_${examKey}_${questionType}`;
-            
             let wrongQuestions = JSON.parse(localStorage.getItem(storageKey) || '[]');
             const index = wrongQuestions.indexOf(questionId);
-            
             if (index !== -1) {
                 wrongQuestions.splice(index, 1);
                 localStorage.setItem(storageKey, JSON.stringify(wrongQuestions));
             }
         }
 
-        // 渲染判断题
         function renderJudgeQuestions() {
             const container = document.getElementById('judge-questions');
             container.innerHTML = '';
             if (!currentExamData.judgeQuestions) return;
-            
-            // 获取错题ID列表
             const wrongIds = getWrongQuestions(currentExamFile, 'judge');
-            
-            // 如果开启了错题集且有错题，只显示错题
             let questions = wrongSetEnabled && wrongIds.length > 0 
                 ? filterWrongQuestions(currentExamData.judgeQuestions, wrongIds)
                 : currentExamData.judgeQuestions;
-            
             const judgeOptions = ["√ 正确", "× 错误"];
-            
-            // 根据模式决定是否随机排序题目
             questions = shuffleIfRandom(questions);
-            
+
             questions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'question';
                 questionDiv.dataset.questionId = q.id;
-                
+
                 const questionText = document.createElement('div');
                 questionText.className = 'question-text';
                 questionText.textContent = `${index + 1}. ${q.question}`;
                 questionDiv.appendChild(questionText);
-                
+
                 const optionsDiv = document.createElement('div');
                 optionsDiv.className = 'options';
-                
-                // 根据模式决定是否随机排序选项
                 const options = shuffleIfRandom(judgeOptions);
-                
+
                 options.forEach((option, optIndex) => {
                     const optionDiv = document.createElement('div');
                     optionDiv.className = 'option';
-                    
                     const isThisOptionTrue = option.startsWith('√');
                     optionDiv.dataset.correct = (isThisOptionTrue === q.answer);
-                    
+
                     const radio = document.createElement('input');
                     radio.type = 'radio';
                     radio.name = `judge-${q.id}`;
                     radio.id = `judge-${q.id}-opt${optIndex}`;
-                    
                     const label = document.createElement('label');
                     label.htmlFor = `judge-${q.id}-opt${optIndex}`;
                     label.textContent = ` ${option}`;
-                    
                     const feedback = document.createElement('span');
                     feedback.className = 'feedback';
-                    
                     optionDiv.appendChild(radio);
                     optionDiv.appendChild(label);
                     optionDiv.appendChild(feedback);
-                    
+
                     optionDiv.addEventListener('click', function() {
-                        // 如果已经作答，不允许更改
-                        if (questionDiv.classList.contains('answered')) {
-                            return;
-                        }
-                        
-                        // 标记为已作答
+                        if (questionDiv.classList.contains('answered')) return;
                         questionDiv.classList.add('answered');
                         optionsDiv.querySelectorAll('.option').forEach(opt => {
                             opt.classList.add('answered');
                             opt.querySelector('input').disabled = true;
                         });
-                        
+
                         const isCorrect = this.dataset.correct === 'true';
                         const allOptions = this.parentElement.querySelectorAll('.option');
-                        
                         allOptions.forEach(opt => {
                             opt.classList.remove('selected', 'wrong');
                             opt.querySelector('.feedback').textContent = '';
                         });
-                        
+
                         if (isCorrect) {
                             this.classList.add('selected');
                             this.querySelector('.feedback').textContent = '✓ 正确';
                             this.querySelector('.feedback').className = 'feedback correct-feedback';
-                            
-                            // 如果开启了错题集，从错题中移除
                             if (wrongSetEnabled) {
                                 removeFromWrongQuestions(q.id, 'judge');
                             }
@@ -1232,13 +1100,9 @@
                             this.classList.add('wrong');
                             this.querySelector('.feedback').textContent = '✗ 错误';
                             this.querySelector('.feedback').className = 'feedback wrong-feedback';
-                            
-                            // 如果开启了错题集，记录错题
                             if (wrongSetEnabled) {
                                 recordWrongQuestion(currentExamFile, 'judge', q.id);
                             }
-                            
-                            // 显示正确答案
                             allOptions.forEach(opt => {
                                 const optIsTrue = opt.querySelector('label').textContent.includes('√');
                                 if (optIsTrue === q.answer) {
@@ -1248,25 +1112,20 @@
                                 }
                             });
                         }
-                        
-                        // 如果是赵宇粉丝测试题，检查是否满分
+
+                        // ★★★ 每次答题后检查满分 ★★★
                         if (currentExamFile === 'data/zy.json') {
-                            setTimeout(() => {
-                                checkPerfectScore(currentExamFile, 
-                                    currentExamData.choiceQuestions || [], 
-                                    currentExamData.judgeQuestions || []);
-                            }, 100);
+                            setTimeout(() => checkPerfectScore(currentExamFile), 100);
                         }
                     });
-                    
+
                     optionsDiv.appendChild(optionDiv);
                 });
-                
+
                 questionDiv.appendChild(optionsDiv);
                 container.appendChild(questionDiv);
             });
-            
-            // 如果开启了错题集且没有错题，显示提示
+
             if (wrongSetEnabled && wrongIds.length > 0 && container.children.length === 0) {
                 const noWrongMsg = document.createElement('div');
                 noWrongMsg.className = 'question';
@@ -1350,3 +1209,5 @@
     </script>
 </body>
 </html>
+
+                       
