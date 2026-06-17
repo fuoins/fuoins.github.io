@@ -673,7 +673,6 @@
             margin: 0 auto;
             line-height: 2;
             text-indent: 2em;
-            font-family: 'Microsoft YaHei', sans-serif;
         }
         
         /* 进度条样式 */
@@ -888,6 +887,7 @@
                         <label class="select-label">字体选择</label>
                         <select class="select-box" id="fontSelect">
                             <option value="microsoft">微软雅黑（默认）</option>
+                            <option value="builtin-gbk">内置GBK字体</option>
                             <option value="custom">自定义字体</option>
                         </select>
                         <div class="current-file" id="currentFont">当前字体: 微软雅黑</div>
@@ -898,6 +898,7 @@
                         <select class="select-box" id="bgSelect">
                             <option value="normal">正常背景（默认）</option>
                             <option value="texture">纸张纹理</option>
+                            <option value="custom">自定义背景</option>
                         </select>
                         <div class="current-file" id="currentBg">当前背景: 正常背景</div>
                     </div>
@@ -1206,6 +1207,10 @@
                 filename: '123.txt',
                 isDefault: true
             },
+            builtinFont: {
+                name: 'z_GBK.ttf',
+                familyName: 'BuiltinGBK'
+            },
             chapterPatterns: [
                 /^第[一二三四五六七八九十百千万零]+[章回卷节]\s*.+/,
                 /^第\d+[章回卷节]\s*.+/,
@@ -1221,6 +1226,7 @@
         let currentBookId = null;
         let chapters = [];
         let isLoading = false;
+        let builtinFontLoaded = false; // 标记内置字体是否已加载
 
         // DOM元素
         const elements = {
@@ -1286,6 +1292,8 @@
         });
 
         async function initApp() {
+            // 预加载内置字体
+            await preloadBuiltinFont();
             // 加载书籍元数据
             await loadBooksMetadata();
             // 初始化事件监听
@@ -1294,6 +1302,23 @@
             switchTab('library');
             // 加载内置的《蛊真人》
             await loadDefaultBook();
+        }
+
+        // 预加载内置字体
+        async function preloadBuiltinFont() {
+            if (builtinFontLoaded) return;
+            
+            try {
+                const fontFace = new FontFace(CONFIG.builtinFont.familyName, `url('${CONFIG.builtinFont.name}')`);
+                await fontFace.load();
+                document.fonts.add(fontFace);
+                builtinFontLoaded = true;
+                console.log('内置字体加载成功');
+            } catch (error) {
+                console.warn('内置字体加载失败:', error);
+                // 即使加载失败，也标记为已尝试，避免重复加载
+                builtinFontLoaded = true;
+            }
         }
 
         // 加载书籍元数据
@@ -1359,7 +1384,9 @@
                         fontType: 'microsoft',
                         bgType: 'normal',
                         customFontName: null,
-                        customBgUrl: null
+                        customFontData: null,
+                        customBgUrl: null,
+                        customBgName: null
                     }
                 };
 
@@ -1404,7 +1431,7 @@
                 // 解析章节
                 parseChapters(book.content);
                 
-                // 应用设置
+                // 应用设置 - 这会正确应用字体和背景
                 applyBookSettings(book.settings);
                 
                 // 跳转到上次阅读的章节
@@ -1674,7 +1701,9 @@
                         fontType: 'microsoft',
                         bgType: 'normal',
                         customFontName: null,
-                        customBgUrl: null
+                        customFontData: null,
+                        customBgUrl: null,
+                        customBgName: null
                     }
                 };
                 
@@ -1841,7 +1870,7 @@
             elements.matchCount.textContent = visibleCount;
         }
 
-        // 应用书籍设置
+        // 应用书籍设置 - 修复版
         function applyBookSettings(settings) {
             // 排版设置
             elements.fontSizeSlider.value = settings.fontSize;
@@ -1863,11 +1892,70 @@
             updatePaddingTop();
             updatePaddingBottom();
             
-            // 字体和背景
+            // 应用字体设置
+            applyFontSetting(settings);
+            
+            // 应用背景设置
+            applyBackgroundSetting(settings);
+            
+            // 更新下拉框选中状态
             elements.fontSelect.value = settings.fontType;
             elements.bgSelect.value = settings.bgType;
-            elements.currentFont.textContent = `当前字体: ${settings.fontType === 'microsoft' ? '微软雅黑' : settings.customFontName || '自定义字体'}`;
-            elements.currentBg.textContent = `当前背景: ${settings.bgType === 'normal' ? '正常背景' : '纸张纹理'}`;
+        }
+
+        // 应用字体设置
+        function applyFontSetting(settings) {
+            if (settings.fontType === 'microsoft') {
+                elements.novelContent.style.fontFamily = "'Microsoft YaHei', sans-serif";
+                elements.currentFont.textContent = "当前字体: 微软雅黑";
+            } else if (settings.fontType === 'builtin-gbk') {
+                if (builtinFontLoaded) {
+                    elements.novelContent.style.fontFamily = `'${CONFIG.builtinFont.familyName}', sans-serif`;
+                    elements.currentFont.textContent = "当前字体: 内置GBK字体";
+                } else {
+                    // 如果内置字体还没加载，尝试加载
+                    preloadBuiltinFont().then(() => {
+                        elements.novelContent.style.fontFamily = `'${CONFIG.builtinFont.familyName}', sans-serif`;
+                        elements.currentFont.textContent = "当前字体: 内置GBK字体";
+                    });
+                }
+            } else if (settings.fontType === 'custom' && settings.customFontData) {
+                // 应用自定义字体
+                applyCustomFont(settings.customFontData, settings.customFontName);
+            }
+        }
+
+        // 应用背景设置
+        function applyBackgroundSetting(settings) {
+            if (settings.bgType === 'normal') {
+                elements.readerArea.style.backgroundImage = "none";
+                elements.readerArea.style.backgroundColor = "#fff";
+                elements.currentBg.textContent = "当前背景: 正常背景";
+            } else if (settings.bgType === 'texture') {
+                elements.readerArea.style.backgroundImage = "url('paper-texture.png')";
+                elements.readerArea.style.backgroundSize = 'auto';
+                elements.currentBg.textContent = "当前背景: 纸张纹理";
+            } else if (settings.bgType === 'custom' && settings.customBgUrl) {
+                elements.readerArea.style.backgroundImage = `url(${settings.customBgUrl})`;
+                elements.readerArea.style.backgroundSize = 'auto';
+                elements.readerArea.style.backgroundColor = '#fff';
+                elements.currentBg.textContent = `当前背景: ${settings.customBgName || '自定义背景'}`;
+            }
+        }
+
+        // 应用自定义字体
+        function applyCustomFont(fontData, fontName) {
+            const fontFamily = `custom-font-${Date.now()}`;
+            const fontFace = new FontFace(fontFamily, `url(${fontData})`);
+            fontFace.load().then(loadedFace => {
+                document.fonts.add(loadedFace);
+                elements.novelContent.style.fontFamily = `'${fontFamily}', 'Microsoft YaHei', sans-serif`;
+                elements.currentFont.textContent = `当前字体: ${fontName || '自定义字体'}`;
+            }).catch(error => {
+                console.error('自定义字体加载失败:', error);
+                elements.novelContent.style.fontFamily = "'Microsoft YaHei', sans-serif";
+                elements.currentFont.textContent = "当前字体: 微软雅黑（自定义字体加载失败）";
+            });
         }
 
         // 设置更新相关函数
@@ -1960,7 +2048,9 @@
                 fontType: 'microsoft',
                 bgType: 'normal',
                 customFontName: null,
-                customBgUrl: null
+                customFontData: null,
+                customBgUrl: null,
+                customBgName: null
             };
             
             booksMetadata[currentBookId].settings = defaultSettings;
@@ -1995,6 +2085,22 @@
                 elements.novelContent.style.fontFamily = "'Microsoft YaHei', sans-serif";
                 elements.currentFont.textContent = "当前字体: 微软雅黑";
                 showShortcutHint("已切换到微软雅黑");
+            } else if (fontType === 'builtin-gbk') {
+                if (builtinFontLoaded) {
+                    elements.novelContent.style.fontFamily = `'${CONFIG.builtinFont.familyName}', sans-serif`;
+                    elements.currentFont.textContent = "当前字体: 内置GBK字体";
+                    showShortcutHint("已切换到内置GBK字体");
+                } else {
+                    // 尝试加载内置字体
+                    await preloadBuiltinFont();
+                    if (builtinFontLoaded) {
+                        elements.novelContent.style.fontFamily = `'${CONFIG.builtinFont.familyName}', sans-serif`;
+                        elements.currentFont.textContent = "当前字体: 内置GBK字体";
+                        showShortcutHint("已切换到内置GBK字体");
+                    } else {
+                        showShortcutHint("内置字体加载失败，请确认z_GBK.ttf文件存在");
+                    }
+                }
             }
             
             // 保存到IndexedDB
@@ -2022,6 +2128,12 @@
                 elements.readerArea.style.backgroundSize = 'auto';
                 elements.currentBg.textContent = "当前背景: 纸张纹理";
                 showShortcutHint("已切换到纸张纹理");
+            } else if (bgType === 'custom' && booksMetadata[currentBookId].settings.customBgUrl) {
+                elements.readerArea.style.backgroundImage = `url(${booksMetadata[currentBookId].settings.customBgUrl})`;
+                elements.readerArea.style.backgroundSize = 'auto';
+                elements.readerArea.style.backgroundColor = '#fff';
+                elements.currentBg.textContent = `当前背景: ${booksMetadata[currentBookId].settings.customBgName || '自定义背景'}`;
+                showShortcutHint(`已切换到自定义背景`);
             }
             
             // 保存到IndexedDB
@@ -2045,17 +2157,18 @@
             const reader = new FileReader();
             reader.onload = async function(e) {
                 const fontData = e.target.result;
-                const fontName = `custom-font-${Date.now()}`;
+                const fontFamily = `custom-font-${Date.now()}`;
                 
                 try {
-                    const fontFace = new FontFace(fontName, `url(${fontData})`);
+                    const fontFace = new FontFace(fontFamily, `url(${fontData})`);
                     await fontFace.load();
                     document.fonts.add(fontFace);
                     
-                    elements.novelContent.style.fontFamily = `'${fontName}', 'Microsoft YaHei', sans-serif`;
+                    elements.novelContent.style.fontFamily = `'${fontFamily}', 'Microsoft YaHei', sans-serif`;
                     
                     booksMetadata[currentBookId].settings.fontType = 'custom';
                     booksMetadata[currentBookId].settings.customFontName = file.name;
+                    booksMetadata[currentBookId].settings.customFontData = fontData;
                     elements.fontSelect.value = 'custom';
                     elements.currentFont.textContent = `当前字体: ${file.name}`;
                     
@@ -2064,6 +2177,7 @@
                     if (book) {
                         book.settings.fontType = 'custom';
                         book.settings.customFontName = file.name;
+                        book.settings.customFontData = fontData;
                         await BookDB.saveBook(book);
                     }
                     
@@ -2098,6 +2212,7 @@
                 
                 booksMetadata[currentBookId].settings.bgType = 'custom';
                 booksMetadata[currentBookId].settings.customBgUrl = imageUrl;
+                booksMetadata[currentBookId].settings.customBgName = file.name;
                 elements.bgSelect.value = 'custom';
                 elements.currentBg.textContent = `当前背景: ${file.name}`;
                 
@@ -2106,6 +2221,7 @@
                 if (book) {
                     book.settings.bgType = 'custom';
                     book.settings.customBgUrl = imageUrl;
+                    book.settings.customBgName = file.name;
                     await BookDB.saveBook(book);
                 }
                 
