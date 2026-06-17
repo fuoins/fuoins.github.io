@@ -153,6 +153,7 @@
             margin-bottom: 8px;
             transition: all 0.2s;
             border: 1px solid #e5e7eb;
+            cursor: pointer;
         }
         
         .book-item:hover {
@@ -1103,9 +1104,7 @@
         </div>
         
         <!-- 侧边栏开关按钮 -->
-        <button class="toggle-btn" id="toggleBtn" title="打开菜单">
-            <i class="fas fa-bars"></i>
-        </button>  
+        <button class="toggle-btn" id="toggleBtn" title="打开菜单">☰</button>  
         
         <!-- 章节导航按钮 -->
         <div class="chapter-nav">
@@ -1221,7 +1220,6 @@
         let booksMetadata = {}; // 只存储元数据（不含内容）
         let currentBookId = null;
         let chapters = [];
-        let currentChapterIndex = 0;
         let isLoading = false;
 
         // DOM元素
@@ -1451,10 +1449,10 @@
                             <div class="book-meta">${sizeInMB} MB · ${formatDate(book.lastRead)}</div>
                         </div>
                         <div class="book-actions">
-                            <button class="book-action-btn book-read-btn" onclick="loadBook('${id}')">
+                            <button class="book-action-btn book-read-btn" onclick="event.stopPropagation(); loadBook('${id}')">
                                 <i class="fas fa-book-open"></i>
                             </button>
-                            <button class="book-action-btn book-delete-btn" onclick="deleteBook('${id}')">
+                            <button class="book-action-btn book-delete-btn" onclick="event.stopPropagation(); deleteBook('${id}')">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </div>
@@ -1463,6 +1461,21 @@
             });
             
             elements.bookList.innerHTML = html;
+            
+            // 为整个书籍项添加点击事件 - 点击任意位置切换书籍
+            document.querySelectorAll('.book-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // 如果点击的是按钮，不触发书籍切换
+                    if (e.target.closest('.book-action-btn')) return;
+                    
+                    const bookId = this.getAttribute('data-book-id');
+                    if (bookId && bookId !== currentBookId) {
+                        loadBook(bookId);
+                        // 切换完成后关闭侧边栏
+                        closeSidebar();
+                    }
+                });
+            });
         }
 
         // 删除书籍
@@ -1586,14 +1599,14 @@
         function openSidebar() {
             elements.sidebar.classList.add('show');
             elements.overlay.classList.add('show');
-            elements.toggleBtn.innerHTML = '<i class="fas fa-times"></i>';
+            elements.toggleBtn.innerHTML = '❌';  // 打开时显示❌
             elements.toggleBtn.title = '关闭菜单';
         }
 
         function closeSidebar() {
             elements.sidebar.classList.remove('show');
             elements.overlay.classList.remove('show');
-            elements.toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            elements.toggleBtn.innerHTML = '☰';  // 关闭时显示菜单符号
             elements.toggleBtn.title = '打开菜单';
         }
 
