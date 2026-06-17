@@ -170,6 +170,25 @@
             padding-bottom: 10px;
             border-bottom: 1px solid #ddd;
             font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .reset-section-btn {
+            padding: 6px 16px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: none;
+            background-color: #ffc107;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        .reset-section-btn:hover {
+            background-color: #e0a800;
         }
 
         .question {
@@ -186,11 +205,30 @@
             transform: translateX(5px);
         }
 
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
         .question-text {
             font-weight: bold;
-            margin-bottom: 15px;
             color: #2c3e50;
             font-size: 1.1em;
+            flex: 1;
+        }
+
+        .error-count-display {
+            font-size: 0.85em;
+            color: #dc3545;
+            background-color: #fff5f5;
+            padding: 3px 10px;
+            border-radius: 12px;
+            border: 1px solid #f5c6cb;
+            white-space: nowrap;
+            margin-left: 15px;
+            flex-shrink: 0;
         }
 
         .options {
@@ -279,6 +317,28 @@
 
         .toggle-answer-btn:hover {
             background-color: #138496;
+        }
+
+        /* 全局重置按钮 */
+        .global-reset-bar {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .global-reset-btn {
+            padding: 8px 24px;
+            font-size: 15px;
+            border-radius: 8px;
+            border: none;
+            background-color: #dc3545;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        .global-reset-btn:hover {
+            background-color: #c82333;
         }
 
         /* 打赏区域 */
@@ -372,6 +432,16 @@
                 width: 150px;
                 height: 150px;
             }
+
+            .question-header {
+                flex-direction: column;
+            }
+
+            .error-count-display {
+                margin-left: 0;
+                margin-top: 8px;
+                align-self: flex-start;
+            }
         }
     </style>
 </head>
@@ -385,7 +455,7 @@
             <p>本系统支持多种题型，包括<span class="highlight">单选题</span>、<span class="highlight">多选题</span>、<span class="highlight">判断题</span>、<span class="highlight">填空题</span>和<span class="highlight">简答题</span>。</p>
             <p>🔄 <strong>随机测试</strong>：题目和选项都会随机打乱。</p>
             <p>📝 <strong>顺序测试</strong>：题目和选项按题库原始顺序显示。</p>
-            <p>💡 选择题和判断题点击后立即判断对错，<strong>提交后不可更改</strong>。填空题和简答题可点击按钮查看或隐藏参考答案。</p>
+            <p>💡 选择题和判断题点击后立即判断对错，<strong>提交后不可更改</strong>，并记录错误次数。填空题和简答题可点击按钮查看或隐藏参考答案。</p>
             <p>📱 如需定制专属题库，请联系下方微信二维码。</p>
         </div>
 
@@ -415,15 +485,26 @@
 
         <!-- 题目容器（初始隐藏） -->
         <div id="examContainer" style="display:none;">
+            <!-- 全局重置按钮 -->
+            <div class="global-reset-bar">
+                <button class="global-reset-btn" onclick="resetAllErrors()">🔄 重置所有错误次数</button>
+            </div>
+
             <!-- 选择题部分（包含单选和多选） -->
             <div class="section" id="choice-section">
-                <h2 class="section-title">一、选择题</h2>
+                <h2 class="section-title">
+                    <span>一、选择题</span>
+                    <button class="reset-section-btn" onclick="resetSectionErrors('choice')">清除本类错误</button>
+                </h2>
                 <div id="choice-questions"></div>
             </div>
 
             <!-- 判断题部分 -->
             <div class="section" id="judge-section">
-                <h2 class="section-title">二、判断题</h2>
+                <h2 class="section-title">
+                    <span>二、判断题</span>
+                    <button class="reset-section-btn" onclick="resetSectionErrors('judge')">清除本类错误</button>
+                </h2>
                 <div id="judge-questions"></div>
             </div>
 
@@ -466,6 +547,8 @@
         // 全局变量
         let currentExamData = null;
         let isRandomMode = true;
+        // 错误计数存储：key = "choice-{id}" 或 "judge-{id}"
+        let errorCounts = {};
 
         function setMode(mode) {
             isRandomMode = (mode === 'random');
@@ -480,6 +563,9 @@
                 alert('请先选择一套题库！');
                 return;
             }
+
+            // 重置错误计数
+            errorCounts = {};
 
             document.getElementById('loading').style.display = 'block';
             document.getElementById('examContainer').style.display = 'none';
@@ -514,6 +600,43 @@
             return [...array];
         }
 
+        // 更新指定题目的错误次数显示
+        function updateErrorDisplay(errorId) {
+            const displayEl = document.querySelector(`[data-error-id="${errorId}"]`);
+            if (displayEl) {
+                const count = errorCounts[errorId] || 0;
+                displayEl.textContent = `❌ 错误 ${count} 次`;
+            }
+        }
+
+        // 增加错误计数
+        function incrementError(errorId) {
+            if (!errorCounts[errorId]) {
+                errorCounts[errorId] = 0;
+            }
+            errorCounts[errorId]++;
+            updateErrorDisplay(errorId);
+        }
+
+        // 重置所有错误
+        function resetAllErrors() {
+            for (let key in errorCounts) {
+                errorCounts[key] = 0;
+                updateErrorDisplay(key);
+            }
+        }
+
+        // 重置某一类错误（choice 或 judge）
+        function resetSectionErrors(type) {
+            const prefix = type === 'choice' ? 'choice-' : 'judge-';
+            for (let key in errorCounts) {
+                if (key.startsWith(prefix)) {
+                    errorCounts[key] = 0;
+                    updateErrorDisplay(key);
+                }
+            }
+        }
+
         function renderChoiceQuestions() {
             const container = document.getElementById('choice-questions');
             container.innerHTML = '';
@@ -527,12 +650,25 @@
                 questionDiv.className = 'question';
                 questionDiv.dataset.questionId = q.id;
 
+                // 头部：题目文本 + 错误次数
+                const header = document.createElement('div');
+                header.className = 'question-header';
+
                 const questionText = document.createElement('div');
                 questionText.className = 'question-text';
                 const isMultiple = Array.isArray(q.answer);
                 const questionType = isMultiple ? '【多选】' : '【单选】';
                 questionText.textContent = `${index + 1}. ${questionType} ${q.question}`;
-                questionDiv.appendChild(questionText);
+                header.appendChild(questionText);
+
+                const errorId = `choice-${q.id}`;
+                const errorDisplay = document.createElement('span');
+                errorDisplay.className = 'error-count-display';
+                errorDisplay.dataset.errorId = errorId;
+                errorDisplay.textContent = `❌ 错误 ${errorCounts[errorId] || 0} 次`;
+                header.appendChild(errorDisplay);
+
+                questionDiv.appendChild(header);
 
                 const optionsDiv = document.createElement('div');
                 optionsDiv.className = 'options';
@@ -595,6 +731,9 @@
                             feedback.textContent = '✓ 正确';
                             feedback.className = 'feedback correct-feedback';
                         } else {
+                            // 错误：增加错误计数
+                            incrementError(errorId);
+
                             optionDiv.classList.add('wrong');
                             feedback.textContent = '✗ 错误';
                             feedback.className = 'feedback wrong-feedback';
@@ -641,10 +780,23 @@
                 questionDiv.className = 'question';
                 questionDiv.dataset.questionId = q.id;
 
+                // 头部
+                const header = document.createElement('div');
+                header.className = 'question-header';
+
                 const questionText = document.createElement('div');
                 questionText.className = 'question-text';
                 questionText.textContent = `${index + 1}. ${q.question}`;
-                questionDiv.appendChild(questionText);
+                header.appendChild(questionText);
+
+                const errorId = `judge-${q.id}`;
+                const errorDisplay = document.createElement('span');
+                errorDisplay.className = 'error-count-display';
+                errorDisplay.dataset.errorId = errorId;
+                errorDisplay.textContent = `❌ 错误 ${errorCounts[errorId] || 0} 次`;
+                header.appendChild(errorDisplay);
+
+                questionDiv.appendChild(header);
 
                 const optionsDiv = document.createElement('div');
                 optionsDiv.className = 'options';
@@ -690,6 +842,9 @@
                             this.querySelector('.feedback').textContent = '✓ 正确';
                             this.querySelector('.feedback').className = 'feedback correct-feedback';
                         } else {
+                            // 错误：增加计数
+                            incrementError(errorId);
+
                             this.classList.add('wrong');
                             this.querySelector('.feedback').textContent = '✗ 错误';
                             this.querySelector('.feedback').className = 'feedback wrong-feedback';
