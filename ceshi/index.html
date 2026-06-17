@@ -37,7 +37,6 @@
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
         }
 
-        /* 简介区域 */
         .intro-section {
             background: linear-gradient(to right, #667eea, #764ba2);
             color: white;
@@ -68,7 +67,6 @@
             font-weight: bold;
         }
 
-        /* 题库选择器 */
         .selector-panel {
             text-align: center;
             padding: 25px;
@@ -148,7 +146,6 @@
             box-shadow: 0 5px 15px rgba(33, 136, 56, 0.3);
         }
 
-        /* 加载提示 */
         #loading {
             text-align: center;
             padding: 50px;
@@ -157,7 +154,6 @@
             display: none;
         }
 
-        /* 题目区域 */
         .section {
             margin-bottom: 40px;
             padding-bottom: 20px;
@@ -282,7 +278,6 @@
             color: #dc3545;
         }
 
-        /* 答案区域 */
         .answer-area {
             margin-top: 15px;
             padding: 15px;
@@ -319,7 +314,6 @@
             background-color: #138496;
         }
 
-        /* 全局重置按钮 */
         .global-reset-bar {
             text-align: right;
             margin-bottom: 20px;
@@ -341,7 +335,6 @@
             background-color: #c82333;
         }
 
-        /* 打赏区域 */
         .donation-section {
             background: linear-gradient(to right, #f8f9fa, #e9ecef);
             padding: 30px;
@@ -449,17 +442,15 @@
     <div class="container">
         <h1>📚 在线测试系统</h1>
 
-        <!-- 简介区域 -->
         <div class="intro-section">
             <h2>👋 欢迎使用在线测试系统</h2>
             <p>本系统支持多种题型，包括<span class="highlight">单选题</span>、<span class="highlight">多选题</span>、<span class="highlight">判断题</span>、<span class="highlight">填空题</span>和<span class="highlight">简答题</span>。</p>
             <p>🔄 <strong>随机测试</strong>：题目和选项都会随机打乱。</p>
             <p>📝 <strong>顺序测试</strong>：题目和选项按题库原始顺序显示。</p>
-            <p>💡 选择题和判断题点击后立即判断对错，<strong>提交后不可更改</strong>，并记录错误次数。填空题和简答题可点击按钮查看或隐藏参考答案。</p>
+            <p>💡 选择题和判断题点击后立即判断对错，<strong>提交后不可更改</strong>，并记录错误次数（自动保存，重新加载题库会累计）。填空题和简答题可点击按钮查看或隐藏参考答案。</p>
             <p>📱 如需定制专属题库，请联系下方微信二维码。</p>
         </div>
 
-        <!-- 题库选择面板 -->
         <div class="selector-panel">
             <h2>📝 请选择题库和模式</h2>
             <div class="selector-row">
@@ -480,17 +471,13 @@
             </div>
         </div>
 
-        <!-- 加载提示 -->
         <div id="loading">⏳ 正在加载题目...</div>
 
-        <!-- 题目容器（初始隐藏） -->
         <div id="examContainer" style="display:none;">
-            <!-- 全局重置按钮 -->
             <div class="global-reset-bar">
                 <button class="global-reset-btn" onclick="resetAllErrors()">🔄 重置所有错误次数</button>
             </div>
 
-            <!-- 选择题部分（包含单选和多选） -->
             <div class="section" id="choice-section">
                 <h2 class="section-title">
                     <span>一、选择题</span>
@@ -499,7 +486,6 @@
                 <div id="choice-questions"></div>
             </div>
 
-            <!-- 判断题部分 -->
             <div class="section" id="judge-section">
                 <h2 class="section-title">
                     <span>二、判断题</span>
@@ -508,20 +494,17 @@
                 <div id="judge-questions"></div>
             </div>
 
-            <!-- 填空题部分 -->
             <div class="section" id="fill-section">
                 <h2 class="section-title">三、填空题</h2>
                 <div id="fill-questions"></div>
             </div>
 
-            <!-- 简答题部分 -->
             <div class="section" id="essay-section">
                 <h2 class="section-title">四、简答题</h2>
                 <div id="essay-questions"></div>
             </div>
         </div>
 
-        <!-- 打赏区域 -->
         <div class="donation-section">
             <h3>☕ 支持开发者</h3>
             <p>如果您觉得这个测试系统对您有帮助，欢迎打赏支持，鼓励我们继续开发更多实用工具！</p>
@@ -547,13 +530,38 @@
         // 全局变量
         let currentExamData = null;
         let isRandomMode = true;
-        // 错误计数存储：key = "choice-{id}" 或 "judge-{id}"
-        let errorCounts = {};
+        let currentExamFile = '';       // 当前题库文件名，用于localStorage键
+        let errorCounts = {};           // 内存中的错误计数
+
+        // localStorage 键前缀
+        const ERROR_STORAGE_PREFIX = 'test_error_counts_';
 
         function setMode(mode) {
             isRandomMode = (mode === 'random');
             document.getElementById('randomMode').classList.toggle('active', isRandomMode);
             document.getElementById('orderMode').classList.toggle('active', !isRandomMode);
+        }
+
+        // 从 localStorage 加载当前题库的错误计数
+        function loadErrorCountsFromStorage(examFile) {
+            const key = ERROR_STORAGE_PREFIX + examFile;
+            const stored = localStorage.getItem(key);
+            if (stored) {
+                try {
+                    errorCounts = JSON.parse(stored);
+                } catch (e) {
+                    errorCounts = {};
+                }
+            } else {
+                errorCounts = {};
+            }
+        }
+
+        // 将当前错误计数保存到 localStorage
+        function saveErrorCountsToStorage() {
+            if (!currentExamFile) return;
+            const key = ERROR_STORAGE_PREFIX + currentExamFile;
+            localStorage.setItem(key, JSON.stringify(errorCounts));
         }
 
         async function loadSelectedExam() {
@@ -564,8 +572,9 @@
                 return;
             }
 
-            // 重置错误计数
-            errorCounts = {};
+            // 设置当前题库文件并加载对应的错误计数
+            currentExamFile = filePath;
+            loadErrorCountsFromStorage(currentExamFile);
 
             document.getElementById('loading').style.display = 'block';
             document.getElementById('examContainer').style.display = 'none';
@@ -609,21 +618,23 @@
             }
         }
 
-        // 增加错误计数
+        // 增加错误计数并持久化
         function incrementError(errorId) {
             if (!errorCounts[errorId]) {
                 errorCounts[errorId] = 0;
             }
             errorCounts[errorId]++;
             updateErrorDisplay(errorId);
+            saveErrorCountsToStorage();
         }
 
-        // 重置所有错误
+        // 重置所有错误（当前题库）
         function resetAllErrors() {
             for (let key in errorCounts) {
                 errorCounts[key] = 0;
                 updateErrorDisplay(key);
             }
+            saveErrorCountsToStorage();
         }
 
         // 重置某一类错误（choice 或 judge）
@@ -635,6 +646,7 @@
                     updateErrorDisplay(key);
                 }
             }
+            saveErrorCountsToStorage();
         }
 
         function renderChoiceQuestions() {
@@ -650,7 +662,6 @@
                 questionDiv.className = 'question';
                 questionDiv.dataset.questionId = q.id;
 
-                // 头部：题目文本 + 错误次数
                 const header = document.createElement('div');
                 header.className = 'question-header';
 
@@ -731,7 +742,6 @@
                             feedback.textContent = '✓ 正确';
                             feedback.className = 'feedback correct-feedback';
                         } else {
-                            // 错误：增加错误计数
                             incrementError(errorId);
 
                             optionDiv.classList.add('wrong');
@@ -780,7 +790,6 @@
                 questionDiv.className = 'question';
                 questionDiv.dataset.questionId = q.id;
 
-                // 头部
                 const header = document.createElement('div');
                 header.className = 'question-header';
 
@@ -842,7 +851,6 @@
                             this.querySelector('.feedback').textContent = '✓ 正确';
                             this.querySelector('.feedback').className = 'feedback correct-feedback';
                         } else {
-                            // 错误：增加计数
                             incrementError(errorId);
 
                             this.classList.add('wrong');
