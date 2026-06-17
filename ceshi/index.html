@@ -161,8 +161,6 @@
             box-shadow: none;
         }
         
-        /* 已删除错题集控制区域 */
-        
         /* 解锁提示模态框 */
         .modal-overlay {
             position: fixed;
@@ -625,19 +623,16 @@
         function checkPerfectScore(examFile) {
             const examKey = getExamKey(examFile);
             
-            // 获取所有选择题和判断题的题目元素
             const choiceQuestions = document.querySelectorAll('#choice-questions .question');
             const judgeQuestions = document.querySelectorAll('#judge-questions .question');
             const allQuestions = [...choiceQuestions, ...judgeQuestions];
             
-            // 如果有题目尚未作答，则不视为满分
             const allAnswered = allQuestions.length > 0 && allQuestions.every(q => q.classList.contains('answered'));
             if (!allAnswered) {
                 localStorage.setItem(`perfect_${examKey}`, false);
                 return false;
             }
             
-            // 检查是否有任何错题（即是否有选项有'wrong'类）
             let hasWrong = false;
             allQuestions.forEach(q => {
                 const wrongOptions = q.querySelectorAll('.option.wrong');
@@ -660,17 +655,6 @@
 
         function getExamKey(filename) {
             return filename.replace('data/', '').replace('.json', '');
-        }
-
-        function getExamDisplayName(filename) {
-            const names = {
-                'data/os.json': '操作系统',
-                'data/ds.json': '数据结构',
-                'data/cn.json': '计算机网络',
-                'data/soft.json': '软件工程',
-                'data/zy.json': '赵宇粉丝测试题'
-            };
-            return names[filename] || '未知题库';
         }
 
         async function loadSelectedExam() {
@@ -789,6 +773,13 @@
                             isCorrect = selectedOriginalIndices[0] === q.answer;
                         }
 
+                        // ★★★ 如果是赵宇测试题且答错，直接弹窗重新答题 ★★★
+                        if (currentExamFile === 'data/zy.json' && !isCorrect) {
+                            alert('答题错误，请重新答题');
+                            loadSelectedExam(); // 重新加载题库，所有题目重置
+                            return;
+                        }
+
                         optionsDiv.querySelectorAll('.option').forEach(opt => {
                             opt.classList.remove('selected', 'wrong');
                             opt.querySelector('.feedback').textContent = '';
@@ -822,7 +813,7 @@
                             });
                         }
 
-                        // 每次答题后检查满分
+                        // 每次答题后检查满分（非赵宇测试题也保留此逻辑）
                         if (currentExamFile === 'data/zy.json') {
                             setTimeout(() => checkPerfectScore(currentExamFile), 100);
                         }
@@ -887,6 +878,14 @@
                         });
 
                         const isCorrect = this.dataset.correct === 'true';
+
+                        // ★★★ 如果是赵宇测试题且答错，直接弹窗重新答题 ★★★
+                        if (currentExamFile === 'data/zy.json' && !isCorrect) {
+                            alert('答题错误，请重新答题');
+                            loadSelectedExam();
+                            return;
+                        }
+
                         const allOptions = this.parentElement.querySelectorAll('.option');
                         allOptions.forEach(opt => {
                             opt.classList.remove('selected', 'wrong');
@@ -911,7 +910,6 @@
                             });
                         }
 
-                        // 每次答题后检查满分
                         if (currentExamFile === 'data/zy.json') {
                             setTimeout(() => checkPerfectScore(currentExamFile), 100);
                         }
