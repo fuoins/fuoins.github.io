@@ -338,6 +338,34 @@
             word-break: break-all;
         }
         
+        /* 下拉选择框样式 */
+        .select-wrapper {
+            margin-bottom: 16px;
+        }
+        
+        .select-label {
+            display: block;
+            font-size: 14px;
+            color: #4b5563;
+            margin-bottom: 6px;
+        }
+        
+        .select-box {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            background: #fff;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .select-box:focus {
+            border-color: #4299e1;
+        }
+        
         /* 简介区域 */
         .intro-area {
             display: none;
@@ -417,7 +445,7 @@
         /* 阅读区样式 */
         .reader { 
             flex: 1; 
-            background: url("paper-texture.png") repeat;
+            background: #fff;
             background-size: auto;
             background-color: #fff;
             padding: 40px; 
@@ -442,7 +470,7 @@
             margin: 0 auto;
             line-height: 2;
             text-indent: 2em;
-            font-family: 'CustomFont', 'Microsoft YaHei', sans-serif;
+            font-family: 'Microsoft YaHei', sans-serif;
         }
         
         /* 进度条样式 */
@@ -615,26 +643,42 @@
             
             <!-- 设置区域 -->
             <div class="settings-area" id="settingsArea">
-                <!-- 文件上传区域 -->
+                <!-- 预设选择区域 -->
                 <div class="file-upload-area">
                     <div class="file-upload-title">
-                        <i class="fas fa-upload"></i> 自定义资源
+                        <i class="fas fa-palette"></i> 预设选择
+                    </div>
+                    
+                    <div class="select-wrapper">
+                        <label class="select-label">字体选择</label>
+                        <select class="select-box" id="fontSelect">
+                            <option value="microsoft">微软雅黑（默认）</option>
+                            <option value="custom">自定义字体 (z_GBK.ttf)</option>
+                        </select>
+                        <div class="current-file" id="currentFont">当前字体: 微软雅黑</div>
+                    </div>
+                    
+                    <div class="select-wrapper">
+                        <label class="select-label">背景选择</label>
+                        <select class="select-box" id="bgSelect">
+                            <option value="normal">正常背景（默认）</option>
+                            <option value="texture">纸张纹理 (paper-texture.png)</option>
+                        </select>
+                        <div class="current-file" id="currentBg">当前背景: 正常背景</div>
                     </div>
                     
                     <div class="file-input-wrapper">
                         <label class="file-input-label" for="fontUpload">
-                            <i class="fas fa-font"></i> 选择字体文件 (.ttf)
+                            <i class="fas fa-font"></i> 或上传自定义字体 (.ttf)
                         </label>
                         <input type="file" id="fontUpload" class="file-input" accept=".ttf,.otf,.woff,.woff2">
-                        <div class="current-file" id="currentFont">当前字体: z_GBK.ttf</div>
                     </div>
                     
                     <div class="file-input-wrapper">
                         <label class="file-input-label" for="bgUpload">
-                            <i class="fas fa-image"></i> 选择背景图片
+                            <i class="fas fa-image"></i> 或上传自定义背景
                         </label>
                         <input type="file" id="bgUpload" class="file-input" accept="image/*">
-                        <div class="current-file" id="currentBg">当前背景: paper-texture.png</div>
                     </div>
                 </div>
                 
@@ -734,8 +778,8 @@
                         <h3>主要功能：</h3>
                         <ul>
                             <li><strong>目录浏览</strong>：自动解析章节，支持搜索</li>
-                            <li><strong>自定义字体</strong>：支持导入TTF/OTF字体文件</li>
-                            <li><strong>自定义背景</strong>：支持导入图片作为阅读背景</li>
+                            <li><strong>字体选择</strong>：默认微软雅黑，可选自定义字体</li>
+                            <li><strong>背景选择</strong>：默认正常背景，可选纸张纹理</li>
                             <li><strong>排版设置</strong>：调整字体大小、行距、字间距、边距等</li>
                             <li><strong>阅读进度</strong>：自动保存阅读位置</li>
                             <li><strong>快捷键</strong>：支持键盘快捷操作</li>
@@ -763,10 +807,6 @@
                                     <td>上一页/下一页（整页）</td>
                                 </tr>
                                 <tr>
-                                    <td><span class="shortcut-key">Ctrl</span>+<span class="shortcut-key">↑</span> <span class="shortcut-key">↓</span></td>
-                                    <td>切换设置选项</td>
-                                </tr>
-                                <tr>
                                     <td><span class="shortcut-key">Ctrl</span>+<span class="shortcut-key">←</span> <span class="shortcut-key">→</span></td>
                                     <td>上一章/下一章</td>
                                 </tr>
@@ -788,7 +828,7 @@
                         <h3>使用提示：</h3>
                         <ul>
                             <li>点击左上角菜单按钮打开侧边栏</li>
-                            <li>在设置中可导入自定义字体和背景图片</li>
+                            <li>在设置中选择预设字体和背景，或上传自定义资源</li>
                             <li>所有设置会自动保存，下次打开仍生效</li>
                             <li>支持阅读超大TXT文件（20MB+）</li>
                         </ul>
@@ -848,8 +888,10 @@
         // 配置
         const CONFIG = {
             novelFile: "123.txt",
-            defaultFont: "z_GBK.ttf",
-            defaultBg: "paper-texture.png",
+            defaultFont: "microsoft",
+            defaultBg: "normal",
+            customFont: "z_GBK.ttf",
+            customBg: "paper-texture.png",
             chapterPatterns: [
                 /^第[一二三四五六七八九十百千万零]+[章回卷节]\s*.+/,
                 /^第\d+[章回卷节]\s*.+/,
@@ -878,6 +920,8 @@
             paddingRight: 40,
             paddingTop: 40,
             paddingBottom: 40,
+            fontType: CONFIG.defaultFont,
+            bgType: CONFIG.defaultBg,
             customFontName: null,
             customBgUrl: null
         };
@@ -925,6 +969,8 @@
             bgUpload: document.getElementById('bgUpload'),
             currentFont: document.getElementById('currentFont'),
             currentBg: document.getElementById('currentBg'),
+            fontSelect: document.getElementById('fontSelect'),
+            bgSelect: document.getElementById('bgSelect'),
             shortcutHint: document.getElementById('shortcutHint')
         };
 
@@ -937,8 +983,8 @@
             // 加载保存的设置
             loadSettings();
             
-            // 加载默认字体和背景
-            loadDefaultFontAndBg();
+            // 应用默认字体和背景
+            applyFontAndBg();
             
             // 初始化事件监听
             initEventListeners();
@@ -947,12 +993,27 @@
             loadNovel(CONFIG.novelFile);
         }
 
-        function loadDefaultFontAndBg() {
-            // 加载默认字体
-            loadFont(CONFIG.defaultFont);
+        function applyFontAndBg() {
+            // 应用字体
+            if (readingSettings.fontType === 'custom' && readingSettings.customFontName) {
+                loadCustomFont(readingSettings.customFontName);
+            } else {
+                // 默认使用微软雅黑
+                elements.novelContent.style.fontFamily = "'Microsoft YaHei', sans-serif";
+                elements.currentFont.textContent = "当前字体: 微软雅黑";
+                elements.fontSelect.value = "microsoft";
+            }
             
-            // 加载默认背景
-            loadBackground(CONFIG.defaultBg);
+            // 应用背景
+            if (readingSettings.bgType === 'texture' && readingSettings.customBgUrl) {
+                applyCustomBackground(readingSettings.customBgUrl);
+            } else {
+                // 默认使用白色背景
+                elements.readerArea.style.backgroundImage = "none";
+                elements.readerArea.style.backgroundColor = "#fff";
+                elements.currentBg.textContent = "当前背景: 正常背景";
+                elements.bgSelect.value = "normal";
+            }
         }
 
         function initEventListeners() {
@@ -992,8 +1053,85 @@
             elements.fontUpload.addEventListener('change', handleFontUpload);
             elements.bgUpload.addEventListener('change', handleBgUpload);
             
+            // 下拉选择框
+            elements.fontSelect.addEventListener('change', handleFontSelect);
+            elements.bgSelect.addEventListener('change', handleBgSelect);
+            
             // 键盘导航
             document.addEventListener('keydown', handleKeyboardNavigation);
+        }
+
+        function handleFontSelect(e) {
+            const fontType = e.target.value;
+            readingSettings.fontType = fontType;
+            
+            if (fontType === 'microsoft') {
+                elements.novelContent.style.fontFamily = "'Microsoft YaHei', sans-serif";
+                elements.currentFont.textContent = "当前字体: 微软雅黑";
+                showShortcutHint("已切换到微软雅黑");
+            } else if (fontType === 'custom') {
+                // 尝试加载自定义字体
+                loadCustomFont(CONFIG.customFont);
+                elements.currentFont.textContent = `当前字体: ${CONFIG.customFont}`;
+                showShortcutHint(`已切换到${CONFIG.customFont}`);
+            }
+            
+            saveSettings();
+        }
+
+        function handleBgSelect(e) {
+            const bgType = e.target.value;
+            readingSettings.bgType = bgType;
+            
+            if (bgType === 'normal') {
+                elements.readerArea.style.backgroundImage = "none";
+                elements.readerArea.style.backgroundColor = "#fff";
+                elements.currentBg.textContent = "当前背景: 正常背景";
+                showShortcutHint("已切换到正常背景");
+            } else if (bgType === 'texture') {
+                applyCustomBackground(CONFIG.customBg);
+                elements.currentBg.textContent = `当前背景: ${CONFIG.customBg}`;
+                showShortcutHint(`已切换到${CONFIG.customBg}`);
+            }
+            
+            saveSettings();
+        }
+
+        function loadCustomFont(fontName) {
+            // 检查是否已经加载过该字体
+            if (customFontLoaded && readingSettings.customFontName === fontName) {
+                return;
+            }
+            
+            const fontFace = new FontFace('CustomFont', `url(${fontName})`);
+            fontFace.load().then(function(loadedFace) {
+                document.fonts.add(loadedFace);
+                elements.novelContent.style.fontFamily = "'CustomFont', 'Microsoft YaHei', sans-serif";
+                customFontLoaded = true;
+                readingSettings.customFontName = fontName;
+                saveSettings();
+            }).catch(function(error) {
+                console.warn(`字体 ${fontName} 加载失败，使用默认字体:`, error);
+                elements.novelContent.style.fontFamily = "'Microsoft YaHei', sans-serif";
+                elements.currentFont.textContent = "当前字体: 微软雅黑（加载失败）";
+                elements.fontSelect.value = "microsoft";
+                readingSettings.fontType = "microsoft";
+                showShortcutHint(`字体加载失败，已恢复默认字体`);
+            });
+        }
+
+        function applyCustomBackground(bgName) {
+            // 检查是否已经加载过该背景
+            if (customBgLoaded && readingSettings.customBgUrl === bgName) {
+                return;
+            }
+            
+            elements.readerArea.style.backgroundImage = `url(${bgName})`;
+            elements.readerArea.style.backgroundSize = 'auto';
+            elements.readerArea.style.backgroundColor = '#fff';
+            customBgLoaded = true;
+            readingSettings.customBgUrl = bgName;
+            saveSettings();
         }
 
         function toggleSidebar() {
@@ -1351,6 +1489,8 @@
                 paddingRight: 40,
                 paddingTop: 40,
                 paddingBottom: 40,
+                fontType: CONFIG.defaultFont,
+                bgType: CONFIG.defaultBg,
                 customFontName: null,
                 customBgUrl: null
             };
@@ -1365,7 +1505,11 @@
             elements.paddingTopSlider.value = readingSettings.paddingTop;
             elements.paddingBottomSlider.value = readingSettings.paddingBottom;
             
-            // 更新显示值
+            // 更新下拉框
+            elements.fontSelect.value = readingSettings.fontType;
+            elements.bgSelect.value = readingSettings.bgType;
+            
+            // 应用设置
             updateFontSize();
             updateLineHeight();
             updateLetterSpacing();
@@ -1376,9 +1520,7 @@
             updatePaddingBottom();
             
             // 重置字体和背景
-            loadDefaultFontAndBg();
-            elements.currentFont.textContent = `当前字体: ${CONFIG.defaultFont}`;
-            elements.currentBg.textContent = `当前背景: ${CONFIG.defaultBg}`;
+            applyFontAndBg();
             
             showShortcutHint("已恢复默认设置");
         }
@@ -1402,6 +1544,10 @@
                 elements.paddingTopSlider.value = readingSettings.paddingTop;
                 elements.paddingBottomSlider.value = readingSettings.paddingBottom;
                 
+                // 更新下拉框
+                elements.fontSelect.value = readingSettings.fontType || CONFIG.defaultFont;
+                elements.bgSelect.value = readingSettings.bgType || CONFIG.defaultBg;
+                
                 // 应用设置
                 updateFontSize();
                 updateLineHeight();
@@ -1411,17 +1557,6 @@
                 updatePaddingRight();
                 updatePaddingTop();
                 updatePaddingBottom();
-                
-                // 加载自定义字体和背景
-                if (readingSettings.customFontName) {
-                    loadFont(readingSettings.customFontName);
-                    elements.currentFont.textContent = `当前字体: ${readingSettings.customFontName}`;
-                }
-                
-                if (readingSettings.customBgUrl) {
-                    loadBackground(readingSettings.customBgUrl);
-                    elements.currentBg.textContent = `当前背景: 自定义图片`;
-                }
             }
             
             // 恢复上次阅读的章节
@@ -1453,11 +1588,13 @@
                     // 应用字体
                     elements.novelContent.style.fontFamily = `'${fontName}', 'Microsoft YaHei', sans-serif`;
                     
-                    // 保存设置
+                    // 更新设置
+                    readingSettings.fontType = 'custom';
                     readingSettings.customFontName = file.name;
+                    elements.fontSelect.value = 'custom';
+                    elements.currentFont.textContent = `当前字体: ${file.name}`;
                     saveSettings();
                     
-                    elements.currentFont.textContent = `当前字体: ${file.name}`;
                     showShortcutHint(`已加载字体: ${file.name}`);
                 }).catch(function(error) {
                     console.error('字体加载失败:', error);
@@ -1486,34 +1623,17 @@
                 elements.readerArea.style.backgroundSize = 'auto';
                 elements.readerArea.style.backgroundColor = '#fff';
                 
-                // 保存设置
+                // 更新设置
+                readingSettings.bgType = 'custom';
                 readingSettings.customBgUrl = imageUrl;
+                elements.bgSelect.value = 'custom';
+                elements.currentBg.textContent = `当前背景: ${file.name}`;
                 saveSettings();
                 
-                elements.currentBg.textContent = `当前背景: ${file.name}`;
                 showShortcutHint(`已加载背景: ${file.name}`);
             };
             
             reader.readAsDataURL(file);
-        }
-
-        function loadFont(fontName) {
-            const fontFace = new FontFace('CustomFont', `url(${fontName})`);
-            fontFace.load().then(function(loadedFace) {
-                document.fonts.add(loadedFace);
-                customFontLoaded = true;
-                elements.novelContent.style.fontFamily = `'CustomFont', 'Microsoft YaHei', sans-serif`;
-            }).catch(function(error) {
-                console.warn(`字体 ${fontName} 加载失败，使用默认字体:`, error);
-                elements.novelContent.style.fontFamily = `'Microsoft YaHei', sans-serif`;
-            });
-        }
-
-        function loadBackground(bgName) {
-            elements.readerArea.style.backgroundImage = `url(${bgName})`;
-            elements.readerArea.style.backgroundSize = 'auto';
-            elements.readerArea.style.backgroundColor = '#fff';
-            customBgLoaded = true;
         }
 
         function handleKeyboardNavigation(e) {
@@ -1533,32 +1653,6 @@
             // Esc 关闭侧边栏
             if (e.key === 'Escape') {
                 closeSidebar();
-                return;
-            }
-            
-            // Ctrl + ↑/↓ 切换设置选项
-            if (e.ctrlKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
-                e.preventDefault();
-                if (elements.sidebar.classList.contains('show') && 
-                    document.querySelector('.tab-btn[data-tab="settings"]').classList.contains('active')) {
-                    
-                    const sliders = Array.from(document.querySelectorAll('.setting-slider'));
-                    const currentFocus = document.activeElement;
-                    let currentIndex = sliders.indexOf(currentFocus);
-                    
-                    if (currentIndex === -1) {
-                        currentIndex = e.key === 'ArrowUp' ? sliders.length - 1 : 0;
-                    } else {
-                        if (e.key === 'ArrowUp') {
-                            currentIndex = (currentIndex - 1 + sliders.length) % sliders.length;
-                        } else {
-                            currentIndex = (currentIndex + 1) % sliders.length;
-                        }
-                    }
-                    
-                    sliders[currentIndex].focus();
-                    showShortcutHint(`选中: ${sliders[currentIndex].previousElementSibling.querySelector('span:first-child').textContent}`);
-                }
                 return;
             }
             
