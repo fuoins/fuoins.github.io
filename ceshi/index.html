@@ -802,7 +802,7 @@
             return JSON.parse(localStorage.getItem(storageKey) || '[]');
         }
 
-        // ★★★ 修复的核心：只有所有选择题和判断题都已作答且无错题才算满分 ★★★
+        // 检查是否满分
         function checkPerfectScore(examFile) {
             const examKey = getExamKey(examFile);
             
@@ -871,7 +871,6 @@
             renderJudgeQuestions();
             renderFillQuestions();
             renderEssayQuestions();
-            // ★★★ 不再自动调用 checkPerfectScore，只在答题时触发 ★★★
         }
 
         function shuffleIfRandom(array) {
@@ -997,7 +996,7 @@
                             });
                         }
 
-                        // ★★★ 每次答题后检查满分 ★★★
+                        // 每次答题后检查满分
                         if (currentExamFile === 'data/zy.json') {
                             setTimeout(() => checkPerfectScore(currentExamFile), 100);
                         }
@@ -1113,7 +1112,7 @@
                             });
                         }
 
-                        // ★★★ 每次答题后检查满分 ★★★
+                        // 每次答题后检查满分
                         if (currentExamFile === 'data/zy.json') {
                             setTimeout(() => checkPerfectScore(currentExamFile), 100);
                         }
@@ -1134,7 +1133,6 @@
             }
         }
 
-        // 渲染填空题
         function renderFillQuestions() {
             const container = document.getElementById('fill-questions');
             container.innerHTML = '';
@@ -1171,7 +1169,6 @@
             });
         }
 
-        // 渲染简答题
         function renderEssayQuestions() {
             const container = document.getElementById('essay-questions');
             container.innerHTML = '';
@@ -1209,5 +1206,3 @@
     </script>
 </body>
 </html>
-
-                       
