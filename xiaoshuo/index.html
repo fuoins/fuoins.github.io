@@ -90,6 +90,7 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
+            margin-bottom: 15px;
         }
         
         .selector-panel select {
@@ -145,6 +146,170 @@
             background-color: #218838;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(33, 136, 56, 0.3);
+        }
+        
+        .start-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* 错题集控制区域 */
+        .wrong-set-controls {
+            background-color: rgba(255,255,255,0.15);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .wrong-set-controls h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #28a745;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+        
+        .clear-wrong-btn {
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: none;
+            background-color: #dc3545;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .clear-wrong-btn:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+        
+        .clear-wrong-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .storage-notice {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-top: 10px;
+            padding: 8px;
+            background-color: rgba(0,0,0,0.1);
+            border-radius: 4px;
+        }
+        
+        /* 解锁提示模态框 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .modal-content h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .modal-content p {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .countdown-timer {
+            font-size: 2em;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 20px 0;
+        }
+        
+        .modal-close-btn {
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .modal-close-btn:hover {
+            background-color: #2980b9;
         }
         
         /* 加载提示 */
@@ -370,7 +535,7 @@
         <div class="intro-section">
             <h2>👋 欢迎使用宇总在线测试系统</h2>
             <p>本系统支持多种题型，包括<span class="highlight">单选题</span>、<span class="highlight">多选题</span>、<span class="highlight">判断题</span>、<span class="highlight">填空题</span>和<span class="highlight">简答题</span>。</p>
-            <p>🔄 <strong>随机测试</strong>：每次刷新页面，题目和选项都会随机打乱。</p>
+            <p>🔄 <strong>随机测试</strong>：题目和选项都会随机打乱。</p>
             <p>📝 <strong>顺序测试</strong>：题目和选项按题库原始顺序显示。</p>
             <p>💡 选择题和判断题点击后立即判断对错，填空题和简答题点击"显示答案"按钮查看参考答案。</p>
             <p>📱 如需定制专属题库，请联系下方微信二维码。</p>
@@ -386,6 +551,7 @@
                     <option value="data/ds.json">数据结构</option>
                     <option value="data/cn.json">计算机网络</option>
                     <option value="data/soft.json">软件工程</option>
+                    <option value="data/zy.json">赵宇粉丝测试题</option>
                 </select>
                 
                 <div class="mode-buttons">
@@ -393,7 +559,33 @@
                     <button class="mode-btn" id="orderMode" onclick="setMode('order')">顺序测试</button>
                 </div>
                 
-                <button class="start-btn" onclick="loadSelectedExam()">开始测试</button>
+                <button class="start-btn" id="startBtn" onclick="loadSelectedExam()">开始测试</button>
+            </div>
+            
+            <!-- 错题集控制区域 -->
+            <div class="wrong-set-controls">
+                <h3>
+                    <span>错题集功能</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="wrongSetToggle" onchange="toggleWrongSet()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <button class="clear-wrong-btn" id="clearWrongBtn" onclick="clearCurrentWrongQuestions()" disabled>清除本题库错题</button>
+                </h3>
+                <div class="storage-notice">
+                    ⚠️ 错题记录保存在本地浏览器中，更换浏览器或设备将无法同步。请使用同一浏览器进行学习。
+                </div>
+            </div>
+        </div>
+
+        <!-- 解锁提示模态框 -->
+        <div class="modal-overlay" id="unlockModal">
+            <div class="modal-content">
+                <h2>🔒 题库锁定</h2>
+                <p>"赵宇粉丝测试题"需要您在其他题库中达到满分后才能解锁。</p>
+                <p>请先完成其他题库的学习，并确保所有选择题和判断题全部答对。</p>
+                <div class="countdown-timer" id="countdownTimer">5</div>
+                <button class="modal-close-btn" id="modalCloseBtn" onclick="closeUnlockModal()">我知道了</button>
             </div>
         </div>
 
@@ -453,6 +645,19 @@
         // 全局变量
         let currentExamData = null;
         let isRandomMode = true; // true为随机模式，false为顺序模式
+        let wrongSetEnabled = false; // 错题集功能是否开启
+        let currentExamFile = ''; // 当前题库文件名
+        let unlockCountdown = null; // 解锁倒计时计时器
+        
+        // 页面加载时初始化错题集状态
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedWrongSetState = localStorage.getItem('wrongSetEnabled');
+            if (savedWrongSetState === 'true') {
+                wrongSetEnabled = true;
+                document.getElementById('wrongSetToggle').checked = true;
+                updateClearButtonState();
+            }
+        });
 
         // 设置测试模式
         function setMode(mode) {
@@ -462,7 +667,161 @@
             document.getElementById('randomMode').classList.toggle('active', isRandomMode);
             document.getElementById('orderMode').classList.toggle('active', !isRandomMode);
         }
-
+        
+        // 切换错题集功能
+        function toggleWrongSet() {
+            wrongSetEnabled = document.getElementById('wrongSetToggle').checked;
+            localStorage.setItem('wrongSetEnabled', wrongSetEnabled);
+            updateClearButtonState();
+            
+            // 如果开启了错题集，重新加载当前题库以显示错题
+            if (wrongSetEnabled && currentExamData) {
+                renderAllQuestions();
+            }
+        }
+        
+        // 更新清除错题按钮状态
+        function updateClearButtonState() {
+            const clearBtn = document.getElementById('clearWrongBtn');
+            if (wrongSetEnabled && currentExamFile) {
+                clearBtn.disabled = false;
+            } else {
+                clearBtn.disabled = true;
+            }
+        }
+        
+        // 清除当前题库的错题
+        function clearCurrentWrongQuestions() {
+            if (!currentExamFile || !wrongSetEnabled) return;
+            
+            const examKey = getExamKey(currentExamFile);
+            localStorage.removeItem(`wrong_${examKey}_choice`);
+            localStorage.removeItem(`wrong_${examKey}_judge`);
+            
+            alert(`已清除【${getExamDisplayName(currentExamFile)}】的错题记录！`);
+            
+            // 重新渲染题目
+            if (currentExamData) {
+                renderAllQuestions();
+            }
+        }
+        
+        // 获取题库的唯一键名
+        function getExamKey(filename) {
+            return filename.replace('data/', '').replace('.json', '');
+        }
+        
+        // 获取题库的显示名称
+        function getExamDisplayName(filename) {
+            const names = {
+                'data/os.json': '操作系统',
+                'data/ds.json': '数据结构',
+                'data/cn.json': '计算机网络',
+                'data/soft.json': '软件工程',
+                'data/zy.json': '赵宇粉丝测试题'
+            };
+            return names[filename] || '未知题库';
+        }
+        
+        // 检查题库是否已解锁
+        function isExamUnlocked(filename) {
+            // 如果不是赵宇粉丝测试题，直接返回true
+            if (filename !== 'data/zy.json') return true;
+            
+            // 检查是否所有其他题库都满分
+            const exams = ['os', 'ds', 'cn', 'soft'];
+            for (const exam of exams) {
+                const perfectScore = localStorage.getItem(`perfect_${exam}`);
+                if (perfectScore !== 'true') {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        // 显示解锁提示模态框
+        function showUnlockModal() {
+            const modal = document.getElementById('unlockModal');
+            const timerElement = document.getElementById('countdownTimer');
+            const closeBtn = document.getElementById('modalCloseBtn');
+            
+            modal.style.display = 'flex';
+            closeBtn.style.display = 'none';
+            
+            let countdown = 5;
+            timerElement.textContent = countdown;
+            
+            unlockCountdown = setInterval(function() {
+                countdown--;
+                timerElement.textContent = countdown;
+                
+                if (countdown <= 0) {
+                    clearInterval(unlockCountdown);
+                    closeBtn.style.display = 'block';
+                }
+            }, 1000);
+        }
+        
+        // 关闭解锁提示模态框
+        function closeUnlockModal() {
+            const modal = document.getElementById('unlockModal');
+            modal.style.display = 'none';
+            
+            if (unlockCountdown) {
+                clearInterval(unlockCountdown);
+                unlockCountdown = null;
+            }
+            
+            // 重置选择框到第一个选项
+            document.getElementById('examSelector').value = '';
+        }
+        
+        // 记录错题
+        function recordWrongQuestion(examFile, questionType, questionId) {
+            if (!wrongSetEnabled) return;
+            
+            const examKey = getExamKey(examFile);
+            const storageKey = `wrong_${examKey}_${questionType}`;
+            
+            // 获取现有的错题记录
+            let wrongQuestions = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            
+            // 如果这道题不在错题集中，添加进去
+            if (!wrongQuestions.includes(questionId)) {
+                wrongQuestions.push(questionId);
+                localStorage.setItem(storageKey, JSON.stringify(wrongQuestions));
+            }
+        }
+        
+        // 获取错题列表
+        function getWrongQuestions(examFile, questionType) {
+            if (!wrongSetEnabled) return [];
+            
+            const examKey = getExamKey(examFile);
+            const storageKey = `wrong_${examKey}_${questionType}`;
+            
+            return JSON.parse(localStorage.getItem(storageKey) || '[]');
+        }
+        
+        // 检查是否满分
+        function checkPerfectScore(examFile, choiceQuestions, judgeQuestions) {
+            const examKey = getExamKey(examFile);
+            
+            // 获取错题记录
+            const wrongChoice = JSON.parse(localStorage.getItem(`wrong_${examKey}_choice`) || '[]');
+            const wrongJudge = JSON.parse(localStorage.getItem(`wrong_${examKey}_judge`) || '[]');
+            
+            // 如果没有错题，则认为是满分
+            const isPerfect = wrongChoice.length === 0 && wrongJudge.length === 0;
+            
+            // 如果是赵宇粉丝测试题，记录满分状态
+            if (examFile === 'data/zy.json') {
+                localStorage.setItem(`perfect_${examKey}`, isPerfect);
+            }
+            
+            return isPerfect;
+        }
+        
         // 加载选中的题库
         async function loadSelectedExam() {
             const selector = document.getElementById('examSelector');
@@ -472,7 +831,16 @@
                 alert('请先选择一套题库！');
                 return;
             }
-
+            
+            // 检查赵宇粉丝测试题是否已解锁
+            if (!isExamUnlocked(filePath)) {
+                showUnlockModal();
+                return;
+            }
+            
+            currentExamFile = filePath;
+            updateClearButtonState();
+            
             document.getElementById('loading').style.display = 'block';
             document.getElementById('examContainer').style.display = 'none';
 
@@ -485,11 +853,8 @@
                 // 更新页面标题
                 document.querySelector('h1').textContent = `📚 ${currentExamData.examTitle || '宇总在线测试系统'}`;
                 
-                // 渲染题目
-                renderChoiceQuestions();
-                renderJudgeQuestions();
-                renderFillQuestions();
-                renderEssayQuestions();
+                // 渲染所有题目
+                renderAllQuestions();
                 
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('examContainer').style.display = 'block';
@@ -501,6 +866,25 @@
                 document.getElementById('loading').style.display = 'none';
             }
         }
+        
+        // 渲染所有题目
+        function renderAllQuestions() {
+            if (!currentExamData) return;
+            
+            renderChoiceQuestions();
+            renderJudgeQuestions();
+            renderFillQuestions();
+            renderEssayQuestions();
+            
+            // 检查是否满分（仅对赵宇粉丝测试题有效）
+            if (currentExamFile === 'data/zy.json') {
+                setTimeout(() => {
+                    checkPerfectScore(currentExamFile, 
+                        currentExamData.choiceQuestions || [], 
+                        currentExamData.judgeQuestions || []);
+                }, 100);
+            }
+        }
 
         // 辅助函数：根据模式决定是否随机排序
         function shuffleIfRandom(array) {
@@ -509,6 +893,12 @@
             }
             return [...array]; // 顺序模式直接返回副本，不改变原顺序
         }
+        
+        // 过滤错题
+        function filterWrongQuestions(questions, wrongIds) {
+            if (!wrongSetEnabled || wrongIds.length === 0) return questions;
+            return questions.filter(q => wrongIds.includes(q.id));
+        }
 
         // 渲染选择题（支持单选和多选）
         function renderChoiceQuestions() {
@@ -516,7 +906,16 @@
             container.innerHTML = '';
             if (!currentExamData.choiceQuestions) return;
             
-            const questions = shuffleIfRandom(currentExamData.choiceQuestions);
+            // 获取错题ID列表
+            const wrongIds = getWrongQuestions(currentExamFile, 'choice');
+            
+            // 如果开启了错题集且有错题，只显示错题
+            let questions = wrongSetEnabled && wrongIds.length > 0 
+                ? filterWrongQuestions(currentExamData.choiceQuestions, wrongIds)
+                : currentExamData.choiceQuestions;
+            
+            // 根据模式决定是否随机排序
+            questions = shuffleIfRandom(questions);
             
             questions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
@@ -533,6 +932,8 @@
                 
                 const optionsDiv = document.createElement('div');
                 optionsDiv.className = 'options';
+                
+                // 根据模式决定是否随机排序选项
                 const options = shuffleIfRandom(q.options);
                 
                 // 存储原始索引映射
@@ -596,10 +997,20 @@
                             optionDiv.classList.add('selected');
                             feedback.textContent = '✓ 正确';
                             feedback.className = 'feedback correct-feedback';
+                            
+                            // 如果开启了错题集，从错题中移除
+                            if (wrongSetEnabled) {
+                                removeFromWrongQuestions(q.id, 'choice');
+                            }
                         } else {
                             optionDiv.classList.add('wrong');
                             feedback.textContent = '✗ 错误';
                             feedback.className = 'feedback wrong-feedback';
+                            
+                            // 如果开启了错题集，记录错题
+                            if (wrongSetEnabled) {
+                                recordWrongQuestion(currentExamFile, 'choice', q.id);
+                            }
                             
                             // 显示正确答案
                             optionsDiv.querySelectorAll('.option').forEach(opt => {
@@ -630,6 +1041,30 @@
                 questionDiv.appendChild(optionsDiv);
                 container.appendChild(questionDiv);
             });
+            
+            // 如果开启了错题集且没有错题，显示提示
+            if (wrongSetEnabled && wrongIds.length > 0 && container.children.length === 0) {
+                const noWrongMsg = document.createElement('div');
+                noWrongMsg.className = 'question';
+                noWrongMsg.innerHTML = '<div class="question-text">🎉 太棒了！本题库暂无错题记录。</div>';
+                container.appendChild(noWrongMsg);
+            }
+        }
+        
+        // 从错题中移除
+        function removeFromWrongQuestions(questionId, questionType) {
+            if (!wrongSetEnabled || !currentExamFile) return;
+            
+            const examKey = getExamKey(currentExamFile);
+            const storageKey = `wrong_${examKey}_${questionType}`;
+            
+            let wrongQuestions = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            const index = wrongQuestions.indexOf(questionId);
+            
+            if (index !== -1) {
+                wrongQuestions.splice(index, 1);
+                localStorage.setItem(storageKey, JSON.stringify(wrongQuestions));
+            }
         }
 
         // 渲染判断题
@@ -638,8 +1073,18 @@
             container.innerHTML = '';
             if (!currentExamData.judgeQuestions) return;
             
+            // 获取错题ID列表
+            const wrongIds = getWrongQuestions(currentExamFile, 'judge');
+            
+            // 如果开启了错题集且有错题，只显示错题
+            let questions = wrongSetEnabled && wrongIds.length > 0 
+                ? filterWrongQuestions(currentExamData.judgeQuestions, wrongIds)
+                : currentExamData.judgeQuestions;
+            
             const judgeOptions = ["√ 正确", "× 错误"];
-            const questions = shuffleIfRandom(currentExamData.judgeQuestions);
+            
+            // 根据模式决定是否随机排序题目
+            questions = shuffleIfRandom(questions);
             
             questions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
@@ -653,6 +1098,7 @@
                 const optionsDiv = document.createElement('div');
                 optionsDiv.className = 'options';
                 
+                // 根据模式决定是否随机排序选项
                 const options = shuffleIfRandom(judgeOptions);
                 
                 options.forEach((option, optIndex) => {
@@ -691,10 +1137,20 @@
                             this.classList.add('selected');
                             this.querySelector('.feedback').textContent = '✓ 正确';
                             this.querySelector('.feedback').className = 'feedback correct-feedback';
+                            
+                            // 如果开启了错题集，从错题中移除
+                            if (wrongSetEnabled) {
+                                removeFromWrongQuestions(q.id, 'judge');
+                            }
                         } else {
                             this.classList.add('wrong');
                             this.querySelector('.feedback').textContent = '✗ 错误';
                             this.querySelector('.feedback').className = 'feedback wrong-feedback';
+                            
+                            // 如果开启了错题集，记录错题
+                            if (wrongSetEnabled) {
+                                recordWrongQuestion(currentExamFile, 'judge', q.id);
+                            }
                             
                             // 显示正确答案
                             allOptions.forEach(opt => {
@@ -714,6 +1170,14 @@
                 questionDiv.appendChild(optionsDiv);
                 container.appendChild(questionDiv);
             });
+            
+            // 如果开启了错题集且没有错题，显示提示
+            if (wrongSetEnabled && wrongIds.length > 0 && container.children.length === 0) {
+                const noWrongMsg = document.createElement('div');
+                noWrongMsg.className = 'question';
+                noWrongMsg.innerHTML = '<div class="question-text">🎉 太棒了！本题库暂无错题记录。</div>';
+                container.appendChild(noWrongMsg);
+            }
         }
 
         // 渲染填空题
@@ -722,6 +1186,7 @@
             container.innerHTML = '';
             if (!currentExamData.fillQuestions) return;
             
+            // 填空题不过滤错题，因为没有自动判错功能
             const questions = shuffleIfRandom(currentExamData.fillQuestions);
             
             questions.forEach((q, index) => {
@@ -758,6 +1223,7 @@
             container.innerHTML = '';
             if (!currentExamData.essayQuestions) return;
             
+            // 简答题不过滤错题，因为没有自动判错功能
             const questions = shuffleIfRandom(currentExamData.essayQuestions);
             
             questions.forEach((q, index) => {
