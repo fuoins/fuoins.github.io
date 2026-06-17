@@ -1,996 +1,305 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>宇总在线测试系统</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body { 
-            font-family: 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif; 
-            line-height: 1.6; 
-            max-width: 1000px; 
-            margin: 0 auto; 
-            padding: 20px; 
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-        }
-        
-        .container { 
-            background-color: white; 
-            padding: 30px; 
-            border-radius: 15px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-            margin-bottom: 30px;
-        }
-        
-        h1 { 
-            text-align: center; 
-            color: #2c3e50; 
-            margin-bottom: 20px; 
-            font-size: 2.5em;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-        }
-        
-        /* 简介区域 */
-        .intro-section {
-            background: linear-gradient(to right, #667eea, #764ba2);
-            color: white;
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-        
-        .intro-section h2 {
-            font-size: 1.8em;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .intro-section p {
-            margin-bottom: 12px;
-            font-size: 1.05em;
-            line-height: 1.7;
-        }
-        
-        .intro-section .highlight {
-            background-color: rgba(255,255,255,0.2);
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-        
-        /* 题库选择器 */
-        .selector-panel {
-            text-align: center;
-            padding: 25px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            margin-bottom: 30px;
-            color: white;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-        
-        .selector-panel h2 {
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-        
-        .selector-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .selector-panel select {
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 8px;
-            border: none;
-            min-width: 200px;
-            cursor: pointer;
-            background-color: white;
-            color: #333;
-        }
-        
-        .selector-panel select:disabled {
-            background-color: #e9ecef;
-            color: #6c757d;
-            cursor: not-allowed;
-        }
-        
-        .mode-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .mode-btn {
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-            background-color: rgba(255,255,255,0.2);
-            color: white;
-        }
-        
-        .mode-btn.active {
-            background-color: #28a745;
-        }
-        
-        .mode-btn:hover { 
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .start-btn {
-            padding: 12px 35px;
-            font-size: 16px;
-            border-radius: 8px;
-            border: none;
-            background-color: #28a745;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-        }
-        
-        .start-btn:hover { 
-            background-color: #218838;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(33, 136, 56, 0.3);
-        }
-        
-        .start-btn:disabled {
-            background-color: #6c757d;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        /* 解锁提示模态框 */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            display: none;
-        }
-        
-        .modal-content {
-            background-color: white;
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        
-        .modal-content h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-        
-        .modal-content p {
-            color: #555;
-            margin-bottom: 20px;
-            font-size: 1.1em;
-            line-height: 1.6;
-        }
-        
-        .countdown-timer {
-            font-size: 2em;
-            font-weight: bold;
-            color: #e74c3c;
-            margin: 20px 0;
-        }
-        
-        .modal-close-btn {
-            padding: 12px 30px;
-            font-size: 16px;
-            border-radius: 8px;
-            border: none;
-            background-color: #3498db;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-            display: none;
-        }
-        
-        .modal-close-btn:hover {
-            background-color: #2980b9;
-        }
-        
-        /* 加载提示 */
-        #loading { 
-            text-align: center; 
-            padding: 50px; 
-            font-size: 18px; 
-            color: #666; 
-            display: none; 
-        }
-        
-        /* 题目区域 */
-        .section { 
-            margin-bottom: 40px; 
-            padding-bottom: 20px; 
-            border-bottom: 2px solid #eee; 
-        }
-        
-        .section-title { 
-            color: #2c3e50; 
-            margin-bottom: 20px; 
-            padding-bottom: 10px; 
-            border-bottom: 1px solid #ddd; 
-            font-size: 1.5em;
-        }
-        
-        .question { 
-            margin-bottom: 25px; 
-            padding: 20px; 
-            background-color: #f9f9f9; 
-            border-radius: 10px; 
-            border-left: 4px solid #3498db; 
-            position: relative; 
-            transition: transform 0.2s;
-        }
-        
-        .question:hover {
-            transform: translateX(5px);
-        }
-        
-        .question-text { 
-            font-weight: bold; 
-            margin-bottom: 15px; 
-            color: #2c3e50; 
-            font-size: 1.1em;
-        }
-        
-        .options { margin-left: 20px; }
-        
-        .option { 
-            margin-bottom: 10px; 
-            padding: 12px 15px; 
-            cursor: pointer; 
-            border-radius: 8px; 
-            transition: all 0.2s; 
-            display: flex; 
-            align-items: center; 
-            background-color: white;
-            border: 1px solid #e0e0e0;
-        }
-        
-        .option:hover { 
-            background-color: #e8f4fc; 
-            border-color: #3498db;
-        }
-        
-        .option.selected { 
-            background-color: #d4edda; 
-            border-left: 4px solid #28a745; 
-            border-color: #28a745;
-        }
-        
-        .option.wrong { 
-            background-color: #f8d7da; 
-            border-left: 4px solid #dc3545; 
-            border-color: #dc3545;
-        }
-        
-        .option.answered {
-            pointer-events: none;
-            opacity: 0.9;
-        }
-        
-        .feedback { 
-            margin-left: 15px; 
-            font-weight: bold; 
-            font-size: 1.1em;
-        }
-        
-        .correct-feedback { color: #28a745; }
-        .wrong-feedback { color: #dc3545; }
-        
-        /* 答案区域 */
-        .answer-area { 
-            margin-top: 15px; 
-            padding: 15px; 
-            background-color: #e8f4fc; 
-            border-radius: 8px; 
-            border-left: 4px solid #17a2b8; 
-            display: none; 
-            white-space: pre-wrap; 
-            font-size: 0.95em;
-            line-height: 1.6;
-        }
-        
-        .answer-area strong { 
-            color: #17a2b8; 
-            display: block;
-            margin-bottom: 8px;
-        }
-        
-        .show-answer-btn { 
-            display: inline-block; 
-            margin-top: 10px; 
-            padding: 8px 15px; 
-            background-color: #17a2b8; 
-            color: white; 
-            border: none; 
-            border-radius: 6px; 
-            font-size: 13px; 
-            cursor: pointer; 
-            transition: background-color 0.3s;
-        }
-        
-        .show-answer-btn:hover { 
-            background-color: #138496; 
-        }
-        
-        .show-answer-btn:disabled {
-            background-color: #6c757d;
-            cursor: not-allowed;
-        }
-        
-        /* 打赏区域 */
-        .donation-section {
-            background: linear-gradient(to right, #f8f9fa, #e9ecef);
-            padding: 30px;
-            border-radius: 15px;
-            margin-top: 40px;
-            text-align: center;
-            border: 1px solid #dee2e6;
-        }
-        
-        .donation-section h3 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 1.5em;
-        }
-        
-        .donation-section p {
-            color: #666;
-            margin-bottom: 25px;
-            font-size: 1.1em;
-        }
-        
-        .qr-codes {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-        }
-        
-        .qr-code-item {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: transform 0.3s;
-        }
-        
-        .qr-code-item:hover {
-            transform: translateY(-5px);
-        }
-        
-        .qr-code-item img {
-            width: 180px;
-            height: 180px;
-            border-radius: 8px;
-            display: block;
-            margin-bottom: 10px;
-        }
-        
-        .qr-code-item p {
-            margin: 0;
-            font-weight: bold;
-            color: #333;
-            font-size: 1em;
-        }
-        
-        .footer-note {
-            text-align: center;
-            margin-top: 20px;
-            color: #888;
-            font-size: 0.9em;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-            
-            h1 {
-                font-size: 2em;
-            }
-            
-            .selector-row {
-                flex-direction: column;
-            }
-            
-            .selector-panel select,
-            .mode-buttons,
-            .start-btn {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-            
-            .qr-codes {
-                gap: 20px;
-            }
-            
-            .qr-code-item img {
-                width: 150px;
-                height: 150px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>📚 宇总在线测试系统</h1>
-        
-        <!-- 简介区域 -->
-        <div class="intro-section">
-            <h2>👋 欢迎使用宇总在线测试系统</h2>
-            <p>本系统支持多种题型，包括<span class="highlight">单选题</span>、<span class="highlight">多选题</span>、<span class="highlight">判断题</span>、<span class="highlight">填空题</span>和<span class="highlight">简答题</span>。</p>
-            <p>🔄 <strong>随机测试</strong>：题目和选项都会随机打乱。</p>
-            <p>📝 <strong>顺序测试</strong>：题目和选项按题库原始顺序显示。</p>
-            <p>💡 选择题和判断题点击后立即判断对错，<strong>提交后不可更改</strong>。填空题和简答题点击"显示答案"按钮查看参考答案。</p>
-            <p>📱 如需定制专属题库，请联系下方微信二维码。</p>
-        </div>
-        
-        <!-- 题库选择面板 -->
-        <div class="selector-panel">
-            <h2>📝 请选择题库和模式</h2>
-            <div class="selector-row">
-                <select id="examSelector">
-                    <option value="">-- 请选择一套试卷 --</option>
-                    <option value="data/zy.json">赵宇粉丝测试题（需满分解锁）</option>
-                    <option value="data/os.json">操作系统</option>
-                    <option value="data/ds.json">数据结构</option>
-                    <option value="data/cn.json">计算机网络</option>
-                    <option value="data/soft.json">软件工程</option>
-                </select>
-                
-                <div class="mode-buttons">
-                    <button class="mode-btn active" id="randomMode" onclick="setMode('random')">随机测试</button>
-                    <button class="mode-btn" id="orderMode" onclick="setMode('order')">顺序测试</button>
-                </div>
-                
-                <button class="start-btn" id="startBtn" onclick="loadSelectedExam()">开始测试</button>
-            </div>
-        </div>
-
-        <!-- 解锁提示模态框 -->
-        <div class="modal-overlay" id="unlockModal">
-            <div class="modal-content">
-                <h2>🔒 题库暂未解锁</h2>
-                <p><strong>请先完成"赵宇粉丝测试题"并达到满分</strong>，才能解锁其他题库。</p>
-                <p>⚠️ <strong>重要提示</strong>：解锁状态仅保存在本地浏览器中，更换浏览器或设备后需要重新解锁。</p>
-                <div class="countdown-timer" id="countdownTimer">5</div>
-                <button class="modal-close-btn" id="modalCloseBtn" onclick="closeUnlockModal()">我知道了</button>
-            </div>
-        </div>
-
-        <!-- 加载提示 -->
-        <div id="loading">⏳ 正在加载题目...</div>
-
-        <!-- 题目容器（初始隐藏） -->
-        <div id="examContainer" style="display:none;">
-            <!-- 选择题部分（包含单选和多选） -->
-            <div class="section" id="choice-section">
-                <h2 class="section-title">一、选择题</h2>
-                <div id="choice-questions"></div>
-            </div>
-            
-            <!-- 判断题部分 -->
-            <div class="section" id="judge-section">
-                <h2 class="section-title">二、判断题</h2>
-                <div id="judge-questions"></div>
-            </div>
-            
-            <!-- 填空题部分 -->
-            <div class="section" id="fill-section">
-                <h2 class="section-title">三、填空题</h2>
-                <div id="fill-questions"></div>
-            </div>
-            
-            <!-- 简答题部分 -->
-            <div class="section" id="essay-section">
-                <h2 class="section-title">四、简答题</h2>
-                <div id="essay-questions"></div>
-            </div>
-        </div>
-        
-        <!-- 打赏区域 -->
-        <div class="donation-section">
-            <h3>☕ 支持开发者</h3>
-            <p>如果您觉得这个测试系统对您有帮助，欢迎打赏支持，鼓励我们继续开发更多实用工具！</p>
-            
-            <div class="qr-codes">
-                <div class="qr-code-item">
-                    <img src="../bhu/img/wx.png" alt="微信联系">
-                    <p>微信联系</p>
-                </div>
-                <div class="qr-code-item">
-                    <img src="../bhu/img/sk.png" alt="打赏支持">
-                    <p>打赏支持</p>
-                </div>
-            </div>
-            
-            <div class="footer-note">
-                <p>© 2026 宇总在线测试系统 | 题库定制请联系上方微信</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // 全局变量
-        let currentExamData = null;
-        let isRandomMode = true;
-        let currentExamFile = '';
-        let unlockCountdown = null;
-
-        document.addEventListener('DOMContentLoaded', function() {
-            updateExamSelectorState();
-        });
-
-        function setMode(mode) {
-            isRandomMode = (mode === 'random');
-            document.getElementById('randomMode').classList.toggle('active', isRandomMode);
-            document.getElementById('orderMode').classList.toggle('active', !isRandomMode);
-        }
-
-        function updateExamSelectorState() {
-            const selector = document.getElementById('examSelector');
-            const zyPerfect = localStorage.getItem('perfect_zy') === 'true';
-            for (let i = 0; i < selector.options.length; i++) {
-                const option = selector.options[i];
-                const value = option.value;
-                if (value === 'data/zy.json') {
-                    option.disabled = false;
-                    option.text = '赵宇粉丝测试题（需满分解锁）';
-                } else if (value) {
-                    if (zyPerfect) {
-                        option.disabled = false;
-                        option.text = option.text.replace('（未解锁）', '');
-                    } else {
-                        option.disabled = true;
-                        if (!option.text.includes('（未解锁）')) {
-                            option.text += '（未解锁）';
-                        }
-                    }
-                }
-            }
-        }
-
-        function isZYPerfect() {
-            return localStorage.getItem('perfect_zy') === 'true';
-        }
-
-        function showUnlockModal() {
-            const modal = document.getElementById('unlockModal');
-            const timerElement = document.getElementById('countdownTimer');
-            const closeBtn = document.getElementById('modalCloseBtn');
-            modal.style.display = 'flex';
-            closeBtn.style.display = 'none';
-            let countdown = 5;
-            timerElement.textContent = countdown;
-            unlockCountdown = setInterval(function() {
-                countdown--;
-                timerElement.textContent = countdown;
-                if (countdown <= 0) {
-                    clearInterval(unlockCountdown);
-                    closeBtn.style.display = 'block';
-                }
-            }, 1000);
-        }
-
-        function closeUnlockModal() {
-            const modal = document.getElementById('unlockModal');
-            modal.style.display = 'none';
-            if (unlockCountdown) {
-                clearInterval(unlockCountdown);
-                unlockCountdown = null;
-            }
-            document.getElementById('examSelector').value = 'data/zy.json';
-        }
-
-        // 检查是否满分
-        function checkPerfectScore(examFile) {
-            const examKey = getExamKey(examFile);
-            
-            const choiceQuestions = document.querySelectorAll('#choice-questions .question');
-            const judgeQuestions = document.querySelectorAll('#judge-questions .question');
-            const allQuestions = [...choiceQuestions, ...judgeQuestions];
-            
-            const allAnswered = allQuestions.length > 0 && allQuestions.every(q => q.classList.contains('answered'));
-            if (!allAnswered) {
-                localStorage.setItem(`perfect_${examKey}`, false);
-                return false;
-            }
-            
-            let hasWrong = false;
-            allQuestions.forEach(q => {
-                const wrongOptions = q.querySelectorAll('.option.wrong');
-                if (wrongOptions.length > 0) {
-                    hasWrong = true;
-                }
-            });
-            
-            const isPerfect = !hasWrong;
-            localStorage.setItem(`perfect_${examKey}`, isPerfect);
-            
-            if (examFile === 'data/zy.json') {
-                updateExamSelectorState();
-                if (isPerfect) {
-                    alert('🎉 恭喜！您已完成赵宇粉丝测试题并达到满分！其他题库已解锁。');
-                }
-            }
-            return isPerfect;
-        }
-
-        function getExamKey(filename) {
-            return filename.replace('data/', '').replace('.json', '');
-        }
-
-        async function loadSelectedExam() {
-            const selector = document.getElementById('examSelector');
-            const filePath = selector.value;
-            if (!filePath) {
-                alert('请先选择一套题库！');
-                return;
-            }
-            if (filePath !== 'data/zy.json' && !isZYPerfect()) {
-                showUnlockModal();
-                return;
-            }
-            currentExamFile = filePath;
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('examContainer').style.display = 'none';
-
-            try {
-                const response = await fetch(filePath);
-                if (!response.ok) throw new Error('文件加载失败');
-                currentExamData = await response.json();
-                document.querySelector('h1').textContent = `📚 ${currentExamData.examTitle || '宇总在线测试系统'}`;
-                renderAllQuestions();
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('examContainer').style.display = 'block';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } catch (error) {
-                alert('加载题库失败！目前题库正在制作中\n错误：' + error.message);
-                document.getElementById('loading').style.display = 'none';
-            }
-        }
-
-        function renderAllQuestions() {
-            if (!currentExamData) return;
-            renderChoiceQuestions();
-            renderJudgeQuestions();
-            renderFillQuestions();
-            renderEssayQuestions();
-        }
-
-        function shuffleIfRandom(array) {
-            if (isRandomMode) {
-                return [...array].sort(() => Math.random() - 0.5);
-            }
-            return [...array];
-        }
-
-        function renderChoiceQuestions() {
-            const container = document.getElementById('choice-questions');
-            container.innerHTML = '';
-            if (!currentExamData.choiceQuestions) return;
-            
-            let questions = currentExamData.choiceQuestions;
-            questions = shuffleIfRandom(questions);
-
-            questions.forEach((q, index) => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = 'question';
-                questionDiv.dataset.questionId = q.id;
-
-                const questionText = document.createElement('div');
-                questionText.className = 'question-text';
-                const isMultiple = Array.isArray(q.answer);
-                const questionType = isMultiple ? '【多选】' : '【单选】';
-                questionText.textContent = `${index + 1}. ${questionType} ${q.question}`;
-                questionDiv.appendChild(questionText);
-
-                const optionsDiv = document.createElement('div');
-                optionsDiv.className = 'options';
-                const options = shuffleIfRandom(q.options);
-                const originalIndexMap = new Map();
-                options.forEach((option, shuffledIdx) => {
-                    const originalIdx = q.options.indexOf(option);
-                    originalIndexMap.set(shuffledIdx, originalIdx);
-                });
-
-                options.forEach((option, optIndex) => {
-                    const optionDiv = document.createElement('div');
-                    optionDiv.className = 'option';
-                    const input = document.createElement('input');
-                    input.type = isMultiple ? 'checkbox' : 'radio';
-                    input.name = `choice-${q.id}`;
-                    input.id = `choice-${q.id}-opt${optIndex}`;
-                    input.value = optIndex;
-                    const label = document.createElement('label');
-                    label.htmlFor = `choice-${q.id}-opt${optIndex}`;
-                    label.textContent = ` ${String.fromCharCode(65 + optIndex)}. ${option}`;
-                    const feedback = document.createElement('span');
-                    feedback.className = 'feedback';
-                    optionDiv.appendChild(input);
-                    optionDiv.appendChild(label);
-                    optionDiv.appendChild(feedback);
-
-                    optionDiv.addEventListener('click', function(e) {
-                        if (questionDiv.classList.contains('answered')) return;
-                        if (e.target.tagName !== 'INPUT') {
-                            input.checked = !input.checked;
-                        }
-                        questionDiv.classList.add('answered');
-                        optionsDiv.querySelectorAll('.option').forEach(opt => {
-                            opt.classList.add('answered');
-                            opt.querySelector('input').disabled = true;
-                        });
-
-                        const selectedInputs = optionsDiv.querySelectorAll('input:checked');
-                        const selectedOriginalIndices = Array.from(selectedInputs).map(inp => {
-                            const shuffledIdx = parseInt(inp.value);
-                            return originalIndexMap.get(shuffledIdx);
-                        }).sort();
-
-                        let isCorrect = false;
-                        if (isMultiple) {
-                            const correctAnswers = [...q.answer].sort();
-                            isCorrect = JSON.stringify(selectedOriginalIndices) === JSON.stringify(correctAnswers);
-                        } else {
-                            isCorrect = selectedOriginalIndices[0] === q.answer;
-                        }
-
-                        // ★★★ 如果是赵宇测试题且答错，直接弹窗重新答题 ★★★
-                        if (currentExamFile === 'data/zy.json' && !isCorrect) {
-                            alert('答题错误，请重新答题');
-                            loadSelectedExam(); // 重新加载题库，所有题目重置
-                            return;
-                        }
-
-                        optionsDiv.querySelectorAll('.option').forEach(opt => {
-                            opt.classList.remove('selected', 'wrong');
-                            opt.querySelector('.feedback').textContent = '';
-                        });
-
-                        if (isCorrect) {
-                            optionDiv.classList.add('selected');
-                            feedback.textContent = '✓ 正确';
-                            feedback.className = 'feedback correct-feedback';
-                        } else {
-                            optionDiv.classList.add('wrong');
-                            feedback.textContent = '✗ 错误';
-                            feedback.className = 'feedback wrong-feedback';
-                            
-                            optionsDiv.querySelectorAll('.option').forEach(opt => {
-                                const optInput = opt.querySelector('input');
-                                const shuffledIdx = parseInt(optInput.value);
-                                const originalIdx = originalIndexMap.get(shuffledIdx);
-                                let shouldBeSelected = false;
-                                if (isMultiple) {
-                                    shouldBeSelected = q.answer.includes(originalIdx);
-                                } else {
-                                    shouldBeSelected = originalIdx === q.answer;
-                                }
-                                if (shouldBeSelected) {
-                                    opt.classList.add('selected');
-                                    const optFeedback = opt.querySelector('.feedback');
-                                    optFeedback.textContent = '✓ 正确答案';
-                                    optFeedback.className = 'feedback correct-feedback';
-                                }
-                            });
-                        }
-
-                        // 每次答题后检查满分（非赵宇测试题也保留此逻辑）
-                        if (currentExamFile === 'data/zy.json') {
-                            setTimeout(() => checkPerfectScore(currentExamFile), 100);
-                        }
-                    });
-
-                    optionsDiv.appendChild(optionDiv);
-                });
-
-                questionDiv.appendChild(optionsDiv);
-                container.appendChild(questionDiv);
-            });
-        }
-
-        function renderJudgeQuestions() {
-            const container = document.getElementById('judge-questions');
-            container.innerHTML = '';
-            if (!currentExamData.judgeQuestions) return;
-            
-            let questions = currentExamData.judgeQuestions;
-            const judgeOptions = ["√ 正确", "× 错误"];
-            questions = shuffleIfRandom(questions);
-
-            questions.forEach((q, index) => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = 'question';
-                questionDiv.dataset.questionId = q.id;
-
-                const questionText = document.createElement('div');
-                questionText.className = 'question-text';
-                questionText.textContent = `${index + 1}. ${q.question}`;
-                questionDiv.appendChild(questionText);
-
-                const optionsDiv = document.createElement('div');
-                optionsDiv.className = 'options';
-                const options = shuffleIfRandom(judgeOptions);
-
-                options.forEach((option, optIndex) => {
-                    const optionDiv = document.createElement('div');
-                    optionDiv.className = 'option';
-                    const isThisOptionTrue = option.startsWith('√');
-                    optionDiv.dataset.correct = (isThisOptionTrue === q.answer);
-
-                    const radio = document.createElement('input');
-                    radio.type = 'radio';
-                    radio.name = `judge-${q.id}`;
-                    radio.id = `judge-${q.id}-opt${optIndex}`;
-                    const label = document.createElement('label');
-                    label.htmlFor = `judge-${q.id}-opt${optIndex}`;
-                    label.textContent = ` ${option}`;
-                    const feedback = document.createElement('span');
-                    feedback.className = 'feedback';
-                    optionDiv.appendChild(radio);
-                    optionDiv.appendChild(label);
-                    optionDiv.appendChild(feedback);
-
-                    optionDiv.addEventListener('click', function() {
-                        if (questionDiv.classList.contains('answered')) return;
-                        questionDiv.classList.add('answered');
-                        optionsDiv.querySelectorAll('.option').forEach(opt => {
-                            opt.classList.add('answered');
-                            opt.querySelector('input').disabled = true;
-                        });
-
-                        const isCorrect = this.dataset.correct === 'true';
-
-                        // ★★★ 如果是赵宇测试题且答错，直接弹窗重新答题 ★★★
-                        if (currentExamFile === 'data/zy.json' && !isCorrect) {
-                            alert('答题错误，请重新答题');
-                            loadSelectedExam();
-                            return;
-                        }
-
-                        const allOptions = this.parentElement.querySelectorAll('.option');
-                        allOptions.forEach(opt => {
-                            opt.classList.remove('selected', 'wrong');
-                            opt.querySelector('.feedback').textContent = '';
-                        });
-
-                        if (isCorrect) {
-                            this.classList.add('selected');
-                            this.querySelector('.feedback').textContent = '✓ 正确';
-                            this.querySelector('.feedback').className = 'feedback correct-feedback';
-                        } else {
-                            this.classList.add('wrong');
-                            this.querySelector('.feedback').textContent = '✗ 错误';
-                            this.querySelector('.feedback').className = 'feedback wrong-feedback';
-                            allOptions.forEach(opt => {
-                                const optIsTrue = opt.querySelector('label').textContent.includes('√');
-                                if (optIsTrue === q.answer) {
-                                    opt.classList.add('selected');
-                                    opt.querySelector('.feedback').textContent = '✓ 正确答案';
-                                    opt.querySelector('.feedback').className = 'feedback correct-feedback';
-                                }
-                            });
-                        }
-
-                        if (currentExamFile === 'data/zy.json') {
-                            setTimeout(() => checkPerfectScore(currentExamFile), 100);
-                        }
-                    });
-
-                    optionsDiv.appendChild(optionDiv);
-                });
-
-                questionDiv.appendChild(optionsDiv);
-                container.appendChild(questionDiv);
-            });
-        }
-
-        function renderFillQuestions() {
-            const container = document.getElementById('fill-questions');
-            container.innerHTML = '';
-            if (!currentExamData.fillQuestions) return;
-            
-            const questions = shuffleIfRandom(currentExamData.fillQuestions);
-            
-            questions.forEach((q, index) => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = 'question';
-                
-                const questionText = document.createElement('div');
-                questionText.className = 'question-text';
-                questionText.innerHTML = `${index + 1}. ${q.question}`;
-                questionDiv.appendChild(questionText);
-                
-                const btn = document.createElement('button');
-                btn.className = 'show-answer-btn';
-                btn.textContent = '显示答案';
-                btn.onclick = function() { 
-                    answerDiv.style.display = 'block'; 
-                    this.style.display = 'none'; 
-                };
-                
-                const answerDiv = document.createElement('div');
-                answerDiv.className = 'answer-area';
-                const answer = Array.isArray(q.answer) ? q.answer.join('、') : q.answer;
-                answerDiv.innerHTML = `<strong>参考答案：</strong>${answer}`;
-                
-                questionDiv.appendChild(btn);
-                questionDiv.appendChild(answerDiv);
-                container.appendChild(questionDiv);
-            });
-        }
-
-        function renderEssayQuestions() {
-            const container = document.getElementById('essay-questions');
-            container.innerHTML = '';
-            if (!currentExamData.essayQuestions) return;
-            
-            const questions = shuffleIfRandom(currentExamData.essayQuestions);
-            
-            questions.forEach((q, index) => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = 'question';
-                
-                const questionText = document.createElement('div');
-                questionText.className = 'question-text';
-                questionText.textContent = `${index + 1}. ${q.question}`;
-                questionDiv.appendChild(questionText);
-                
-                const btn = document.createElement('button');
-                btn.className = 'show-answer-btn';
-                btn.textContent = '显示参考答案';
-                btn.onclick = function() { 
-                    answerDiv.style.display = 'block'; 
-                    this.style.display = 'none'; 
-                };
-                
-                const answerDiv = document.createElement('div');
-                answerDiv.className = 'answer-area';
-                answerDiv.innerHTML = `<strong>参考答案：</strong>\n${q.answer}`;
-                
-                questionDiv.appendChild(btn);
-                questionDiv.appendChild(answerDiv);
-                container.appendChild(questionDiv);
-            });
-        }
-    </script>
-</body>
-</html>
+{
+"examTitle": "赵宇粉丝高阶甄别测试题",
+"choiceQuestions": [
+{
+"id": 1,
+"question": "以下表述存在严重错误的是",
+"options": ["赵宇是下凡真神", "赵宇颜值直接戳我心巴", "赵宇普通不起眼", "赵宇气质很有辨识度"],
+"answer": 2
+},
+{
+"id": 2,
+"question": "线下偶遇赵宇，死忠粉标准反应为",
+"options": ["刻意克制情绪默默注视", "原地沦陷疯狂心动", "出言嘲讽", "低头假装没看见"],
+"answer": 1
+},
+{
+"id": 3,
+"question": "网络热词'氛围感天花板'专属形容谁",
+"options": ["风格多变的小众博主", "赵宇", "靠妆容出圈网红", "氛围感靠布景的艺人"],
+"answer": 1
+},
+{
+"id": 4,
+"question": "刷到造谣抹黑赵宇的评论，正确操作是",
+"options": ["私信对线激化矛盾", "坚定维护不吵架", "截图挂人网暴对方", "无视直接划走"],
+"answer": 1
+},
+{
+"id": 5,
+"question": "下列哪句话是赵宇粉丝专属应援语",
+"options": ["万物皆无趣，唯赵宇值得", "好看的人很多可以挨个喜欢", "颜值普通没必要深挖", "新鲜感一过就转移喜好"],
+"answer": 0
+},
+{
+"id": 6,
+"question": "别人拿他人和赵宇横向对比时，粉丝应当",
+"options": ["客观承认对方部分优势", "赵宇独一档无可对比", "顺着对方话贬低赵宇", "多看几个优秀的当墙头"],
+"answer": 1
+},
+{
+"id": 7,
+"question": "哪一个梗不能用来夸赞赵宇",
+"options": ["神明降世", "一眼万年", "平平无奇路人感", "理想型天花板"],
+"answer": 2
+},
+{
+"id": 8,
+"question": "手机壁纸相册锁屏长期固定首选人物通常是",
+"options": ["经典动漫角色", "赵宇", "自然风光摄影图", "热播剧临时角色"],
+"answer": 1
+},
+{
+"id": 9,
+"question": "入坑赵宇后的长期状态描述正确的是",
+"options": ["热门出新人物就临时移情", "锁死本命永不爬墙", "刷到帅哥就更换喜好", "几个月后慢慢失去关注欲"],
+"answer": 1
+},
+{
+"id": 10,
+"question": "世间所有温柔美好词汇，全部适配于",
+"options": ["偶然刷到的陌生博主", "赵宇", "身边普通网友", "阶段性喜欢的墙头"],
+"answer": 1
+},
+{
+"id": 11,
+"question": "刷短视频刷到赵宇相关二创内容应当",
+"options": ["快速划走节省时间", "点赞收藏反复循环观看", "无理由恶意举报作品", "在评论区留下负面观感"],
+"answer": 1
+},
+{
+"id": 12,
+"question": "下列想法绝对不允许出现在死忠粉脑中",
+"options": ["赵宇人格魅力无可替代", "赵宇是精神情绪支柱", "赵宇也就一般般没亮点", "为赵宇日常打call应援"],
+"answer": 2
+},
+{
+"id": 13,
+"question": "热梗'杀穿心防'的唯一适配本命对象是",
+"options": ["多年同窗好友", "赵宇", "美妆类网红博主", "剧集里的客串配角"],
+"answer": 1
+},
+{
+"id": 14,
+"question": "别人认真询问你的本命是谁，标准答案是",
+"options": ["喜好太多自己都分不清", "本命永远赵宇", "没有固定长期喜欢的人", "近期偏爱另一位新人"],
+"answer": 1
+},
+{
+"id": 15,
+"question": "赵宇正式出场瞬间可以用哪句网络热梗形容",
+"options": ["造型平淡毫无亮点", "直接封神氛围感拉满", "镜头里表现平平淡淡", "整体观感不值一提"],
+"answer": 1
+},
+{
+"id": 16,
+"question": "粉丝圈子里专属'白月光'一词特指",
+"options": ["年少相识的普通路人", "赵宇", "过气流量网红", "几个月更换一次的墙头"],
+"answer": 1
+},
+{
+"id": 17,
+"question": "刷到赵宇最新自拍动态，内心第一感受是",
+"options": ["日常刷到无感划走", "疯狂心动反复保存截图", "不符合自己审美觉得不好看", "消息提示懒得点开查看"],
+"answer": 1
+},
+{
+"id": 18,
+"question": "以下哪种行为不属于合格赵宇粉丝",
+"options": ["相册存满赵宇各时期素材", "到处拉踩贬低赵宇抬高他人", "温和主动安利赵宇闪光点", "超话日常签到打卡应援"],
+"answer": 1
+},
+{
+"id": 19,
+"question": "人间理想顶配现实模板是",
+"options": ["擦肩而过的普通陌生人", "赵宇", "二次元虚拟纸片人", "热度褪去的过气网红"],
+"answer": 1
+},
+{
+"id": 20,
+"question": "只要赵宇出现，积攒的所有烦恼都会",
+"options": ["负面情绪加重翻倍", "瞬间消散清零治愈", "情绪状态毫无变化", "烦躁感变得更加浓烈"],
+"answer": 1
+},
+{
+"id": 21,
+"question": "挑选头像、社交平台背景图优先筛选标准是",
+"options": ["画风好看的网图", "必须是赵宇高清素材", "小众设计师插画", "简约纯色无人物图片"],
+"answer": 1
+},
+{
+"id": 22,
+"question": "分辨伪粉核心特征是",
+"options": ["会收集冷门旧物料", "热度下降就慢慢脱粉", "会剪辑原创二创视频", "记住赵宇小众习惯"],
+"answer": 1
+},
+{
+"id": 23,
+"question": "赵宇小众习惯细节，真粉大概率会",
+"options": ["听过就忘不会留意", "全部默默记在心里", "觉得无关紧要不关心", "只会记住出圈名场面"],
+"answer": 1
+},
+{
+"id": 24,
+"question": "同圈粉丝产生争执，理性真粉该怎么做",
+"options": ["站队一方参与吵架", "保持中立专注守护赵宇", "退圈远离所有同好", "跟风发布情绪化言论"],
+"answer": 1
+},
+{
+"id": 25,
+"question": "刷到和赵宇撞风格的新人，正确心态是",
+"options": ["立刻移情去追新人", "风格不可复制赵宇独一份", "对比之后觉得新人更好", "开始减少关注赵宇动态"],
+"answer": 1
+},
+{
+"id": 26,
+"question": "哪句文案不适合用来编辑赵宇专属文案",
+"options": ["心之所向唯你一人", "不过众多普通人之一", "经年偏爱只给赵宇", "沦陷始于赵宇终于赵宇"],
+"answer": 1
+},
+{
+"id": 27,
+"question": "赵宇沉寂无新动态时期，真粉会选择",
+"options": ["直接取关等待复出再回坑", "翻旧物料静静等待回归", "转头入坑其他热门人物", "慢慢淡忘不再关注"],
+"answer": 1
+},
+{
+"id": 28,
+"question": "别人无心开赵宇无关玩笑，粉丝最合适做法",
+"options": ["当众翻脸指责对方", "温和解释边界点到为止", "跟着一起调侃打趣", "冷暴力疏远开玩笑的人"],
+"answer": 1
+},
+{
+"id": 29,
+"question": "收藏夹分类里一定会单独建文件夹的是",
+"options": ["搞笑短视频合集", "赵宇全部相关内容", "美食探店日常素材", "影视解说剪辑合集"],
+"answer": 1
+},
+{
+"id": 30,
+"question": "以下哪种认知是路人粉而非死忠粉",
+"options": ["记住赵宇所有成长节点", "只知道出圈热门片段", "收集未流出小众路透", "了解赵宇性格底色"],
+"answer": 1
+},
+{
+"id": 31,
+"question": "给朋友安利赵宇，不该出现的话术是",
+"options": ["他有很多内在闪光点", "长得还行没什么亮点", "性格温柔三观很正", "越了解越会被吸引"],
+"answer": 1
+},
+{
+"id": 32,
+"question": "平台推送别的优质人物，你的注意力会",
+"options": ["被完全吸引转移目光", "短暂浏览后回归赵宇", "批量关注各类高颜值博主", "清空关注列表重新挑选"],
+"answer": 1
+},
+{
+"id": 33,
+"question": "赵宇取得小成就时，真粉情绪是",
+"options": ["无感刷过划走内容", "发自内心由衷骄傲", "嫉妒热度暗自酸评", "觉得成就不值一提"],
+"answer": 1
+},
+{
+"id": 34,
+"question": "甄别路人式假粉：只会搬运热门图，不会",
+"options": ["保存出圈神图", "挖掘早期冷门物料", "转发官方最新动态", "点赞公开日常照片"],
+"answer": 1
+},
+{
+"id": 35,
+"question": "网络出现恶意断章取义赵宇片段，要",
+"options": ["扩散片段求证真假", "澄清原视频拒绝断章取义", "假装没看见躲避麻烦", "附和片段里片面解读"],
+"answer": 1
+},
+{
+"id": 36,
+"question": "年度盘点本命总结文案核心主角一定是",
+"options": ["一年里换过的所有墙头", "赵宇贯穿整年偏爱", "身边现实里的朋友", "各个领域喜欢的博主"],
+"answer": 1
+},
+{
+"id": 37,
+"question": "以下哪类话题不属于赵宇真爱粉聊天范畴",
+"options": ["深挖早期青涩过往", "评判外貌普通没记忆点", "分析性格成长变化", "期待未来更多新内容"],
+"answer": 1
+},
+{
+"id": 38,
+"question": "线下大型偶遇机会落空，真粉心态是",
+"options": ["直接脱粉放弃期待", "遗憾但依旧耐心等候", "迁怒他人发泄情绪", "降低好感不再期盼"],
+"answer": 1
+},
+{
+"id": 39,
+"question": "制作应援内容时，不会采用的思路是",
+"options": ["结合过往经历细节", "套用通用模板不贴合赵宇", "捕捉独有的小特质", "融入只有老粉懂的梗"],
+"answer": 1
+},
+{
+"id": 40,
+"question": "看到捧一踩一拉赵宇做垫脚石的文案，应当",
+"options": ["跟着文案踩赵宇捧别人", "无视捆绑不参与拉扯", "主动下场和对方对线", "转发文案扩大传播度"],
+"answer": 1
+},
+{
+"id": 41,
+"question": "手机输入法联想词高频出现的名字是",
+"options": ["各路网红名字", "赵宇", "影视剧角色名", "身边亲友名字"],
+"answer": 1
+},
+{
+"id": 42,
+"question": "入坑多年心态正确变化是",
+"options": ["新鲜感褪去热情消散", "爱意沉淀愈发长久坚定", "审美疲劳慢慢无感", "寻找新的心动目标"],
+"answer": 1
+},
+{
+"id": 43,
+"question": "辨别披皮黑粉丝最简单行为是",
+"options": ["安静签到存物料", "打着粉丝旗号引战招黑", "产出优质原创二创", "理性对外科普澄清"],
+"answer": 1
+},
+{
+"id": 44,
+"question": "刷到和赵宇长相相似的素人，你的想法是",
+"options": ["把素人当成代餐替代", "形似神不似无可替代", "转头去关注这位素人", "觉得赵宇辨识度下降"],
+"answer": 1
+},
+{
+"id": 45,
+"question": "日常听歌歌单里占比最高的是",
+"options": ["全网热门流行单曲", "赵宇相关音频、翻唱片段", "纯背景音乐纯器乐", "不同歌手随机合集"],
+"answer": 1
+},
+{
+"id": 46,
+"question": "粉丝圈层迭代换血，老粉正确选择是",
+"options": ["新人涌入就退出圈子", "坚守偏爱包容新粉一起守护", "排斥所有新晋粉丝", "因为圈子变化放弃赵宇"],
+"answer": 1
+},
+{
+"id": 47,
+"question": "哪一种评价视角不符合本命滤镜的内核",
+"options": ["看见闪光点也接纳不完美", "用苛刻标准挑全部缺点", "欣赏内在大于外在皮囊", "偏爱源于完整的人格"],
+"answer": 1
+},
+{
+"id": 48,
+"question": "节假日专属祝福文案第一个想到写给",
+"options": ["网络上各路墙头", "赵宇", "游戏里虚拟角色", "各个关注的博主"],
+"answer": 1
+},
+{
+"id": 49,
+"question": "长期不刷社交软件，上线第一件事是",
+"options": ["刷热点八卦热搜", "查看赵宇有无新动态", "浏览好友日常朋友圈", "看最新影视剧资讯"],
+"answer": 1
+},
+{
+"id": 50,
+"question": "这份测试满分通关代表",
+"options": ["随便跟风答题凑答案", "是沉淀下来的真心死忠粉", "靠搜答案临时蒙混过关", "只记住了表面出圈知识点"],
+"answer": 1
+}
+]
+}
