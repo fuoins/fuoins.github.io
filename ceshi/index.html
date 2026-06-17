@@ -104,6 +104,12 @@
             color: #333;
         }
         
+        .selector-panel select:disabled {
+            background-color: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+        
         .mode-buttons {
             display: flex;
             gap: 10px;
@@ -170,6 +176,7 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            flex-wrap: wrap;
         }
         
         .toggle-switch {
@@ -547,11 +554,11 @@
             <div class="selector-row">
                 <select id="examSelector">
                     <option value="">-- 请选择一套试卷 --</option>
+                    <option value="data/zy.json">赵宇粉丝测试题（需先完成）</option>
                     <option value="data/os.json">操作系统</option>
                     <option value="data/ds.json">数据结构</option>
                     <option value="data/cn.json">计算机网络</option>
                     <option value="data/soft.json">软件工程</option>
-                    <option value="data/zy.json">赵宇粉丝测试题</option>
                 </select>
                 
                 <div class="mode-buttons">
@@ -570,10 +577,10 @@
                         <input type="checkbox" id="wrongSetToggle" onchange="toggleWrongSet()">
                         <span class="toggle-slider"></span>
                     </label>
-                    <button class="clear-wrong-btn" id="clearWrongBtn" onclick="clearCurrentWrongQuestions()" disabled>清除本题库错题</button>
+                    <button class="clear-wrong-btn" id="clearWrongBtn" onclick="clearCurrentWrongQuestions()" disabled>清除错题</button>
                 </h3>
                 <div class="storage-notice">
-                    ⚠️ 错题记录保存在本地浏览器中，更换浏览器或设备将无法同步。请使用同一浏览器进行学习。
+                    ⚠️ <strong>错题集说明</strong>：错题记录保存在本地浏览器中，每个题库有独立的错题JSON文件。更换浏览器或设备将无法同步。请使用同一浏览器进行学习。
                 </div>
             </div>
         </div>
@@ -581,9 +588,9 @@
         <!-- 解锁提示模态框 -->
         <div class="modal-overlay" id="unlockModal">
             <div class="modal-content">
-                <h2>🔒 题库锁定</h2>
-                <p>"赵宇粉丝测试题"需要您在其他题库中达到满分后才能解锁。</p>
-                <p>请先完成其他题库的学习，并确保所有选择题和判断题全部答对。</p>
+                <h2>🔒 题库暂未解锁</h2>
+                <p><strong>请先完成"赵宇粉丝测试题"并达到满分</strong>，才能解锁其他题库。</p>
+                <p>⚠️ <strong>重要提示</strong>：解锁状态仅保存在本地浏览器中，更换浏览器或设备后需要重新解锁。</p>
                 <div class="countdown-timer" id="countdownTimer">5</div>
                 <button class="modal-close-btn" id="modalCloseBtn" onclick="closeUnlockModal()">我知道了</button>
             </div>
@@ -649,14 +656,17 @@
         let currentExamFile = ''; // 当前题库文件名
         let unlockCountdown = null; // 解锁倒计时计时器
         
-        // 页面加载时初始化错题集状态
+        // 页面加载时初始化
         document.addEventListener('DOMContentLoaded', function() {
+            // 初始化错题集状态
             const savedWrongSetState = localStorage.getItem('wrongSetEnabled');
             if (savedWrongSetState === 'true') {
                 wrongSetEnabled = true;
                 document.getElementById('wrongSetToggle').checked = true;
-                updateClearButtonState();
             }
+            
+            // 初始化题库解锁状态
+            updateExamSelectorState();
         });
 
         // 设置测试模式
@@ -666,6 +676,36 @@
             // 更新按钮样式
             document.getElementById('randomMode').classList.toggle('active', isRandomMode);
             document.getElementById('orderMode').classList.toggle('active', !isRandomMode);
+        }
+        
+        // 更新题库选择器的可用状态
+        function updateExamSelectorState() {
+            const selector = document.getElementById('examSelector');
+            const zyPerfect = localStorage.getItem('perfect_zy') === 'true';
+            
+            // 遍历所有选项
+            for (let i = 0; i < selector.options.length; i++) {
+                const option = selector.options[i];
+                const value = option.value;
+                
+                // 赵宇粉丝测试题始终可用
+                if (value === 'data/zy.json') {
+                    option.disabled = false;
+                    option.text = '赵宇粉丝测试题（需先完成）';
+                } 
+                // 其他题库需要赵宇粉丝测试题满分才能解锁
+                else if (value) {
+                    if (zyPerfect) {
+                        option.disabled = false;
+                        option.text = option.text.replace('（未解锁）', '');
+                    } else {
+                        option.disabled = true;
+                        if (!option.text.includes('（未解锁）')) {
+                            option.text += '（未解锁）';
+                        }
+                    }
+                }
+            }
         }
         
         // 切换错题集功能
@@ -683,10 +723,14 @@
         // 更新清除错题按钮状态
         function updateClearButtonState() {
             const clearBtn = document.getElementById('clearWrongBtn');
+            const examName = getExamDisplayName(currentExamFile);
+            
             if (wrongSetEnabled && currentExamFile) {
                 clearBtn.disabled = false;
+                clearBtn.textContent = `清除【${examName}】错题`;
             } else {
                 clearBtn.disabled = true;
+                clearBtn.textContent = '清除错题';
             }
         }
         
@@ -698,7 +742,8 @@
             localStorage.removeItem(`wrong_${examKey}_choice`);
             localStorage.removeItem(`wrong_${examKey}_judge`);
             
-            alert(`已清除【${getExamDisplayName(currentExamFile)}】的错题记录！`);
+            const examName = getExamDisplayName(currentExamFile);
+            alert(`已清除【${examName}】的错题记录！`);
             
             // 重新渲染题目
             if (currentExamData) {
@@ -723,20 +768,9 @@
             return names[filename] || '未知题库';
         }
         
-        // 检查题库是否已解锁
-        function isExamUnlocked(filename) {
-            // 如果不是赵宇粉丝测试题，直接返回true
-            if (filename !== 'data/zy.json') return true;
-            
-            // 检查是否所有其他题库都满分
-            const exams = ['os', 'ds', 'cn', 'soft'];
-            for (const exam of exams) {
-                const perfectScore = localStorage.getItem(`perfect_${exam}`);
-                if (perfectScore !== 'true') {
-                    return false;
-                }
-            }
-            return true;
+        // 检查赵宇粉丝测试题是否满分
+        function isZYPerfect() {
+            return localStorage.getItem('perfect_zy') === 'true';
         }
         
         // 显示解锁提示模态框
@@ -772,8 +806,8 @@
                 unlockCountdown = null;
             }
             
-            // 重置选择框到第一个选项
-            document.getElementById('examSelector').value = '';
+            // 重置选择框到赵宇粉丝测试题
+            document.getElementById('examSelector').value = 'data/zy.json';
         }
         
         // 记录错题
@@ -814,9 +848,12 @@
             // 如果没有错题，则认为是满分
             const isPerfect = wrongChoice.length === 0 && wrongJudge.length === 0;
             
-            // 如果是赵宇粉丝测试题，记录满分状态
-            if (examFile === 'data/zy.json') {
-                localStorage.setItem(`perfect_${examKey}`, isPerfect);
+            // 记录满分状态
+            localStorage.setItem(`perfect_${examKey}`, isPerfect);
+            
+            // 如果是赵宇粉丝测试题，更新题库选择器状态
+            if (examFile === 'data/zy.json' && isPerfect) {
+                updateExamSelectorState();
             }
             
             return isPerfect;
@@ -832,8 +869,8 @@
                 return;
             }
             
-            // 检查赵宇粉丝测试题是否已解锁
-            if (!isExamUnlocked(filePath)) {
+            // 检查是否选择了未解锁的题库
+            if (filePath !== 'data/zy.json' && !isZYPerfect()) {
                 showUnlockModal();
                 return;
             }
@@ -876,7 +913,7 @@
             renderFillQuestions();
             renderEssayQuestions();
             
-            // 检查是否满分（仅对赵宇粉丝测试题有效）
+            // 检查是否满分（对赵宇粉丝测试题特别处理）
             if (currentExamFile === 'data/zy.json') {
                 setTimeout(() => {
                     checkPerfectScore(currentExamFile, 
@@ -1205,14 +1242,14 @@
                     answerDiv.style.display = 'block'; 
                     this.style.display = 'none'; 
                 };
-                questionDiv.appendChild(btn);
                 
                 const answerDiv = document.createElement('div');
                 answerDiv.className = 'answer-area';
                 const answer = Array.isArray(q.answer) ? q.answer.join('、') : q.answer;
                 answerDiv.innerHTML = `<strong>参考答案：</strong>${answer}`;
-                questionDiv.appendChild(answerDiv);
                 
+                questionDiv.appendChild(btn);
+                questionDiv.appendChild(answerDiv);
                 container.appendChild(questionDiv);
             });
         }
@@ -1242,13 +1279,13 @@
                     answerDiv.style.display = 'block'; 
                     this.style.display = 'none'; 
                 };
-                questionDiv.appendChild(btn);
                 
                 const answerDiv = document.createElement('div');
                 answerDiv.className = 'answer-area';
                 answerDiv.innerHTML = `<strong>参考答案：</strong>\n${q.answer}`;
-                questionDiv.appendChild(answerDiv);
                 
+                questionDiv.appendChild(btn);
+                questionDiv.appendChild(answerDiv);
                 container.appendChild(questionDiv);
             });
         }
