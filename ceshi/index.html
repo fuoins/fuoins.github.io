@@ -395,6 +395,11 @@
             border-color: #dc3545;
         }
         
+        .option.answered {
+            pointer-events: none;
+            opacity: 0.9;
+        }
+        
         .feedback { 
             margin-left: 15px; 
             font-weight: bold; 
@@ -438,6 +443,11 @@
         
         .show-answer-btn:hover { 
             background-color: #138496; 
+        }
+        
+        .show-answer-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
         }
         
         /* 打赏区域 */
@@ -544,7 +554,7 @@
             <p>本系统支持多种题型，包括<span class="highlight">单选题</span>、<span class="highlight">多选题</span>、<span class="highlight">判断题</span>、<span class="highlight">填空题</span>和<span class="highlight">简答题</span>。</p>
             <p>🔄 <strong>随机测试</strong>：题目和选项都会随机打乱。</p>
             <p>📝 <strong>顺序测试</strong>：题目和选项按题库原始顺序显示。</p>
-            <p>💡 选择题和判断题点击后立即判断对错，填空题和简答题点击"显示答案"按钮查看参考答案。</p>
+            <p>💡 选择题和判断题点击后立即判断对错，<strong>提交后不可更改</strong>。填空题和简答题点击"显示答案"按钮查看参考答案。</p>
             <p>📱 如需定制专属题库，请联系下方微信二维码。</p>
         </div>
         
@@ -554,7 +564,7 @@
             <div class="selector-row">
                 <select id="examSelector">
                     <option value="">-- 请选择一套试卷 --</option>
-                    <option value="data/zy.json">赵宇粉丝测试题（需先完成）</option>
+                    <option value="data/zy.json">赵宇粉丝测试题（需满分解锁）</option>
                     <option value="data/os.json">操作系统</option>
                     <option value="data/ds.json">数据结构</option>
                     <option value="data/cn.json">计算机网络</option>
@@ -691,7 +701,7 @@
                 // 赵宇粉丝测试题始终可用
                 if (value === 'data/zy.json') {
                     option.disabled = false;
-                    option.text = '赵宇粉丝测试题（需先完成）';
+                    option.text = '赵宇粉丝测试题（需满分解锁）';
                 } 
                 // 其他题库需要赵宇粉丝测试题满分才能解锁
                 else if (value) {
@@ -852,9 +862,11 @@
             localStorage.setItem(`perfect_${examKey}`, isPerfect);
             
             // 如果是赵宇粉丝测试题，更新题库选择器状态
-            if (examFile === 'data/zy.json' && isPerfect) {
+            if (examFile === 'data/zy.json') {
                 updateExamSelectorState();
-                alert('🎉 恭喜！您已完成赵宇粉丝测试题并达到满分！其他题库已解锁。');
+                if (isPerfect) {
+                    alert('🎉 恭喜！您已完成赵宇粉丝测试题并达到满分！其他题库已解锁。');
+                }
             }
             
             return isPerfect;
@@ -916,6 +928,7 @@
             
             // 检查是否满分（对赵宇粉丝测试题特别处理）
             if (currentExamFile === 'data/zy.json') {
+                // 延迟检查，确保所有题目都已渲染
                 setTimeout(() => {
                     checkPerfectScore(currentExamFile, 
                         currentExamData.choiceQuestions || [], 
@@ -958,6 +971,7 @@
             questions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'question';
+                questionDiv.dataset.questionId = q.id;
                 
                 const questionText = document.createElement('div');
                 questionText.className = 'question-text';
@@ -1003,9 +1017,21 @@
                     optionDiv.appendChild(feedback);
                     
                     optionDiv.addEventListener('click', function(e) {
+                        // 如果已经作答，不允许更改
+                        if (questionDiv.classList.contains('answered')) {
+                            return;
+                        }
+                        
                         if (e.target.tagName !== 'INPUT') {
                             input.checked = !input.checked;
                         }
+                        
+                        // 标记为已作答
+                        questionDiv.classList.add('answered');
+                        optionsDiv.querySelectorAll('.option').forEach(opt => {
+                            opt.classList.add('answered');
+                            opt.querySelector('input').disabled = true;
+                        });
                         
                         // 获取当前选中的选项
                         const selectedInputs = optionsDiv.querySelectorAll('input:checked');
@@ -1071,6 +1097,15 @@
                                 }
                             });
                         }
+                        
+                        // 如果是赵宇粉丝测试题，检查是否满分
+                        if (currentExamFile === 'data/zy.json') {
+                            setTimeout(() => {
+                                checkPerfectScore(currentExamFile, 
+                                    currentExamData.choiceQuestions || [], 
+                                    currentExamData.judgeQuestions || []);
+                            }, 100);
+                        }
                     });
                     
                     optionsDiv.appendChild(optionDiv);
@@ -1127,6 +1162,7 @@
             questions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'question';
+                questionDiv.dataset.questionId = q.id;
                 
                 const questionText = document.createElement('div');
                 questionText.className = 'question-text';
@@ -1163,6 +1199,18 @@
                     optionDiv.appendChild(feedback);
                     
                     optionDiv.addEventListener('click', function() {
+                        // 如果已经作答，不允许更改
+                        if (questionDiv.classList.contains('answered')) {
+                            return;
+                        }
+                        
+                        // 标记为已作答
+                        questionDiv.classList.add('answered');
+                        optionsDiv.querySelectorAll('.option').forEach(opt => {
+                            opt.classList.add('answered');
+                            opt.querySelector('input').disabled = true;
+                        });
+                        
                         const isCorrect = this.dataset.correct === 'true';
                         const allOptions = this.parentElement.querySelectorAll('.option');
                         
@@ -1199,6 +1247,15 @@
                                     opt.querySelector('.feedback').className = 'feedback correct-feedback';
                                 }
                             });
+                        }
+                        
+                        // 如果是赵宇粉丝测试题，检查是否满分
+                        if (currentExamFile === 'data/zy.json') {
+                            setTimeout(() => {
+                                checkPerfectScore(currentExamFile, 
+                                    currentExamData.choiceQuestions || [], 
+                                    currentExamData.judgeQuestions || []);
+                            }, 100);
                         }
                     });
                     
