@@ -614,7 +614,12 @@
             const displayEl = document.querySelector(`[data-error-id="${errorId}"]`);
             if (displayEl) {
                 const count = errorCounts[errorId] || 0;
-                displayEl.textContent = `❌ 错误 ${count} 次`;
+                if (count > 0) {
+                    displayEl.textContent = `❌ 错误 ${count} 次`;
+                    displayEl.style.display = 'inline-block';
+                } else {
+                    displayEl.style.display = 'none';
+                }
             }
         }
 
@@ -673,10 +678,17 @@
                 header.appendChild(questionText);
 
                 const errorId = `choice-${q.id}`;
+                const errorCount = errorCounts[errorId] || 0;
                 const errorDisplay = document.createElement('span');
                 errorDisplay.className = 'error-count-display';
                 errorDisplay.dataset.errorId = errorId;
-                errorDisplay.textContent = `❌ 错误 ${errorCounts[errorId] || 0} 次`;
+                
+                if (errorCount > 0) {
+                    errorDisplay.textContent = `❌ 错误 ${errorCount} 次`;
+                } else {
+                    errorDisplay.style.display = 'none';
+                }
+                
                 header.appendChild(errorDisplay);
 
                 questionDiv.appendChild(header);
@@ -799,10 +811,17 @@
                 header.appendChild(questionText);
 
                 const errorId = `judge-${q.id}`;
+                const errorCount = errorCounts[errorId] || 0;
                 const errorDisplay = document.createElement('span');
                 errorDisplay.className = 'error-count-display';
                 errorDisplay.dataset.errorId = errorId;
-                errorDisplay.textContent = `❌ 错误 ${errorCounts[errorId] || 0} 次`;
+                
+                if (errorCount > 0) {
+                    errorDisplay.textContent = `❌ 错误 ${errorCount} 次`;
+                } else {
+                    errorDisplay.style.display = 'none';
+                }
+                
                 header.appendChild(errorDisplay);
 
                 questionDiv.appendChild(header);
