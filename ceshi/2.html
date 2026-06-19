@@ -1136,6 +1136,19 @@
         document.addEventListener('DOMContentLoaded', function() {
             checkAndApplyUnlockStatus();
         });
+        
+ !function(){
+ function antiDebug(){
+   debugger;
+   setTimeout(antiDebug,500)
+ }
+ antiDebug()
+ }();
+ 
+ let w=innerWidth,h=innerHeight;
+ window.addEventListener('resize',()=>{
+   if(innerWidth<w||innerHeight<h)location.reload()
+ })
     </script>
 </body>
 </html>
