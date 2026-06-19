@@ -96,7 +96,7 @@
             font-size: 16px;
             border-radius: 8px;
             border: none;
-            min-width: 220px;
+            min-width: 240px;
             cursor: pointer;
             background-color: white;
             color: #333;
@@ -108,7 +108,7 @@
         }
 
         .mode-btn {
-            padding: 12px 20px;
+            padding: 12px 22px;
             font-size: 16px;
             border-radius: 8px;
             border: none;
@@ -129,7 +129,7 @@
         }
 
         .start-btn {
-            padding: 12px 35px;
+            padding: 12px 38px;
             font-size: 16px;
             border-radius: 8px;
             border: none;
@@ -148,15 +148,15 @@
 
         #loading {
             text-align: center;
-            padding: 50px;
+            padding: 60px;
             font-size: 18px;
-            color: #666;
+            color: #555;
             display: none;
         }
 
         .section {
-            margin-bottom: 40px;
-            padding-bottom: 20px;
+            margin-bottom: 45px;
+            padding-bottom: 25px;
             border-bottom: 2px solid #eee;
         }
 
@@ -172,7 +172,7 @@
         }
 
         .reset-section-btn {
-            padding: 6px 16px;
+            padding: 6px 18px;
             font-size: 14px;
             border-radius: 6px;
             border: none;
@@ -278,6 +278,32 @@
             color: #dc3545;
         }
 
+        .confirm-multi-btn {
+            display: inline-block;
+            margin-top: 12px;
+            margin-left: 20px;
+            padding: 10px 26px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .confirm-multi-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .confirm-multi-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .answer-area {
             margin-top: 15px;
             padding: 15px;
@@ -376,8 +402,8 @@
         }
 
         .qr-code-item img {
-            width: 180px;
-            height: 180px;
+            width: 160px;
+            height: 160px;
             border-radius: 8px;
             display: block;
             margin-bottom: 10px;
@@ -397,13 +423,13 @@
             font-size: 0.9em;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 700px) {
             .container {
-                padding: 20px;
+                padding: 18px;
             }
 
             h1 {
-                font-size: 2em;
+                font-size: 1.8em;
             }
 
             .selector-row {
@@ -417,13 +443,17 @@
                 margin-bottom: 10px;
             }
 
+            .mode-buttons {
+                justify-content: center;
+            }
+
             .qr-codes {
-                gap: 20px;
+                gap: 15px;
             }
 
             .qr-code-item img {
-                width: 150px;
-                height: 150px;
+                width: 130px;
+                height: 130px;
             }
 
             .question-header {
@@ -655,6 +685,7 @@
             saveErrorCountsToStorage();
         }
 
+        // ---------- 核心修改：选择题渲染（支持多选确认）----------
         function renderChoiceQuestions() {
             const container = document.getElementById('choice-questions');
             container.innerHTML = '';
@@ -691,7 +722,6 @@
                 }
                 
                 header.appendChild(errorDisplay);
-
                 questionDiv.appendChild(header);
 
                 const optionsDiv = document.createElement('div');
@@ -702,6 +732,9 @@
                     const originalIdx = q.options.indexOf(option);
                     originalIndexMap.set(shuffledIdx, originalIdx);
                 });
+
+                // 记录是否已经作答（单选/多选确认后锁定）
+                let answered = false;
 
                 options.forEach((option, optIndex) => {
                     const optionDiv = document.createElement('div');
@@ -720,64 +753,72 @@
                     optionDiv.appendChild(label);
                     optionDiv.appendChild(feedback);
 
+                    // 点击事件：单选立即判断，多选仅切换选中状态
                     optionDiv.addEventListener('click', function(e) {
-                        if (questionDiv.classList.contains('answered')) return;
+                        if (answered) return;
                         if (e.target.tagName !== 'INPUT') {
                             input.checked = !input.checked;
                         }
-                        questionDiv.classList.add('answered');
-                        optionsDiv.querySelectorAll('.option').forEach(opt => {
-                            opt.classList.add('answered');
-                            opt.querySelector('input').disabled = true;
-                        });
 
-                        const selectedInputs = optionsDiv.querySelectorAll('input:checked');
-                        const selectedOriginalIndices = Array.from(selectedInputs).map(inp => {
-                            const shuffledIdx = parseInt(inp.value);
-                            return originalIndexMap.get(shuffledIdx);
-                        }).sort();
-
-                        let isCorrect = false;
                         if (isMultiple) {
-                            const correctAnswers = [...q.answer].sort();
-                            isCorrect = JSON.stringify(selectedOriginalIndices) === JSON.stringify(correctAnswers);
+                            // 多选：只切换选中样式，不做判断
+                            // 清除之前可能残留的 selected/wrong 样式（仅清除当前选项的，但不影响其他）
+                            // 但是为了视觉反馈，我们可以让选中项有一个临时标记，但最终由确认按钮统一处理
+                            // 这里简单用背景色变化表示选中，但不用 selected 类（以免和确认后的混淆）
+                            // 采用一个临时类 highlight 或者直接靠 input checked 状态
+                            // 为了更好的交互，我们可以在确认前让选中的选项有一个淡蓝色背景
+                            // 这里使用一个自定义属性 data-temp-selected
+                            if (input.checked) {
+                                optionDiv.style.backgroundColor = '#d0e4f5';
+                                optionDiv.style.borderColor = '#007bff';
+                            } else {
+                                optionDiv.style.backgroundColor = '';
+                                optionDiv.style.borderColor = '';
+                            }
                         } else {
-                            isCorrect = selectedOriginalIndices[0] === q.answer;
-                        }
-
-                        optionsDiv.querySelectorAll('.option').forEach(opt => {
-                            opt.classList.remove('selected', 'wrong');
-                            opt.querySelector('.feedback').textContent = '';
-                        });
-
-                        if (isCorrect) {
-                            optionDiv.classList.add('selected');
-                            feedback.textContent = '✓ 正确';
-                            feedback.className = 'feedback correct-feedback';
-                        } else {
-                            incrementError(errorId);
-
-                            optionDiv.classList.add('wrong');
-                            feedback.textContent = '✗ 错误';
-                            feedback.className = 'feedback wrong-feedback';
-
+                            // 单选：立即判断
+                            answered = true;
+                            questionDiv.classList.add('answered');
                             optionsDiv.querySelectorAll('.option').forEach(opt => {
-                                const optInput = opt.querySelector('input');
-                                const shuffledIdx = parseInt(optInput.value);
-                                const originalIdx = originalIndexMap.get(shuffledIdx);
-                                let shouldBeSelected = false;
-                                if (isMultiple) {
-                                    shouldBeSelected = q.answer.includes(originalIdx);
-                                } else {
-                                    shouldBeSelected = originalIdx === q.answer;
-                                }
-                                if (shouldBeSelected) {
-                                    opt.classList.add('selected');
-                                    const optFeedback = opt.querySelector('.feedback');
-                                    optFeedback.textContent = '✓ 正确答案';
-                                    optFeedback.className = 'feedback correct-feedback';
-                                }
+                                opt.classList.add('answered');
+                                opt.querySelector('input').disabled = true;
                             });
+
+                            const selectedInput = optionsDiv.querySelector('input:checked');
+                            if (!selectedInput) return; // 理论上不会
+                            const selectedShuffledIdx = parseInt(selectedInput.value);
+                            const selectedOriginalIdx = originalIndexMap.get(selectedShuffledIdx);
+                            const isCorrect = selectedOriginalIdx === q.answer;
+
+                            // 清空所有样式和反馈
+                            optionsDiv.querySelectorAll('.option').forEach(opt => {
+                                opt.classList.remove('selected', 'wrong');
+                                opt.querySelector('.feedback').textContent = '';
+                                opt.style.backgroundColor = '';
+                                opt.style.borderColor = '';
+                            });
+
+                            if (isCorrect) {
+                                optionDiv.classList.add('selected');
+                                feedback.textContent = '✓ 正确';
+                                feedback.className = 'feedback correct-feedback';
+                            } else {
+                                incrementError(errorId);
+                                optionDiv.classList.add('wrong');
+                                feedback.textContent = '✗ 错误';
+                                feedback.className = 'feedback wrong-feedback';
+                                // 高亮正确答案
+                                optionsDiv.querySelectorAll('.option').forEach(opt => {
+                                    const inp = opt.querySelector('input');
+                                    const sIdx = parseInt(inp.value);
+                                    const oIdx = originalIndexMap.get(sIdx);
+                                    if (oIdx === q.answer) {
+                                        opt.classList.add('selected');
+                                        opt.querySelector('.feedback').textContent = '✓ 正确答案';
+                                        opt.querySelector('.feedback').className = 'feedback correct-feedback';
+                                    }
+                                });
+                            }
                         }
                     });
 
@@ -785,10 +826,84 @@
                 });
 
                 questionDiv.appendChild(optionsDiv);
+
+                // 如果是多选题，添加“确认选择”按钮
+                if (isMultiple) {
+                    const confirmBtn = document.createElement('button');
+                    confirmBtn.className = 'confirm-multi-btn';
+                    confirmBtn.textContent = '✅ 确认选择';
+                    confirmBtn.type = 'button';
+                    confirmBtn.addEventListener('click', function() {
+                        if (answered) return;
+                        // 检查是否至少选了一项
+                        const checkedInputs = optionsDiv.querySelectorAll('input:checked');
+                        if (checkedInputs.length === 0) {
+                            alert('请至少选择一个选项！');
+                            return;
+                        }
+
+                        answered = true;
+                        questionDiv.classList.add('answered');
+                        // 禁用所有输入和确认按钮
+                        optionsDiv.querySelectorAll('input').forEach(inp => inp.disabled = true);
+                        confirmBtn.disabled = true;
+
+                        // 获取选中的原始索引
+                        const selectedOriginalIndices = [];
+                        optionsDiv.querySelectorAll('input:checked').forEach(inp => {
+                            const shuffledIdx = parseInt(inp.value);
+                            selectedOriginalIndices.push(originalIndexMap.get(shuffledIdx));
+                        });
+                        selectedOriginalIndices.sort((a,b)=>a-b);
+                        const correctSorted = [...q.answer].sort((a,b)=>a-b);
+                        const isCorrect = JSON.stringify(selectedOriginalIndices) === JSON.stringify(correctSorted);
+
+                        // 清除所有临时样式和反馈
+                        optionsDiv.querySelectorAll('.option').forEach(opt => {
+                            opt.classList.remove('selected', 'wrong');
+                            opt.querySelector('.feedback').textContent = '';
+                            opt.style.backgroundColor = '';
+                            opt.style.borderColor = '';
+                        });
+
+                        if (isCorrect) {
+                            // 正确：将用户选中的选项标绿
+                            optionsDiv.querySelectorAll('input:checked').forEach(inp => {
+                                const parentOpt = inp.closest('.option');
+                                parentOpt.classList.add('selected');
+                                parentOpt.querySelector('.feedback').textContent = '✓ 正确';
+                                parentOpt.querySelector('.feedback').className = 'feedback correct-feedback';
+                            });
+                        } else {
+                            incrementError(errorId);
+                            // 错误：用户选中的标红，正确答案标绿
+                            optionsDiv.querySelectorAll('input:checked').forEach(inp => {
+                                const parentOpt = inp.closest('.option');
+                                parentOpt.classList.add('wrong');
+                                parentOpt.querySelector('.feedback').textContent = '✗ 错误';
+                                parentOpt.querySelector('.feedback').className = 'feedback wrong-feedback';
+                            });
+                            // 显示正确答案
+                            optionsDiv.querySelectorAll('.option').forEach(opt => {
+                                const inp = opt.querySelector('input');
+                                const sIdx = parseInt(inp.value);
+                                const oIdx = originalIndexMap.get(sIdx);
+                                if (correctSorted.includes(oIdx)) {
+                                    opt.classList.add('selected');
+                                    opt.querySelector('.feedback').textContent = '✓ 正确答案';
+                                    opt.querySelector('.feedback').className = 'feedback correct-feedback';
+                                }
+                            });
+                        }
+                    });
+                    questionDiv.appendChild(confirmBtn);
+                }
+
                 container.appendChild(questionDiv);
             });
         }
 
+        // ---------- 判断题（保持不变）----------
         function renderJudgeQuestions() {
             const container = document.getElementById('judge-questions');
             container.innerHTML = '';
@@ -824,7 +939,6 @@
                 }
                 
                 header.appendChild(errorDisplay);
-
                 questionDiv.appendChild(header);
 
                 const optionsDiv = document.createElement('div');
@@ -872,7 +986,6 @@
                             this.querySelector('.feedback').className = 'feedback correct-feedback';
                         } else {
                             incrementError(errorId);
-
                             this.classList.add('wrong');
                             this.querySelector('.feedback').textContent = '✗ 错误';
                             this.querySelector('.feedback').className = 'feedback wrong-feedback';
@@ -895,6 +1008,7 @@
             });
         }
 
+        // ---------- 填空题（保持不变）----------
         function renderFillQuestions() {
             const container = document.getElementById('fill-questions');
             container.innerHTML = '';
@@ -936,6 +1050,7 @@
             });
         }
 
+        // ---------- 简答题（保持不变）----------
         function renderEssayQuestions() {
             const container = document.getElementById('essay-questions');
             container.innerHTML = '';
