@@ -96,36 +96,10 @@
             font-size: 16px;
             border-radius: 8px;
             border: none;
-            min-width: 220px;
+            min-width: 250px;
             cursor: pointer;
             background-color: white;
             color: #333;
-        }
-
-        .mode-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .mode-btn {
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-
-        .mode-btn.active {
-            background-color: #28a745;
-        }
-
-        .mode-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .start-btn {
@@ -144,6 +118,13 @@
             background-color: #218838;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(33, 136, 56, 0.3);
+        }
+
+        .start-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         #loading {
@@ -241,6 +222,7 @@
             align-items: center;
             background-color: white;
             border: 1px solid #e0e0e0;
+            position: relative;
         }
 
         .option:hover {
@@ -278,7 +260,6 @@
             color: #dc3545;
         }
 
-        /* 多选题确认按钮 */
         .confirm-btn {
             margin-top: 15px;
             padding: 10px 20px;
@@ -305,7 +286,6 @@
             display: none;
         }
 
-        /* 多选题选择提示 */
         .choice-hint {
             margin-top: 10px;
             font-size: 0.9em;
@@ -431,6 +411,59 @@
             font-size: 0.9em;
         }
 
+        .unlock-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .unlock-modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .unlock-modal-content h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .unlock-modal-content p {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .unlock-modal-close-btn {
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .unlock-modal-close-btn:hover {
+            background-color: #2980b9;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -445,7 +478,6 @@
             }
 
             .selector-panel select,
-            .mode-buttons,
             .start-btn {
                 width: 100%;
                 margin-bottom: 10px;
@@ -479,29 +511,35 @@
         <div class="intro-section">
             <h2>👋 欢迎使用在线测试系统</h2>
             <p>本系统支持多种题型，包括<span class="highlight">单选题</span>、<span class="highlight">多选题</span>、<span class="highlight">判断题</span>、<span class="highlight">填空题</span>和<span class="highlight">简答题</span>。</p>
-            <p>🔄 <strong>随机测试</strong>：题目和选项都会随机打乱。</p>
-            <p>📝 <strong>顺序测试</strong>：题目和选项按题库原始顺序显示。</p>
-            <p>💡 选择题和判断题点击后立即判断对错，<strong>提交后不可更改</strong>，并记录错误次数（自动保存，重新加载题库会累计）。填空题和简答题可点击按钮查看或隐藏参考答案。</p>
+            <p>🔄 系统采用<strong>随机测试</strong>模式，题目和选项都会随机打乱。</p>
+            <p>💡 选择题和判断题点击选项即可选中，<strong>提交后不可更改</strong>，并记录错误次数（自动保存，重新加载题库会累计）。填空题和简答题可点击按钮查看或隐藏参考答案。</p>
+            <p>🔒 需先完成"赵宇真爱粉测试题"并达到满分，才能解锁其他题库。</p>
             <p>📱 如需定制专属题库，请联系下方微信二维码。</p>
         </div>
 
         <div class="selector-panel">
-            <h2>📝 请选择题库和模式</h2>
+            <h2>📝 请选择题库</h2>
             <div class="selector-row">
                 <select id="examSelector">
                     <option value="">-- 请选择一套试卷 --</option>
-                    <option value="data/os.json">操作系统</option>
-                    <option value="data/ds.json">数据结构</option>
-                    <option value="data/cn.json">计算机网络</option>
-                    <option value="data/soft.json">软件工程</option>
+                    <option value="data/zy.json">赵宇真爱粉测试题（需满分解锁）</option>
+                    <option value="data/os.json" disabled>操作系统（未解锁）</option>
+                    <option value="data/ds.json" disabled>数据结构（未解锁）</option>
+                    <option value="data/cn.json" disabled>计算机网络（未解锁）</option>
+                    <option value="data/soft.json" disabled>软件工程（未解锁）</option>
                 </select>
 
-                <div class="mode-buttons">
-                    <button class="mode-btn active" id="randomMode" onclick="setMode('random')">随机测试</button>
-                    <button class="mode-btn" id="orderMode" onclick="setMode('order')">顺序测试</button>
-                </div>
-
                 <button class="start-btn" id="startBtn" onclick="loadSelectedExam()">开始测试</button>
+            </div>
+        </div>
+
+        <!-- 解锁提示模态框 -->
+        <div class="unlock-modal-overlay" id="unlockModal">
+            <div class="unlock-modal-content">
+                <h2>🔒 题库暂未解锁</h2>
+                <p><strong>请先完成"赵宇真爱粉测试题"并达到满分</strong>，才能解锁其他题库。</p>
+                <p>⚠️ <strong>重要提示</strong>：解锁状态仅保存在本地浏览器中，更换浏览器或设备后需要重新解锁。</p>
+                <button class="unlock-modal-close-btn" id="modalCloseBtn" onclick="closeUnlockModal()">我知道了</button>
             </div>
         </div>
 
@@ -563,18 +601,12 @@
     <script>
         // 全局变量
         let currentExamData = null;
-        let isRandomMode = true;
         let currentExamFile = '';       // 当前题库文件名，用于localStorage键
         let errorCounts = {};           // 内存中的错误计数
 
         // localStorage 键前缀
         const ERROR_STORAGE_PREFIX = 'test_error_counts_';
-
-        function setMode(mode) {
-            isRandomMode = (mode === 'random');
-            document.getElementById('randomMode').classList.toggle('active', isRandomMode);
-            document.getElementById('orderMode').classList.toggle('active', !isRandomMode);
-        }
+        const PERFECT_EXAM_KEY = 'perfect_exam_zy';
 
         // 从 localStorage 加载当前题库的错误计数
         function loadErrorCountsFromStorage(examFile) {
@@ -598,12 +630,92 @@
             localStorage.setItem(key, JSON.stringify(errorCounts));
         }
 
+        // 检查是否解锁其他题库
+        function checkExamUnlock() {
+            const isPerfect = localStorage.getItem(PERFECT_EXAM_KEY) === 'true';
+            const selector = document.getElementById('examSelector');
+            
+            for (let i = 0; i < selector.options.length; i++) {
+                const option = selector.options[i];
+                if (option.value !== 'data/zy.json' && option.value !== '') {
+                    if (isPerfect) {
+                        option.disabled = false;
+                        option.text = option.text.replace('（未解锁）', '');
+                    } else {
+                        option.disabled = true;
+                        if (!option.text.includes('（未解锁）')) {
+                            option.text += '（未解锁）';
+                        }
+                    }
+                }
+            }
+        }
+
+        // 显示解锁提示模态框
+        function showUnlockModal() {
+            const modal = document.getElementById('unlockModal');
+            modal.style.display = 'flex';
+        }
+
+        // 关闭解锁提示模态框
+        function closeUnlockModal() {
+            const modal = document.getElementById('unlockModal');
+            modal.style.display = 'none';
+            document.getElementById('examSelector').value = 'data/zy.json';
+        }
+
+        // 检查当前题目是否全部正确
+        function checkPerfectScore() {
+            if (currentExamFile !== 'data/zy.json') return false;
+            
+            const choiceQuestions = document.querySelectorAll('#choice-questions .question');
+            const judgeQuestions = document.querySelectorAll('#judge-questions .question');
+            const allQuestions = [...choiceQuestions, ...judgeQuestions];
+            
+            // 检查是否所有题目都已作答
+            const allAnswered = allQuestions.length > 0 && allQuestions.every(q => q.classList.contains('answered'));
+            if (!allAnswered) {
+                localStorage.setItem(PERFECT_EXAM_KEY, false);
+                return false;
+            }
+            
+            // 检查是否有错误
+            let hasWrong = false;
+            allQuestions.forEach(q => {
+                const wrongOptions = q.querySelectorAll('.option.wrong');
+                if (wrongOptions.length > 0) {
+                    hasWrong = true;
+                }
+            });
+            
+            const isPerfect = !hasWrong;
+            localStorage.setItem(PERFECT_EXAM_KEY, isPerfect);
+            
+            if (isPerfect) {
+                setTimeout(() => {
+                    alert('🎉 恭喜！您已完成赵宇真爱粉测试题并达到满分！其他题库已解锁。');
+                    checkExamUnlock();
+                }, 500);
+            }
+            
+            return isPerfect;
+        }
+
         async function loadSelectedExam() {
             const selector = document.getElementById('examSelector');
             const filePath = selector.value;
             if (!filePath) {
                 alert('请先选择一套题库！');
                 return;
+            }
+
+            // 检查解锁状态
+            if (filePath !== 'data/zy.json') {
+                const isPerfect = localStorage.getItem(PERFECT_EXAM_KEY) === 'true';
+                if (!isPerfect) {
+                    showUnlockModal();
+                    return;
+                }
             }
 
             // 设置当前题库文件并加载对应的错误计数
@@ -636,11 +748,9 @@
             renderEssayQuestions();
         }
 
-        function shuffleIfRandom(array) {
-            if (isRandomMode) {
-                return [...array].sort(() => Math.random() - 0.5);
-            }
-            return [...array];
+        // 随机打乱数组
+        function shuffleArray(array) {
+            return [...array].sort(() => Math.random() - 0.5);
         }
 
         // 更新指定题目的错误次数显示
@@ -694,7 +804,7 @@
             if (!currentExamData.choiceQuestions) return;
 
             let questions = currentExamData.choiceQuestions;
-            questions = shuffleIfRandom(questions);
+            questions = shuffleArray(questions);
 
             questions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
@@ -726,12 +836,11 @@
                 }
                 
                 header.appendChild(errorDisplay);
-
                 questionDiv.appendChild(header);
 
                 const optionsDiv = document.createElement('div');
                 optionsDiv.className = 'options';
-                const options = shuffleIfRandom(q.options);
+                const options = shuffleArray(q.options);
                 const originalIndexMap = new Map();
                 options.forEach((option, shuffledIdx) => {
                     const originalIdx = q.options.indexOf(option);
@@ -745,52 +854,53 @@
                     const optionDiv = document.createElement('div');
                     optionDiv.className = 'option';
                     optionDiv.dataset.originalIndex = originalIndexMap.get(optIndex);
-                    
-                    const input = document.createElement('input');
-                    input.type = isMultiple ? 'checkbox' : 'radio';
-                    input.name = `choice-${q.id}`;
-                    input.id = `choice-${q.id}-opt${optIndex}`;
-                    input.value = optIndex;
+                    optionDiv.dataset.optionIndex = optIndex;
                     
                     const label = document.createElement('label');
-                    label.htmlFor = `choice-${q.id}-opt${optIndex}`;
                     label.textContent = ` ${String.fromCharCode(65 + optIndex)}. ${option}`;
                     
                     const feedback = document.createElement('span');
                     feedback.className = 'feedback';
                     
-                    optionDiv.appendChild(input);
                     optionDiv.appendChild(label);
                     optionDiv.appendChild(feedback);
 
                     // 单选题交互逻辑
                     if (!isMultiple) {
-                        optionDiv.addEventListener('click', function(e) {
+                        optionDiv.addEventListener('click', function() {
                             if (questionDiv.classList.contains('answered')) return;
-                            if (e.target.tagName !== 'INPUT') {
-                                input.checked = !input.checked;
-                            }
+                            
+                            // 取消之前的选择
+                            optionsDiv.querySelectorAll('.option').forEach(opt => {
+                                opt.classList.remove('selected');
+                            });
+                            
+                            // 选中当前选项
+                            this.classList.add('selected');
+                            selectedIndices.clear();
+                            selectedIndices.add(originalIndexMap.get(optIndex));
+                            
+                            // 立即判断
                             questionDiv.classList.add('answered');
                             optionsDiv.querySelectorAll('.option').forEach(opt => {
                                 opt.classList.add('answered');
-                                opt.querySelector('input').disabled = true;
                             });
 
                             const isCorrect = originalIndexMap.get(optIndex) === q.answer;
 
                             optionsDiv.querySelectorAll('.option').forEach(opt => {
-                                opt.classList.remove('selected', 'wrong');
+                                opt.classList.remove('wrong');
                                 opt.querySelector('.feedback').textContent = '';
                             });
 
                             if (isCorrect) {
-                                optionDiv.classList.add('selected');
+                                this.classList.add('selected');
                                 feedback.textContent = '✓ 正确';
                                 feedback.className = 'feedback correct-feedback';
                             } else {
                                 incrementError(errorId);
 
-                                optionDiv.classList.add('wrong');
+                                this.classList.add('wrong');
                                 feedback.textContent = '✗ 错误';
                                 feedback.className = 'feedback wrong-feedback';
 
@@ -804,20 +914,26 @@
                                     }
                                 });
                             }
+                            
+                            // 检查是否满分（仅对赵宇测试题）
+                            if (currentExamFile === 'data/zy.json') {
+                                setTimeout(() => checkPerfectScore(), 100);
+                            }
                         });
                     } else {
                         // 多选题交互逻辑
-                        optionDiv.addEventListener('click', function(e) {
+                        optionDiv.addEventListener('click', function() {
                             if (questionDiv.classList.contains('answered')) return;
-                            if (e.target.tagName !== 'INPUT') {
-                                input.checked = !input.checked;
-                            }
                             
                             const originalIdx = originalIndexMap.get(optIndex);
-                            if (input.checked) {
-                                selectedIndices.add(originalIdx);
-                            } else {
+                            if (this.classList.contains('selected')) {
+                                // 取消选择
+                                this.classList.remove('selected');
                                 selectedIndices.delete(originalIdx);
+                            } else {
+                                // 选择
+                                this.classList.add('selected');
+                                selectedIndices.add(originalIdx);
                             }
                             
                             // 更新确认按钮状态
@@ -845,7 +961,6 @@
                         questionDiv.classList.add('answered');
                         optionsDiv.querySelectorAll('.option').forEach(opt => {
                             opt.classList.add('answered');
-                            opt.querySelector('input').disabled = true;
                         });
                         
                         confirmBtn.disabled = true;
@@ -856,7 +971,7 @@
                         const isCorrect = JSON.stringify(selectedArray) === JSON.stringify(correctAnswers);
                         
                         optionsDiv.querySelectorAll('.option').forEach(opt => {
-                            opt.classList.remove('selected', 'wrong');
+                            opt.classList.remove('wrong');
                             opt.querySelector('.feedback').textContent = '';
                         });
                         
@@ -877,7 +992,7 @@
                             // 标记用户选择的错误选项
                             optionsDiv.querySelectorAll('.option').forEach(opt => {
                                 const optOriginalIdx = parseInt(opt.dataset.originalIndex);
-                                if (selectedIndices.has(optOriginalIdx)) {
+                                if (selectedIndices.has(optOriginalIdx) && !q.answer.includes(optOriginalIdx)) {
                                     opt.classList.add('wrong');
                                     const optFeedback = opt.querySelector('.feedback');
                                     optFeedback.textContent = '✗ 错误';
@@ -895,6 +1010,11 @@
                                     optFeedback.className = 'feedback correct-feedback';
                                 }
                             });
+                        }
+                        
+                        // 检查是否满分（仅对赵宇测试题）
+                        if (currentExamFile === 'data/zy.json') {
+                            setTimeout(() => checkPerfectScore(), 100);
                         }
                     });
                     
@@ -918,7 +1038,7 @@
 
             let questions = currentExamData.judgeQuestions;
             const judgeOptions = ["√ 正确", "× 错误"];
-            questions = shuffleIfRandom(questions);
+            questions = shuffleArray(questions);
 
             questions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
@@ -946,12 +1066,11 @@
                 }
                 
                 header.appendChild(errorDisplay);
-
                 questionDiv.appendChild(header);
 
                 const optionsDiv = document.createElement('div');
                 optionsDiv.className = 'options';
-                const options = shuffleIfRandom(judgeOptions);
+                const options = shuffleArray(judgeOptions);
 
                 options.forEach((option, optIndex) => {
                     const optionDiv = document.createElement('div');
@@ -959,32 +1078,36 @@
                     const isThisOptionTrue = option.startsWith('√');
                     optionDiv.dataset.correct = (isThisOptionTrue === q.answer);
 
-                    const radio = document.createElement('input');
-                    radio.type = 'radio';
-                    radio.name = `judge-${q.id}`;
-                    radio.id = `judge-${q.id}-opt${optIndex}`;
                     const label = document.createElement('label');
-                    label.htmlFor = `judge-${q.id}-opt${optIndex}`;
                     label.textContent = ` ${option}`;
+                    
                     const feedback = document.createElement('span');
                     feedback.className = 'feedback';
-                    optionDiv.appendChild(radio);
+                    
                     optionDiv.appendChild(label);
                     optionDiv.appendChild(feedback);
 
                     optionDiv.addEventListener('click', function() {
                         if (questionDiv.classList.contains('answered')) return;
+                        
+                        // 取消之前的选择
+                        optionsDiv.querySelectorAll('.option').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        
+                        // 选中当前选项
+                        this.classList.add('selected');
+                        
                         questionDiv.classList.add('answered');
                         optionsDiv.querySelectorAll('.option').forEach(opt => {
                             opt.classList.add('answered');
-                            opt.querySelector('input').disabled = true;
                         });
 
                         const isCorrect = this.dataset.correct === 'true';
 
                         const allOptions = this.parentElement.querySelectorAll('.option');
                         allOptions.forEach(opt => {
-                            opt.classList.remove('selected', 'wrong');
+                            opt.classList.remove('wrong');
                             opt.querySelector('.feedback').textContent = '';
                         });
 
@@ -1007,6 +1130,11 @@
                                 }
                             });
                         }
+                        
+                        // 检查是否满分（仅对赵宇测试题）
+                        if (currentExamFile === 'data/zy.json') {
+                            setTimeout(() => checkPerfectScore(), 100);
+                        }
                     });
 
                     optionsDiv.appendChild(optionDiv);
@@ -1022,7 +1150,7 @@
             container.innerHTML = '';
             if (!currentExamData.fillQuestions) return;
 
-            const questions = shuffleIfRandom(currentExamData.fillQuestions);
+            const questions = shuffleArray(currentExamData.fillQuestions);
 
             questions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
@@ -1063,7 +1191,7 @@
             container.innerHTML = '';
             if (!currentExamData.essayQuestions) return;
 
-            const questions = shuffleIfRandom(currentExamData.essayQuestions);
+            const questions = shuffleArray(currentExamData.essayQuestions);
 
             questions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
@@ -1097,6 +1225,11 @@
                 container.appendChild(questionDiv);
             });
         }
+
+        // 页面加载时检查解锁状态
+        window.onload = function() {
+            checkExamUnlock();
+        };
     </script>
 </body>
 </html>
