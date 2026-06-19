@@ -350,22 +350,22 @@
 {
 "id": 13,
 "question": "请简述学生成绩管理系统用例图所示内容",
-"answer": "如图所示：<br><img src='data/1.png' width='400'>"
+"answer": "如图所示：<br><img src='data/1.png'>"
 },
 {
 "id": 14,
 "question": "请简述帐号管理系统用例图所示内容",
-"answer": "如图所示：<br><img src='data/1-2.png' width='400'>"
+"answer": "如图所示：<br><img src='data/1-2.png'>"
 },
 {
 "id": 15,
 "question": "请简述自动饮料售货机购买矿泉水场景用例图所示内容",
-"answer": "如图所示：<br><img src='data/2.png' width='400'>"
+"answer": "如图所示：<br><img src='data/2.png'>"
 },
 {
 "id": 16,
 "question": "请简述打印所有履约合同信息活动图所示内容",
-"answer": "如图所示：<br><img src='data/3.png' width='400'>"
+"answer": "如图所示：<br><img src='data/3.png'>"
 }
 ]
 }
