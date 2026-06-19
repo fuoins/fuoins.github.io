@@ -436,9 +436,27 @@
                 align-self: flex-start;
             }
         }
+        
+body.no-copy {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+body.no-copy input,
+body.no-copy textarea {
+    -webkit-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
+    user-select: auto;
+}
+
     </style>
 </head>
-<body>
+<body class="no-copy">
+
     <div class="container">
         <h1>📚 在线测试系统</h1>
 
@@ -527,6 +545,19 @@
         </div>
     </div>
     <script>
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+document.addEventListener('copy', e => e.preventDefault());
+
+document.addEventListener('cut', e => e.preventDefault());
+
+
+document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'a' || e.key === 'A')) {
+        e.preventDefault();
+    }
+});
+
         // 全局变量
         let currentExamData = null;
         let isRandomMode = true;
