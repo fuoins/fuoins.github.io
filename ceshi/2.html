@@ -265,6 +265,12 @@
             opacity: 0.9;
         }
 
+        .option input[type="checkbox"],
+        .option input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
         .feedback {
             margin-left: 15px;
             font-weight: bold;
@@ -302,6 +308,13 @@
             background-color: #6c757d;
             cursor: not-allowed;
             transform: none;
+        }
+
+        .selected-count {
+            margin-top: 12px;
+            margin-left: 20px;
+            color: #666;
+            font-size: 0.9em;
         }
 
         .answer-area {
@@ -685,7 +698,7 @@
             saveErrorCountsToStorage();
         }
 
-        // ---------- 核心修改：选择题渲染（支持多选确认）----------
+        // ---------- 核心修改：修复点击选项不算选择的问题 ----------
         function renderChoiceQuestions() {
             const container = document.getElementById('choice-questions');
             container.innerHTML = '';
@@ -733,8 +746,18 @@
                     originalIndexMap.set(shuffledIdx, originalIdx);
                 });
 
-                // 记录是否已经作答（单选/多选确认后锁定）
+                // 记录是否已经作答
                 let answered = false;
+                let selectedCount = 0; // 多选中已选择的选项数量
+
+                // 为多选题添加已选择数量显示
+                if (isMultiple) {
+                    const countDisplay = document.createElement('div');
+                    countDisplay.className = 'selected-count';
+                    countDisplay.textContent = '已选择 0 项';
+                    countDisplay.id = `selected-count-${q.id}`;
+                    questionDiv.appendChild(countDisplay);
+                }
 
                 options.forEach((option, optIndex) => {
                     const optionDiv = document.createElement('div');
@@ -744,31 +767,39 @@
                     input.name = `choice-${q.id}`;
                     input.id = `choice-${q.id}-opt${optIndex}`;
                     input.value = optIndex;
+                    
                     const label = document.createElement('label');
                     label.htmlFor = `choice-${q.id}-opt${optIndex}`;
                     label.textContent = ` ${String.fromCharCode(65 + optIndex)}. ${option}`;
+                    label.style.cursor = 'pointer';
+                    label.style.flex = 1;
+                    label.style.userSelect = 'none';
+                    
                     const feedback = document.createElement('span');
                     feedback.className = 'feedback';
+                    
                     optionDiv.appendChild(input);
                     optionDiv.appendChild(label);
                     optionDiv.appendChild(feedback);
 
-                    // 点击事件：单选立即判断，多选仅切换选中状态
+                    // 修复：点击选项任何地方都能选择
                     optionDiv.addEventListener('click', function(e) {
-                        if (answered) return;
-                        if (e.target.tagName !== 'INPUT') {
-                            input.checked = !input.checked;
-                        }
+                        if (e.target.tagName === 'INPUT') return; // 如果点击的是input，不处理
+                        input.checked = !input.checked;
+                        input.dispatchEvent(new Event('change'));
+                    });
 
+                    // 修改：添加change事件监听器
+                    input.addEventListener('change', function() {
+                        if (answered) return;
+                        
                         if (isMultiple) {
-                            // 多选：只切换选中样式，不做判断
-                            // 清除之前可能残留的 selected/wrong 样式（仅清除当前选项的，但不影响其他）
-                            // 但是为了视觉反馈，我们可以让选中项有一个临时标记，但最终由确认按钮统一处理
-                            // 这里简单用背景色变化表示选中，但不用 selected 类（以免和确认后的混淆）
-                            // 采用一个临时类 highlight 或者直接靠 input checked 状态
-                            // 为了更好的交互，我们可以在确认前让选中的选项有一个淡蓝色背景
-                            // 这里使用一个自定义属性 data-temp-selected
-                            if (input.checked) {
+                            // 多选题：更新已选择数量
+                            selectedCount = optionsDiv.querySelectorAll('input:checked').length;
+                            document.getElementById(`selected-count-${q.id}`).textContent = `已选择 ${selectedCount} 项`;
+                            
+                            // 更新选项样式
+                            if (this.checked) {
                                 optionDiv.style.backgroundColor = '#d0e4f5';
                                 optionDiv.style.borderColor = '#007bff';
                             } else {
@@ -776,7 +807,7 @@
                                 optionDiv.style.borderColor = '';
                             }
                         } else {
-                            // 单选：立即判断
+                            // 单选题：立即判断
                             answered = true;
                             questionDiv.classList.add('answered');
                             optionsDiv.querySelectorAll('.option').forEach(opt => {
@@ -784,8 +815,7 @@
                                 opt.querySelector('input').disabled = true;
                             });
 
-                            const selectedInput = optionsDiv.querySelector('input:checked');
-                            if (!selectedInput) return; // 理论上不会
+                            const selectedInput = this;
                             const selectedShuffledIdx = parseInt(selectedInput.value);
                             const selectedOriginalIdx = originalIndexMap.get(selectedShuffledIdx);
                             const isCorrect = selectedOriginalIdx === q.answer;
@@ -807,6 +837,7 @@
                                 optionDiv.classList.add('wrong');
                                 feedback.textContent = '✗ 错误';
                                 feedback.className = 'feedback wrong-feedback';
+                                
                                 // 高亮正确答案
                                 optionsDiv.querySelectorAll('.option').forEach(opt => {
                                     const inp = opt.querySelector('input');
@@ -827,7 +858,7 @@
 
                 questionDiv.appendChild(optionsDiv);
 
-                // 如果是多选题，添加“确认选择”按钮
+                // 如果是多选题，添加"确认选择"按钮
                 if (isMultiple) {
                     const confirmBtn = document.createElement('button');
                     confirmBtn.className = 'confirm-multi-btn';
@@ -835,7 +866,7 @@
                     confirmBtn.type = 'button';
                     confirmBtn.addEventListener('click', function() {
                         if (answered) return;
-                        // 检查是否至少选了一项
+                        
                         const checkedInputs = optionsDiv.querySelectorAll('input:checked');
                         if (checkedInputs.length === 0) {
                             alert('请至少选择一个选项！');
@@ -850,25 +881,23 @@
 
                         // 获取选中的原始索引
                         const selectedOriginalIndices = [];
-                        optionsDiv.querySelectorAll('input:checked').forEach(inp => {
+                        checkedInputs.forEach(inp => {
                             const shuffledIdx = parseInt(inp.value);
                             selectedOriginalIndices.push(originalIndexMap.get(shuffledIdx));
                         });
-                        selectedOriginalIndices.sort((a,b)=>a-b);
-                        const correctSorted = [...q.answer].sort((a,b)=>a-b);
+                        selectedOriginalIndices.sort((a,b) => a - b);
+                        const correctSorted = [...q.answer].sort((a,b) => a - b);
                         const isCorrect = JSON.stringify(selectedOriginalIndices) === JSON.stringify(correctSorted);
 
-                        // 清除所有临时样式和反馈
+                        // 清除所有临时样式
                         optionsDiv.querySelectorAll('.option').forEach(opt => {
-                            opt.classList.remove('selected', 'wrong');
-                            opt.querySelector('.feedback').textContent = '';
                             opt.style.backgroundColor = '';
                             opt.style.borderColor = '';
                         });
 
                         if (isCorrect) {
                             // 正确：将用户选中的选项标绿
-                            optionsDiv.querySelectorAll('input:checked').forEach(inp => {
+                            checkedInputs.forEach(inp => {
                                 const parentOpt = inp.closest('.option');
                                 parentOpt.classList.add('selected');
                                 parentOpt.querySelector('.feedback').textContent = '✓ 正确';
@@ -877,12 +906,13 @@
                         } else {
                             incrementError(errorId);
                             // 错误：用户选中的标红，正确答案标绿
-                            optionsDiv.querySelectorAll('input:checked').forEach(inp => {
+                            checkedInputs.forEach(inp => {
                                 const parentOpt = inp.closest('.option');
                                 parentOpt.classList.add('wrong');
                                 parentOpt.querySelector('.feedback').textContent = '✗ 错误';
                                 parentOpt.querySelector('.feedback').className = 'feedback wrong-feedback';
                             });
+                            
                             // 显示正确答案
                             optionsDiv.querySelectorAll('.option').forEach(opt => {
                                 const inp = opt.querySelector('input');
@@ -964,7 +994,14 @@
                     optionDiv.appendChild(label);
                     optionDiv.appendChild(feedback);
 
-                    optionDiv.addEventListener('click', function() {
+                    // 修复：点击选项任何地方都能选择
+                    optionDiv.addEventListener('click', function(e) {
+                        if (e.target.tagName === 'INPUT') return;
+                        radio.checked = true;
+                        radio.dispatchEvent(new Event('change'));
+                    });
+
+                    radio.addEventListener('change', function() {
                         if (questionDiv.classList.contains('answered')) return;
                         questionDiv.classList.add('answered');
                         optionsDiv.querySelectorAll('.option').forEach(opt => {
@@ -972,7 +1009,7 @@
                             opt.querySelector('input').disabled = true;
                         });
 
-                        const isCorrect = this.dataset.correct === 'true';
+                        const isCorrect = optionDiv.dataset.correct === 'true';
 
                         const allOptions = this.parentElement.querySelectorAll('.option');
                         allOptions.forEach(opt => {
@@ -981,14 +1018,14 @@
                         });
 
                         if (isCorrect) {
-                            this.classList.add('selected');
-                            this.querySelector('.feedback').textContent = '✓ 正确';
-                            this.querySelector('.feedback').className = 'feedback correct-feedback';
+                            optionDiv.classList.add('selected');
+                            feedback.textContent = '✓ 正确';
+                            feedback.className = 'feedback correct-feedback';
                         } else {
                             incrementError(errorId);
-                            this.classList.add('wrong');
-                            this.querySelector('.feedback').textContent = '✗ 错误';
-                            this.querySelector('.feedback').className = 'feedback wrong-feedback';
+                            optionDiv.classList.add('wrong');
+                            feedback.textContent = '✗ 错误';
+                            feedback.className = 'feedback wrong-feedback';
                             allOptions.forEach(opt => {
                                 const optIsTrue = opt.querySelector('label').textContent.includes('√');
                                 if (optIsTrue === q.answer) {
