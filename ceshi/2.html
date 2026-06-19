@@ -456,7 +456,6 @@
             <div class="selector-row">
                 <select id="examSelector">
                     <option value="">-- 请选择一套试卷 --</option>
-                    <option value="data/zy.json">🔒赵宇真爱粉测试</option>
                     <option value="data/os.json">操作系统</option>
                     <option value="data/ds.json">数据结构</option>
                     <option value="data/cn.json">计算机网络</option>
@@ -532,20 +531,12 @@
         let currentExamData = null;
         let isRandomMode = true;
         let currentExamFile = '';       // 当前题库文件名，用于localStorage键
-        const UNLOCK_KEY='zy_unlock';
-        let isUnlocked=localStorage.getItem(UNLOCK_KEY)==='true';
-        let totalQuestions=0;
-        let correctQuestions=0;
         let errorCounts = {};           // 内存中的错误计数
 
         // localStorage 键前缀
         const ERROR_STORAGE_PREFIX = 'test_error_counts_';
 
         function setMode(mode) {
-            if(mode==='order' && !isUnlocked){
-                alert('需要先通过赵宇真爱粉测试满分解锁顺序模式');
-                return;
-            }
             isRandomMode = (mode === 'random');
             document.getElementById('randomMode').classList.toggle('active', isRandomMode);
             document.getElementById('orderMode').classList.toggle('active', !isRandomMode);
@@ -576,10 +567,6 @@
         async function loadSelectedExam() {
             const selector = document.getElementById('examSelector');
             const filePath = selector.value;
-            if(filePath!=='data/zy.json' && !isUnlocked){
-                alert('请先满分通过赵宇真爱粉测试解锁其它题库');
-                return;
-            }
             if (!filePath) {
                 alert('请先选择一套题库！');
                 return;
@@ -597,8 +584,6 @@
                 if (!response.ok) throw new Error('文件加载失败');
                 currentExamData = await response.json();
                 document.querySelector('h1').textContent = `📚 ${currentExamData.examTitle || '在线测试系统'}`;
-                totalQuestions=(currentExamData.choiceQuestions?.length||0)+(currentExamData.judgeQuestions?.length||0);
-                correctQuestions=0;
                 renderAllQuestions();
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('examContainer').style.display = 'block';
@@ -667,19 +652,6 @@
                 }
             }
             saveErrorCountsToStorage();
-        }
-
-        
-        function checkUnlock(){
-            if(currentExamFile==='data/zy.json' && correctQuestions>=totalQuestions){
-                localStorage.setItem(UNLOCK_KEY,'true');
-                isUnlocked=true;
-                alert('恭喜满分通关，已永久解锁所有题库和顺序模式！');
-            }
-        }
-        function restartExam(){
-            alert('答错一道题，本次测试重新开始！');
-            loadSelectedExam();
         }
 
         function renderChoiceQuestions() {
@@ -1003,5 +975,26 @@
             });
         }
     </script>
+
+<script>
+const UNLOCK_KEY='zy_unlock';
+window.addEventListener('load',()=>{
+window.isUnlocked = localStorage.getItem(UNLOCK_KEY)==='true';
+
+window.restartExam=function(){
+ alert('答错一题，本次测试结束，将重新开始！');
+ loadSelectedExam();
+};
+
+window.checkUnlock=function(){
+ if(currentExamFile==='data/zy.json'){
+   localStorage.setItem(UNLOCK_KEY,'true');
+   window.isUnlocked=true;
+   alert('恭喜满分通过，已永久解锁全部题库和顺序模式！');
+ }
+};
+});
+</script>
+
 </body>
 </html>
