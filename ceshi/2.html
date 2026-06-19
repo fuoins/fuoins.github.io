@@ -5,1360 +5,672 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>在线测试系统</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif;
-            line-height: 1.6;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-        }
-
-        .container {
-    background-color: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
-}
-
-h1 {
-    text-align: center;
-    color: #2c3e50;
-    margin-bottom: 20px;
-    font-size: 2.5em;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.intro-section {
-    background: linear-gradient(to right, #667eea, #764ba2);
-    color: white;
-    padding: 25px;
-    border-radius: 12px;
-    margin-bottom: 30px;
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-}
-
-.intro-section h2 {
-    font-size: 1.8em;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.intro-section p {
-    margin-bottom: 12px;
-    font-size: 1.05em;
-    line-height: 1.7;
-}
-
-.intro-section .highlight {
-    background-color: rgba(255, 255, 255, 0.2);
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-weight: bold;
-}
-
-.selector-panel {
-    text-align: center;
-    padding: 25px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 12px;
-    margin-bottom: 30px;
-    color: white;
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-}
-
-.selector-panel h2 {
-    margin-bottom: 20px;
-    font-size: 1.8em;
-}
-
-.selector-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-.selector-panel select {
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 8px;
-    border: none;
-    min-width: 250px;
-    cursor: pointer;
-    background-color: white;
-    color: #333;
-}
-
-.mode-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.mode-label {
-    color: white;
-    font-weight: bold;
-}
-
-.mode-buttons {
-    display: flex;
-    gap: 5px;
-}
-
-.mode-btn {
-    padding: 10px 15px;
-    font-size: 15px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-weight: bold;
-    background-color: rgba(255, 255, 255, 0.2);
-    color: white;
-}
-
-.mode-btn.active {
-    background-color: #28a745;
-}
-
-.mode-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.start-btn {
-    padding: 12px 35px;
-    font-size: 16px;
-    border-radius: 8px;
-    border: none;
-    background-color: #28a745;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-weight: bold;
-}
-
-.start-btn:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(33, 136, 56, 0.3);
-}
-
-.start-btn:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-#loading {
-    text-align: center;
-    padding: 50px;
-    font-size: 18px;
-    color: #666;
-    display: none;
-}
-
-.section {
-    margin-bottom: 40px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #eee;
-}
-
-.section-title {
-    color: #2c3e50;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
-    font-size: 1.5em;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.reset-section-btn {
-    padding: 6px 16px;
-    font-size: 14px;
-    border-radius: 6px;
-    border: none;
-    background-color: #ffc107;
-    color: #333;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-weight: bold;
-}
-
-.reset-section-btn:hover {
-    background-color: #e0a800;
-}
-
-.question {
-    margin-bottom: 25px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    border-left: 4px solid #3498db;
-    position: relative;
-    transition: transform 0.2s;
-}
-
-.question:hover {
-    transform: translateX(5px);
-}
-
-.question-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 15px;
-}
-
-.question-text {
-    font-weight: bold;
-    color: #2c3e50;
-    font-size: 1.1em;
-    flex: 1;
-}
-
-.error-count-display {
-    font-size: 0.85em;
-    color: #dc3545;
-    background-color: #fff5f5;
-    padding: 3px 10px;
-    border-radius: 12px;
-    border: 1px solid #f5c6cb;
-    white-space: nowrap;
-    margin-left: 15px;
-    flex-shrink: 0;
-}
-
-.options {
-    margin-left: 20px;
-}
-
-.option {
-    margin-bottom: 10px;
-    padding: 12px 15px;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    background-color: white;
-    border: 1px solid #e0e0e0;
-    position: relative;
-}
-
-.option:hover {
-    background-color: #e8f4fc;
-    border-color: #3498db;
-}
-
-.option.selected {
-    background-color: #d4edda;
-    border-left: 4px solid #28a745;
-    border-color: #28a745;
-}
-
-.option.wrong {
-    background-color: #f8d7da;
-    border-left: 4px solid #dc3545;
-    border-color: #dc3545;
-}
-
-.option.answered {
-    pointer-events: none;
-    opacity: 0.9;
-}
-
-.feedback {
-    margin-left: 15px;
-    font-weight: bold;
-    font-size: 1.1em;
-}
-
-.correct-feedback {
-    color: #28a745;
-}
-.wrong-feedback {
-    color: #dc3545;
-}
-
-.confirm-btn {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background-color: #17a2b8;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-    display: inline-block;
-}
-
-.confirm-btn:hover {
-    background-color: #138496;
-}
-
-.confirm-btn:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
-}
-
-.confirm-btn.hidden {
-    display: none;
-}
-
-.choice-hint {
-    margin-top: 10px;
-    font-size: 0.9em;
-    color: #6c757d;
-}
-
-.answer-area {
-    margin-top: 15px;
-    padding: 15px;
-    background-color: #e8f4fc;
-    border-radius: 8px;
-    border-left: 4px solid #17a2b8;
-    display: none;
-    white-space: pre-wrap;
-    font-size: 0.95em;
-    line-height: 1.6;
-}
-
-.answer-area strong {
-    color: #17a2b8;
-    display: block;
-    margin-bottom: 8px;
-}
-
-.toggle-answer-btn {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 8px 18px;
-    background-color: #17a2b8;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    user-select: none;
-}
-
-.toggle-answer-btn:hover {
-    background-color: #138496;
-}
-
-.global-reset-bar {
-    text-align: right;
-    margin-bottom: 20px;
-}
-
-.global-reset-btn {
-    padding: 8px 24px;
-    font-size: 15px;
-    border-radius: 8px;
-    border: none;
-    background-color: #dc3545;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-weight: bold;
-}
-
-.global-reset-btn:hover {
-    background-color: #c82333;
-}
-
-.donation-section {
-    background: linear-gradient(to right, #f8f9fa, #e9ecef);
-    padding: 30px;
-    border-radius: 15px;
-    margin-top: 40px;
-    text-align: center;
-    border: 1px solid #dee2e6;
-}
-
-.donation-section h3 {
-    color: #2c3e50;
-    margin-bottom: 20px;
-    font-size: 1.5em;
-}
-
-.donation-section p {
-    color: #666;
-    margin-bottom: 25px;
-    font-size: 1.1em;
-}
-
-.qr-codes {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
-}
-
-.qr-code-item {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s;
-}
-
-.qr-code-item:hover {
-    transform: translateY(-5px);
-}
-
-.qr-code-item img {
-    width: 180px;
-    height: 180px;
-    border-radius: 8px;
-    display: block;
-    margin-bottom: 10px;
-}
-
-.qr-code-item p {
-    margin: 0;
-    font-weight: bold;
-    color: #333;
-    font-size: 1em;
-}
-
-.footer-note {
-    text-align: center;
-    margin-top: 20px;
-    color: #888;
-    font-size: 0.9em;
-}
-
-.unlock-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    display: none;
-}
-
-.unlock-modal-content {
-    background-color: white;
-    padding: 30px;
-    border-radius: 15px;
-    max-width: 500px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.unlock-modal-content h2 {
-    color: #2c3e50;
-    margin-bottom: 20px;
-    font-size: 1.8em;
-}
-
-.unlock-modal-content p {
-    color: #555;
-    margin-bottom: 20px;
-    font-size: 1.1em;
-    line-height: 1.6;
-}
-
-.unlock-modal-close-btn {
-    padding: 12px 30px;
-    font-size: 16px;
-    border-radius: 8px;
-    border: none;
-    background-color: #3498db;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-weight: bold;
-}
-
-.unlock-modal-close-btn:hover {
-    background-color: #2980b9;
-}
-
-.hidden {
-    display: none !important;
-}
-
-@media (max-width: 768px) {
-    .container {
-        padding: 20px;
-    }
-
-    h1 {
-        font-size: 2em;
-    }
-
-    .selector-row {
-        flex-direction: column;
-    }
-
-    .selector-panel select,
-    .mode-controls,
-    .start-btn {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    .qr-codes {
-        gap: 20px;
-    }
-
-    .qr-code-item img {
-        width: 150px;
-        height: 150px;
-    }
-
-    .question-header {
-        flex-direction: column;
-    }
-
-    .error-count-display {
-        margin-left: 0;
-        margin-top: 8px;
-        align-self: flex-start;
-    }
-}
-</style>
+        /* ===== 全部样式 ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Microsoft YaHei','Segoe UI',Arial,sans-serif; line-height: 1.6; max-width: 1050px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%); min-height: 100vh; }
+        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        h1 { text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 2.5em; text-shadow: 1px 1px 3px rgba(0,0,0,0.1); }
+        .intro-section { background: linear-gradient(to right,#667eea,#764ba2); color: white; padding: 25px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(102,126,234,0.3); }
+        .intro-section h2 { font-size: 1.8em; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .intro-section p { margin-bottom: 12px; font-size: 1.05em; line-height: 1.7; }
+        .intro-section .highlight { background: rgba(255,255,255,0.2); padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+        .selector-panel { text-align: center; padding: 25px; background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); border-radius: 12px; margin-bottom: 30px; color: white; box-shadow: 0 5px 15px rgba(102,126,234,0.3); }
+        .selector-panel h2 { margin-bottom: 20px; font-size: 1.8em; }
+        .selector-row { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; }
+        .selector-panel select { padding: 12px 20px; font-size: 16px; border-radius: 8px; border: none; min-width: 290px; cursor: pointer; background: white; color: #333; }
+        .start-btn { padding: 12px 38px; font-size: 16px; border-radius: 8px; border: none; background: #28a745; color: white; cursor: pointer; transition: all 0.3s; font-weight: bold; }
+        .start-btn:hover { background: #218838; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(33,136,56,0.3); }
+        .start-btn:disabled { background: #6c757d; cursor: not-allowed; transform: none; box-shadow: none; }
+        #loading { text-align: center; padding: 70px 20px; font-size: 18px; color: #666; display: none; }
+        #loading::after { content: '⏳'; display: block; font-size: 54px; margin-bottom: 15px; animation: pulse 1.2s ease-in-out infinite; }
+        @keyframes pulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.15);opacity:0.6;} }
+        .section { margin-bottom: 45px; padding-bottom: 25px; border-bottom: 2px solid #eee; }
+        .section:last-child { border-bottom: none; }
+        .section-title { color:#2c3e50; margin-bottom:22px; padding-bottom:12px; border-bottom:1px solid #ddd; font-size:1.5em; display:flex; align-items:center; justify-content:space-between; }
+        .reset-section-btn { padding:6px 16px; font-size:13px; border-radius:6px; border:none; background:#ffc107; color:#333; cursor:pointer; transition:background 0.3s; font-weight:bold; }
+        .reset-section-btn:hover { background:#e0a800; }
+        .question { margin-bottom:26px; padding:22px 22px 18px; background:#f9f9f9; border-radius:10px; border-left:4px solid #3498db; transition:transform 0.2s,box-shadow 0.2s; }
+        .question:hover { transform:translateX(5px); box-shadow:0 3px 12px rgba(52,152,219,0.12); }
+        .question-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
+        .question-text { font-weight:bold; color:#2c3e50; font-size:1.1em; flex:1; }
+        .error-count-display { font-size:0.82em; color:#dc3545; background:#fff5f5; padding:3px 12px; border-radius:12px; border:1px solid #f5c6cb; white-space:nowrap; margin-left:15px; flex-shrink:0; }
+        .options { margin-left:20px; }
+        .option { margin-bottom:10px; padding:12px 16px; cursor:pointer; border-radius:8px; transition:all 0.2s; display:flex; align-items:center; background:white; border:1px solid #e0e0e0; }
+        .option:hover { background:#e8f4fc; border-color:#3498db; }
+        .option.selected { background:#d4edda; border-left:4px solid #28a745; border-color:#28a745; }
+        .option.wrong { background:#f8d7da; border-left:4px solid #dc3545; border-color:#dc3545; }
+        .option.answered { pointer-events:none; opacity:0.92; }
+        .feedback { margin-left:16px; font-weight:bold; font-size:1.05em; flex-shrink:0; }
+        .correct-feedback { color:#28a745; }
+        .wrong-feedback { color:#dc3545; }
+        .confirm-btn { margin-top:16px; padding:10px 34px; background:#17a2b8; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold; font-size:15px; transition:background 0.3s,transform 0.15s; display:inline-block; }
+        .confirm-btn:hover { background:#138496; transform:translateY(-1px); }
+        .confirm-btn:disabled { background:#6c757d; cursor:not-allowed; transform:none; }
+        .confirm-btn.hidden { display:none; }
+        .choice-hint { margin-top:10px; font-size:0.89em; color:#6c757d; font-style:italic; }
+        .answer-area { margin-top:15px; padding:16px 18px; background:#e8f4fc; border-radius:8px; border-left:4px solid #17a2b8; display:none; white-space:pre-wrap; font-size:0.96em; line-height:1.7; }
+        .answer-area strong { color:#17a2b8; display:block; margin-bottom:8px; }
+        .toggle-answer-btn { display:inline-block; margin-top:12px; padding:8px 22px; background:#17a2b8; color:white; border:none; border-radius:6px; font-size:14px; cursor:pointer; transition:background 0.3s; user-select:none; }
+        .toggle-answer-btn:hover { background:#138496; }
+        .global-reset-bar { text-align:right; margin-bottom:20px; }
+        .global-reset-btn { padding:8px 24px; font-size:15px; border-radius:8px; border:none; background:#dc3545; color:white; cursor:pointer; transition:background 0.3s; font-weight:bold; }
+        .global-reset-btn:hover { background:#c82333; }
+        .donation-section { background:linear-gradient(to right,#f8f9fa,#e9ecef); padding:30px; border-radius:15px; margin-top:40px; text-align:center; border:1px solid #dee2e6; }
+        .donation-section h3 { color:#2c3e50; margin-bottom:20px; font-size:1.5em; }
+        .donation-section p { color:#666; margin-bottom:25px; font-size:1.1em; }
+        .qr-codes { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; }
+        .qr-code-item { background:white; padding:20px; border-radius:12px; box-shadow:0 5px 15px rgba(0,0,0,0.08); transition:transform 0.3s; }
+        .qr-code-item:hover { transform:translateY(-5px); }
+        .qr-code-item img { width:170px; height:170px; border-radius:8px; display:block; margin-bottom:10px; }
+        .qr-code-item p { margin:0; font-weight:bold; color:#333; font-size:1em; }
+        .footer-note { text-align:center; margin-top:20px; color:#888; font-size:0.9em; }
+        .unlock-modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:flex; justify-content:center; align-items:center; z-index:1000; display:none; }
+        .unlock-modal-content { background:white; padding:30px; border-radius:15px; max-width:520px; width:90%; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.3); }
+        .unlock-modal-content h2 { color:#2c3e50; margin-bottom:20px; font-size:1.8em; }
+        .unlock-modal-content p { color:#555; margin-bottom:20px; font-size:1.1em; line-height:1.6; }
+        .unlock-modal-close-btn { padding:12px 36px; font-size:16px; border-radius:8px; border:none; background:#3498db; color:white; cursor:pointer; transition:all 0.3s; font-weight:bold; }
+        .unlock-modal-close-btn:hover { background:#2980b9; }
+        @media(max-width:768px){ .container{padding:20px;} h1{font-size:2em;} .selector-row{flex-direction:column;} .selector-panel select,.start-btn{width:100%;margin-bottom:10px;} .qr-codes{gap:20px;} .qr-code-item img{width:140px;height:140px;} .question-header{flex-direction:column;} .error-count-display{margin-left:0;margin-top:8px;align-self:flex-start;} }
+        /* 禁止文本选中 */
+        body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+    </style>
 </head>
-
 <body>
-
 <div class="container">
-📚 在线测试系统
-<div class="intro-section">
-    <h2>👋 欢迎使用在线测试系统</h2>
-    <p>本系统支持多种题型，包括<span class="highlight">单选题</span>、<span class="highlight">多选题</span>、<span class="highlight">判断题</span>、<span class="highlight">填空题</span>和<span class="highlight">简答题</span>。</p>
-    <p>🔄 赵宇测试题强制随机模式，其他题库可切换<span class="highlight">随机测试</span>和<span class="highlight">顺序测试</span>模式。</p>
-    <p>💡 选择题和判断题点击选项即可选中，<strong>提交后不可更改</strong>，并记录错误次数（自动保存，重新加载题库会累计）。填空题和简答题可点击按钮查看或隐藏参考答案。</p>
-    <p>🔒 需先完成"赵宇真爱粉测试题"并达到满分，才能解锁其他题库。</p>
-    <p>📱 如需定制专属题库，请联系下方微信二维码。</p>
-</div>
+    <h1>📚 在线测试系统</h1>
+    <!-- 简介区 -->
+    <div class="intro-section">
+        <h2>🌟 欢迎使用智能测试平台</h2>
+        <p>本系统包含<span class="highlight">单选题、多选题、判断题、填空题、简答题</span>等多种题型。</p>
+        <p>🔒 默认仅开放「赵宇真爱粉测试」题库，<strong>获得满分后自动解锁全部题库</strong>。</p>
+        <p>📌 提示：答题过程中请勿打开开发者工具，否则将触发保护机制。</p>
+    </div>
 
-<div class="selector-panel">
-    <h2>📝 请选择题库和模式</h2>
-    <div class="selector-row">
-        <select id="examSelector">
-            <option value="">-- 请选择一套试卷 --</option>
-            <option value="data/zy.json">赵宇真爱粉测试题（需满分解锁）</option>
-            <option value="data/os.json" disabled>操作系统（未解锁）</option>
-            <option value="data/ds.json" disabled>数据结构（未解锁）</option>
-            <option value="data/cn.json" disabled>计算机网络（未解锁）</option>
-            <option value="data/soft.json" disabled>软件工程（未解锁）</option>
-        </select>
+    <!-- 题库选择面板 -->
+    <div class="selector-panel">
+        <h2>📂 选择题库</h2>
+        <div class="selector-row">
+            <select id="examSelector">
+                <option value="">-- 请选择 --</option>
+                <option value="data/zy.json">赵宇真爱粉测试</option>
+                <option value="data/exam1.json">数据结构基础（未解锁）</option>
+                <option value="data/exam2.json">计算机网络（未解锁）</option>
+                <option value="data/exam3.json">操作系统原理（未解锁）</option>
+            </select>
+            <button class="start-btn" onclick="loadSelectedExam()">🚀 开始答题</button>
+        </div>
+        <div style="font-size:0.93em; margin-top:8px; opacity:0.9;">💡 完成赵宇测试满分即可解锁其他题库</div>
+    </div>
 
-        <div class="mode-controls" id="modeControls">
-            <span class="mode-label">测试模式:</span>
-            <div class="mode-buttons">
-                <button class="mode-btn active" id="randomMode" onclick="setMode('random')">随机测试</button>
-                <button class="mode-btn" id="orderMode" onclick="setMode('order')">顺序测试</button>
+    <!-- 加载动画 -->
+    <div id="loading">题库加载中，请稍候...</div>
+
+    <!-- 考试主容器 -->
+    <div id="examContainer" style="display:none;">
+        <!-- 全局重置 -->
+        <div class="global-reset-bar">
+            <button class="global-reset-btn" onclick="resetAllErrors()">🔄 重置所有错题记录</button>
+        </div>
+
+        <!-- 选择题 -->
+        <div class="section" id="choice-section">
+            <div class="section-title">
+                <span>📝 选择题（含单选/多选）</span>
+                <button class="reset-section-btn" onclick="resetSectionErrors('choice')">重置本节错题</button>
+            </div>
+            <div id="choice-questions"></div>
+        </div>
+
+        <!-- 判断题 -->
+        <div class="section" id="judge-section">
+            <div class="section-title">
+                <span>⚖️ 判断题</span>
+                <button class="reset-section-btn" onclick="resetSectionErrors('judge')">重置本节错题</button>
+            </div>
+            <div id="judge-questions"></div>
+        </div>
+
+        <!-- 填空题 -->
+        <div class="section" id="fill-section">
+            <div class="section-title">✍️ 填空题</div>
+            <div id="fill-questions"></div>
+        </div>
+
+        <!-- 简答题 -->
+        <div class="section" id="essay-section">
+            <div class="section-title">📖 简答题</div>
+            <div id="essay-questions"></div>
+        </div>
+    </div>
+
+    <!-- 捐赠/赞赏 -->
+    <div class="donation-section">
+        <h3>☕ 支持作者</h3>
+        <p>如果您觉得这个工具有帮助，可以扫码请作者喝杯咖啡~</p>
+        <div class="qr-codes">
+            <div class="qr-code-item">
+                <img src="https://via.placeholder.com/180x180?text=微信支付" alt="微信支付">
+                <p>微信</p>
+            </div>
+            <div class="qr-code-item">
+                <img src="https://via.placeholder.com/180x180?text=支付宝" alt="支付宝">
+                <p>支付宝</p>
             </div>
         </div>
-
-        <button class="start-btn" id="startBtn" onclick="loadSelectedExam()">开始测试</button>
     </div>
+    <div class="footer-note">© 2026 在线测试系统 · 版本 3.0</div>
 </div>
 
-<!-- 解锁提示模态框 -->
+<!-- 解锁弹窗 -->
 <div class="unlock-modal-overlay" id="unlockModal">
     <div class="unlock-modal-content">
-        <h2>🔒 题库暂未解锁</h2>
-        <p><strong>请先完成"赵宇真爱粉测试题"并达到满分</strong>，才能解锁其他题库。</p>
-        <p>⚠️ <strong>重要提示</strong>：解锁状态仅保存在本地浏览器中，更换浏览器或设备后需要重新解锁。</p>
-        <button class="unlock-modal-close-btn" id="modalCloseBtn" onclick="closeUnlockModal()">我知道了</button>
+        <h2>🔒 题库未解锁</h2>
+        <p>请先完成「赵宇真爱粉测试」并获得满分，即可解锁全部题库。<br>加油！💪</p>
+        <button class="unlock-modal-close-btn" onclick="closeUnlockModal()">知道了</button>
     </div>
-</div>
-
-<div id="loading">⏳ 正在加载题目...</div>
-
-<div id="examContainer" style="display:none;">
-    <div class="global-reset-bar">
-        <button class="global-reset-btn" onclick="resetAllErrors()">🔄 重置所有错误次数</button>
-    </div>
-
-    <div class="section" id="choice-section">
-        <h2 class="section-title">
-            <span>一、选择题</span>
-            <button class="reset-section-btn" onclick="resetSectionErrors('choice')">清除本类错误</button>
-        </h2>
-        <div id="choice-questions"></div>
-    </div>
-
-    <div class="section" id="judge-section">
-        <h2 class="section-title">
-            <span>二、判断题</span>
-            <button class="reset-section-btn" onclick="resetSectionErrors('judge')">清除本类错误</button>
-        </h2>
-        <div id="judge-questions"></div>
-    </div>
-
-    <div class="section" id="fill-section">
-        <h2 class="section-title">三、填空题</h2>
-        <div id="fill-questions"></div>
-    </div>
-
-    <div class="section" id="essay-section">
-        <h2 class="section-title">四、简答题</h2>
-        <div id="essay-questions"></div>
-    </div>
-</div>
-
-<div class="donation-section">
-    <h3>☕ 支持开发者</h3>
-    <p>如果您觉得这个测试系统对您有帮助，欢迎打赏支持，鼓励我们继续开发更多实用工具！</p>
-
-    <div class="qr-codes">
-        <div class="qr-code-item">
-            <img src="../bhu/img/wx.png" alt="微信联系">
-            <p>微信联系</p>
-        </div>
-        <div class="qr-code-item">
-            <img src="../bhu/img/sk.png" alt="打赏支持">
-            <p>打赏支持</p>
-        </div>
-    </div>
-
-    <div class="footer-note">
-        <p>© 2026 在线测试系统 | 题库定制请联系上方微信</p>
-    </div>
-</div>
 </div>
 
 <script>
-// ==================== 代码保护模块 ====================
-(function() {
-    // 1. 屏蔽右键菜单
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-        return false;
+// ========================================================================
+//  反调试 & 保护模块（强制卡死调试器 + 屏蔽快捷键）
+// ========================================================================
+(function(){
+    // 1. 屏蔽右键
+    document.addEventListener('contextmenu', function(e){ e.preventDefault(); return false; });
+
+    // 2. 屏蔽开发者快捷键
+    document.addEventListener('keydown', function(e){
+        if(e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); return false; }
+        if(e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].includes(e.key)) { e.preventDefault(); return false; }
+        if(e.ctrlKey && (e.key === 'u' || e.key === 'U')) { e.preventDefault(); return false; }
+        if(e.ctrlKey && (e.key === 's' || e.key === 'S')) { e.preventDefault(); return false; }
     });
 
-    // 2. 屏蔽常用开发者工具快捷键
-    document.addEventListener('keydown', function(e) {
-        // F12
-        if (e.key === 'F12' || e.keyCode === 123) {
-            e.preventDefault();
-            return false;
-        }
-        // Ctrl+Shift+I / J / C / U / S 等
-        if (e.ctrlKey && e.shiftKey) {
-            if (['I', 'i', 'J', 'j', 'C', 'c'].includes(e.key)) {
-                e.preventDefault();
-                return false;
-            }
-        }
-        // Ctrl+U (查看源代码)
-        if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) {
-            e.preventDefault();
-            return false;
-        }
-        // Ctrl+S (保存页面)
-        if (e.ctrlKey && (e.key === 's' || e.key === 'S')) {
-            e.preventDefault();
-            return false;
-        }
-    });
-
-    // 3. 检测控制台打开（通过窗口尺寸变化）
-    let devtoolsOpen = false;
-    function detectDevTools() {
-        const threshold = 140;
-        const widthDiff = window.outerWidth - window.innerWidth;
-        const heightDiff = window.outerHeight - window.innerHeight;
-        
-        if (widthDiff > threshold || heightDiff > threshold) {
-            if (!devtoolsOpen) {
-                devtoolsOpen = true;
-                // 强制卡死调试器 - 无限debugger
-                (function() {
-                    while (true) {
-                        try {
-                            debugger;
-                        } catch(e) {}
-                    }
+    // 3. 检测控制台打开 → 触发无限 debugger 卡死
+    let devtoolsOpened = false;
+    function freezeOnDevtools() {
+        // 利用 outer/inner 差值判断
+        const threshold = 130;
+        const wDiff = window.outerWidth - window.innerWidth;
+        const hDiff = window.outerHeight - window.innerHeight;
+        if(wDiff > threshold || hDiff > threshold) {
+            if(!devtoolsOpened) {
+                devtoolsOpened = true;
+                // 无限 debugger 卡死
+                (function infiniteDebugger(){
+                    debugger;
+                    setTimeout(infiniteDebugger, 80);
                 })();
+                // 同时尝试跳转空白页（双重保险）
+                window.location.replace('about:blank');
             }
         } else {
-            devtoolsOpen = false;
+            devtoolsOpened = false;
         }
     }
-    setInterval(detectDevTools, 1000);
+    setInterval(freezeOnDevtools, 600);
 
-    // 4. 额外保护
-    document.addEventListener('copy', function(e) {
-        e.preventDefault();
-        return false;
-    });
-    document.addEventListener('cut', function(e) {
-        e.preventDefault();
-        return false;
-    });
+    // 4. 禁止复制/剪切（不影响输入框）
+    document.addEventListener('copy', function(e){ e.preventDefault(); return false; });
+    document.addEventListener('cut', function(e){ e.preventDefault(); return false; });
 
-    // 5. 防止通过 console 输出敏感信息
-    const noop = function() {};
-    const methods = ['log', 'info', 'warn', 'error', 'debug', 'dir', 'table'];
-    methods.forEach(function(method) {
-        console[method] = noop;
+    // 5. 覆盖 console 方法（防止打印敏感信息）
+    const noop = function(){};
+    ['log','info','warn','error','debug','dir','table'].forEach(function(m){
+        console[m] = noop;
     });
 })();
 
-// ==================== 原有业务逻辑 ====================
+
+// ========================================================================
+//  核心业务逻辑
+// ========================================================================
 let currentExamData = null;
 let currentExamFile = '';
 let errorCounts = {};
-let isRandomMode = true; // 默认为随机模式
 const ERROR_STORAGE_PREFIX = 'test_error_counts_';
 const PERFECT_EXAM_KEY = 'perfect_exam_zy';
 
-// 从 localStorage 加载当前题库的错误计数
+// ---------- 存储辅助 ----------
 function loadErrorCountsFromStorage(examFile) {
     const key = ERROR_STORAGE_PREFIX + examFile;
     const stored = localStorage.getItem(key);
-    if (stored) {
-        try { 
-            errorCounts = JSON.parse(stored); 
-        } catch(e) { 
-            errorCounts = {}; 
-        }
-    } else { 
-        errorCounts = {}; 
-    }
+    if(stored) {
+        try { errorCounts = JSON.parse(stored); } catch(e){ errorCounts = {}; }
+    } else { errorCounts = {}; }
 }
-
-// 将当前错误计数保存到 localStorage
 function saveErrorCountsToStorage() {
-    if (!currentExamFile) return;
+    if(!currentExamFile) return;
     const key = ERROR_STORAGE_PREFIX + currentExamFile;
     localStorage.setItem(key, JSON.stringify(errorCounts));
 }
 
-// 检查是否解锁其他题库
+// ---------- 解锁状态管理 ----------
 function checkExamUnlock() {
     const isPerfect = localStorage.getItem(PERFECT_EXAM_KEY) === 'true';
     const selector = document.getElementById('examSelector');
-    
-    for (let i = 0; i < selector.options.length; i++) {
-        const option = selector.options[i];
-        if (option.value !== 'data/zy.json' && option.value !== '') {
-            if (isPerfect) {
-                option.disabled = false;
-                option.text = option.text.replace('（未解锁）', '');
+    for(let i=0; i<selector.options.length; i++){
+        const opt = selector.options[i];
+        if(opt.value !== 'data/zy.json' && opt.value !== ''){
+            if(isPerfect){
+                opt.disabled = false;
+                opt.text = opt.text.replace('（未解锁）','');
             } else {
-                option.disabled = true;
-                if (!option.text.includes('（未解锁）')) {
-                    option.text += '（未解锁）';
-                }
+                opt.disabled = true;
+                if(!opt.text.includes('（未解锁）')) opt.text += '（未解锁）';
             }
         }
     }
 }
-
-// 显示解锁提示模态框
-function showUnlockModal() {
-    document.getElementById('unlockModal').style.display = 'flex';
+function showUnlockModal(){ document.getElementById('unlockModal').style.display='flex'; }
+function closeUnlockModal(){ 
+    document.getElementById('unlockModal').style.display='none'; 
+    document.getElementById('examSelector').value='data/zy.json'; 
 }
 
-// 关闭解锁提示模态框
-function closeUnlockModal() {
-    document.getElementById('unlockModal').style.display = 'none';
-    document.getElementById('examSelector').value = 'data/zy.json';
-}
-
-// 设置测试模式
-function setMode(mode) {
-    const selector = document.getElementById('examSelector');
-    const filePath = selector.value;
-    
-    // 如果是zy.json，强制随机模式
-    if (filePath === 'data/zy.json') {
-        isRandomMode = true;
-        document.getElementById('randomMode').classList.add('active');
-        document.getElementById('orderMode').classList.remove('active');
-        return;
-    }
-    
-    isRandomMode = (mode === 'random');
-    document.getElementById('randomMode').classList.toggle('active', isRandomMode);
-    document.getElementById('orderMode').classList.toggle('active', !isRandomMode);
-}
-
-// 检查当前题目是否全部正确
+// ---------- 满分判定（不会重置已有解锁状态）----------
 function checkPerfectScore() {
-    if (currentExamFile !== 'data/zy.json') return false;
-    
-    const choiceQuestions = document.querySelectorAll('#choice-questions .question');
-    const judgeQuestions = document.querySelectorAll('#judge-questions .question');
-    const allQuestions = [...choiceQuestions, ...judgeQuestions];
-    
-    if (allQuestions.length === 0) return false;
-    
-    // 检查是否所有题目都已作答
-    const allAnswered = allQuestions.every(q => q.classList.contains('answered'));
-    if (!allAnswered) {
-        return false;
-    }
-    
-    // 检查是否有错误
+    if(currentExamFile !== 'data/zy.json') return false;
+    const choiceQs = document.querySelectorAll('#choice-questions .question');
+    const judgeQs = document.querySelectorAll('#judge-questions .question');
+    const allQs = [...choiceQs, ...judgeQs];
+    if(allQs.length === 0) return false;
+    const allAnswered = allQs.every(q => q.classList.contains('answered'));
+    if(!allAnswered) return false;
+
     let hasWrong = false;
-    allQuestions.forEach(q => {
-        const wrongOptions = q.querySelectorAll('.option.wrong');
-        if (wrongOptions.length > 0) {
-            hasWrong = true;
-        }
+    allQs.forEach(q => {
+        const wrongOpts = q.querySelectorAll('.option.wrong');
+        if(wrongOpts.length > 0) hasWrong = true;
     });
-    
     const isPerfect = !hasWrong;
-    
-    if (isPerfect) {
-        // 保存解锁状态
+    // 只有满分时才设置为 true，否则不变（保留历史满分记录）
+    if(isPerfect) {
         localStorage.setItem(PERFECT_EXAM_KEY, 'true');
         setTimeout(() => {
             alert('🎉 恭喜！您已完成赵宇真爱粉测试题并达到满分！其他题库已解锁。');
             checkExamUnlock();
-        }, 500);
+        }, 300);
     }
-    
+    // 注意：未满分时不修改 localStorage，因此再次作答不会重置解锁状态
     return isPerfect;
 }
 
+// ---------- 加载题库 ----------
 async function loadSelectedExam() {
     const selector = document.getElementById('examSelector');
     const filePath = selector.value;
-    if (!filePath) { 
-        alert('请先选择一套题库！'); 
-        return; 
-    }
-
-    // 检查解锁状态
-    if (filePath !== 'data/zy.json') {
+    if(!filePath) { alert('请先选择一套题库！'); return; }
+    if(filePath !== 'data/zy.json'){
         const isPerfect = localStorage.getItem(PERFECT_EXAM_KEY) === 'true';
-        if (!isPerfect) { 
-            showUnlockModal(); 
-            return; 
-        }
+        if(!isPerfect) { showUnlockModal(); return; }
     }
-
-    // 设置当前题库文件并加载对应的错误计数
     currentExamFile = filePath;
     loadErrorCountsFromStorage(currentExamFile);
-
-    // 设置模式控制
-    const modeControls = document.getElementById('modeControls');
-    if (filePath === 'data/zy.json') {
-        // 赵宇测试题强制随机模式
-        isRandomMode = true;
-        document.getElementById('randomMode').classList.add('active');
-        document.getElementById('orderMode').classList.remove('active');
-        modeControls.classList.add('hidden');
-    } else {
-        // 其他题库显示模式选择
-        modeControls.classList.remove('hidden');
-    }
-
     document.getElementById('loading').style.display = 'block';
     document.getElementById('examContainer').style.display = 'none';
-
     try {
         const response = await fetch(filePath);
-        if (!response.ok) throw new Error('文件加载失败');
+        if(!response.ok) throw new Error('文件加载失败');
         currentExamData = await response.json();
         document.querySelector('h1').textContent = `📚 ${currentExamData.examTitle || '在线测试系统'}`;
         renderAllQuestions();
         document.getElementById('loading').style.display = 'none';
         document.getElementById('examContainer').style.display = 'block';
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (error) {
-        alert('加载题库失败！目前题库正在制作中\n错误：' + error.message);
+    } catch(error) {
+        alert('加载题库失败！请确保题库文件存在且格式正确。\n错误：'+error.message);
         document.getElementById('loading').style.display = 'none';
     }
 }
 
+// ---------- 渲染入口 ----------
 function renderAllQuestions() {
-    if (!currentExamData) return;
+    if(!currentExamData) return;
     renderChoiceQuestions();
     renderJudgeQuestions();
     renderFillQuestions();
     renderEssayQuestions();
 }
 
-// 随机打乱数组
-function shuffleArray(array) {
-    if (!isRandomMode) return [...array];
-    return [...array].sort(() => Math.random() - 0.5);
+// ---------- 是否随机打乱？仅 zy.json 随机，其他顺序 ----------
+function shouldShuffle() {
+    return currentExamFile === 'data/zy.json';
+}
+function getProcessedArray(arr) {
+    if(!arr) return [];
+    if(shouldShuffle()) {
+        return [...arr].sort(() => Math.random() - 0.5);
+    }
+    return arr; // 保持原序
 }
 
-// 更新指定题目的错误次数显示
+// ---------- 更新错题显示 ----------
 function updateErrorDisplay(errorId) {
-    const displayEl = document.querySelector(`[data-error-id="${errorId}"]`);
-    if (displayEl) {
-        const count = errorCounts[errorId] || 0;
-        if (count > 0) { 
-            displayEl.textContent = `❌ 错误 ${count} 次`; 
-            displayEl.style.display = 'inline-block'; 
-        } else { 
-            displayEl.style.display = 'none'; 
-        }
+    const el = document.querySelector(`[data-error-id="${errorId}"]`);
+    if(el) {
+        const cnt = errorCounts[errorId] || 0;
+        if(cnt > 0) { el.textContent = `❌ 错误 ${cnt} 次`; el.style.display = 'inline-block'; }
+        else { el.style.display = 'none'; }
     }
 }
-
-// 增加错误计数并持久化
 function incrementError(errorId) {
-    if (!errorCounts[errorId]) errorCounts[errorId] = 0;
+    if(!errorCounts[errorId]) errorCounts[errorId]=0;
     errorCounts[errorId]++;
     updateErrorDisplay(errorId);
     saveErrorCountsToStorage();
 }
-
-// 重置所有错误（当前题库）
 function resetAllErrors() {
-    for (let key in errorCounts) { 
-        errorCounts[key] = 0; 
-        updateErrorDisplay(key); 
-    }
+    for(let k in errorCounts){ errorCounts[k]=0; updateErrorDisplay(k); }
     saveErrorCountsToStorage();
 }
-
-// 重置某一类错误（choice 或 judge）
 function resetSectionErrors(type) {
-    const prefix = type === 'choice' ? 'choice-' : 'judge-';
-    for (let key in errorCounts) { 
-        if (key.startsWith(prefix)) { 
-            errorCounts[key] = 0; 
-            updateErrorDisplay(key); 
-        } 
-    }
+    const prefix = type==='choice'?'choice-':'judge-';
+    for(let k in errorCounts){ if(k.startsWith(prefix)){ errorCounts[k]=0; updateErrorDisplay(k); } }
     saveErrorCountsToStorage();
 }
 
+// ---------- 渲染选择题（含单选/多选）----------
 function renderChoiceQuestions() {
     const container = document.getElementById('choice-questions');
     container.innerHTML = '';
-    if (!currentExamData.choiceQuestions) return;
-    
-    let questions = currentExamData.choiceQuestions;
-    questions = shuffleArray(questions);
-    
-    questions.forEach((q, index) => {
-        const questionDiv = document.createElement('div');
-        questionDiv.className = 'question';
-        questionDiv.dataset.questionId = q.id;
-        questionDiv.dataset.isMultiple = Array.isArray(q.answer);
-        
+    if(!currentExamData.choiceQuestions) return;
+    const questions = getProcessedArray(currentExamData.choiceQuestions);
+    questions.forEach((q, idx) => {
+        const div = document.createElement('div');
+        div.className = 'question';
+        div.dataset.questionId = q.id;
         const isMultiple = Array.isArray(q.answer);
-        
+        div.dataset.isMultiple = isMultiple;
+
+        // header
         const header = document.createElement('div');
         header.className = 'question-header';
-        
-        const questionText = document.createElement('div');
-        questionText.className = 'question-text';
-        const questionType = isMultiple ? '【多选】' : '【单选】';
-        questionText.textContent = `${index + 1}. ${questionType} ${q.question}`;
-        header.appendChild(questionText);
-        
-        const errorId = `choice-${q.id}`;
-        const errorCount = errorCounts[errorId] || 0;
-        const errorDisplay = document.createElement('span');
-        errorDisplay.className = 'error-count-display';
-        errorDisplay.dataset.errorId = errorId;
-        
-        if (errorCount > 0) { 
-            errorDisplay.textContent = `❌ 错误 ${errorCount} 次`; 
-        } else { 
-            errorDisplay.style.display = 'none'; 
-        }
-        
-        header.appendChild(errorDisplay);
-        questionDiv.appendChild(header);
-        
-        const optionsDiv = document.createElement('div');
-        optionsDiv.className = 'options';
-        const options = shuffleArray(q.options);
-        const originalIndexMap = new Map();
-        
-        options.forEach((option, shuffledIdx) => { 
-            originalIndexMap.set(shuffledIdx, q.options.indexOf(option)); 
-        });
-        
-        const selectedIndices = new Set();
-        
-        options.forEach((option, optIndex) => {
-            const optionDiv = document.createElement('div');
-            optionDiv.className = 'option';
-            optionDiv.dataset.originalIndex = originalIndexMap.get(optIndex);
-            optionDiv.dataset.optionIndex = optIndex;
-            
-            const label = document.createElement('label');
-            label.textContent = ` ${String.fromCharCode(65 + optIndex)}. ${option}`;
-            
-            const feedback = document.createElement('span');
-            feedback.className = 'feedback';
-            
-            optionDiv.appendChild(label);
-            optionDiv.appendChild(feedback);
-            
-            if (!isMultiple) {
-                optionDiv.addEventListener('click', function() {
-                    if (questionDiv.classList.contains('answered')) return;
-                    
-                    optionsDiv.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+        const qt = document.createElement('div');
+        qt.className = 'question-text';
+        qt.textContent = `${idx+1}. ${isMultiple?'【多选】':'【单选】'} ${q.question}`;
+        header.appendChild(qt);
+        const errId = `choice-${q.id}`;
+        const errCnt = errorCounts[errId]||0;
+        const errDisp = document.createElement('span');
+        errDisp.className = 'error-count-display';
+        errDisp.dataset.errorId = errId;
+        if(errCnt>0){ errDisp.textContent=`❌ 错误 ${errCnt} 次`; }else{ errDisp.style.display='none'; }
+        header.appendChild(errDisp);
+        div.appendChild(header);
+
+        // options
+        const optsDiv = document.createElement('div');
+        optsDiv.className = 'options';
+        // 选项也根据是否随机决定顺序
+        let options = q.options.slice();
+        if(shouldShuffle()) options = options.sort(()=>Math.random()-0.5);
+        const origIdxMap = new Map();
+        options.forEach((opt, si) => { origIdxMap.set(si, q.options.indexOf(opt)); });
+        const selectedSet = new Set();
+
+        options.forEach((optText, oi) => {
+            const optDiv = document.createElement('div');
+            optDiv.className = 'option';
+            optDiv.dataset.originalIndex = origIdxMap.get(oi);
+            optDiv.dataset.optionIndex = oi;
+            const lbl = document.createElement('label');
+            lbl.textContent = ` ${String.fromCharCode(65+oi)}. ${optText}`;
+            const fb = document.createElement('span');
+            fb.className = 'feedback';
+            optDiv.appendChild(lbl);
+            optDiv.appendChild(fb);
+
+            if(!isMultiple) {
+                // 单选
+                optDiv.addEventListener('click', function(){
+                    if(div.classList.contains('answered')) return;
+                    optsDiv.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
                     this.classList.add('selected');
-                    selectedIndices.clear();
-                    selectedIndices.add(originalIndexMap.get(optIndex));
-                    
-                    questionDiv.classList.add('answered');
-                    optionsDiv.querySelectorAll('.option').forEach(opt => opt.classList.add('answered'));
-                    
-                    const isCorrect = originalIndexMap.get(optIndex) === q.answer;
-                    
-                    optionsDiv.querySelectorAll('.option').forEach(opt => { 
-                        opt.classList.remove('wrong'); 
-                        opt.querySelector('.feedback').textContent = ''; 
-                    });
-                    
-                    if (isCorrect) {
+                    selectedSet.clear();
+                    selectedSet.add(origIdxMap.get(oi));
+                    div.classList.add('answered');
+                    optsDiv.querySelectorAll('.option').forEach(o=>o.classList.add('answered'));
+                    const correctIdx = q.answer;
+                    const chosenOrig = origIdxMap.get(oi);
+                    const isCorrect = (chosenOrig === correctIdx);
+                    optsDiv.querySelectorAll('.option').forEach(o=>{ o.classList.remove('wrong'); o.querySelector('.feedback').textContent=''; });
+                    if(isCorrect){
                         this.classList.add('selected');
-                        feedback.textContent = '✓ 正确';
-                        feedback.className = 'feedback correct-feedback';
+                        fb.textContent='✓ 正确';
+                        fb.className='feedback correct-feedback';
                     } else {
-                        incrementError(errorId);
+                        incrementError(errId);
                         this.classList.add('wrong');
-                        feedback.textContent = '✗ 错误';
-                        feedback.className = 'feedback wrong-feedback';
-                        
-                        optionsDiv.querySelectorAll('.option').forEach(opt => {
-                            const optOriginalIdx = parseInt(opt.dataset.originalIndex);
-                            if (optOriginalIdx === q.answer) {
-                                opt.classList.add('selected');
-                                const ofb = opt.querySelector('.feedback');
-                                ofb.textContent = '✓ 正确答案';
-                                ofb.className = 'feedback correct-feedback';
+                        fb.textContent='✗ 错误';
+                        fb.className='feedback wrong-feedback';
+                        optsDiv.querySelectorAll('.option').forEach(o=>{
+                            const oi2 = parseInt(o.dataset.originalIndex);
+                            if(oi2 === correctIdx){
+                                o.classList.add('selected');
+                                const ofb = o.querySelector('.feedback');
+                                ofb.textContent='✓ 正确答案';
+                                ofb.className='feedback correct-feedback';
                             }
                         });
                     }
-                    
-                    if (currentExamFile === 'data/zy.json') {
-                        setTimeout(() => checkPerfectScore(), 100);
-                    }
+                    if(currentExamFile==='data/zy.json') setTimeout(()=>checkPerfectScore(),100);
                 });
             } else {
-                optionDiv.addEventListener('click', function() {
-                    if (questionDiv.classList.contains('answered')) return;
-                    
-                    const originalIdx = originalIndexMap.get(optIndex);
-                    if (this.classList.contains('selected')) {
+                // 多选
+                optDiv.addEventListener('click', function(){
+                    if(div.classList.contains('answered')) return;
+                    const orig = origIdxMap.get(oi);
+                    if(this.classList.contains('selected')){
                         this.classList.remove('selected');
-                        selectedIndices.delete(originalIdx);
+                        selectedSet.delete(orig);
                     } else {
                         this.classList.add('selected');
-                        selectedIndices.add(originalIdx);
+                        selectedSet.add(orig);
                     }
-                    
-                    // 更新确认按钮状态
-                    const confirmBtn = questionDiv.querySelector('.confirm-btn');
-                    if (confirmBtn) {
-                        confirmBtn.disabled = selectedIndices.size === 0;
-                    }
+                    const confirmBtn = div.querySelector('.confirm-btn');
+                    if(confirmBtn) confirmBtn.disabled = (selectedSet.size === 0);
                 });
             }
-            
-            optionsDiv.appendChild(optionDiv);
+            optsDiv.appendChild(optDiv);
         });
-        
-        questionDiv.appendChild(optionsDiv);
-        
-        if (isMultiple) {
-            const confirmBtn = document.createElement('button');
-            confirmBtn.className = 'confirm-btn';
-            confirmBtn.textContent = '确认答案';
-            confirmBtn.disabled = true;
-            
-            confirmBtn.addEventListener('click', function() {
-                if (questionDiv.classList.contains('answered')) return;
-                
-                questionDiv.classList.add('answered');
-                optionsDiv.querySelectorAll('.option').forEach(opt => opt.classList.add('answered'));
-                
-                confirmBtn.disabled = true;
-                confirmBtn.classList.add('hidden');
-                
-                const selectedArray = Array.from(selectedIndices).sort();
-                const correctAnswers = [...q.answer].sort();
-                const isCorrect = JSON.stringify(selectedArray) === JSON.stringify(correctAnswers);
-                
-                optionsDiv.querySelectorAll('.option').forEach(opt => { 
-                    opt.classList.remove('wrong'); 
-                    opt.querySelector('.feedback').textContent = ''; 
-                });
-                
-                if (isCorrect) {
-                    optionsDiv.querySelectorAll('.option').forEach(opt => {
-                        const oi = parseInt(opt.dataset.originalIndex);
-                        if (selectedIndices.has(oi)) {
-                            opt.classList.add('selected');
-                            const ofb = opt.querySelector('.feedback');
-                            ofb.textContent = '✓ 正确';
-                            ofb.className = 'feedback correct-feedback';
+        div.appendChild(optsDiv);
+
+        if(isMultiple) {
+            const cBtn = document.createElement('button');
+            cBtn.className = 'confirm-btn';
+            cBtn.textContent = '确认答案';
+            cBtn.disabled = true;
+            cBtn.addEventListener('click', function(){
+                if(div.classList.contains('answered')) return;
+                div.classList.add('answered');
+                optsDiv.querySelectorAll('.option').forEach(o=>o.classList.add('answered'));
+                cBtn.disabled = true;
+                cBtn.classList.add('hidden');
+                const selArr = Array.from(selectedSet).sort();
+                const corrArr = [...q.answer].sort();
+                const isCorrect = JSON.stringify(selArr) === JSON.stringify(corrArr);
+                optsDiv.querySelectorAll('.option').forEach(o=>{ o.classList.remove('wrong'); o.querySelector('.feedback').textContent=''; });
+                if(isCorrect){
+                    optsDiv.querySelectorAll('.option').forEach(o=>{
+                        const oiVal = parseInt(o.dataset.originalIndex);
+                        if(selectedSet.has(oiVal)){
+                            o.classList.add('selected');
+                            o.querySelector('.feedback').textContent='✓ 正确';
+                            o.querySelector('.feedback').className='feedback correct-feedback';
                         }
                     });
                 } else {
-                    incrementError(errorId);
-                    
-                    optionsDiv.querySelectorAll('.option').forEach(opt => {
-                        const oi = parseInt(opt.dataset.originalIndex);
-                        if (selectedIndices.has(oi) && !q.answer.includes(oi)) {
-                            opt.classList.add('wrong');
-                            const ofb = opt.querySelector('.feedback');
-                            ofb.textContent = '✗ 错误';
-                            ofb.className = 'feedback wrong-feedback';
+                    incrementError(errId);
+                    optsDiv.querySelectorAll('.option').forEach(o=>{
+                        const oiVal = parseInt(o.dataset.originalIndex);
+                        if(selectedSet.has(oiVal) && !q.answer.includes(oiVal)){
+                            o.classList.add('wrong');
+                            o.querySelector('.feedback').textContent='✗ 错误';
+                            o.querySelector('.feedback').className='feedback wrong-feedback';
                         }
                     });
-                    
-                    optionsDiv.querySelectorAll('.option').forEach(opt => {
-                        const oi = parseInt(opt.dataset.originalIndex);
-                        if (q.answer.includes(oi)) {
-                            opt.classList.add('selected');
-                            const ofb = opt.querySelector('.feedback');
-                            ofb.textContent = '✓ 正确答案';
-                            ofb.className = 'feedback correct-feedback';
+                    optsDiv.querySelectorAll('.option').forEach(o=>{
+                        const oiVal = parseInt(o.dataset.originalIndex);
+                        if(q.answer.includes(oiVal)){
+                            o.classList.add('selected');
+                            o.querySelector('.feedback').textContent='✓ 正确答案';
+                            o.querySelector('.feedback').className='feedback correct-feedback';
                         }
                     });
                 }
-                
-                if (currentExamFile === 'data/zy.json') {
-                    setTimeout(() => checkPerfectScore(), 100);
-                }
+                if(currentExamFile==='data/zy.json') setTimeout(()=>checkPerfectScore(),100);
             });
-            
-            questionDiv.appendChild(confirmBtn);
-            
+            div.appendChild(cBtn);
             const hint = document.createElement('div');
             hint.className = 'choice-hint';
             hint.textContent = '（请选择所有正确选项，然后点击"确认答案"按钮）';
-            questionDiv.appendChild(hint);
+            div.appendChild(hint);
         }
-        
-        container.appendChild(questionDiv);
+        container.appendChild(div);
     });
 }
 
+// ---------- 渲染判断题 ----------
 function renderJudgeQuestions() {
     const container = document.getElementById('judge-questions');
     container.innerHTML = '';
-    if (!currentExamData.judgeQuestions) return;
-    
-    let questions = currentExamData.judgeQuestions;
-    const judgeOptions = ["√ 正确", "× 错误"];
-    questions = shuffleArray(questions);
-    
-    questions.forEach((q, index) => {
-        const questionDiv = document.createElement('div');
-        questionDiv.className = 'question';
-        questionDiv.dataset.questionId = q.id;
-        
+    if(!currentExamData.judgeQuestions) return;
+    const questions = getProcessedArray(currentExamData.judgeQuestions);
+    const judgeLabels = ["√ 正确", "× 错误"];
+    questions.forEach((q, idx) => {
+        const div = document.createElement('div');
+        div.className = 'question';
+        div.dataset.questionId = q.id;
         const header = document.createElement('div');
         header.className = 'question-header';
-        
-        const questionText = document.createElement('div');
-        questionText.className = 'question-text';
-        questionText.textContent = `${index + 1}. ${q.question}`;
-        header.appendChild(questionText);
-        
-        const errorId = `judge-${q.id}`;
-        const errorCount = errorCounts[errorId] || 0;
-        const errorDisplay = document.createElement('span');
-        errorDisplay.className = 'error-count-display';
-        errorDisplay.dataset.errorId = errorId;
-        
-        if (errorCount > 0) { 
-            errorDisplay.textContent = `❌ 错误 ${errorCount} 次`; 
-        } else { 
-            errorDisplay.style.display = 'none'; 
-        }
-        
-        header.appendChild(errorDisplay);
-        questionDiv.appendChild(header);
-        
-        const optionsDiv = document.createElement('div');
-        optionsDiv.className = 'options';
-        const options = shuffleArray(judgeOptions);
-        
-        options.forEach((option, optIndex) => {
-            const optionDiv = document.createElement('div');
-            optionDiv.className = 'option';
-            const isThisOptionTrue = option.startsWith('√');
-            optionDiv.dataset.correct = (isThisOptionTrue === q.answer);
-            
-            const label = document.createElement('label');
-            label.textContent = ` ${option}`;
-            
-            const feedback = document.createElement('span');
-            feedback.className = 'feedback';
-            
-            optionDiv.appendChild(label);
-            optionDiv.appendChild(feedback);
-            
-            optionDiv.addEventListener('click', function() {
-                if (questionDiv.classList.contains('answered')) return;
-                
-                optionsDiv.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+        const qt = document.createElement('div');
+        qt.className = 'question-text';
+        qt.textContent = `${idx+1}. ${q.question}`;
+        header.appendChild(qt);
+        const errId = `judge-${q.id}`;
+        const errCnt = errorCounts[errId]||0;
+        const errDisp = document.createElement('span');
+        errDisp.className = 'error-count-display';
+        errDisp.dataset.errorId = errId;
+        if(errCnt>0){ errDisp.textContent=`❌ 错误 ${errCnt} 次`; }else{ errDisp.style.display='none'; }
+        header.appendChild(errDisp);
+        div.appendChild(header);
+
+        const optsDiv = document.createElement('div');
+        optsDiv.className = 'options';
+        let opts = judgeLabels.slice();
+        if(shouldShuffle()) opts = opts.sort(()=>Math.random()-0.5);
+        opts.forEach((txt, oi) => {
+            const optDiv = document.createElement('div');
+            optDiv.className = 'option';
+            const isTrue = txt.startsWith('√');
+            optDiv.dataset.correct = (isTrue === q.answer);
+            const lbl = document.createElement('label');
+            lbl.textContent = ` ${txt}`;
+            const fb = document.createElement('span');
+            fb.className = 'feedback';
+            optDiv.appendChild(lbl);
+            optDiv.appendChild(fb);
+            optDiv.addEventListener('click', function(){
+                if(div.classList.contains('answered')) return;
+                optsDiv.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
                 this.classList.add('selected');
-                
-                questionDiv.classList.add('answered');
-                optionsDiv.querySelectorAll('.option').forEach(opt => opt.classList.add('answered'));
-                
-                const isCorrect = this.dataset.correct === 'true';
-                
-                const allOptions = this.parentElement.querySelectorAll('.option');
-                allOptions.forEach(opt => { 
-                    opt.classList.remove('wrong'); 
-                    opt.querySelector('.feedback').textContent = ''; 
-                });
-                
-                if (isCorrect) {
+                div.classList.add('answered');
+                optsDiv.querySelectorAll('.option').forEach(o=>o.classList.add('answered'));
+                const isCorrect = (this.dataset.correct === 'true');
+                const allOpts = this.parentElement.querySelectorAll('.option');
+                allOpts.forEach(o=>{ o.classList.remove('wrong'); o.querySelector('.feedback').textContent=''; });
+                if(isCorrect){
                     this.classList.add('selected');
-                    this.querySelector('.feedback').textContent = '✓ 正确';
-                    this.querySelector('.feedback').className = 'feedback correct-feedback';
+                    this.querySelector('.feedback').textContent='✓ 正确';
+                    this.querySelector('.feedback').className='feedback correct-feedback';
                 } else {
-                    incrementError(errorId);
+                    incrementError(errId);
                     this.classList.add('wrong');
-                    this.querySelector('.feedback').textContent = '✗ 错误';
-                    this.querySelector('.feedback').className = 'feedback wrong-feedback';
-                    
-                    allOptions.forEach(opt => {
-                        const optIsTrue = opt.querySelector('label').textContent.includes('√');
-                        if (optIsTrue === q.answer) {
-                            opt.classList.add('selected');
-                            opt.querySelector('.feedback').textContent = '✓ 正确答案';
-                            opt.querySelector('.feedback').className = 'feedback correct-feedback';
+                    this.querySelector('.feedback').textContent='✗ 错误';
+                    this.querySelector('.feedback').className='feedback wrong-feedback';
+                    allOpts.forEach(o=>{
+                        const isTrueOpt = o.querySelector('label').textContent.includes('√');
+                        if(isTrueOpt === q.answer){
+                            o.classList.add('selected');
+                            o.querySelector('.feedback').textContent='✓ 正确答案';
+                            o.querySelector('.feedback').className='feedback correct-feedback';
                         }
                     });
                 }
-                
-                if (currentExamFile === 'data/zy.json') {
-                    setTimeout(() => checkPerfectScore(), 100);
-                }
+                if(currentExamFile==='data/zy.json') setTimeout(()=>checkPerfectScore(),100);
             });
-            
-            optionsDiv.appendChild(optionDiv);
+            optsDiv.appendChild(optDiv);
         });
-        
-        questionDiv.appendChild(optionsDiv);
-        container.appendChild(questionDiv);
+        div.appendChild(optsDiv);
+        container.appendChild(div);
     });
 }
 
+// ---------- 渲染填空题 ----------
 function renderFillQuestions() {
     const container = document.getElementById('fill-questions');
     container.innerHTML = '';
-    if (!currentExamData.fillQuestions) return;
-    
-    const questions = shuffleArray(currentExamData.fillQuestions);
-    
-    questions.forEach((q, index) => {
-        const questionDiv = document.createElement('div');
-        questionDiv.className = 'question';
-        
-        const questionText = document.createElement('div');
-        questionText.className = 'question-text';
-        questionText.innerHTML = `${index + 1}. ${q.question}`;
-        questionDiv.appendChild(questionText);
-        
+    if(!currentExamData.fillQuestions) return;
+    const questions = getProcessedArray(currentExamData.fillQuestions);
+    questions.forEach((q, idx) => {
+        const div = document.createElement('div');
+        div.className = 'question';
+        const qt = document.createElement('div');
+        qt.className = 'question-text';
+        qt.innerHTML = `${idx+1}. ${q.question}`;
+        div.appendChild(qt);
         const btn = document.createElement('button');
         btn.className = 'toggle-answer-btn';
         btn.textContent = '显示答案';
-        
-        const answerDiv = document.createElement('div');
-        answerDiv.className = 'answer-area';
-        const answer = Array.isArray(q.answer) ? q.answer.join('、') : q.answer;
-        answerDiv.innerHTML = `<strong>参考答案：</strong>${answer}`;
-        
-        btn.onclick = function() {
-            if (answerDiv.style.display === 'block') { 
-                answerDiv.style.display = 'none'; 
-                btn.textContent = '显示答案'; 
-            } else { 
-                answerDiv.style.display = 'block'; 
-                btn.textContent = '隐藏答案'; 
-            }
+        const ansDiv = document.createElement('div');
+        ansDiv.className = 'answer-area';
+        const ans = Array.isArray(q.answer) ? q.answer.join('、') : q.answer;
+        ansDiv.innerHTML = `<strong>参考答案：</strong>${ans}`;
+        btn.onclick = function(){
+            if(ansDiv.style.display==='block'){ ansDiv.style.display='none'; btn.textContent='显示答案'; }
+            else { ansDiv.style.display='block'; btn.textContent='隐藏答案'; }
         };
-        
-        questionDiv.appendChild(btn);
-        questionDiv.appendChild(answerDiv);
-        container.appendChild(questionDiv);
+        div.appendChild(btn);
+        div.appendChild(ansDiv);
+        container.appendChild(div);
     });
 }
 
+// ---------- 渲染简答题 ----------
 function renderEssayQuestions() {
     const container = document.getElementById('essay-questions');
     container.innerHTML = '';
-    if (!currentExamData.essayQuestions) return;
-    
-    const questions = shuffleArray(currentExamData.essayQuestions);
-    
-    questions.forEach((q, index) => {
-        const questionDiv = document.createElement('div');
-        questionDiv.className = 'question';
-        
-        const questionText = document.createElement('div');
-        questionText.className = 'question-text';
-        questionText.textContent = `${index + 1}. ${q.question}`;
-        questionDiv.appendChild(questionText);
-        
+    if(!currentExamData.essayQuestions) return;
+    const questions = getProcessedArray(currentExamData.essayQuestions);
+    questions.forEach((q, idx) => {
+        const div = document.createElement('div');
+        div.className = 'question';
+        const qt = document.createElement('div');
+        qt.className = 'question-text';
+        qt.textContent = `${idx+1}. ${q.question}`;
+        div.appendChild(qt);
         const btn = document.createElement('button');
         btn.className = 'toggle-answer-btn';
         btn.textContent = '显示参考答案';
-        
-        const answerDiv = document.createElement('div');
-        answerDiv.className = 'answer-area';
-        answerDiv.innerHTML = `<strong>参考答案：</strong>\n${q.answer}`;
-        
-        btn.onclick = function() {
-            if (answerDiv.style.display === 'block') { 
-                answerDiv.style.display = 'none'; 
-                btn.textContent = '显示参考答案'; 
-            } else { 
-                answerDiv.style.display = 'block'; 
-                btn.textContent = '隐藏参考答案'; 
-            }
+        const ansDiv = document.createElement('div');
+        ansDiv.className = 'answer-area';
+        ansDiv.innerHTML = `<strong>参考答案：</strong>\n${q.answer}`;
+        btn.onclick = function(){
+            if(ansDiv.style.display==='block'){ ansDiv.style.display='none'; btn.textContent='显示参考答案'; }
+            else { ansDiv.style.display='block'; btn.textContent='隐藏参考答案'; }
         };
-        
-        questionDiv.appendChild(btn);
-        questionDiv.appendChild(answerDiv);
-        container.appendChild(questionDiv);
+        div.appendChild(btn);
+        div.appendChild(ansDiv);
+        container.appendChild(div);
     });
 }
 
-// 页面加载时检查解锁状态
+// ---------- 页面初始化 ----------
 window.onload = function() {
     checkExamUnlock();
 };
 </script>
 </body>
-
 </html>
-
