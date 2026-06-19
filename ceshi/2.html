@@ -460,6 +460,7 @@
                     <option value="data/ds.json">数据结构</option>
                     <option value="data/cn.json">计算机网络</option>
                     <option value="data/soft.json">软件工程</option>
+                    <option value="data/zy.json">赵宇真爱粉测试题</option>
                 </select>
 
                 <div class="mode-buttons">
@@ -975,26 +976,5 @@
             });
         }
     </script>
-
-<script>
-const UNLOCK_KEY='zy_unlock';
-window.addEventListener('load',()=>{
-window.isUnlocked = localStorage.getItem(UNLOCK_KEY)==='true';
-
-window.restartExam=function(){
- alert('答错一题，本次测试结束，将重新开始！');
- loadSelectedExam();
-};
-
-window.checkUnlock=function(){
- if(currentExamFile==='data/zy.json'){
-   localStorage.setItem(UNLOCK_KEY,'true');
-   window.isUnlocked=true;
-   alert('恭喜满分通过，已永久解锁全部题库和顺序模式！');
- }
-};
-});
-</script>
-
 </body>
 </html>
