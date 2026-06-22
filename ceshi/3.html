@@ -436,134 +436,84 @@
                 align-self: flex-start;
             }
         }
+        
+body.no-copy {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
-        body.no-copy {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
+
+body.no-copy input,
+body.no-copy textarea {
+    -webkit-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
+    user-select: auto;
+}
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 20px 25px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    z-index: 9999;
+    max-width: 320px;
+    font-family: 'Microsoft YaHei', sans-serif;
+    font-size: 16px;
+    animation: slideIn 0.5s ease-out;
+    color: white;
+}
+.notification.unlock {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+.notification.locked {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+.notification .notif-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.notification .notif-icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
+.notification .notif-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+.notification .notif-body {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+.notification .notif-btn {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+    transition: all 0.3s;
+}
+.notification .notif-btn:hover {
+    background: rgba(255,255,255,0.3);
+}
 
 
-        body.no-copy input,
-        body.no-copy textarea {
-            -webkit-user-select: auto;
-            -moz-user-select: auto;
-            -ms-user-select: auto;
-            user-select: auto;
-        }
-
-        /* ===== 新增：通知弹窗动画与样式 ===== */
-        @keyframes slideIn {
-            from {
-                transform: translateX(120%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(120%);
-                opacity: 0;
-            }
-        }
-
-        .exam-notification {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            padding: 22px 26px;
-            border-radius: 14px;
-            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18);
-            z-index: 99999;
-            max-width: 340px;
-            font-family: 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif;
-            animation: slideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-            color: #fff;
-            backdrop-filter: blur(2px);
-            transition: box-shadow 0.3s;
-        }
-
-        .exam-notification:hover {
-            box-shadow: 0 16px 44px rgba(0, 0, 0, 0.25);
-        }
-
-        .exam-notification.unlock {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .exam-notification.locked {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-        }
-
-        .exam-notification .notif-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .exam-notification .notif-icon {
-            font-size: 26px;
-            margin-right: 12px;
-            line-height: 1;
-        }
-
-        .exam-notification .notif-title {
-            font-size: 19px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-        }
-
-        .exam-notification .notif-body {
-            font-size: 14.5px;
-            line-height: 1.6;
-            margin-bottom: 16px;
-            opacity: 0.92;
-        }
-
-        .exam-notification .notif-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: #fff;
-            padding: 9px 0;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14.5px;
-            font-weight: 600;
-            width: 100%;
-            transition: background 0.25s, transform 0.15s;
-            text-align: center;
-            display: block;
-            outline: none;
-        }
-
-        .exam-notification .notif-btn:hover {
-            background: rgba(255, 255, 255, 0.32);
-            transform: scale(1.01);
-        }
-
-        .exam-notification .notif-btn:active {
-            transform: scale(0.97);
-        }
-
-        @media (max-width: 480px) {
-            .exam-notification {
-                top: 16px;
-                right: 16px;
-                left: 16px;
-                max-width: none;
-                padding: 18px 20px;
-            }
-        }
-        /* ===== 新增结束 ===== */
     </style>
 </head>
 <body class="no-copy">
@@ -656,18 +606,63 @@
         </div>
     </div>
     <script>
-        document.addEventListener('contextmenu', e => e.preventDefault());
+    function showNotification(type) {
+    // type: 'unlock' 或 'locked'
+    const existingNotif = document.querySelector('.notification');
+    if (existingNotif) existingNotif.remove();
+    
+    const notif = document.createElement('div');
+    notif.className = `notification ${type}`;
+    
+    if (type === 'unlock') {
+        notif.innerHTML = `
+            <div class="notif-header">
+                <span class="notif-icon">🎉</span>
+                <span class="notif-title">解锁成功！</span>
+            </div>
+            <div class="notif-body">
+                所有题库和顺序模式已解锁<br>
+                无需答题即可使用全部功能
+            </div>
+            <button class="notif-btn" onclick="this.closest('.notification').remove()">确定</button>
+        `;
+    } else {
+        notif.innerHTML = `
+            <div class="notif-header">
+                <span class="notif-icon">🔒</span>
+                <span class="notif-title">尚未解锁</span>
+            </div>
+            <div class="notif-body">
+                需要完成「赵宇真爱粉测试」并获得满分<br>
+                才能解锁顺序模式和全部题库
+            </div>
+            <button class="notif-btn" onclick="this.closest('.notification').remove()">知道了</button>
+        `;
+    }
+    
+    document.body.appendChild(notif);
+    
+    // 5秒后自动关闭
+    setTimeout(() => {
+        if (notif.parentNode) {
+            notif.style.animation = 'slideOut 0.5s ease-out forwards';
+            setTimeout(() => notif.remove(), 500);
+        }
+    }, 5000);
+}
 
-        document.addEventListener('copy', e => e.preventDefault());
+document.addEventListener('contextmenu', e => e.preventDefault());
 
-        document.addEventListener('cut', e => e.preventDefault());
+document.addEventListener('copy', e => e.preventDefault());
+
+document.addEventListener('cut', e => e.preventDefault());
 
 
-        document.addEventListener('keydown', e => {
-            if ((e.ctrlKey || e.metaKey) && (e.key === 'a' || e.key === 'A')) {
-                e.preventDefault();
-            }
-        });
+document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'a' || e.key === 'A')) {
+        e.preventDefault();
+    }
+});
 
         // 全局变量
         let currentExamData = null;
@@ -901,7 +896,8 @@
                     optionDiv.dataset.index = optIndex;
 
                     const label = document.createElement('label');
-                    label.textContent = ` ${
+                    label.textContent = ` ${String.fromCharCode(65 + optIndex)}. ${option}`;
+                    
                     const feedback = document.createElement('span');
                     feedback.className = 'feedback';
 
@@ -964,24 +960,11 @@
                     optionsDiv.appendChild(optionDiv);
                 });
 
-                // 如果是多选题，添加"确认"按钮
+                // 如果是多选题，添加“确认”按钮
                 if (isMultiple) {
                     const confirmBtn = document.createElement('button');
                     confirmBtn.className = 'confirm-btn';
                     confirmBtn.textContent = '确认选择';
-                    confirmBtn.style.cssText = `
-                        padding: 10px 20px;
-                        background-color: #17a2b8;
-                        color: white;
-                        border: none;
-                        border-radius: 6px;
-                        cursor: pointer;
-                        font-size: 14px;
-                        font-weight: bold;
-                        transition: background-color 0.3s;
-                        display: block;
-                        margin: 15px 0 0 20px;
-                    `;
                     confirmBtn.addEventListener('click', function() {
                         if (questionDiv.classList.contains('answered')) return;
                         
@@ -1099,7 +1082,6 @@
                 localStorage.setItem(UNLOCK_STORAGE_KEY, 'true');
                 unlockOtherExams();
                 enableOrderMode();
-                showNotification(true); // 显示解锁成功提示
                 alert('🎉 恭喜！您已满分完成赵宇真爱粉测试！\n所有其他题库和顺序模式现已解锁！');
             }
         }
@@ -1287,88 +1269,31 @@
             });
         }
 
-        // ========== 新增：解锁状态提示动画函数 ==========
-        function showNotification(isUnlocked) {
-            // 移除旧的提示
-            const oldNotif = document.querySelector('.exam-notification');
-            if (oldNotif) oldNotif.remove();
-
-            const notification = document.createElement('div');
-            notification.className = `exam-notification ${isUnlocked ? 'unlock' : 'locked'}`;
-            
-            if (isUnlocked) {
-                notification.innerHTML = `
-                    <div class="notif-header">
-                        <span class="notif-icon">🎉</span>
-                        <span class="notif-title">解锁成功！</span>
-                    </div>
-                    <div class="notif-body">
-                        所有题库和顺序模式已解锁<br>
-                        无需答题即可使用全部功能
-                    </div>
-                    <button class="notif-btn">知道了</button>
-                `;
-            } else {
-                notification.innerHTML = `
-                    <div class="notif-header">
-                        <span class="notif-icon">🔒</span>
-                        <span class="notif-title">功能未解锁</span>
-                    </div>
-                    <div class="notif-body">
-                        请先在随机模式下完成<br>
-                        <strong>赵宇真爱粉测试</strong>并获满分<br>
-                        以解锁所有题库和顺序模式
-                    </div>
-                    <button class="notif-btn">知道了</button>
-                `;
-            }
-
-            document.body.appendChild(notification);
-
-            // 绑定关闭事件
-            const closeBtn = notification.querySelector('.notif-btn');
-            closeBtn.addEventListener('click', () => {
-                notification.style.animation = 'slideOut 0.55s cubic-bezier(0.22, 1, 0.36, 1)';
-                setTimeout(() => {
-                    if (notification.parentNode) notification.remove();
-                }, 550);
-            });
-
-            // 5秒后自动关闭
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.style.animation = 'slideOut 0.55s cubic-bezier(0.22, 1, 0.36, 1)';
-                    setTimeout(() => {
-                        if (notification.parentNode) notification.remove();
-                    }, 550);
-                }
-            }, 5000);
-        }
-
-        // --- 页面加载完成后执行初始化 ---
         document.addEventListener('DOMContentLoaded', function() {
-            checkAndApplyUnlockStatus();
-            
-            // 添加解锁状态提示
-            const storedUnlock = localStorage.getItem(UNLOCK_STORAGE_KEY);
-            setTimeout(() => {
-                showNotification(storedUnlock === 'true');
-            }, 800);
-        });
+    checkAndApplyUnlockStatus();
+    // 延迟一点显示通知，让页面先渲染
+    setTimeout(() => {
+        if (isZhaoYuUnlocked) {
+            showNotification('unlock');
+        } else {
+            showNotification('locked');
+        }
+    }, 2000); // 等2秒再显示，避免干扰初始操作
+});
+
         
-        // --- 反调试和窗口大小检测 ---
-        !function(){
-            function antiDebug(){
-                debugger;
-                setTimeout(antiDebug, 500);
-            }
-            antiDebug();
-        }();
-        
-        let w = innerWidth, h = innerHeight;
-        window.addEventListener('resize', () => {
-            if (innerWidth < w || innerHeight < h) location.reload();
-        });
+ !function(){
+ function antiDebug(){
+   debugger;
+   setTimeout(antiDebug,500)
+ }
+ antiDebug()
+ }();
+ 
+ let w=innerWidth,h=innerHeight;
+ window.addEventListener('resize',()=>{
+   if(innerWidth<w||innerHeight<h)location.reload()
+ })
     </script>
 </body>
 </html>
