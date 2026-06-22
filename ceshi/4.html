@@ -344,7 +344,7 @@ function shuffleIfRandom(array) {
     return [...array];
 }
 
-// 错题计数
+// 错题计数：未解锁刷赵宇题禁止增加错误次数
 function updateErrorDisplay(errorId) {
     const displayEl = document.querySelector(`[data-error-id="${errorId}"]`);
     if (displayEl) {
@@ -359,6 +359,10 @@ function updateErrorDisplay(errorId) {
 }
 
 function incrementError(errorId) {
+    // 核心判断：未解锁 + 当前是赵宇测试 → 不记录错题
+    if(currentExamFile === 'data/zy.json' && !isZhaoYuUnlocked){
+        return;
+    }
     if (!errorCounts[errorId]) {
         errorCounts[errorId] = 0;
     }
@@ -807,6 +811,7 @@ let w=innerWidth,h=innerHeight;
 window.addEventListener('resize',()=>{
    if(innerWidth<w||innerHeight<h)location.reload()
 })
+
 </script>
 </body>
 </html>
