@@ -126,6 +126,7 @@
                 <span class="notif-title">尚未解锁</span>
             </div>
             <div class="notif-body">
+                顺序模式和错题次数和全部题库未解锁<br>
                 需要完成「赵宇真爱粉测试」并获得满分<br>
                 或者把本机ID发给管理员加入白名单解锁
             </div>
@@ -805,12 +806,6 @@ document.addEventListener('DOMContentLoaded', async function() {
  }
  antiDebug()
  }();
-
-// 窗口缩小刷新防调试
-let w=innerWidth,h=innerHeight;
-window.addEventListener('resize',()=>{
-   if(innerWidth<w||innerHeight<h)location.reload()
-})
 
 </script>
 </body>
