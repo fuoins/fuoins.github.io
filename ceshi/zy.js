@@ -25,6 +25,7 @@ function showNotification(type) {
                 <span class="notif-title">尚未解锁</span>
             </div>
             <div class="notif-body">
+                顺序模式和错题次数和全部题库未解锁<br>
                 需要完成「赵宇真爱粉测试」并获得满分<br>
                 或者把本机ID发给管理员加入白名单解锁
             </div>
@@ -53,13 +54,13 @@ document.addEventListener('keydown', e => {
     }
 });
 
-// ======================全局变量区（新增白名单+用户ID配置）======================
+// ======================全局变量区======================
 let currentExamData = null;
 let isRandomMode = true;
 let currentExamFile = '';
 let errorCounts = {};
-let isZhaoYuUnlocked = false; // 赵宇测试是否已解锁
-let zhaoYuPerfectScoreAchieved = false; // 本次赵宇测试是否已达成满分
+let isZhaoYuUnlocked = false; // 答题解锁状态，读取本地存储
+let zhaoYuPerfectScoreAchieved = false; // 本次测试是否满分
 
 const ERROR_STORAGE_PREFIX = 'test_error_counts_';
 const UNLOCK_STORAGE_KEY = 'zhaoyu_unlocked_status';
@@ -68,7 +69,7 @@ const UNLOCK_STORAGE_KEY = 'zhaoyu_unlocked_status';
 const USER_ID_KEY = 'local_unique_user_id';
 const WHITELIST_URL = 'data/whitelist.json';
 let userLocalId = '';
-let isWhiteListUnlocked = false;
+let isWhiteListUnlocked = false; // 白名单临时解锁，不存本地
 
 // ======================用户ID、白名单相关函数======================
 // 生成16位随机用户ID
@@ -91,7 +92,7 @@ function initLocalUserId(){
     userLocalId = stored;
 }
 
-// 拉取白名单校验ID
+// 拉取白名单校验ID：白名单仅本次生效，不写入本地存储
 async function checkWhiteListUnlock(){
     try{
         const res = await fetch(WHITELIST_URL);
@@ -100,7 +101,6 @@ async function checkWhiteListUnlock(){
         if(whiteListArr.includes(userLocalId)){
             isWhiteListUnlocked = true;
             isZhaoYuUnlocked = true;
-            localStorage.setItem(UNLOCK_STORAGE_KEY, 'true');
             unlockOtherExams();
             enableOrderMode();
             return true;
@@ -108,10 +108,12 @@ async function checkWhiteListUnlock(){
     }catch(e){
         console.log("白名单文件加载失败",e);
     }
+    // 不在白名单，读取本地答题解锁记录
+    checkAndApplyUnlockStatus();
     return false;
 }
 
-// 点击按钮展示本机ID绑定事件
+// 绑定查看ID按钮
 function bindShowIdButton(){
     const idBtn = document.getElementById('showMyIdBtn');
     if(idBtn){
@@ -121,7 +123,7 @@ function bindShowIdButton(){
     }
 }
 
-// ======================原有解锁逻辑======================
+// ======================原有答题解锁逻辑======================
 function checkAndApplyUnlockStatus() {
     const storedUnlock = localStorage.getItem(UNLOCK_STORAGE_KEY);
     if (storedUnlock === 'true') {
@@ -242,7 +244,7 @@ function shuffleIfRandom(array) {
     return [...array];
 }
 
-// 错题计数
+// 错题计数：未解锁刷赵宇题禁止增加错误次数
 function updateErrorDisplay(errorId) {
     const displayEl = document.querySelector(`[data-error-id="${errorId}"]`);
     if (displayEl) {
@@ -257,6 +259,10 @@ function updateErrorDisplay(errorId) {
 }
 
 function incrementError(errorId) {
+    // 核心判断：未解锁 + 当前是赵宇测试 → 不记录错题
+    if(currentExamFile === 'data/zy.json' && !isZhaoYuUnlocked){
+        return;
+    }
     if (!errorCounts[errorId]) {
         errorCounts[errorId] = 0;
     }
@@ -480,7 +486,7 @@ function resetCurrentExamState() {
     document.querySelectorAll('input:disabled').forEach(el => el.disabled = false);
 }
 
-// 检测赵宇全套满分解锁
+// 检测赵宇全套满分解锁，满分写入本地永久存储
 function checkZhaoYuPerfectScore() {
     if (currentExamFile !== 'data/zy.json' || isZhaoYuUnlocked) return;
     
@@ -493,7 +499,7 @@ function checkZhaoYuPerfectScore() {
         localStorage.setItem(UNLOCK_STORAGE_KEY, 'true');
         unlockOtherExams();
         enableOrderMode();
-        alert('🎉 恭喜！您已满分完成赵宇真爱粉测试！\n所有其他题库和顺序模式现已解锁！');
+        alert('🎉 恭喜！您已满分完成赵宇真爱粉测试！\n所有其他题库和顺序模式现已永久解锁！');
     }
 }
 
@@ -674,7 +680,6 @@ function renderEssayQuestions() {
 
         questionDiv.appendChild(btn);
         questionDiv.appendChild(answerDiv);
-        container.appendChild(questionDiv);
     });
 }
 
@@ -682,10 +687,7 @@ function renderEssayQuestions() {
 document.addEventListener('DOMContentLoaded', async function() {
     initLocalUserId();
     bindShowIdButton();
-    const whiteUnlock = await checkWhiteListUnlock();
-    if(!whiteUnlock){
-        checkAndApplyUnlockStatus();
-    }
+    await checkWhiteListUnlock();
     setTimeout(() => {
         if (isZhaoYuUnlocked) {
             showNotification('unlock');
@@ -703,9 +705,3 @@ document.addEventListener('DOMContentLoaded', async function() {
  }
  antiDebug()
  }();
-
-// 窗口缩小刷新防调试
-let w=innerWidth,h=innerHeight;
-window.addEventListener('resize',()=>{
-   if(innerWidth<w||innerHeight<h)location.reload()
-})
