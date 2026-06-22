@@ -1,4 +1,4 @@
-    <script>
+
     function showNotification(type) {
     // type: 'unlock' 或 'locked'
     const existingNotif = document.querySelector('.notification');
@@ -687,4 +687,4 @@ document.addEventListener('keydown', e => {
  window.addEventListener('resize',()=>{
    if(innerWidth<w||innerHeight<h)location.reload()
  })
-    </script>
+  
