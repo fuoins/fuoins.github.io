@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>在线测试系统</title>
     <link rel="stylesheet" href="style.css">
-
+    
 </head>
 <body class="no-copy">
 
@@ -26,7 +26,7 @@
             <div class="selector-row">
                 <select id="examSelector">
                     <option value="">-- 请选择一套试卷 --</option>
-                    
+                    <option value="data/zy.json">赵宇真爱粉测试</option>
                     <option value="data/os.json">操作系统</option>
                     <option value="data/ds.json">数据结构</option>
                     <option value="data/cn.json">计算机网络</option>
@@ -103,10 +103,10 @@
     // type: 'unlock' 或 'locked'
     const existingNotif = document.querySelector('.notification');
     if (existingNotif) existingNotif.remove();
-
+    
     const notif = document.createElement('div');
     notif.className = `notification ${type}`;
-
+    
     if (type === 'unlock') {
         notif.innerHTML = `
             <div class="notif-header">
@@ -126,14 +126,16 @@
                 <span class="notif-title">尚未解锁</span>
             </div>
             <div class="notif-body">
-                把id发给管理员 直接解锁
+                顺序模式和错题次数和全部题库未解锁<br>
+                需要完成「赵宇真爱粉测试」并获得满分<br>
+                或者把本机ID发给管理员加入白名单解锁
             </div>
             <button class="notif-btn" onclick="this.closest('.notification').remove()">知道了</button>
         `;
     }
-
+    
     document.body.appendChild(notif);
-
+    
     // 5秒后自动关闭
     setTimeout(() => {
         if (notif.parentNode) {
@@ -441,7 +443,7 @@ function renderChoiceQuestions() {
 
             const label = document.createElement('label');
             label.textContent = ` ${String.fromCharCode(65 + optIndex)}. ${option}`;
-
+            
             const feedback = document.createElement('span');
             feedback.className = 'feedback';
 
@@ -504,7 +506,7 @@ function renderChoiceQuestions() {
             confirmBtn.textContent = '确认选择';
             confirmBtn.addEventListener('click', function() {
                 if (questionDiv.classList.contains('answered')) return;
-
+                
                 const selectedOptions = optionsDiv.querySelectorAll('.option.selected');
                 if (selectedOptions.length === 0) {
                     alert('请至少选择一个选项！');
@@ -588,11 +590,11 @@ function resetCurrentExamState() {
 // 检测赵宇全套满分解锁，满分写入本地永久存储
 function checkZhaoYuPerfectScore() {
     if (currentExamFile !== 'data/zy.json' || isZhaoYuUnlocked) return;
-
+    
     const choiceAndJudgeQuestions = document.querySelectorAll('#choice-questions .question, #judge-questions .question');
     const allCJAnswered = choiceAndJudgeQuestions.length > 0 && Array.from(choiceAndJudgeQuestions).every(q => q.classList.contains('answered'));
     const anyWrong = document.querySelectorAll('.option.wrong').length > 0;
-
+    
     if (allCJAnswered && !anyWrong) {
         isZhaoYuUnlocked = true;
         localStorage.setItem(UNLOCK_STORAGE_KEY, 'true');
