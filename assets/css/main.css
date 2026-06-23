@@ -1,4 +1,4 @@
-/* 全局重置与黑金基底 */
+/* 全局重置与白金基底 */
 * {
   margin: 0;
   padding: 0;
@@ -10,8 +10,10 @@
 html {
   font-size: 16px;
   scroll-behavior: smooth;
-  background: #0a0a0a;
-  color: #e5e5e5;
+  background: #f7f7f8;
+  color: #1f2937;
+  /* 兜底：禁止整体横向溢出 */
+  overflow-x: hidden;
 }
 
 body {
@@ -20,36 +22,39 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
-  background: linear-gradient(180deg, #0f0f0f 0%, #0a0a0a 100%);
+  background: #ffffff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  border-left: 1px solid rgba(212, 175, 55, 0.15);
-  border-right: 1px solid rgba(212, 175, 55, 0.15);
+  border-left: 1px solid rgba(212, 175, 55, 0.12);
+  border-right: 1px solid rgba(212, 175, 55, 0.12);
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.04);
+  /* 兜底：禁止横向溢出 */
+  overflow-x: hidden;
 }
 
-/* 黑金配色体系：金属金+深空黑+分层灰 */
+/* 白金配色体系 */
 :root {
-  --gold: #d4af37;
-  --gold-light: #f5d76e;
+  --gold: #c9a227;
+  --gold-light: #e6c75a;
   --gold-dark: #9d7f1d;
-  --gold-gradient: linear-gradient(135deg, #f5d76e 0%, #d4af37 50%, #9d7f1d 100%);
-  --gold-gradient-reverse: linear-gradient(135deg, #9d7f1d 0%, #d4af37 50%, #f5d76e 100%);
-  --glow-gold: 0 0 20px rgba(212, 175, 55, 0.3);
-  --glow-gold-strong: 0 0 40px rgba(212, 175, 55, 0.45);
-  --text-primary: #f5f5f5;
-  --text-secondary: #a3a3a3;
-  --text-tertiary: #737373;
-  --bg-deep: #0a0a0a;
-  --bg-card: #141414;
-  --bg-soft: #171717;
-  --border-gold: rgba(212, 175, 55, 0.25);
-  --border-gold-light: rgba(212, 175, 55, 0.4);
+  --gold-gradient: linear-gradient(135deg, #f0d77c 0%, #c9a227 50%, #9d7f1d 100%);
+  --glow-gold: 0 0 20px rgba(201, 162, 39, 0.15);
+  --glow-gold-strong: 0 0 30px rgba(201, 162, 39, 0.25);
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --bg-page: #f7f7f8;
+  --bg-card: #ffffff;
+  --bg-soft: #fafafa;
+  --border-gold: rgba(201, 162, 39, 0.2);
+  --border-gold-light: rgba(201, 162, 39, 0.35);
+  --border-gray: #f0f0f0;
   --radius: 8px;
   --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 核心动画：金色流光、微光扫过、悬浮 */
+/* 核心动画 */
 @keyframes goldFlow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -66,23 +71,37 @@ body {
   50% { transform: translateY(-8px); }
 }
 
-/* 导航栏：磨砂黑+金属金底边 */
+/* 通用溢出修复：图片/表格自动适配 */
+img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+}
+
+table {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  display: block;
+}
+
+/* 导航栏：白磨砂+细金底边 */
 .header-container {
   padding: 20px 0;
   border-bottom: 1px solid var(--border-gold);
   position: sticky;
   top: 0;
-  background: rgba(10, 10, 10, 0.85);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   z-index: 100;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.03);
 }
 
 .nav-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .logo {
@@ -100,7 +119,7 @@ body {
 }
 
 .logo:hover {
-  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.6));
+  filter: drop-shadow(0 0 8px rgba(201, 162, 39, 0.4));
 }
 
 /* 桌面端导航 */
@@ -122,9 +141,8 @@ body {
 
 .nav-item a:hover,
 .nav-item a.active {
-  color: var(--gold-light);
+  color: var(--gold-dark);
   border-bottom-color: var(--gold);
-  text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
 }
 
 /* 移动端触发器 */
@@ -132,8 +150,7 @@ body {
   display: none;
   font-size: 24px;
   cursor: pointer;
-  color: var(--gold);
-  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.5));
+  color: var(--gold-dark);
 }
 
 /* 移动端菜单 */
@@ -143,11 +160,12 @@ body {
   top: 100%;
   left: 0;
   width: 100%;
-  background: rgba(10, 10, 10, 0.95);
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-gold);
   padding: 16px 24px 24px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
 }
 
 .mobile-menu.active {
@@ -159,6 +177,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  width: 100%;
 }
 
 .mobile-menu a {
@@ -172,24 +191,25 @@ body {
 }
 
 .mobile-menu a:hover {
-  background: rgba(212, 175, 55, 0.08);
-  color: var(--gold-light);
-  box-shadow: inset 0 0 0 1px var(--border-gold);
+  background: rgba(201, 162, 39, 0.06);
+  color: var(--gold-dark);
 }
 
 /* 主内容区 */
 .main-container {
   flex: 1;
   padding: 56px 0;
+  width: 100%;
+  max-width: 100%;
 }
 
-/* 主页Banner：黑金奢华光晕+金属边框 */
+/* 主页Banner：白金光晕+细金边框 */
 .home-banner {
   text-align: center;
   padding: 80px 40px;
   background: 
-    radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.15) 0%, transparent 60%),
-    var(--bg-card);
+    radial-gradient(circle at 50% 0%, rgba(201, 162, 39, 0.08) 0%, transparent 60%),
+    #ffffff;
   border-radius: 16px;
   margin-bottom: 56px;
   border: 1px solid var(--border-gold);
@@ -197,6 +217,8 @@ body {
   overflow: hidden;
   animation: float 7s ease-in-out infinite;
   box-shadow: var(--glow-gold);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .home-banner::after {
@@ -209,7 +231,7 @@ body {
   background: linear-gradient(
     100deg,
     transparent 30%,
-    rgba(245, 215, 110, 0.08) 50%,
+    rgba(240, 215, 124, 0.15) 50%,
     transparent 70%
   );
   animation: shimmer 5s infinite;
@@ -230,6 +252,9 @@ body {
   animation: goldFlow 4s ease infinite;
   position: relative;
   z-index: 1;
+  /* 标题强制换行防溢出 */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .home-banner p {
@@ -244,6 +269,7 @@ body {
 
 .home-section {
   margin: 64px 0;
+  width: 100%;
 }
 
 .home-section h2 {
@@ -265,9 +291,10 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
+  width: 100%;
 }
 
-/* 卡片：哑光黑底+细金边框+悬浮金边+微光扫过 */
+/* 卡片：白底+细金边框+悬浮微光 */
 .home-card {
   background: var(--bg-card);
   border-radius: var(--radius);
@@ -276,6 +303,7 @@ body {
   transition: var(--transition);
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .home-card::before {
@@ -301,7 +329,7 @@ body {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(245, 215, 110, 0.06),
+    rgba(240, 215, 124, 0.08),
     transparent
   );
   transition: left 0.6s ease;
@@ -312,7 +340,7 @@ body {
   transform: translateY(-6px);
   border-color: var(--border-gold-light);
   box-shadow: var(--glow-gold-strong);
-  background: #171717;
+  background: #fefdf8;
 }
 
 .home-card:hover::before {
@@ -333,7 +361,7 @@ body {
 }
 
 .home-card:hover h3 {
-  color: var(--gold-light);
+  color: var(--gold-dark);
 }
 
 .home-card p {
@@ -341,6 +369,9 @@ body {
   line-height: 1.75;
   margin-bottom: 18px;
   font-size: 14px;
+  /* 正文强制断词防溢出 */
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .home-card a {
@@ -356,8 +387,7 @@ body {
 
 .home-card a:hover {
   gap: 12px;
-  color: var(--gold-light);
-  text-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+  color: var(--gold-dark);
 }
 
 /* 页面通用头部 */
@@ -365,6 +395,8 @@ body {
   margin-bottom: 40px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--border-gold);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .page-header h1 {
@@ -378,6 +410,7 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: goldFlow 5s ease infinite;
+  overflow-wrap: break-word;
 }
 
 .page-header p {
@@ -386,7 +419,7 @@ body {
 }
 
 /* --------------------------
-   列表修复逻辑完整保留，适配黑金主题
+   列表修复逻辑完整保留，适配白金主题
    -------------------------- */
 ul, ol {
   list-style: revert !important;
@@ -404,7 +437,9 @@ ul, ol {
   margin: 1.5rem 0 !important;
   overflow: visible !important;
   position: relative !important;
-  color: #d4d4d4 !important;
+  color: #374151 !important;
+  box-sizing: border-box !important;
+  max-width: 100% !important;
 }
 
 .page-content ol,
@@ -424,6 +459,9 @@ ul, ol {
   padding-left: 1.2rem !important;
   display: list-item !important;
   line-height: 1.8 !important;
+  /* 列表项强制断词 */
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
 }
 
 .page-content ul ul, .page-content ol ol,
@@ -454,11 +492,15 @@ ul, ol {
 .page-content,
 .post-content {
   overflow: visible !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 /* 文章样式 */
 .post-header {
   margin-bottom: 32px;
+  width: 100%;
 }
 
 .post-title {
@@ -472,6 +514,7 @@ ul, ol {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: goldFlow 5s ease infinite;
+  overflow-wrap: break-word;
 }
 
 .post-meta {
@@ -483,7 +526,10 @@ ul, ol {
 .page-content {
   font-size: 15px;
   line-height: 1.85;
-  color: #d4d4d4;
+  color: #374151;
+  /* 正文全局断词防溢出 */
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .post-content p,
@@ -495,7 +541,7 @@ ul, ol {
 .page-content h2 {
   font-size: 22px;
   font-weight: 700;
-  color: var(--gold-light);
+  color: var(--gold-dark);
   margin: 36px 0 16px;
   letter-spacing: -0.3px;
 }
@@ -519,9 +565,8 @@ ul, ol {
 
 .post-content a:hover,
 .page-content a:hover {
-  color: var(--gold-light);
+  color: var(--gold-dark);
   border-bottom-color: var(--gold);
-  text-shadow: 0 0 6px rgba(212, 175, 55, 0.4);
 }
 
 /* 页脚 */
@@ -530,6 +575,7 @@ ul, ol {
   border-top: 1px solid var(--border-gold);
   text-align: center;
   margin-top: auto;
+  width: 100%;
 }
 
 .footer-container p {
@@ -542,6 +588,7 @@ ul, ol {
   display: flex;
   justify-content: center;
   gap: 24px;
+  flex-wrap: wrap;
 }
 
 .footer-links a {
@@ -552,11 +599,10 @@ ul, ol {
 }
 
 .footer-links a:hover {
-  color: var(--gold);
-  text-shadow: 0 0 6px rgba(212, 175, 55, 0.4);
+  color: var(--gold-dark);
 }
 
-/* 响应式适配 */
+/* 响应式适配 + 移动端溢出专项修复 */
 @media (max-width: 768px) {
   body {
     padding: 0 16px;
@@ -588,12 +634,19 @@ ul, ol {
   .post-title {
     font-size: 24px;
   }
+
+  /* 移动端代码块内边距收缩，避免溢出 */
+  pre {
+    padding: 16px 12px !important;
+    font-size: 12px !important;
+  }
 }
 
-/* 404页面：金属金巨字+发光 */
+/* 404页面 */
 .not-found {
   text-align: center;
   padding: 96px 0;
+  width: 100%;
 }
 
 .not-found h1 {
@@ -607,7 +660,7 @@ ul, ol {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: goldFlow 3s ease infinite;
-  filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.5));
+  filter: drop-shadow(0 0 20px rgba(201, 162, 39, 0.3));
   margin-bottom: 16px;
 }
 
@@ -623,25 +676,25 @@ ul, ol {
   padding: 14px 36px;
   background: var(--gold-gradient);
   background-size: 200% 200%;
-  color: #0a0a0a;
+  color: #ffffff;
   text-decoration: none;
   border-radius: var(--radius);
   font-weight: 700;
   transition: var(--transition);
   animation: goldFlow 4s ease infinite;
-  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 8px 20px rgba(201, 162, 39, 0.25);
 }
 
 .not-found a:hover {
   transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 12px 32px rgba(212, 175, 55, 0.5);
+  box-shadow: 0 12px 28px rgba(201, 162, 39, 0.35);
 }
 
 /* --------------------------
-   代码块：黑金质感+金色ZY标识+金属语法高亮
+   代码块：白金浅色主题 + ZY标识 + 防溢出强化
    -------------------------- */
 pre {
-  background: #0f0f0f !important;
+  background: #fafafa !important;
   border: 1px solid var(--border-gold) !important;
   border-radius: var(--radius) !important;
   padding: 22px 20px !important;
@@ -650,7 +703,8 @@ pre {
   font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace !important;
   line-height: 1.7 !important;
   font-size: 13px !important;
-  color: #d4d4d4 !important;
+  color: #374151 !important;
+  /* 防溢出核心配置 */
   max-width: 100% !important;
   width: 100% !important;
   overflow-x: auto !important;
@@ -659,7 +713,9 @@ pre {
   white-space: pre !important;
   word-wrap: normal !important;
   word-break: keep-all !important;
-  box-shadow: 0 0 24px rgba(0, 0, 0, 0.5) !important;
+  min-width: 0 !important;
+  flex-shrink: 1 !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04) !important;
 }
 
 pre code {
@@ -673,18 +729,18 @@ pre code {
   overflow: visible !important;
 }
 
-/* 金系语法高亮 */
-pre code .k, pre code .keyword { color: #d4af37 !important; font-weight: 600 !important; text-shadow: 0 0 6px rgba(212, 175, 55, 0.3) !important; }
-pre code .s, pre code .string, pre code .s1, pre code .s2 { color: #98c379 !important; }
-pre code .c, pre code .comment, pre code .cm, pre code .c1 { color: #5c6370 !important; font-style: italic !important; }
-pre code .nf, pre code .function { color: #e5c07b !important; }
-pre code .nv, pre code .variable, pre code .id { color: #61afef !important; }
-pre code .m, pre code .number { color: #d19a66 !important; }
-pre code .o, pre code .operator { color: #d4d4d4 !important; }
-pre code .kc, pre code .boolean { color: #c678dd !important; }
-pre code .nb, pre code .built_in { color: #56b6c2 !important; }
+/* 金系语法高亮（浅色版） */
+pre code .k, pre code .keyword { color: #b8860b !important; font-weight: 600 !important; }
+pre code .s, pre code .string, pre code .s1, pre code .s2 { color: #2e7d32 !important; }
+pre code .c, pre code .comment, pre code .cm, pre code .c1 { color: #9e9e9e !important; font-style: italic !important; }
+pre code .nf, pre code .function { color: #c9a227 !important; }
+pre code .nv, pre code .variable, pre code .id { color: #1565c0 !important; }
+pre code .m, pre code .number { color: #d84315 !important; }
+pre code .o, pre code .operator { color: #424242 !important; }
+pre code .kc, pre code .boolean { color: #7b1fa2 !important; }
+pre code .nb, pre code .built_in { color: #00838f !important; }
 
-/* ZY金属金标识 */
+/* ZY金色标识 */
 pre::before {
   content: "ZY" !important;
   position: absolute !important;
@@ -692,37 +748,40 @@ pre::before {
   right: 0 !important;
   padding: 4px 12px !important;
   background: var(--gold-gradient) !important;
-  color: #0a0a0a !important;
+  color: #ffffff !important;
   font-size: 11px !important;
   font-weight: 700 !important;
   letter-spacing: 1px !important;
   border-radius: 0 var(--radius) 0 6px !important;
   z-index: 1 !important;
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.4) !important;
+  box-shadow: 0 0 8px rgba(201, 162, 39, 0.3) !important;
 }
 
-/* 行内代码：黑金底+金字 */
+/* 行内代码：浅金背景 */
 p code, li code, h3 code, h4 code {
-  background: rgba(212, 175, 55, 0.1) !important;
+  background: rgba(201, 162, 39, 0.08) !important;
   padding: 2px 8px !important;
   border-radius: 4px !important;
   font-family: 'JetBrains Mono', 'Consolas', monospace !important;
   font-size: 13px !important;
-  color: #d4af37 !important;
-  border: 1px solid var(--border-gold) !important;
+  color: #b8860b !important;
+  border: 1px solid rgba(201, 162, 39, 0.2) !important;
   font-weight: 500;
+  /* 行内代码防溢出 */
+  display: inline !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
 }
 
 @media (max-width: 768px) {
   p code, li code {
     padding: 2px 4px !important;
     font-size: 12px !important;
-    background: rgba(212, 175, 55, 0.1) !important;
-    color: #d4af37 !important;
-    border: 1px solid var(--border-gold) !important;
+    background: rgba(201, 162, 39, 0.08) !important;
+    color: #b8860b !important;
+    border: 1px solid rgba(201, 162, 39, 0.2) !important;
     border-radius: 4px !important;
     display: inline !important;
-    display: inline-block !important;
     max-width: 100% !important;
     width: auto !important;
     white-space: pre-line !important;
