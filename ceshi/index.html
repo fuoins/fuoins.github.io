@@ -747,42 +747,45 @@ function renderFillQuestions() {
     });
 }
 
-function renderEssayQuestions() {
-    const container = document.getElementById('essay-questions');
+function renderFillQuestions() {
+    const container = document.getElementById('fill-questions');
     container.innerHTML = '';
-    if (!currentExamData.essayQuestions) return;
+    if (!currentExamData.fillQuestions) return;
 
-    const questions = shuffleIfRandom(currentExamData.essayQuestions);
+    const questions = shuffleIfRandom(currentExamData.fillQuestions);
 
     questions.forEach((q, index) => {
         const questionDiv = document.createElement('div');
         questionDiv.className = 'question';
         const questionText = document.createElement('div');
         questionText.className = 'question-text';
-        questionText.textContent = `${index + 1}. ${q.question}`;
+        questionText.innerHTML = `${index + 1}. ${q.question}`;
         questionDiv.appendChild(questionText);
 
         const btn = document.createElement('button');
         btn.className = 'toggle-answer-btn';
-        btn.textContent = '显示参考答案';
+        btn.textContent = '显示答案';
         const answerDiv = document.createElement('div');
         answerDiv.className = 'answer-area';
-        answerDiv.innerHTML = `<strong>参考答案：</strong>\n${q.answer}`;
+        const answer = Array.isArray(q.answer) ? q.answer.join('、') : q.answer;
+        answerDiv.innerHTML = `<strong>参考答案：</strong>${answer}`;
 
         btn.onclick = function() {
             if (answerDiv.style.display === 'block') {
                 answerDiv.style.display = 'none';
-                btn.textContent = '显示参考答案';
+                btn.textContent = '显示答案';
             } else {
                 answerDiv.style.display = 'block';
-                btn.textContent = '隐藏参考答案';
+                btn.textContent = '隐藏答案';
             }
         };
 
         questionDiv.appendChild(btn);
         questionDiv.appendChild(answerDiv);
+        container.appendChild(questionDiv);
     });
 }
+
 
 // 页面初始化入口
 document.addEventListener('DOMContentLoaded', async function() {
