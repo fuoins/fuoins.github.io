@@ -411,7 +411,7 @@ function renderChoiceQuestions() {
         questionText.className = 'question-text';
         const isMultiple = Array.isArray(q.answer);
         const questionType = isMultiple ? '【多选】' : '【单选】';
-        questionText.textContent = `${index + 1}. ${questionType} ${q.question}`;
+        questionText.innerHTML = `${index + 1}. ${questionType} ${q.question}`;
         header.appendChild(questionText);
 
         const errorId = `choice-${q.id}`;
@@ -623,7 +623,7 @@ function renderJudgeQuestions() {
         header.className = 'question-header';
         const questionText = document.createElement('div');
         questionText.className = 'question-text';
-        questionText.textContent = `${index + 1}. ${q.question}`;
+        questionText.innerHTML = `${index + 1}. ${q.question}`;
         header.appendChild(questionText);
 
         const errorId = `judge-${q.id}`;
@@ -759,7 +759,7 @@ function renderEssayQuestions() {
                 questionDiv.className = 'question';
                 const questionText = document.createElement('div');
                 questionText.className = 'question-text';
-                questionText.textContent = `${index + 1}. ${q.question}`;
+                questionText.innerHTML = `${index + 1}. ${q.question}`;
                 questionDiv.appendChild(questionText);
 
                 const btn = document.createElement('button');
