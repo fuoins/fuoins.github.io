@@ -747,44 +747,43 @@ function renderFillQuestions() {
     });
 }
 
-function renderFillQuestions() {
-    const container = document.getElementById('fill-questions');
-    container.innerHTML = '';
-    if (!currentExamData.fillQuestions) return;
+function renderEssayQuestions() {
+            const container = document.getElementById('essay-questions');
+            container.innerHTML = '';
+            if (!currentExamData.essayQuestions) return;
 
-    const questions = shuffleIfRandom(currentExamData.fillQuestions);
+            const questions = shuffleIfRandom(currentExamData.essayQuestions);
 
-    questions.forEach((q, index) => {
-        const questionDiv = document.createElement('div');
-        questionDiv.className = 'question';
-        const questionText = document.createElement('div');
-        questionText.className = 'question-text';
-        questionText.innerHTML = `${index + 1}. ${q.question}`;
-        questionDiv.appendChild(questionText);
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.textContent = `${index + 1}. ${q.question}`;
+                questionDiv.appendChild(questionText);
 
-        const btn = document.createElement('button');
-        btn.className = 'toggle-answer-btn';
-        btn.textContent = '显示答案';
-        const answerDiv = document.createElement('div');
-        answerDiv.className = 'answer-area';
-        const answer = Array.isArray(q.answer) ? q.answer.join('、') : q.answer;
-        answerDiv.innerHTML = `<strong>参考答案：</strong>${answer}`;
+                const btn = document.createElement('button');
+                btn.className = 'toggle-answer-btn';
+                btn.textContent = '显示参考答案';
+                const answerDiv = document.createElement('div');
+                answerDiv.className = 'answer-area';
+                answerDiv.innerHTML = `<strong>参考答案：</strong>\n${q.answer}`;
 
-        btn.onclick = function() {
-            if (answerDiv.style.display === 'block') {
-                answerDiv.style.display = 'none';
-                btn.textContent = '显示答案';
-            } else {
-                answerDiv.style.display = 'block';
-                btn.textContent = '隐藏答案';
-            }
-        };
+                btn.onclick = function() {
+                    if (answerDiv.style.display === 'block') {
+                        answerDiv.style.display = 'none';
+                        btn.textContent = '显示参考答案';
+                    } else {
+                        answerDiv.style.display = 'block';
+                        btn.textContent = '隐藏参考答案';
+                    }
+                };
 
-        questionDiv.appendChild(btn);
-        questionDiv.appendChild(answerDiv);
-        container.appendChild(questionDiv);
-    });
-}
+                questionDiv.appendChild(btn);
+                questionDiv.appendChild(answerDiv);
+                container.appendChild(questionDiv);
+            });
+        }
 
 
 // 页面初始化入口
