@@ -443,12 +443,12 @@
         {
             "id": 8,
             "question": "文件系统负责文件存储空间的管理，但不能实现文件名到物理地址的转换。",
-            "answer": false
+            "answer": true
         },
         {
             "id": 9,
             "question": "SPOOLing系统加快了作业执行的速度。",
-            "answer": false
+            "answer": true
         },
         {
             "id": 10,
@@ -458,7 +458,7 @@
         {
             "id": 11,
             "question": "多任务指同一时间内在同一系统中同时运行多个进程。",
-            "answer": false
+            "answer": true
         },
         {
             "id": 12,
@@ -513,7 +513,7 @@
         {
             "id": 22,
             "question": "选择进程调度算法的准则是尽量提高处理器利用率。",
-            "answer": false
+            "answer": true
         },
         {
             "id": 23,
