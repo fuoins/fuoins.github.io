@@ -26,10 +26,10 @@
                 <select id="examSelector">
                     <option value="">-- 请选择一套试卷 --</option>
                     <option value="data/zy.json">赵宇真爱粉测试</option>
-                    <option value="data/soft.json">软件工程07月03日13:30-15:20</option>
-                    <option value="data/ds.json">数据结构07月06日10:20-12:10</option>
-                    <option value="data/os.json">操作系统07月08日10:20-12:10</option>
-                    <option value="data/cn.json">计算机网络07月09日10:20-12:10</option>
+                    <option value="data/soft1.json">软件工程07月03日13:30-15:20</option>
+                    <option value="data/ds1.json">数据结构07月06日10:20-12:10</option>
+                    <option value="data/os1.json">操作系统07月08日10:20-12:10</option>
+                    <option value="data/cn1.json">计算机网络07月09日10:20-12:10</option>
                 </select>
 
                 <div class="mode-buttons">
@@ -274,67 +274,48 @@
             localStorage.setItem(key, JSON.stringify(errorCounts));
         }
 
-        // ======================题库加载（带服务端鉴权）======================
+        // ======================题库加载======================
         async function loadSelectedExam() {
-            const selector = document.getElementById('examSelector');
-            const filePath = selector.value;
-            if (!filePath) {
-                alert('请先选择一套题库！');
-                return;
-            }
+    const selector = document.getElementById('examSelector');
+    const filePath = selector.value;
+    if (!filePath) {
+        alert('请先选择一套题库！');
+        return;
+    }
 
-            if (filePath !== 'data/zy.json' && !isZhaoYuUnlocked) {
-                alert('🔒 该题库尚未解锁！请先完成赵宇真爱粉测试');
-                return;
-            }
+    if (filePath !== 'data/zy.json' && !isZhaoYuUnlocked) {
+        alert('🔒 该题库尚未解锁！请先完成赵宇真爱粉测试');
+        return;
+    }
 
-            if (filePath === 'data/zy.json') {
-                zhaoYuPerfectScoreAchieved = false;
-            }
+    if (filePath === 'data/zy.json') {
+        zhaoYuPerfectScoreAchieved = false;
+    }
 
-            currentExamFile = filePath;
-            loadErrorCountsFromStorage(currentExamFile);
+    currentExamFile = filePath;
+    loadErrorCountsFromStorage(currentExamFile);
 
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('examContainer').style.display = 'none';
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('examContainer').style.display = 'none';
 
-            try {
-                // 请求题库文件，携带用户ID，由Worker在服务端鉴权
-                const response = await fetch(`${filePath}?userId=${encodeURIComponent(userLocalId)}`);
-                if (!response.ok) {
-                    let errMsg = '题库加载失败';
-                    try {
-                        const err = await response.json();
-                        errMsg = err.msg || errMsg;
-                    } catch(e) {}
-                    throw new Error(errMsg);
-                }
-                currentExamData = await response.json();
-                document.querySelector('h1').textContent = `📚 ${currentExamData.examTitle || '在线测试系统'}`;
-                renderAllQuestions();
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('examContainer').style.display = 'block';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } catch (error) {
-                alert('加载题库失败：' + error.message);
-                document.getElementById('loading').style.display = 'none';
-            }
+    try {
+        // 从服务端接口获取题库，携带用户ID鉴权
+        const response = await fetch(`/api/get-exam?file=${encodeURIComponent(filePath)}&userId=${encodeURIComponent(userLocalId)}`);
+        if (!response.ok) {
+            const err = await response.json();
+            throw new Error(err.msg || '题库加载失败');
         }
-
-        function renderAllQuestions() {
-            if (!currentExamData) return;
-            renderChoiceQuestions();
-            renderJudgeQuestions();
-            renderFillQuestions();
-            renderEssayQuestions();
-        }
-
-        function shuffleIfRandom(array) {
-            if (isRandomMode) {
-                return [...array].sort(() => Math.random() - 0.5);
-            }
-            return [...array];
-        }
+        currentExamData = await response.json();
+        document.querySelector('h1').textContent = `📚 ${currentExamData.examTitle || '在线测试系统'}`;
+        renderAllQuestions();
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('examContainer').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+        alert('加载题库失败：' + error.message);
+        document.getElementById('loading').style.display = 'none';
+    }
+}
 
         // ======================错题计数======================
         function updateErrorDisplay(errorId) {
@@ -577,25 +558,23 @@
             document.querySelectorAll('input:disabled').forEach(el => el.disabled = false);
         }
 
-        // ======================服务端判分解锁核心（按题目ID提交）======================
+        // ======================服务端判分解锁核心======================
         async function checkZhaoYuPerfectScore() {
             if (currentExamFile !== 'data/zy.json' || isZhaoYuUnlocked) return;
             
             const choiceQuestions = document.querySelectorAll('#choice-questions .question');
             const judgeQuestions = document.querySelectorAll('#judge-questions .question');
             
-            // 判断是否全部答完
-            const choiceAllAnswered = choiceQuestions.length > 0 
-                && Array.from(choiceQuestions).every(q => q.classList.contains('answered'));
-            const judgeAllAnswered = judgeQuestions.length === 0 
-                || Array.from(judgeQuestions).every(q => q.classList.contains('answered'));
+            const allCJAnswered = 
+                choiceQuestions.length > 0 && 
+                judgeQuestions.length > 0 &&
+                Array.from(choiceQuestions).every(q => q.classList.contains('answered')) &&
+                Array.from(judgeQuestions).every(q => q.classList.contains('answered'));
             
-            if (!choiceAllAnswered || !judgeAllAnswered) return;
+            if (!allCJAnswered) return;
 
-            // 收集选择题答案：key=题目ID，value=用户选项
-            const choiceAnswers = {};
+            const choiceAnswers = [];
             choiceQuestions.forEach(q => {
-                const qId = q.dataset.questionId;
                 const options = q.querySelectorAll('.option');
                 const selected = [];
                 options.forEach((opt, idx) => {
@@ -603,22 +582,19 @@
                         selected.push(idx);
                     }
                 });
-                choiceAnswers[qId] = selected.length === 1 ? selected[0] : selected;
+                choiceAnswers.push(selected.length === 1 ? selected[0] : selected);
             });
 
-            // 收集判断题答案：key=题目ID，value=布尔值
-            const judgeAnswers = {};
+            const judgeAnswers = [];
             judgeQuestions.forEach(q => {
-                const qId = q.dataset.questionId;
                 const options = q.querySelectorAll('.option');
                 options.forEach(opt => {
                     if (opt.classList.contains('selected')) {
-                        judgeAnswers[qId] = opt.dataset.correct === 'true';
+                        judgeAnswers.push(opt.dataset.correct === 'true');
                     }
                 });
             });
 
-            // 提交服务端判分
             try{
                 const res = await fetch('/api/submit-score', {
                     method: 'POST',
