@@ -512,9 +512,24 @@ const isMultiple = isZYBuiltExam ? true : Array.isArray(q.answer);
                 });
 
                 if (isMultiple) {
-                    const confirmBtn = document.createElement('button');
-                    confirmBtn.className = 'confirm-btn';
-                    confirmBtn.textContent = '确认选择';
+                    // 多选题选中数量提示
+const selectTip = document.createElement('div');
+selectTip.className = 'select-tip';
+selectTip.textContent = '已选择：0 项';
+
+const confirmBtn = document.createElement('button');
+confirmBtn.className = 'confirm-btn';
+confirmBtn.textContent = '确认选择';
+
+// 点击选项实时更新选中数量
+optionsDiv.addEventListener('click', function() {
+    const selectedNum = optionsDiv.querySelectorAll('.option.selected').length;
+    selectTip.textContent = `已选择：${selectedNum} 项`;
+});
+
+questionDiv.appendChild(selectTip);
+questionDiv.appendChild(confirmBtn);
+
                     confirmBtn.addEventListener('click', function() {
                         if (questionDiv.classList.contains('answered')) return;
                         
