@@ -645,12 +645,19 @@ options.forEach((opt) => {
                 });
                 const data = await res.json();
                 
-                if(data.isUnlocked){
-                    isZhaoYuUnlocked = true;
-                    unlockOtherExams();
-                    enableOrderMode();
-                    alert(`🎉 恭喜满分！已永久解锁全部题库\n得分：${data.score}`);
-                }
+                if (data.code === 200) {
+    if(data.isUnlocked){
+        isZhaoYuUnlocked = true;
+        unlockOtherExams();
+        enableOrderMode();
+        alert(`🎉 ${data.msg}\n得分：${data.score}`);
+    } else {
+        alert(`😢 ${data.msg}\n得分：${data.score}`);
+    }
+} else if (data.code === 400 || data.code === 429) {
+    alert(`⚠️ ${data.msg}`);
+}
+
             }catch(e){
                 console.log("提交判分失败",e);
             }
