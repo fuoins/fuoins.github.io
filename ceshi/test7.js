@@ -1,10 +1,81 @@
-         function showNotification(type) {
+// ======================微信浏览器检测======================
+function isWeChatBrowser() {
+    return /MicroMessenger/i.test(navigator.userAgent);
+}
+
+function showWeChatTip() {
+    // 动态注入提示样式
+    const style = document.createElement('style');
+    style.textContent = `
+        .wechat-tip-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.88);
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+            box-sizing: border-box;
+            color: #ffffff;
+            text-align: center;
+        }
+        .wechat-tip-mask .tip-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        .wechat-tip-mask .tip-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .wechat-tip-mask .tip-desc {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #cccccc;
+            max-width: 320px;
+        }
+        .wechat-tip-mask .tip-guide {
+            margin-top: 28px;
+            padding: 12px 20px;
+            background: rgba(255, 215, 0, 0.15);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            border-radius: 8px;
+            font-size: 14px;
+            color: #ffd700;
+            line-height: 1.6;
+        }
+    `;
+    document.head.appendChild(style);
+
+    // 创建提示遮罩
+    const mask = document.createElement('div');
+    mask.className = 'wechat-tip-mask';
+    mask.innerHTML = `
+        <div class="tip-icon">⚠️</div>
+        <div class="tip-title">请在浏览器中打开使用</div>
+        <div class="tip-desc">
+            当前在微信内置浏览器中打开，无法正常使用题库答题、解锁等全部功能
+        </div>
+        <div class="tip-guide">
+            操作方式：<br>
+            点击右上角「···」按钮 → 选择「在浏览器打开」
+        </div>
+    `;
+    document.body.appendChild(mask);
+}
+
+function showNotification(type) {
     const existingNotif = document.querySelector('.notification');
     if (existingNotif) existingNotif.remove();
-    
+
     const notif = document.createElement('div');
     notif.className = `notification ${type}`;
-    
+
     if (type === 'unlock') {
         notif.innerHTML = `
             <div class="notif-header">
@@ -53,7 +124,7 @@
             <button class="notif-btn" onclick="this.closest('.notification').remove()">知道了</button>
         `;
     }
-    
+
     document.body.appendChild(notif);
     // 已移除自动消失定时器，仅点击按钮关闭
 }
@@ -435,7 +506,7 @@ const isMultiple = isZYBuiltExam ? true : Array.isArray(q.answer);
 
                     const label = document.createElement('label');
                     label.textContent = ` ${String.fromCharCode(65 + optIndex)}. ${option}`;
-                    
+
                     const feedback = document.createElement('span');
                     feedback.className = 'feedback';
 
@@ -513,7 +584,7 @@ questionDiv.appendChild(confirmBtn);
 
                     confirmBtn.addEventListener('click', async function() {
                         if (questionDiv.classList.contains('answered')) return;
-                        
+
                         const selectedOptions = optionsDiv.querySelectorAll('.option.selected');
                         if (selectedOptions.length === 0) {
                             alert('请至少选择一个选项！');
@@ -574,7 +645,7 @@ questionDiv.appendChild(confirmBtn);
                                 opt.querySelector('.feedback').textContent = '✗ 错误';
                                 opt.querySelector('.feedback').className = 'feedback wrong-feedback';
                             });
-                            
+
                             // 外部题库显示正确答案，赵宇题库不显示（答错直接重来）
                             if (!isZYBuiltExam) {
                                 const correctAnswers = [...q.answer].sort();
@@ -588,7 +659,7 @@ questionDiv.appendChild(confirmBtn);
                                     }
                                 });
                             }
-                            
+
                             handleZhaoYuWrongAnswer();
                         }
                     });
@@ -625,16 +696,16 @@ questionDiv.appendChild(confirmBtn);
         // ======================服务端判分解锁核心（按题目ID提交）======================
         async function checkZhaoYuPerfectScore() {
             if (currentExamFile !== 'ceshi/data/zy.json' || isZhaoYuUnlocked) return;
-            
+
             const choiceQuestions = document.querySelectorAll('#choice-questions .question');
             const judgeQuestions = document.querySelectorAll('#judge-questions .question');
-            
+
             // 判断是否全部答完
             const choiceAllAnswered = choiceQuestions.length > 0 
                 && Array.from(choiceQuestions).every(q => q.classList.contains('answered'));
             const judgeAllAnswered = judgeQuestions.length === 0 
                 || Array.from(judgeQuestions).every(q => q.classList.contains('answered'));
-            
+
             if (!choiceAllAnswered || !judgeAllAnswered) return;
 
             // 收集选择题答案：key=题目ID，value=用户选项
@@ -679,7 +750,7 @@ options.forEach((opt) => {
                     })
                 });
                 const data = await res.json();
-                
+
                 if (data.code === 200) {
     if(data.isUnlocked){
         isZhaoYuUnlocked = true;
@@ -882,10 +953,16 @@ options.forEach((opt) => {
 
         // ======================页面初始化======================
         document.addEventListener('DOMContentLoaded', async function() {
+            // 微信浏览器检测：命中则显示提示，终止后续初始化
+            if (isWeChatBrowser()) {
+                showWeChatTip();
+                return;
+            }
+
             initLocalUserId();
             bindShowIdButton();
             await checkUnlockFromServer();
-            
+
             setTimeout(() => {
                 if (isZhaoYuUnlocked) {
                     showNotification('unlock');
