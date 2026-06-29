@@ -1,4 +1,4 @@
-        function showNotification(type) {
+         function showNotification(type) {
     const existingNotif = document.querySelector('.notification');
     if (existingNotif) existingNotif.remove();
     
