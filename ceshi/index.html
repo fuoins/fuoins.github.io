@@ -571,63 +571,68 @@
 
         // ======================服务端判分解锁核心======================
         async function checkZhaoYuPerfectScore() {
-            if (currentExamFile !== 'data/zy.json' || isZhaoYuUnlocked) return;
-            
-            const choiceQuestions = document.querySelectorAll('#choice-questions .question');
-            const judgeQuestions = document.querySelectorAll('#judge-questions .question');
-            
-            const allCJAnswered = 
-                choiceQuestions.length > 0 && 
-                judgeQuestions.length > 0 &&
-                Array.from(choiceQuestions).every(q => q.classList.contains('answered')) &&
-                Array.from(judgeQuestions).every(q => q.classList.contains('answered'));
-            
-            if (!allCJAnswered) return;
+    if (currentExamFile !== 'data/zy.json' || isZhaoYuUnlocked) return;
+    
+    const choiceQuestions = document.querySelectorAll('#choice-questions .question');
+    const judgeQuestions = document.querySelectorAll('#judge-questions .question');
+    
+    // 判断是否全部答完（兼容只有选择题的题库）
+    const choiceAllAnswered = choiceQuestions.length > 0 
+        && Array.from(choiceQuestions).every(q => q.classList.contains('answered'));
+    const judgeAllAnswered = judgeQuestions.length === 0 
+        || Array.from(judgeQuestions).every(q => q.classList.contains('answered'));
+    
+    if (!choiceAllAnswered || !judgeAllAnswered) return;
 
-            const choiceAnswers = [];
-            choiceQuestions.forEach(q => {
-                const options = q.querySelectorAll('.option');
-                const selected = [];
-                options.forEach((opt, idx) => {
-                    if (opt.classList.contains('selected') && !opt.querySelector('.feedback')?.textContent.includes('正确答案')) {
-                        selected.push(idx);
-                    }
-                });
-                choiceAnswers.push(selected.length === 1 ? selected[0] : selected);
-            });
-
-            const judgeAnswers = [];
-            judgeQuestions.forEach(q => {
-                const options = q.querySelectorAll('.option');
-                options.forEach(opt => {
-                    if (opt.classList.contains('selected')) {
-                        judgeAnswers.push(opt.dataset.correct === 'true');
-                    }
-                });
-            });
-
-            try{
-                const res = await fetch('/api/submit-score', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        userId: userLocalId,
-                        choiceAnswers,
-                        judgeAnswers
-                    })
-                });
-                const data = await res.json();
-                
-                if(data.isUnlocked){
-                    isZhaoYuUnlocked = true;
-                    unlockOtherExams();
-                    enableOrderMode();
-                    alert(`🎉 恭喜满分！已永久解锁全部题库\n得分：${data.score}`);
-                }
-            }catch(e){
-                console.log("提交判分失败",e);
+    // 收集选择题答案：key=题目ID，value=用户选项
+    const choiceAnswers = {};
+    choiceQuestions.forEach(q => {
+        const qId = q.dataset.questionId;
+        const options = q.querySelectorAll('.option');
+        const selected = [];
+        options.forEach((opt, idx) => {
+            if (opt.classList.contains('selected') && !opt.querySelector('.feedback')?.textContent.includes('正确答案')) {
+                selected.push(idx);
             }
+        });
+        choiceAnswers[qId] = selected.length === 1 ? selected[0] : selected;
+    });
+
+    // 收集判断题答案
+    const judgeAnswers = {};
+    judgeQuestions.forEach(q => {
+        const qId = q.dataset.questionId;
+        const options = q.querySelectorAll('.option');
+        options.forEach(opt => {
+            if (opt.classList.contains('selected')) {
+                judgeAnswers[qId] = opt.dataset.correct === 'true';
+            }
+        });
+    });
+
+    // 提交服务端判分
+    try{
+        const res = await fetch('/api/submit-score', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: userLocalId,
+                choiceAnswers,
+                judgeAnswers
+            })
+        });
+        const data = await res.json();
+        
+        if(data.isUnlocked){
+            isZhaoYuUnlocked = true;
+            unlockOtherExams();
+            enableOrderMode();
+            alert(`🎉 恭喜满分！已永久解锁全部题库\n得分：${data.score}`);
         }
+    }catch(e){
+        console.log("提交判分失败",e);
+    }
+}
 
         // ======================判断题渲染======================
         function renderJudgeQuestions() {
