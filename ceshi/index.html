@@ -154,6 +154,7 @@
 
         // ======================全局变量区======================
         let examStartTime = 0;
+        let isZYBuiltExam = false; // 是否是Worker内置的赵宇题库
 
         let currentExamData = null;
         let isRandomMode = true;
@@ -278,6 +279,7 @@
 
         // ======================题库加载（强制根路径+鉴权）======================
         async function loadSelectedExam() {
+        isZYBuiltExam = false; // 先重置
     const selector = document.getElementById('examSelector');
     const filePath = selector.value;
     if (!filePath) {
@@ -285,10 +287,15 @@
         return;
     }
 
-    if (filePath !== 'ceshi/data/zy.json' && !isZhaoYuUnlocked) {
-        alert('🔒 该题库尚未解锁！请先完成赵宇真爱粉测试');
-        return;
-    }
+    if (filePath === 'ceshi/data/zy.json') {
+    response = await fetch(`/api/get-zy-exam`);
+    isZYBuiltExam = true; // 标记为内置赵宇题库，全多选
+} else {
+    const requestUrl = `/${filePath}?userId=${encodeURIComponent(userLocalId)}`;
+    response = await fetch(requestUrl);
+    isZYBuiltExam = false; // 外部json题库，自动判断单选多选
+}
+
 
     currentExamFile = filePath;
     loadErrorCountsFromStorage(currentExamFile);
@@ -408,7 +415,9 @@
                 header.className = 'question-header';
                 const questionText = document.createElement('div');
                 questionText.className = 'question-text';
-                const isMultiple = Array.isArray(q.answer);
+                // 内置赵宇题库全部强制多选，外部题库按answer自动判断
+const isMultiple = isZYBuiltExam ? true : Array.isArray(q.answer);
+
                 const questionType = isMultiple ? '【多选】' : '【单选】';
                 questionText.innerHTML = `${index + 1}. ${questionType} ${q.question}`;
                 header.appendChild(questionText);
