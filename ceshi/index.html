@@ -27,9 +27,9 @@
                     <option value="">-- 请选择一套试卷 --</option>
                     <option value="ceshi/data/zy.json">赵宇真爱粉测试</option>
                     <option value="ceshi/data/soft1.json">软件工程07月03日13:30-15:20</option>
-                    <option value="ceshi/data/ds.json">数据结构07月06日10:20-12:10</option>
-                    <option value="ceshi/data/os.json">操作系统07月08日10:20-12:10</option>
-                    <option value="ceshi/data/cn.json">计算机网络07月09日10:20-12:10</option>
+                    <option value="ceshi/data/ds1.json">数据结构07月06日10:20-12:10</option>
+                    <option value="ceshi/data/os1.json">操作系统07月08日10:20-12:10</option>
+                    <option value="ceshi/data/cn1.json">计算机网络07月09日10:20-12:10</option>
                 </select>
 
                 <div class="mode-buttons">
@@ -153,13 +153,14 @@
         });
 
         // ======================全局变量区======================
+        let examStartTime = 0;
+
         let currentExamData = null;
         let isRandomMode = true;
         let currentExamFile = '';
         let errorCounts = {};
         let isZhaoYuUnlocked = false;
         let zhaoYuPerfectScoreAchieved = false;
-        let examStartTime = 0; // 新增：答题开始时间戳
 
         const ERROR_STORAGE_PREFIX = 'test_error_counts_';
         const USER_ID_KEY = 'local_unique_user_id';
@@ -292,7 +293,7 @@
             if (filePath === 'ceshi/data/zy.json') {
                 zhaoYuPerfectScoreAchieved = false;
             }
-
+            
             currentExamFile = filePath;
             loadErrorCountsFromStorage(currentExamFile);
 
@@ -314,7 +315,8 @@
                 }
 
                 currentExamData = await response.json();
-                examStartTime = Date.now(); // 记录答题开始时间
+examStartTime = Date.now(); // 新增：记录答题开始时间
+
                 document.querySelector('h1').textContent = `📚 ${currentExamData.examTitle || '在线测试系统'}`;
                 renderAllQuestions();
                 document.getElementById('loading').style.display = 'none';
@@ -432,10 +434,12 @@
                 });
 
                 options.forEach((option, optIndex) => {
-                    const optionDiv = document.createElement('div');
-                    optionDiv.className = 'option';
-                    optionDiv.dataset.index = optIndex;
-                    optionDiv.dataset.originalIndex = originalIndexMap.get(optIndex);
+    const optionDiv = document.createElement('div');
+    optionDiv.className = 'option';
+    optionDiv.dataset.index = optIndex;
+    // 新增：存原始选项索引（关键）
+    optionDiv.dataset.originalIndex = originalIndexMap.get(optIndex);
+
 
                     const label = document.createElement('label');
                     label.textContent = ` ${String.fromCharCode(65 + optIndex)}. ${option}`;
@@ -583,7 +587,7 @@
             document.querySelectorAll('input:disabled').forEach(el => el.disabled = false);
         }
 
-        // ======================服务端判分解锁核心（按题目ID提交+原始索引）======================
+        // ======================服务端判分解锁核心（按题目ID提交）======================
         async function checkZhaoYuPerfectScore() {
             if (currentExamFile !== 'ceshi/data/zy.json' || isZhaoYuUnlocked) return;
             
@@ -598,17 +602,19 @@
             
             if (!choiceAllAnswered || !judgeAllAnswered) return;
 
-            // 收集选择题答案：key=题目ID，value=用户选项（原始索引）
+            // 收集选择题答案：key=题目ID，value=用户选项
             const choiceAnswers = {};
             choiceQuestions.forEach(q => {
                 const qId = q.dataset.questionId;
                 const options = q.querySelectorAll('.option');
                 const selected = [];
-                options.forEach((opt) => {
-                    if (opt.classList.contains('selected') && !opt.querySelector('.feedback')?.textContent.includes('正确答案')) {
-                        selected.push(parseInt(opt.dataset.originalIndex));
-                    }
-                });
+options.forEach((opt) => {
+    if (opt.classList.contains('selected') && !opt.querySelector('.feedback')?.textContent.includes('正确答案')) {
+        // 读原始索引，不是显示位置索引
+        selected.push(parseInt(opt.dataset.originalIndex));
+    }
+});
+
                 choiceAnswers[qId] = selected.length === 1 ? selected[0] : selected;
             });
 
@@ -630,11 +636,12 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        userId: userLocalId,
-                        choiceAnswers,
-                        judgeAnswers,
-                        startTime: examStartTime // 带上答题开始时间
-                    })
+    userId: userLocalId,
+    choiceAnswers,
+    judgeAnswers,
+    startTime: examStartTime
+})
+
                 });
                 const data = await res.json();
                 
