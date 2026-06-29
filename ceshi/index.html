@@ -153,6 +153,8 @@
         });
 
         // ======================全局变量区======================
+        let examStartTime = 0;
+
         let currentExamData = null;
         let isRandomMode = true;
         let currentExamFile = '';
@@ -291,6 +293,8 @@
             if (filePath === 'ceshi/data/zy.json') {
                 zhaoYuPerfectScoreAchieved = false;
             }
+            currentExamData = await response.json();
+examStartTime = Date.now(); // 新增：记录答题开始时间
 
             currentExamFile = filePath;
             loadErrorCountsFromStorage(currentExamFile);
@@ -632,10 +636,12 @@ options.forEach((opt) => {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        userId: userLocalId,
-                        choiceAnswers,
-                        judgeAnswers
-                    })
+    userId: userLocalId,
+    choiceAnswers,
+    judgeAnswers,
+    startTime: examStartTime
+})
+
                 });
                 const data = await res.json();
                 
