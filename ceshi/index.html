@@ -25,11 +25,11 @@
             <div class="selector-row">
                 <select id="examSelector">
                     <option value="">-- 请选择一套试卷 --</option>
-                    <option value="data/zy.json">赵宇真爱粉测试</option>
-                    <option value="data/soft1.json">软件工程07月03日13:30-15:20</option>
-                    <option value="data/ds1.json">数据结构07月06日10:20-12:10</option>
-                    <option value="data/os1.json">操作系统07月08日10:20-12:10</option>
-                    <option value="data/cn1.json">计算机网络07月09日10:20-12:10</option>
+                    <option value="ceshi/data/zy.json">赵宇真爱粉测试</option>
+                    <option value="ceshi/data/soft1.json">软件工程07月03日13:30-15:20</option>
+                    <option value="ceshi/data/ds.json">数据结构07月06日10:20-12:10</option>
+                    <option value="ceshi/data/os.json">操作系统07月08日10:20-12:10</option>
+                    <option value="ceshi/data/cn.json">计算机网络07月09日10:20-12:10</option>
                 </select>
 
                 <div class="mode-buttons">
@@ -218,7 +218,7 @@
         function unlockOtherExams() {
             const selector = document.getElementById('examSelector');
             for (let i = 0; i < selector.options.length; i++) {
-                if (selector.options[i].value && selector.options[i].value !== 'data/zy.json') {
+                if (selector.options[i].value && selector.options[i].value !== 'ceshi/data/zy.json') {
                     selector.options[i].disabled = false;
                     selector.options[i].text = selector.options[i].text.replace(' (需解锁)', '');
                 }
@@ -228,7 +228,7 @@
         function lockOtherExams() {
             const selector = document.getElementById('examSelector');
             for (let i = 0; i < selector.options.length; i++) {
-                if (selector.options[i].value && selector.options[i].value !== 'data/zy.json') {
+                if (selector.options[i].value && selector.options[i].value !== 'ceshi/data/zy.json') {
                     selector.options[i].disabled = true;
                     if (!selector.options[i].text.includes('(需解锁)')) {
                         selector.options[i].text += ' (需解锁)';
@@ -274,53 +274,70 @@
             localStorage.setItem(key, JSON.stringify(errorCounts));
         }
 
-        // ======================题库加载======================
+        // ======================题库加载（强制根路径+鉴权）======================
         async function loadSelectedExam() {
-    const selector = document.getElementById('examSelector');
-    const filePath = selector.value;
-    if (!filePath) {
-        alert('请先选择一套题库！');
-        return;
-    }
+            const selector = document.getElementById('examSelector');
+            const filePath = selector.value;
+            if (!filePath) {
+                alert('请先选择一套题库！');
+                return;
+            }
 
-    if (filePath !== 'data/zy.json' && !isZhaoYuUnlocked) {
-        alert('🔒 该题库尚未解锁！请先完成赵宇真爱粉测试');
-        return;
-    }
+            if (filePath !== 'ceshi/data/zy.json' && !isZhaoYuUnlocked) {
+                alert('🔒 该题库尚未解锁！请先完成赵宇真爱粉测试');
+                return;
+            }
 
-    if (filePath === 'data/zy.json') {
-        zhaoYuPerfectScoreAchieved = false;
-    }
+            if (filePath === 'ceshi/data/zy.json') {
+                zhaoYuPerfectScoreAchieved = false;
+            }
 
-    currentExamFile = filePath;
-    loadErrorCountsFromStorage(currentExamFile);
+            currentExamFile = filePath;
+            loadErrorCountsFromStorage(currentExamFile);
 
-    document.getElementById('loading').style.display = 'block';
-    document.getElementById('examContainer').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('examContainer').style.display = 'none';
 
-    try {
-        // 强制根路径请求，避免相对路径错位
-        const response = await fetch(`/${filePath}?userId=${encodeURIComponent(userLocalId)}`);
-        if (!response.ok) {
-            let errMsg = '题库加载失败';
             try {
-                const err = await response.json();
-                errMsg = err.msg || errMsg;
-            } catch(e) {}
-            throw new Error(errMsg);
-        }
-        currentExamData = await response.json();
-        document.querySelector('h1').textContent = `📚 ${currentExamData.examTitle || '在线测试系统'}`;
-        renderAllQuestions();
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('examContainer').style.display = 'block';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (error) {
-        alert('加载题库失败：' + error.message);
-        document.getElementById('loading').style.display = 'none';
-    }
-}
+                // 强制根路径请求，彻底避免子目录相对路径错位
+                const requestUrl = `/${filePath}?userId=${encodeURIComponent(userLocalId)}`;
+                const response = await fetch(requestUrl);
 
+                if (!response.ok) {
+                    let errMsg = `加载失败（状态码：${response.status}）`;
+                    try {
+                        const err = await response.json();
+                        errMsg = err.msg || errMsg;
+                    } catch(e) {}
+                    throw new Error(errMsg);
+                }
+
+                currentExamData = await response.json();
+                document.querySelector('h1').textContent = `📚 ${currentExamData.examTitle || '在线测试系统'}`;
+                renderAllQuestions();
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('examContainer').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch (error) {
+                alert('加载题库失败：' + error.message);
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function renderAllQuestions() {
+            if (!currentExamData) return;
+            renderChoiceQuestions();
+            renderJudgeQuestions();
+            renderFillQuestions();
+            renderEssayQuestions();
+        }
+
+        function shuffleIfRandom(array) {
+            if (isRandomMode) {
+                return [...array].sort(() => Math.random() - 0.5);
+            }
+            return [...array];
+        }
 
         // ======================错题计数======================
         function updateErrorDisplay(errorId) {
@@ -337,7 +354,7 @@
         }
 
         function incrementError(errorId) {
-            if(currentExamFile === 'data/zy.json' && !isZhaoYuUnlocked){
+            if(currentExamFile === 'ceshi/data/zy.json' && !isZhaoYuUnlocked){
                 return;
             }
             if (!errorCounts[errorId]) {
@@ -543,7 +560,7 @@
 
         // ======================赵宇测试防错逻辑======================
         function handleZhaoYuWrongAnswer() {
-            if (currentExamFile === 'data/zy.json' && !isZhaoYuUnlocked) {
+            if (currentExamFile === 'ceshi/data/zy.json' && !isZhaoYuUnlocked) {
                 const anyWrong = document.querySelectorAll('.option.wrong').length > 0;
                 if (anyWrong) {
                     alert('❌ 答错了！赵宇测试需要满分才能解锁其他题库。即将重新开始...');
@@ -563,23 +580,25 @@
             document.querySelectorAll('input:disabled').forEach(el => el.disabled = false);
         }
 
-        // ======================服务端判分解锁核心======================
+        // ======================服务端判分解锁核心（按题目ID提交）======================
         async function checkZhaoYuPerfectScore() {
-            if (currentExamFile !== 'data/zy.json' || isZhaoYuUnlocked) return;
+            if (currentExamFile !== 'ceshi/data/zy.json' || isZhaoYuUnlocked) return;
             
             const choiceQuestions = document.querySelectorAll('#choice-questions .question');
             const judgeQuestions = document.querySelectorAll('#judge-questions .question');
             
-            const allCJAnswered = 
-                choiceQuestions.length > 0 && 
-                judgeQuestions.length > 0 &&
-                Array.from(choiceQuestions).every(q => q.classList.contains('answered')) &&
-                Array.from(judgeQuestions).every(q => q.classList.contains('answered'));
+            // 判断是否全部答完
+            const choiceAllAnswered = choiceQuestions.length > 0 
+                && Array.from(choiceQuestions).every(q => q.classList.contains('answered'));
+            const judgeAllAnswered = judgeQuestions.length === 0 
+                || Array.from(judgeQuestions).every(q => q.classList.contains('answered'));
             
-            if (!allCJAnswered) return;
+            if (!choiceAllAnswered || !judgeAllAnswered) return;
 
-            const choiceAnswers = [];
+            // 收集选择题答案：key=题目ID，value=用户选项
+            const choiceAnswers = {};
             choiceQuestions.forEach(q => {
+                const qId = q.dataset.questionId;
                 const options = q.querySelectorAll('.option');
                 const selected = [];
                 options.forEach((opt, idx) => {
@@ -587,19 +606,22 @@
                         selected.push(idx);
                     }
                 });
-                choiceAnswers.push(selected.length === 1 ? selected[0] : selected);
+                choiceAnswers[qId] = selected.length === 1 ? selected[0] : selected;
             });
 
-            const judgeAnswers = [];
+            // 收集判断题答案：key=题目ID，value=布尔值
+            const judgeAnswers = {};
             judgeQuestions.forEach(q => {
+                const qId = q.dataset.questionId;
                 const options = q.querySelectorAll('.option');
                 options.forEach(opt => {
                     if (opt.classList.contains('selected')) {
-                        judgeAnswers.push(opt.dataset.correct === 'true');
+                        judgeAnswers[qId] = opt.dataset.correct === 'true';
                     }
                 });
             });
 
+            // 提交服务端判分
             try{
                 const res = await fetch('/api/submit-score', {
                     method: 'POST',
