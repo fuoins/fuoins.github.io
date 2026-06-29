@@ -1,46 +1,58 @@
         function showNotification(type) {
-            const existingNotif = document.querySelector('.notification');
-            if (existingNotif) existingNotif.remove();
-            
-            const notif = document.createElement('div');
-            notif.className = `notification ${type}`;
-            
-            if (type === 'unlock') {
-                notif.innerHTML = `
-                    <div class="notif-header">
-                        <span class="notif-icon">🎉</span>
-                        <span class="notif-title">解锁成功！</span>
-                    </div>
-                    <div class="notif-body">
-                        所有题库和顺序模式已解锁<br>
-                        无需答题即可使用全部功能
-                    </div>
-                    <button class="notif-btn" onclick="this.closest('.notification').remove()">确定</button>
-                `;
-            } else {
-                notif.innerHTML = `
-                    <div class="notif-header">
-                        <span class="notif-icon">🔒</span>
-                        <span class="notif-title">尚未解锁</span>
-                    </div>
-                    <div class="notif-body">
-                        顺序模式和全部题库未解锁<br>
-                        需要完成「赵宇真爱粉测试」并获得满分<br>
-                        或者把本机ID发给管理员加入白名单解锁
-                    </div>
-                    <button class="notif-btn" onclick="this.closest('.notification').remove()">知道了</button>
-                `;
-            }
-            
-            document.body.appendChild(notif);
-            
-            setTimeout(() => {
-                if (notif.parentNode) {
-                    notif.style.animation = 'slideOut 0.5s ease-out forwards';
-                    setTimeout(() => notif.remove(), 500);
-                }
-            }, 5000);
-        }
+    const existingNotif = document.querySelector('.notification');
+    if (existingNotif) existingNotif.remove();
+    
+    const notif = document.createElement('div');
+    notif.className = `notification ${type}`;
+    
+    if (type === 'unlock') {
+        notif.innerHTML = `
+            <div class="notif-header">
+                <span class="notif-icon">📢</span>
+                <span class="notif-title">系统更新公告✨</span>
+            </div>
+            <div class="notif-body">
+✅ 全量题库更新完毕
+🖼️ 所有带图题目已全部上传完成
+
+🔧 本次优化修复：
+• 修复前端绕过解锁限制的漏洞bug
+• 优化题库前后端数据校验逻辑
+• 新增防爬虫Token校验机制
+• 加强答案后端隐藏保护，提升数据安全
+
+🎉 已解锁用户可正常体验全部更新内容
+            </div>
+            <button class="notif-btn" onclick="this.closest('.notification').remove()">我知道了</button>
+        `;
+    } else {
+        notif.innerHTML = `
+            <div class="notif-header">
+                <span class="notif-icon">📢</span>
+                <span class="notif-title">系统更新公告⚠️</span>
+            </div>
+            <div class="notif-body">
+✅ 全量题库更新完毕
+🖼️ 所有带图题目已全部上传完成
+
+🔧 本次优化修复：
+• 修复前端绕过解锁限制的漏洞bug
+• 优化题库前后端数据校验逻辑
+• 新增防爬虫Token校验机制
+• 加强答案后端隐藏保护，提升数据安全
+
+🔒 您当前尚未解锁
+顺序模式、完整题库、带图题目暂无法全部访问
+完成「赵宇真爱粉测试」满分或添加管理员白名单即可解锁全部更新内容
+            </div>
+            <button class="notif-btn" onclick="this.closest('.notification').remove()">了解</button>
+        `;
+    }
+    
+    document.body.appendChild(notif);
+    // 无自动关闭，仅手动点击按钮关闭
+}
+
 
         // 防复制、禁用全选
         document.addEventListener('contextmenu', e => e.preventDefault());
