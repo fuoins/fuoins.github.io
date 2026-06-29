@@ -5,47 +5,58 @@
     const notif = document.createElement('div');
     notif.className = `notification ${type}`;
     
+    // ========== 原有：解锁成功 ==========
     if (type === 'unlock') {
+        notif.innerHTML = `
+            <div class="notif-header">
+                <span class="notif-icon">🎉</span>
+                <span class="notif-title">解锁成功！</span>
+            </div>
+            <div class="notif-body">
+                所有题库和顺序模式已解锁<br>
+                无需答题即可使用全部功能<br>
+                错题集功能已经解锁
+            </div>
+            <button class="notif-btn" onclick="this.closest('.notification').remove()">确定</button>
+        `;
+    }
+    // ========== 原有：未解锁 ==========
+    else if (type === 'locked') {
+        notif.innerHTML = `
+            <div class="notif-header">
+                <span class="notif-icon">🔒</span>
+                <span class="notif-title">尚未解锁</span>
+            </div>
+            <div class="notif-body">
+                顺序模式和全部题库❌未解锁<br>
+                错题集功能未解锁<br>
+                需要完成❗赵宇真爱粉测试❗并获得💯满分<br>
+                或者把[查看本机解锁ID]并发给管理员加入白名单解锁
+            </div>
+            <button class="notif-btn" onclick="this.closest('.notification').remove()">知道了</button>
+        `;
+    }
+    // ========== 新增：系统更新公告 ==========
+    else if (type === 'update') {
         notif.innerHTML = `
             <div class="notif-header">
                 <span class="notif-icon">📢</span>
                 <span class="notif-title">系统更新公告✨</span>
             </div>
             <div class="notif-body">
-✅ 全量题库更新完毕
-🖼️ 所有带图题目已全部上传完成
+✅ 所有题库更新完毕
+🖼️ 带图题目已全部上传完成
 
 🔧 本次优化修复：
-• 修复前端绕过解锁限制的漏洞bug
-• 优化题库前后端数据校验逻辑
+• 修复前端绕过解锁限制bug
+• 优化题库前后端数据交互
 • 新增防爬虫Token校验机制
-• 加强答案后端隐藏保护，提升数据安全
+• 强化后端答案隐藏保护，提升数据安全
 
-🎉 已解锁用户可正常体验全部更新内容
+🔓 已解锁用户：可直接体验全部更新内容
+🔒 未解锁用户：完整题库、错题集暂无法开放
             </div>
             <button class="notif-btn" onclick="this.closest('.notification').remove()">我知道了</button>
-        `;
-    } else {
-        notif.innerHTML = `
-            <div class="notif-header">
-                <span class="notif-icon">📢</span>
-                <span class="notif-title">系统更新公告⚠️</span>
-            </div>
-            <div class="notif-body">
-✅ 全量题库更新完毕
-🖼️ 所有带图题目已全部上传完成
-
-🔧 本次优化修复：
-• 修复前端绕过解锁限制的漏洞bug
-• 优化题库前后端数据校验逻辑
-• 新增防爬虫Token校验机制
-• 加强答案后端隐藏保护，提升数据安全
-
-🔒 您当前尚未解锁
-顺序模式、完整题库、带图题目暂无法全部访问
-完成「赵宇真爱粉测试」满分或添加管理员白名单即可解锁全部更新内容
-            </div>
-            <button class="notif-btn" onclick="this.closest('.notification').remove()">了解</button>
         `;
     }
     
