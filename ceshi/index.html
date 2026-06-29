@@ -278,55 +278,57 @@
 
         // ======================题库加载（强制根路径+鉴权）======================
         async function loadSelectedExam() {
-            const selector = document.getElementById('examSelector');
-            const filePath = selector.value;
-            if (!filePath) {
-                alert('请先选择一套题库！');
-                return;
-            }
+    const selector = document.getElementById('examSelector');
+    const filePath = selector.value;
+    if (!filePath) {
+        alert('请先选择一套题库！');
+        return;
+    }
 
-            if (filePath !== 'ceshi/data/zy.json' && !isZhaoYuUnlocked) {
-                alert('🔒 该题库尚未解锁！请先完成赵宇真爱粉测试');
-                return;
-            }
+    if (filePath !== 'ceshi/data/zy.json' && !isZhaoYuUnlocked) {
+        alert('🔒 该题库尚未解锁！请先完成赵宇真爱粉测试');
+        return;
+    }
 
-            if (filePath === 'ceshi/data/zy.json') {
-                zhaoYuPerfectScoreAchieved = false;
-            }
-            
-            currentExamFile = filePath;
-            loadErrorCountsFromStorage(currentExamFile);
+    currentExamFile = filePath;
+    loadErrorCountsFromStorage(currentExamFile);
 
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('examContainer').style.display = 'none';
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('examContainer').style.display = 'none';
 
-            try {
-                // 强制根路径请求，彻底避免子目录相对路径错位
-                const requestUrl = `/${filePath}?userId=${encodeURIComponent(userLocalId)}`;
-                const response = await fetch(requestUrl);
-
-                if (!response.ok) {
-                    let errMsg = `加载失败（状态码：${response.status}）`;
-                    try {
-                        const err = await response.json();
-                        errMsg = err.msg || errMsg;
-                    } catch(e) {}
-                    throw new Error(errMsg);
-                }
-
-                currentExamData = await response.json();
-examStartTime = Date.now(); // 新增：记录答题开始时间
-
-                document.querySelector('h1').textContent = `📚 ${currentExamData.examTitle || '在线测试系统'}`;
-                renderAllQuestions();
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('examContainer').style.display = 'block';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } catch (error) {
-                alert('加载题库失败：' + error.message);
-                document.getElementById('loading').style.display = 'none';
-            }
+    try {
+        let response;
+        // ========== 重点：赵宇测试 调用接口获取内置题目，不再加载json ==========
+        if (filePath === 'ceshi/data/zy.json') {
+            response = await fetch(`/api/get-zy-exam`);
+        } else {
+            // 其他解锁题库，保持原有加载方式
+            const requestUrl = `/${filePath}?userId=${encodeURIComponent(userLocalId)}`;
+            response = await fetch(requestUrl);
         }
+
+        if (!response.ok) {
+            let errMsg = `加载失败（状态码：${response.status}）`;
+            try {
+                const err = await response.json();
+                errMsg = err.msg || errMsg;
+            } catch(e) {}
+            throw new Error(errMsg);
+        }
+
+        currentExamData = await response.json();
+        examStartTime = Date.now(); // 记录答题开始时间
+        document.querySelector('h1').textContent = `📚 ${currentExamData.examTitle || '在线测试系统'}`;
+        renderAllQuestions();
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('examContainer').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+        alert('加载题库失败：' + error.message);
+        document.getElementById('loading').style.display = 'none';
+    }
+}
+
 
         function renderAllQuestions() {
             if (!currentExamData) return;
