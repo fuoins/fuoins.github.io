@@ -95,6 +95,7 @@ function showNotification(type) {
 • 题库对接后端数据处理
 • 新增防爬虫Token校验
 • 后端答案隐藏防护升级
+• 修复图片后端拦截导致无法放行
                 </div>
             </div>
             <button class="notif-btn" onclick="this.closest('.notification').remove()">确定</button>
@@ -119,6 +120,7 @@ function showNotification(type) {
 • 题库对接后端数据处理
 • 新增防爬虫Token校验
 • 后端答案隐藏防护升级
+• 修复图片后端拦截导致无法放行
                 </div>
             </div>
             <button class="notif-btn" onclick="this.closest('.notification').remove()">知道了</button>
