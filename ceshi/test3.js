@@ -17,13 +17,14 @@
                 错题集功能已经解锁
                 <hr style="margin:16px 0;border-color:rgba(255,255,255,0.2)">
                 <div style="font-size:14px;">
-                📢 系统更新公告✨
-✅ 所有题库更新完毕，带图题目已上传完成
-🔧 修复优化内容：
-• 修复前端绕过解锁限制bug
-• 题库对接后端数据处理
-• 新增防爬虫Token校验
-• 后端答案隐藏防护升级
+                📢 系统更新公告⚠️<br>
+✅ 所有题库更新完毕，带图题目已上传完成<br>
+🔧 修复优化内容：<br>
+• 修复前端绕过解锁限制bug<br>
+• 题库对接后端数据处理<br>
+• 新增防爬虫Token校验<br>
+• 后端答案隐藏防护升级<br>
+• 修复图片后端拦截导致无法放行<br>
                 </div>
             </div>
             <button class="notif-btn" onclick="this.closest('.notification').remove()">确定</button>
@@ -41,13 +42,14 @@
                 或者把[查看本机解锁ID]并发给管理员加入白名单解锁
                 <hr style="margin:16px 0;border-color:rgba(255,255,255,0.2)">
                 <div style="font-size:14px;">
-                📢 系统更新公告⚠️
-✅ 所有题库更新完毕，带图题目已上传完成
-🔧 修复优化内容：
-• 修复前端绕过解锁限制bug
-• 题库对接后端数据处理
-• 新增防爬虫Token校验
-• 后端答案隐藏防护升级
+                📢 系统更新公告⚠️<br>
+✅ 所有题库更新完毕，带图题目已上传完成<br>
+🔧 修复优化内容：<br>
+• 修复前端绕过解锁限制bug<br>
+• 题库对接后端数据处理<br>
+• 新增防爬虫Token校验<br>
+• 后端答案隐藏防护升级<br>
+• 修复图片后端拦截导致无法放行<br>
                 </div>
             </div>
             <button class="notif-btn" onclick="this.closest('.notification').remove()">知道了</button>
