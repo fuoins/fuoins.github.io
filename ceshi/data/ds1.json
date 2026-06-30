@@ -52,7 +52,7 @@
 {
 "id": 9,
 "question": "以下循环语句的时间复杂度是（ ）。\nfor(int i=1;i<=n;i++)\n  for(int j=1;j<=i;j++)\n    count++;",
-"options": ["O(n)", "O(n2)", "O(log2n)", "O(nlon2n)"],
+"options": ["O(n)", "O(n^2)", "O(log2n)", "O(nlon2n)"],
 "answer": 1
 },
 {
@@ -69,8 +69,8 @@
 },
 {
 "id": 12,
-"question": "for(int i=1;i<=n;i=2) 以上程序的时间复杂度是（ ）\n     count++;",
-"options": ["O(n)", "O(n2)", "O(log2n)", "O(nlog2n)"],
+"question": "for(int i=1;i<=n;i*=2) 以上程序的时间复杂度是（ ）\n     count++;",
+"options": ["O(n)", "O(n^2)", "O(log2n)", "O(nlog2n)"],
 "answer": 2
 },
 {
@@ -208,7 +208,7 @@
 {
 "id": 35,
 "question": "高度为 K的二叉树的最大结点数为（ ）。",
-"options": ["2K", "2K-1", "2K -1", "2K-1-1"],
+"options": ["2K", "2K-1", "2^（K-1)", "2K-1-1"],
 "answer": 2
 },
 {
