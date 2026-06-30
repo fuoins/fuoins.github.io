@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>在线测试系统</title>
-    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="style3.css">
 </head>
 <body class="no-copy">
     <div class="container">
@@ -33,7 +33,7 @@
                     <button class="mode-btn" id="orderMode" onclick="setMode('order')">顺序测试</button>
                 </div>
                 <button class="start-btn" id="startBtn" onclick="loadSelectedExam()">开始测试</button>
-                <button class="start-btn" id="showMyIdBtn">查看本机解锁ID</button>
+                <button class="start-btn" id="showMyIdBtn">查看并复制本机解锁ID</button>
             </div>
         </div>
         <div id="loading">⏳ 正在加载题目...</div>
@@ -44,14 +44,14 @@
             <div class="section" id="choice-section">
                 <h2 class="section-title">
                     <span>一、选择题</span>
-                    <button class="reset-section-btn" onclick="resetSectionErrors('choice')">清除本类错误</button>
+                    <button class="reset-section-btn" onclick="resetSectionErrors('choice')">清除选择题错误</button>
                 </h2>
                 <div id="choice-questions"></div>
             </div>
             <div class="section" id="judge-section">
                 <h2 class="section-title">
                     <span>二、判断题</span>
-                    <button class="reset-section-btn" onclick="resetSectionErrors('judge')">清除本类错误</button>
+                    <button class="reset-section-btn" onclick="resetSectionErrors('judge')">清除判断题错误</button>
                 </h2>
                 <div id="judge-questions"></div>
             </div>
@@ -82,6 +82,10 @@
             </div>
         </div>
     </div>
-<script src="test3.js"></script>
+
+    <!-- 悬浮返回顶部按钮 -->
+    <button class="back-to-top" id="backToTopBtn" onclick="scrollToTop()">↑</button>
+
+<script src="test.js"></script>
 </body>
 </html>
