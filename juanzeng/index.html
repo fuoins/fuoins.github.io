@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>感谢捐赠</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #fdf6e3 0%, #ffe8cc 50%, #ffd6a5 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            max-width: 420px;
+            width: 100%;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(255, 107, 53, 0.15);
+            padding: 36px 24px 32px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .heart {
+            font-size: 48px;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #d9480f;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: #868e96;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .qr-wrap {
+            background: #fff5ec;
+            border: 2px dashed #ffa94d;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .qr-img {
+            width: 260px;
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .tip {
+            font-size: 14px;
+            color: #e8590c;
+            background: #ffecdb;
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            margin-top: 16px;
+            letter-spacing: 1px;
+        }
+
+        .footer-text {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #adb5bd;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="heart">❤️</div>
+        <h1>感谢您的捐赠</h1>
+        <p class="subtitle">每一份善意都会被铭记<br>我们衷心感谢您的支持与信任</p>
+
+        <div class="qr-wrap">
+            <!-- 图片位于上级目录：../juanzeng.png -->
+            <img 
+                class="qr-img" 
+                src="../juanzeng.png" 
+                alt="捐赠收款二维码"
+            >
+            <span class="tip">☕ 微信 / 支付宝扫描二维码</span>
+        </div>
+
+        <p class="footer-text">您的每一笔捐赠都将用于有价值的事业<br>祝您生活愉快，万事顺遂</p>
+    </div>
+</body>
+</html>
+
