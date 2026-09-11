@@ -14,133 +14,257 @@
         body {
             min-height: 100vh;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: linear-gradient(135deg, #fdf6e3 0%, #ffe8cc 50%, #ffd6a5 100%);
+            background: linear-gradient(135deg, #ffe0c0, #ffd6a5, #ffc9b0, #fff0e0);
+            background-size: 300% 300%;
+            animation: bgShift 18s ease infinite;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
 
+        @keyframes bgShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* ===== 卡片 ===== */
         .card {
-            background: #ffffff;
-            max-width: 420px;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            max-width: 480px;
             width: 100%;
-            border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(255, 107, 53, 0.15);
-            padding: 36px 24px 32px;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(255, 120, 60, 0.18);
+            padding: 40px 28px 36px;
             text-align: center;
-            transition: transform 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            animation: fadeInUp 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
 
         .card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-5px);
+            box-shadow: 0 24px 70px rgba(255, 120, 60, 0.25);
         }
 
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== 爱心 ===== */
         .heart {
             font-size: 48px;
-            line-height: 1;
-            margin-bottom: 12px;
-        }
-
-        h1 {
-            font-size: 26px;
-            font-weight: 700;
-            color: #d9480f;
-            margin-bottom: 8px;
-            letter-spacing: 2px;
-        }
-
-        .subtitle {
-            font-size: 15px;
-            color: #868e96;
-            margin-bottom: 24px;
-            line-height: 1.6;
-        }
-
-        .section {
-            margin-bottom: 24px;
-        }
-
-        .section-title {
-            font-size: 14px;
-            color: #e8590c;
-            font-weight: 600;
-            margin-bottom: 12px;
-            letter-spacing: 1px;
-        }
-
-        .qr-img {
-            width: 220px;
-            max-width: 100%;
-            height: auto;
-            border-radius: 12px;
-            display: block;
-            margin: 0 auto;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .qr-wrap {
-            background: #fff5ec;
-            border: 2px dashed #ffa94d;
-            border-radius: 20px;
-            padding: 20px;
-        }
-
-        .wx-wrap {
-            background: #e7f5ff;
-            border: 2px dashed #4dabf7;
-            border-radius: 20px;
-            padding: 20px;
-        }
-
-        .tip {
-            font-size: 14px;
-            color: #e8590c;
-            background: #ffecdb;
             display: inline-block;
-            padding: 6px 16px;
-            border-radius: 30px;
-            margin-top: 16px;
-            letter-spacing: 1px;
+            animation: heartBeat 2s ease-in-out infinite;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 4px 12px rgba(255, 80, 80, 0.2));
         }
 
-        .footer-text {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #adb5bd;
-            line-height: 1.6;
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            10% { transform: scale(1.1) rotate(-4deg); }
+            20% { transform: scale(1) rotate(0deg); }
+            30% { transform: scale(1.08) rotate(4deg); }
+            40% { transform: scale(1); }
         }
 
+        /* ===== 标题 ===== */
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, #e8590c, #f76707, #ff922b, #e8590c);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradientFlow 5s ease infinite;
+        }
+
+        @keyframes gradientFlow {
+            to { background-position: 200% 0; }
+        }
+
+        /* ===== 感谢文案 ===== */
+        .thanks-message {
+            font-size: 15px;
+            line-height: 2;
+            color: #555;
+            letter-spacing: 0.5px;
+            margin-bottom: 28px;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.55);
+            border-radius: 20px;
+            box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.03);
+        }
+
+        .thanks-message strong {
+            display: block;
+            font-size: 17px;
+            color: #d9480f;
+            margin-bottom: 4px;
+        }
+
+        .thanks-message span {
+            display: block;
+        }
+
+        .thanks-message .divider-text {
+            width: 30px;
+            height: 2px;
+            background: #ffd6a5;
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
+        /* ===== 分隔线 ===== */
         .divider {
             width: 60px;
             height: 3px;
             background: linear-gradient(90deg, #ffa94d, #ff6b35);
             border-radius: 3px;
-            margin: 0 auto 24px;
+            margin: 0 auto 32px;
+            animation: growLine 1.2s ease-out 0.6s both;
         }
 
-        /* 电脑端适配 */
+        @keyframes growLine {
+            from { width: 0; opacity: 0; }
+            to { width: 60px; opacity: 1; }
+        }
+
+        /* ===== 二维码公共样式 ===== */
+        .section {
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            color: #495057;
+        }
+
+        .qr-img {
+            width: 210px;
+            max-width: 100%;
+            height: auto;
+            border-radius: 16px;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s ease;
+        }
+
+        .qr-img:hover {
+            transform: scale(1.05) rotate(-1deg);
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.14);
+        }
+
+        .qr-wrap {
+            background: #fff5ec;
+            border: 2px solid #ffe0c0;
+            border-radius: 24px;
+            padding: 22px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .qr-wrap::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -30%;
+            width: 30%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+            animation: shimmer 5s ease infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { left: -30%; }
+            50% { left: 130%; }
+        }
+
+        .wx-wrap {
+            background: #eef7ff;
+            border: 2px solid #d0ebff;
+            border-radius: 24px;
+            padding: 22px;
+        }
+
+        .tip {
+            font-size: 13px;
+            color: #e8590c;
+            background: #ffecdb;
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            margin-top: 14px;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+        .wx-wrap .tip {
+            background: #e7f5ff;
+            color: #1971c2;
+        }
+
+        .footer-text {
+            margin-top: 24px;
+            font-size: 13px;
+            color: #adb5bd;
+            line-height: 1.8;
+        }
+
+        /* ===== 电脑端（全屏左右并排） ===== */
         @media (min-width: 768px) {
+            body {
+                padding: 40px;
+            }
+
             .card {
-                padding: 48px 40px 40px;
+                max-width: 760px;
+                padding: 56px 50px 48px;
             }
+
             h1 {
-                font-size: 32px;
+                font-size: 36px;
             }
-            .subtitle {
-                font-size: 17px;
-            }
-            .qr-img {
-                width: 260px;
-            }
-            .section-title {
+
+            .thanks-message {
                 font-size: 16px;
+                padding: 20px 24px;
             }
-            .divider {
-                margin-bottom: 32px;
+
+            .sections {
+                display: flex;
+                gap: 40px;
+                justify-content: center;
+                align-items: flex-start;
             }
+
+            .section {
+                flex: 1;
+                max-width: 300px;
+                margin-bottom: 0;
+            }
+
+            .qr-img {
+                width: 240px;
+            }
+
             .footer-text {
-                font-size: 13px;
+                font-size: 14px;
             }
         }
     </style>
@@ -149,37 +273,40 @@
     <div class="card">
         <div class="heart">❤️</div>
         <h1>感谢您的捐赠</h1>
-        <p class="subtitle">每一份善意都会被铭记<br>我们衷心感谢您的支持与信任</p>
-        
+
+        <!-- 感谢文案整合区域 -->
+        <div class="thanks-message">
+            <strong>每一份善意都会被铭记</strong>
+            <span>衷心感谢您的支持与信任</span>
+            <div class="divider-text"></div>
+            <span>您的每一笔捐赠都将用于有价值的事业</span>
+            <span>祝您生活愉快，万事顺遂</span>
+        </div>
+
         <div class="divider"></div>
 
-        <!-- 捐赠收款二维码（仅支持微信支付） -->
-        <div class="section">
-            <div class="section-title">💝 捐赠收款码</div>
-            <div class="qr-wrap">
-                <img 
-                    class="qr-img" 
-                    src="juanzeng.png" 
-                    alt="捐赠收款二维码"
-                >
+        <!-- 二维码区域 -->
+        <div class="sections">
+            <!-- 捐赠收款码 -->
+            <div class="section">
+                <div class="section-title">💝 捐赠收款码</div>
+                <div class="qr-wrap">
+                    <img class="qr-img" src="juanzeng.png" alt="微信收款二维码">
+                </div>
+                <span class="tip">微信扫描 即可捐赠</span>
             </div>
-            <span class="tip">微信扫描 即可捐赠</span>
+
+            <!-- 作者微信 -->
+            <div class="section">
+                <div class="section-title">👤 作者微信</div>
+                <div class="wx-wrap">
+                    <img class="qr-img" src="weixin.png" alt="作者微信二维码">
+                </div>
+                <span class="tip">添加微信 交流心得</span>
+            </div>
         </div>
 
-        <!-- 作者微信二维码 -->
-        <div class="section">
-            <div class="section-title">👤 作者微信</div>
-            <div class="wx-wrap">
-                <img 
-                    class="qr-img" 
-                    src="wx.png" 
-                    alt="作者微信二维码"
-                >
-            </div>
-            <span class="tip">添加作者微信，交流想法与心得</span>
-        </div>
-
-        <p class="footer-text">您的每一笔捐赠都将用于有价值的事业<br>祝您生活愉快，万事顺遂</p>
+        <p class="footer-text">感恩有你 · 一路同行</p>
     </div>
 </body>
 </html>
