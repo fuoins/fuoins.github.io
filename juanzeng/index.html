@@ -57,22 +57,40 @@
             line-height: 1.6;
         }
 
-        .qr-wrap {
-            background: #fff5ec;
-            border: 2px dashed #ffa94d;
-            border-radius: 20px;
-            padding: 20px;
+        .section {
             margin-bottom: 24px;
         }
 
+        .section-title {
+            font-size: 14px;
+            color: #e8590c;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
         .qr-img {
-            width: 260px;
+            width: 220px;
             max-width: 100%;
             height: auto;
             border-radius: 12px;
             display: block;
             margin: 0 auto;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .qr-wrap {
+            background: #fff5ec;
+            border: 2px dashed #ffa94d;
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .wx-wrap {
+            background: #e7f5ff;
+            border: 2px dashed #4dabf7;
+            border-radius: 20px;
+            padding: 20px;
         }
 
         .tip {
@@ -92,6 +110,39 @@
             color: #adb5bd;
             line-height: 1.6;
         }
+
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #ffa94d, #ff6b35);
+            border-radius: 3px;
+            margin: 0 auto 24px;
+        }
+
+        /* 电脑端适配 */
+        @media (min-width: 768px) {
+            .card {
+                padding: 48px 40px 40px;
+            }
+            h1 {
+                font-size: 32px;
+            }
+            .subtitle {
+                font-size: 17px;
+            }
+            .qr-img {
+                width: 260px;
+            }
+            .section-title {
+                font-size: 16px;
+            }
+            .divider {
+                margin-bottom: 32px;
+            }
+            .footer-text {
+                font-size: 13px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -99,19 +150,36 @@
         <div class="heart">❤️</div>
         <h1>感谢您的捐赠</h1>
         <p class="subtitle">每一份善意都会被铭记<br>我们衷心感谢您的支持与信任</p>
+        
+        <div class="divider"></div>
 
-        <div class="qr-wrap">
-            <!-- 图片位于上级目录：../juanzeng.png -->
-            <img 
-                class="qr-img" 
-                src="../juanzeng.png" 
-                alt="捐赠收款二维码"
-            >
-            <span class="tip">☕ 微信 / 支付宝扫描二维码</span>
+        <!-- 捐赠收款二维码（仅支持微信支付） -->
+        <div class="section">
+            <div class="section-title">💝 捐赠收款码</div>
+            <div class="qr-wrap">
+                <img 
+                    class="qr-img" 
+                    src="juanzeng.png" 
+                    alt="捐赠收款二维码"
+                >
+            </div>
+            <span class="tip">微信扫描 即可捐赠</span>
+        </div>
+
+        <!-- 作者微信二维码 -->
+        <div class="section">
+            <div class="section-title">👤 作者微信</div>
+            <div class="wx-wrap">
+                <img 
+                    class="qr-img" 
+                    src="wx.png" 
+                    alt="作者微信二维码"
+                >
+            </div>
+            <span class="tip">添加作者微信，交流想法与心得</span>
         </div>
 
         <p class="footer-text">您的每一笔捐赠都将用于有价值的事业<br>祝您生活愉快，万事顺遂</p>
     </div>
 </body>
 </html>
-
