@@ -1,0 +1,88 @@
+{
+  "speed_sources": [
+    {
+      "name": "今日头条",
+      "url": "https://lf9-static.bytednsdoc.com/obj/eden-cn/uhbfnupkbps/video/earth_v6.mp4"
+    },
+    {
+      "name": "字节跳动①",
+      "url": "https://lf1-cdn-tos.bytescm.com/obj/static/ies/bytedance_official/_next/static/images/8-4@2x-f85835b5e482bccf94c824067caac899.png"
+    },
+    {
+      "name": "字节跳动②",
+      "url": "https://lf3-cdn-tos.bytescm.com/obj/ttfe/ATSX/mainland/video-poster_1576231362701.png"
+    },
+    {
+      "name": "移动云盘①",
+      "url": "https://yun.mcloud.139.com/hongseyunpan/2.43G.zip"
+    },
+    {
+      "name": "移动云盘②",
+      "url": "https://open.yun.139.com/static/img/case_bg_1.16716f8f.png"
+    },
+    {
+      "name": "咪咕视频①",
+      "url": "https://img.cmvideo.cn/publish/noms/2026/09/01/1O7GU70S9OLS2.gif"
+    },
+    {
+      "name": "咪咕视频②",
+      "url": "https://img.cmvideo.cn/publish/noms/2022/10/14/1O3VIGPVP6HTS.jpg"
+    },
+    {
+      "name": "咪咕爱看",
+      "url": "https://img.aikan.miguvideo.com/publish/noms/2024/04/22/1O5MNLF3AN2JL.gif"
+    },
+    {
+      "name": "咪咕快游①",
+      "url": "https://ggv.cmvideo.cn/v1/iflyad/deliverysystem/dsp/mgc_transfiles/1290/2026/8/21/3NMgeOQQt1danQNEClrM10/48ca7568/custom_95113/3NMgeOQQt1danQNEClrM10custom_95113MP4.mp4"
+    },
+    {
+      "name": "咪咕快游②",
+      "url": "https://freeserver.migufun.com/resource/beta/video/system/20210924112351666.mp4"
+    },
+    {
+      "name": "移动",
+      "url": "https://img1.shop.10086.cn/goods/tcqtjwurkdsfcxgr_940x7200"
+    }
+  ],
+  "claim_groups": [
+    {
+      "title": "辽宁专属活动",
+      "links": [
+        {
+          "name": "流量嗨翻天活动",
+          "url": "https://lyh.lncmcc.com/lyhVue/index.html#/llhft?actNo=lljf0419&shopId=ff8080817356d7320173573c4ade03c4&pc=Ki1nxVQshUxGgwDA9ijpwc%2FWj6E5YaXHhCimHfcUjlX2C7ZKayCuhJ5ycKe1gDAPiTmP0Dp6UiAF%0AjejCgdJM3fJb8DEoBjWSwaDNZnFXV%2Fl43qfRx7YShvzpokFOICFhpcQfcRgX%2B5FMSWs2ABIbzOX6%0AyeJ4%2F%2FAHR18lKBRRUqBsWxYlmOU79lwATEeOAZkvWuohrqYk4O%2FneCF7PvGdzLnyxsUreeVFmjSx%0AbdGQhWVfXRm%2FYi3j3Y2ZMNYxtbkmxM84CChaPTUnSbN277%2F4uxzpJLUtZI6GnLfP%2BDVRrRahazAl%0Angy47FjZnsOw%2F7l6i7SJGiH9MjkFWLxeNQdaZ4sepri8bv9TpTrAy3a%2FZNdsrfSC4M0JYS1P7nDA%0A8Fo6%2BQgZaEvJpEGmt7sGDhjaBjFEfDEPzup66WLcz9nzOQfQn8SVikUwJXwY6ZTHPjZFqH39rpK%2F%0A89taHQuTxbB3qs2Vh3Csvhtdy0DBOQy74qrCG83Khgo1kGA%2FG6xy%2BdrQM18hC5BdGW38IAn7kFTS%0AQGMF%2FlP8EvfRm0QxnMA9WLO6ciFkDiDfpigQhfmksaSGzw%2BFt2%2FBqJ8ZVWj%2FtbZWDmi7e3sYdKkx%0ANDPNKXggpoRskfSMF8bU2hDbsxWorF2wZL9G%2Fd9ANzJs7G9MKQgYp9jRMgj0YYP3v47zP7dIa3Iz%0ANH%2FUwcFNkiPK11qbQb6ZakLcdevX3lUgb5We7RDy%2Ffg1TwAbznPgEz0y5CKIIc8emUVnxAM9s%2BfN%0A%2F89B4593z6%2FV9yFuiZI6IbepEk8yzMEikKL%2BB3b42K4d45aBtiThvF2pQOD8Fb2j%2Bx%2F%2F5PhIaJyb%0AvdY6gg7kP7qa24kAuXnsSIh9AVZA%2F%2FmL1yfRfKg5qsPeVlhfPeM8URT5gJTfqC1Rb7a5uUYrJCm3%0AZHOHyKSNiQUH2K5iH5wnvb4njWFnrDLLTIWJ29l6ZoP9lv2Y4osAXT1CuMmxBN%2BqqdDh9uoZfMjp%0AJ0sMVWTj1RPxrT%2FIUtPw2riMGfF56tbgD1cvVrQXB9iubOap419%2F8uqY6VT%2B1lCtnKlevU55HvA9%0AaZQ83wAXC9VMaKQjpBZVelJUtP9ZvYma5SKD5vcPybrzK1uapHNN2vNI3IBla0zjA5U%3D&pk=438DB3667C7DDD7497B387AAE8DDB717D62293A55E252647C7E0FC879C1E22A1282F621A5F8A64F6E87A3A9518AF32CEE1C1CA09D4C9ED5EF1CA6CADE38C80F57397798B6483F0D1A9228F25ECB75B49529F5992FC06CACCB7D831A1D3624A70B199939A49A5A044B5B0A6150446A4A46B8D592BD4456F4E09F9F64186B8AFF9&_sid_=-1"
+        }
+      ]
+    },
+    {
+      "title": "全国通用定向流量",
+      "links": [
+        {
+          "name": "30GB 咪咕悦看定向流量",
+          "url": "https://n.cmread.com/nap/p/mlln30G.jsp?z=1&ln=100975_1015599_3801_8_380_L1&cm=00000000&vt=3&key=1&isShare=1"
+        },
+        {
+          "name": "50GB 咪咕视频定向流量",
+          "url": "https://m.miguvideo.com/m/provincevml/e0fa9f12a77b471c9cdbb7a439b86679?needLazyimg=0&sharefrom=miguvideoapp&pwId=c195ee02662b436fbc533939e99e127c"
+        },
+        {
+          "name": "50GB 咪咕快游定向流量",
+          "url": "https://www.migufun.com/miguplay/html/personalTraffic/personalTrafficUp50?statisticChannel=bSj&channel=40257748296&from=778135&appChannel=40257748296"
+        },
+        {
+          "name": "30GB 咪咕阅读定向流量",
+          "url": "https://n.cmread.com/nap/p/dh25hl.jsp?cm=D0022802&mbid=2bJNkIDFqp6ak7ZTm+qhh0q8OivyoMI2aOHP3YCC1T8%3D&is_np=1"
+        },
+        {
+          "name": "30GB 咪咕音乐定向流量",
+          "url": "https://h5.nf.migu.cn/app/v4/zt/2021/directed-flow/index.html#/home"
+        },
+        {
+          "name": "30GB 移动云盘定向流量",
+          "url": "https://caiyun.feixin.10086.cn:7071/portal/caiyunOfficialAccount/index.html?path=zeroPurchase&sourceid=1283#/zeroPurchase"
+        }
+      ]
+    }
+  ]
+}
