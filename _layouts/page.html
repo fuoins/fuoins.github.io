@@ -2,25 +2,17 @@
 layout: default
 ---
 
-<!-- 页面头部 -->
-<div class="page-header">
+<div class="container page-wrap">
+  <header class="page-head">
     <h1>{{ page.title }}</h1>
-    {% if page.subtitle %}
-    <p>{{ page.subtitle }}</p>
-    {% endif %}
-</div>
+    {% if page.subtitle %}<p class="page-sub">{{ page.subtitle }}</p>{% endif %}
+  </header>
 
-<!-- 页面内容 -->
-<div class="page-content">
+  <div class="prose">
     {{ content }}
-</div>
+  </div>
 
-<!-- 页面补充信息 -->
-<div class="page-footer" style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);">
-    <p style="color: var(--secondary); font-size: 0.9rem;">
-        最后更新时间：{{ page.last_modified_at | default: page.date | date: site.date_format }}
-    </p>
-    <p style="margin-top: 1rem; color: var(--secondary);">
-        如果你对本文内容有任何疑问或建议，欢迎通过 <a href="mailto:{{ site.author.email }}">邮箱</a> 与我联系。
-    </p>
+  <footer class="page-foot">
+    <p>如内容有误或想交流，欢迎<a href="mailto:{{ site.author.email }}">邮件联系</a>。</p>
+  </footer>
 </div>

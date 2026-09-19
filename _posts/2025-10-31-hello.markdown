@@ -1,12 +1,12 @@
 ---
-layout:       post
-title:        "第一个md"
-subtitle:     "记录html和部署此站的历程"
-author:       "Zy"
-header-img:   "img/1000217243.jpg" 
-catalog:      true
+layout: post
+title: "第一个md"
+subtitle: "记录html和部署此站的历程"
+author: "ZY"
+categories: 建站
 tags:
-  - 练习   
+  - Jekyll
+  - Cloudflare
 ---
 
 ### 学习资料链接
@@ -23,11 +23,3 @@ tags:
 - **fuoins.github.io**：支持微信打开访问
 - **zy520.de5.net**：图片加载速度更快，适合浏览含大量图片的网页
 
-
-hello
-
-# 一级标题示例
-## 二级标题示例
-### 四级标题调整为三级标题示例
-
-* 666

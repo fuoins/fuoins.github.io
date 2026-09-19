@@ -1,11 +1,50 @@
-<footer class="footer-container">
-    <div class="footer-content">
-        <p>&copy; {{ site.time | date: '%Y' }} {{ site.author.name }}. All rights reserved.</p>
-        <p>{{ site.description }}</p>
-        <div class="footer-links">
-            <a href="{{ site.url }}{{ site.baseurl }}">主页</a>
-            <a href="{{ site.url }}{{ site.baseurl }}/pages/about/">关于</a>
-            <a href="mailto:{{ site.author.email }}">联系我</a>
-        </div>
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-left">
+      <p class="footer-brand">{{ site.title }}</p>
+      <p class="footer-desc">{{ site.subtitle }}</p>
     </div>
+    <div class="footer-right">
+      <a href="https://github.com/{{ site.author.github }}" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:{{ site.author.email }}">邮箱</a>
+      <a href="{{ '/pages/about/' | relative_url }}">关于我</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>&copy; {{ site.time | date: '%Y' }} {{ site.author.name }} · 用 Jekyll 构建 · 托管于 GitHub Pages</p>
+  </div>
 </footer>
+
+<!-- 回到顶部 -->
+<button class="back-top" id="backTop" aria-label="回到顶部">↑</button>
+
+<script>
+(function () {
+  // 移动端导航切换
+  var toggle = document.getElementById('navToggle');
+  var nav = document.getElementById('siteNav');
+  if (toggle && nav) {
+    toggle.addEventListener('click', function () {
+      var open = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  // 回到顶部
+  var backTop = document.getElementById('backTop');
+  if (backTop) {
+    window.addEventListener('scroll', function () {
+      backTop.classList.toggle('show', window.scrollY > 400);
+    });
+    backTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+})();
+</script>

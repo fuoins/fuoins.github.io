@@ -1,0 +1,13 @@
+# Jekyll 构建产物
+_site/
+.jekyll-cache/
+.sass-cache/
+
+# 依赖锁文件（GitHub Pages 自动管理）
+Gemfile.lock
+vendor/
+bundle/
+
+# 系统文件
+.DS_Store
+Thumbs.db

@@ -1,18 +1,24 @@
+# ============================================
 # 站点基础信息
-title: "ZY' Notes"
+# ============================================
+title: "ZY's Notes"
 subtitle: "以技术为帆，探索无限可能"
-description: "专注于编程、数学与技术思考的个人博客，用简洁的文字记录成长与探索。"
-keywords: "编程, 数学, Jekyll, 技术博客, ZY"
+description: "赵宇的个人技术博客，记录编程、数学与软件工程的思考与实践。"
+keywords: "编程, 数学, Java, Python, Go, 技术博客, ZY"
 author:
-  name: "ZY"
+  name: "赵宇"
+  nickname: "ZY"
   email: "2627737542@qq.com"
+  github: "fuoins"
   url: "https://fuoins.github.io"
 
-# 站点URL（适配GitHub Pages）
+# 站点 URL（GitHub Pages）
 url: "https://fuoins.github.io"
-baseurl: "" # 根目录无需填写
+baseurl: ""
 
-# 核心配置（无插件）
+# ============================================
+# 核心配置（无插件，GitHub Pages 兼容）
+# ============================================
 permalink: /posts/:year/:month/:day/:title/
 markdown: kramdown
 kramdown:
@@ -20,13 +26,13 @@ kramdown:
   syntax_highlighter_opts:
     disable: false
     line_numbers: false
-  math_engine: mathjax # 原生支持MathJax（无插件）
+  math_engine: mathjax
   auto_ids: true
   footnote_nr: 1
   entity_output: as_char
   toc_levels: 1..6
 
-# 页面排除与包含
+# 页面排除
 exclude:
   - Gemfile
   - Gemfile.lock
@@ -36,24 +42,29 @@ exclude:
   - .gitignore
   - .github
 
-# 导航菜单（用于header）
+# ============================================
+# 导航菜单
+# ============================================
 nav:
-  - name: "主页"
+  - name: "首页"
     url: "/"
-  - name: "本站详细"
-    url: "/pages/writing/"
-  - name: "Notes"
+  - name: "文章"
     url: "/pages/archive/"
-  - name: "关于赵宇"
+  - name: "学习资源"
+    url: "/pages/writing/"
+  - name: "关于我"
     url: "/pages/about/"
 
+# ============================================
 # 时间格式
+# ============================================
 timezone: Asia/Shanghai
 date_format: "%Y-%m-%d %H:%M:%S"
 
-# 移动端适配基础配置
-viewport: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-# 新增：自定义静态文件 Cache-Control 响应头（解决 Cloudflare 缓存验证延迟问题）
+# 移动端适配
+viewport: "width=device-width, initial-scale=1.0"
+
+# 静态资源缓存策略（配合 Cloudflare）
 headers:
   - path: "/*.jpg"
     values:
@@ -67,19 +78,16 @@ headers:
   - path: "/*.gif"
     values:
       Cache-Control: "public, max-age=31536000, immutable"
-  - path: "/img/*"
-    values:
-      Cache-Control: "public, max-age=31536000, immutable"
 
-# ========== 新增：确保所有MD页面使用default模板 ==========
+# 页面布局默认值
 defaults:
   - scope:
-      path: ""        # 匹配所有文件
-      type: "pages"   # 匹配所有MD页面
+      path: ""
+      type: "pages"
     values:
-      layout: "default"  # 强制使用default模板
+      layout: "default"
   - scope:
       path: ""
       type: "posts"
     values:
-      layout: "default"  # 若有posts目录，也强制使用
+      layout: "post"
